@@ -2,9 +2,8 @@ package com.inari.firefly.misc
 
 import com.inari.commons.lang.aspect.IAspects
 import com.inari.commons.lang.indexed.IndexedTypeKey
+import com.inari.firefly.component.CompId
 import com.inari.firefly.component.ComponentMap
-import com.inari.firefly.component.ComponentType
-import com.inari.firefly.component.IComponentMap
 import com.inari.firefly.system.FFContext
 import com.inari.firefly.system.component.ComponentSystem
 import com.inari.firefly.system.component.SystemComponent
@@ -20,25 +19,24 @@ object TestComponentSystem : ComponentSystem, TestEventListener {
             Test2Component.typeKey
     )
 
-    val comps1: IComponentMap<TestComponent> = ComponentMap(cBuilder = TestComponent)
-    val comps2: IComponentMap<Test2Component> = ComponentMap(cBuilder = Test2Component)
-    val buildComp1 = comps1.build
-    val buildComp2 = comps2.build
+    private val c1: ComponentMap<TestComponent> = ComponentMap(TestComponent)
+    private val c2: ComponentMap<Test2Component> = ComponentMap(Test2Component)
 
-
-    @Suppress("UNCHECKED_CAST")
-    override fun <C : SystemComponent> with(type: ComponentType<C>): IComponentMap<C> = when (type) {
-        TestComponent -> comps1 as IComponentMap<C>
-        Test2Component -> comps2 as IComponentMap<C>
-        else -> throw RuntimeException("error")
+    init {
+        FFContext.registerComponentMapper(c1)
+        FFContext.registerComponentMapper(c2)
     }
 
-
-    override fun notifyComponentCreation(id: Int, key: IndexedTypeKey) =
+    override fun notifyComponentCreation(id: CompId, key: IndexedTypeKey) =
             println("event: $id $key")
 
     override fun clearSystem() {
-        comps1.clear()
-        comps2.clear()
+        c1.clear()
+        c2.clear()
+    }
+
+    override fun dispose() {
+        FFContext.disposeComponentMapper(c1)
+        FFContext.disposeComponentMapper(c2)
     }
 }

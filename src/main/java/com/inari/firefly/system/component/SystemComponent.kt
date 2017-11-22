@@ -12,6 +12,7 @@ abstract class SystemComponent : BaseIndexedObject, IndexedType, NamedComponent 
 
     final override val componentId: CompId = CompId(index, indexedTypeKey())
     final override fun indexedObjectType(): Class<out IndexedObject> = indexedTypeKey().type<IndexedObject>()
+    final override fun dispose() = super.dispose()
 
     companion object {
 

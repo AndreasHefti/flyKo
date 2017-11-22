@@ -3,6 +3,7 @@ package com.inari.firefly.misc
 import com.inari.commons.geom.Position
 import com.inari.commons.lang.indexed.IIndexedTypeKey
 import com.inari.commons.lang.list.IntBag
+import com.inari.firefly.component.ComponentType
 import com.inari.firefly.system.component.SystemComponent
 import com.inari.firefly.system.component.SystemComponentBuilder
 
@@ -19,14 +20,10 @@ data class Test2Component private constructor(
     override fun name(): String = ff_Name
     override fun indexedTypeKey(): IIndexedTypeKey = typeKey
 
-    companion object : SystemComponentBuilder<Test2Component> {
-
-        override val typeKey =
-                SystemComponent.createTypeKey(Test2Component::class.java)
-
-        override fun builder(registry: (Test2Component) -> Test2Component): (Test2Component.() -> Unit) -> Int = {
-                configure -> build(Test2Component(), configure, registry)
-        }
+    companion object : SystemComponentBuilder<Test2Component>(), ComponentType<Test2Component> {
+        override val typeKey = SystemComponent.createTypeKey(Test2Component::class.java)
+        override val subType: Class<Test2Component> = Test2Component.typeKey.type()
+        override fun createEmpty(): Test2Component = Test2Component()
     }
 
 }

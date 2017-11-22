@@ -15,7 +15,9 @@ abstract class EntityComponent : Component, IndexedType {
      */
     final override val componentId: CompId = CompId(-1, indexedTypeKey())
     /** For an EntityComponent always the type index is given as the index */
-    final override fun index(): Int = componentId.typeKey().index()
+    final override fun index(): Int = componentId.typeKey.index()
+
+    final override fun dispose() = EntityProvider.dispose(this)
 
     abstract fun reset()
 
