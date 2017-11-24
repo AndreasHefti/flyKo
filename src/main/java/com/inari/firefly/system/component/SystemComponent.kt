@@ -4,15 +4,26 @@ import com.inari.firefly.component.NamedComponent
 import com.inari.commons.lang.aspect.AspectGroup
 import com.inari.commons.lang.indexed.*
 import com.inari.firefly.component.CompId
+import com.inari.firefly.system.Constants.NO_NAME
+
+private const val NAME_NOT_ASSIGNED: String = "[[NAME_NOT_ASSIGNED]]"
+abstract class SystemComponent : BaseIndexedObject(), IndexedType, NamedComponent {
 
 
-abstract class SystemComponent : BaseIndexedObject, IndexedType, NamedComponent {
+    var name: String = NAME_NOT_ASSIGNED
+    var ff_Name: String
+        set(ff_Name) {
+            if (name != NAME_NOT_ASSIGNED) {
+                throw IllegalStateException("Illegal reassignment of name")
+            }
+            name = ff_Name
+        }
+        get() = name
 
-    protected constructor()
 
     final override val componentId: CompId = CompId(index, indexedTypeKey())
     final override fun indexedObjectType(): Class<out IndexedObject> = indexedTypeKey().type<IndexedObject>()
-    final override fun dispose() = super.dispose()
+    override fun name(): String = ff_Name
 
     companion object {
 

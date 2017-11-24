@@ -1,10 +1,13 @@
-package com.inari.firefly.component
+package com.inari.firefly.component.mapping
 
-import com.inari.commons.StringUtils
 import com.inari.commons.lang.list.DynArray
 import com.inari.commons.lang.list.DynArrayRO
+import com.inari.firefly.component.CompId
+import com.inari.firefly.component.ComponentType
+import com.inari.firefly.component.NamedComponent
+import com.inari.firefly.system.Constants.NO_NAME
 import java.util.BitSet
-
+import kotlin.collections.HashMap
 
 
 class ComponentMap<C : NamedComponent>(
@@ -12,7 +15,8 @@ class ComponentMap<C : NamedComponent>(
         size: Int = 20,
         exp: Int = 10,
         val activationMapping: Boolean = false,
-        val nameMapping: Boolean = false
+        val nameMapping: Boolean = false,
+        private val listener: (CompId, IComponentMap.MapAction) -> Unit = { id, _ -> id }
 ) : IComponentMap<C> {
 
     override fun type(): ComponentType<C> = type
@@ -20,22 +24,31 @@ class ComponentMap<C : NamedComponent>(
     val map: DynArrayRO<C> = _map
     private val active: BitSet? = if (activationMapping) BitSet() else null
     private val nameMap: MutableMap<String, C>? = if (nameMapping) HashMap() else null
-    fun clear() = _map.clear()
 
     override fun activate(id: Int) {
-        if (!isActive(id)) {
+        if (activationMapping && !_isActive(id)) {
             active?.set(id)
+            listener(
+                _map.get(id).componentId,
+                IComponentMap.MapAction.ACTIVATED
+            )
         }
     }
 
     override fun deactivate(id: Int) {
         if (isActive(id)) {
             active?.set(id, false)
+            listener(
+                _map.get(id).componentId,
+                IComponentMap.MapAction.DEACTIVATED
+            )
         }
     }
 
     override fun isActive(id: Int): Boolean =
-            activationMapping && _map.contains(id) && active?.get(id) ?: false
+            activationMapping && _isActive(id)
+    private fun _isActive(id: Int): Boolean =
+            _map.contains(id) && active?.get(id) ?: false
 
     override fun activate(name: String) = activate(getId(name))
     override fun deactivate(name: String) = deactivate(getId(name))
@@ -53,7 +66,11 @@ class ComponentMap<C : NamedComponent>(
             if (activationMapping) {
                 active?.set(id, false)
             }
-
+            listener(
+                c.componentId,
+                IComponentMap.MapAction.DELETED
+            )
+            c.dispose()
         }
     }
 
@@ -63,7 +80,10 @@ class ComponentMap<C : NamedComponent>(
                     throw RuntimeException("Component: ${type.typeKey} for name: $name not found")
         }
 
-        val id = _map.get(name)
+        val id: Int = (0 until _map.capacity()).firstOrNull {
+            _map[it] != null && _map[it].name() == name
+        } ?: -1
+
         return when(id) {
             -1 -> throw RuntimeException("Component: ${type.typeKey} for name: $name not found")
             else -> id
@@ -72,9 +92,26 @@ class ComponentMap<C : NamedComponent>(
 
     override fun receiver(): (C) -> C = { c -> add(c) }
 
+    fun clear() {
+        for (c in _map) {
+            delete(c.index())
+        }
+        _map.clear()
+        if (nameMapping) {
+            nameMap?.clear()
+        }
+        if (activationMapping) {
+            active?.clear()
+        }
+    }
+
     private fun <CC : C> add(c: CC, alsoActivate: Boolean = false): CC {
         _map.set(c.index(), c)
-        if (nameMapping && !StringUtils.isBlank(c.name()) ) {
+        listener(
+            c.componentId,
+            IComponentMap.MapAction.CREATED
+        )
+        if (nameMapping && c.name() != NO_NAME ) {
             nameMap?.put(c.name(), c)
         }
         if (alsoActivate) {
@@ -82,10 +119,5 @@ class ComponentMap<C : NamedComponent>(
         }
         return c
     }
-
-    private fun <T : NamedComponent> DynArray<T>.get(name: String): Int =
-            (0 until this.capacity()).firstOrNull {
-                this.array[it] != null && this.array[it].name() == name
-            } ?: -1
 
 }

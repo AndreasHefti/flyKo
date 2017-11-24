@@ -2,10 +2,10 @@ package com.inari.firefly.entity
 
 import com.inari.commons.lang.indexed.IIndexedTypeKey
 import com.inari.commons.lang.list.IntBag
-import com.inari.firefly.component.ComponentType
+import com.inari.firefly.component.ComponentSingleType
 import com.inari.firefly.component.NamedComponent
 
-data class EMeta private constructor (
+class EMeta private constructor (
         var ff_Name: String?,
         var ff_Controller: IntBag,
         var ff_Parent: Int,
@@ -26,9 +26,15 @@ data class EMeta private constructor (
         }
     }
 
-    companion object : EntityComponentBuilder<EMeta>(), ComponentType<EMeta> {
+    override fun toString(): String =
+        "EMeta(ff_Name=$ff_Name, " +
+        "ff_Controller=$ff_Controller, " +
+        "ff_Parent=$ff_Parent, " +
+        "ff_ZPos=$ff_ZPos)"
+
+
+    companion object : EntityComponentBuilder<EMeta>(), ComponentSingleType<EMeta> {
         override val typeKey = EntityComponent.createTypeKey(EMeta::class.java)
-        override val subType: Class<EMeta> = EMeta.typeKey.type()
         override fun createEmpty(): EMeta = EMeta()
     }
 }

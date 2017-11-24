@@ -1,6 +1,7 @@
 package com.inari.firefly.entity
 
 import com.inari.commons.lang.aspect.AspectGroup
+import com.inari.commons.lang.aspect.Aspects
 import com.inari.commons.lang.indexed.IndexedType
 import com.inari.commons.lang.indexed.IndexedTypeKey
 import com.inari.commons.lang.indexed.Indexer
@@ -23,12 +24,13 @@ abstract class EntityComponent : Component, IndexedType {
 
     companion object {
 
-        val ASPECT_GROUP = AspectGroup("EntityComponentTypeKey")
+        private val entityComponentAspectGroup = AspectGroup("EntityComponentTypeKey")
 
-        fun <T: EntityComponent> createTypeKey(type: Class<T>): IndexedTypeKey = Indexer.createIndexedTypeKey(TypeKey::class.java, type)
+        fun <T: EntityComponent> createTypeKey(type: Class<T>): IndexedTypeKey =
+                Indexer.createIndexedTypeKey(TypeKey::class.java, type)
 
         class TypeKey<out C : EntityComponent> private constructor(indexedType: Class<C>) : IndexedTypeKey(indexedType) {
-            override fun aspectGroup(): AspectGroup = ASPECT_GROUP
+            override fun aspectGroup(): AspectGroup = entityComponentAspectGroup
             override fun baseType(): Class<EntityComponent> = EntityComponent::class.java
             @Suppress("UNCHECKED_CAST") fun baseComponentType(): Class<out C> = indexedType as Class<out C>
             override fun toString(): String = "EntityComponent:" + type<C>().simpleName;
