@@ -8,4 +8,7 @@ class CompId (
     val typeKey: IIndexedTypeKey
 ) : Indexed {
     override fun index(): Int = index
+    override fun toString(): String =
+        "CompId(index=$index, typeKey=$typeKey)"
+
 }

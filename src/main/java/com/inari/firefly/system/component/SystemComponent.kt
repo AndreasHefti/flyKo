@@ -1,29 +1,30 @@
 package com.inari.firefly.system.component
 
-import com.inari.firefly.component.NamedComponent
 import com.inari.commons.lang.aspect.AspectGroup
 import com.inari.commons.lang.indexed.*
 import com.inari.firefly.component.CompId
-import com.inari.firefly.system.Constants.NO_NAME
+import com.inari.firefly.component.NamedComponent
+import com.inari.firefly.NO_NAME
 
-private const val NAME_NOT_ASSIGNED: String = "[[NAME_NOT_ASSIGNED]]"
-abstract class SystemComponent : BaseIndexedObject(), IndexedType, NamedComponent {
+abstract class SystemComponent protected constructor() : BaseIndexedObject(), IndexedType, NamedComponent {
 
-
-    var name: String = NAME_NOT_ASSIGNED
-    var ff_Name: String
+    private var nameInUse = false
+    var ff_Name: String = NO_NAME
         set(ff_Name) {
-            if (name != NAME_NOT_ASSIGNED) {
-                throw IllegalStateException("Illegal reassignment of name")
+            if (nameInUse) {
+                throw IllegalStateException("Illegal reassignment of name: $ff_Name to: $ff_Name" )
             }
-            name = ff_Name
+            field = ff_Name
         }
-        get() = name
-
 
     final override val componentId: CompId = CompId(index, indexedTypeKey())
     final override fun indexedObjectType(): Class<out IndexedObject> = indexedTypeKey().type<IndexedObject>()
-    override fun name(): String = ff_Name
+    override fun name(): String {
+        if (ff_Name != NO_NAME) {
+            nameInUse = true
+        }
+        return ff_Name
+    }
 
     companion object {
 
@@ -35,7 +36,7 @@ abstract class SystemComponent : BaseIndexedObject(), IndexedType, NamedComponen
             override fun aspectGroup(): AspectGroup = ASPECT_GROUP
             override fun baseType(): Class<SystemComponent> = SystemComponent::class.java
             @Suppress("UNCHECKED_CAST") fun baseComponentType(): Class<out C> = indexedType as Class<out C>
-            override fun toString(): String = "SystemComponent:" + type<C>().simpleName;
+            override fun toString(): String = "SystemComponent:" + type<C>().simpleName
         }
     }
 }

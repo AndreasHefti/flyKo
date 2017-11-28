@@ -1,25 +1,19 @@
 package com.inari.firefly.misc
 
-import com.inari.commons.event.Event
-import com.inari.commons.lang.indexed.IndexedTypeKey
 import com.inari.firefly.component.CompId
-import com.inari.firefly.system.FFContext
+import com.inari.firefly.FFContext
+import com.inari.firefly.system.FFEvent
 
-object StaticTestEvent : Event<TestEventListener>(createTypeKey(StaticTestEvent::class.java)) {
-
-    val EVENT_KEY: EventTypeKey = indexedTypeKey
+typealias TestEventListener = (CompId) -> Unit
+object StaticTestEvent : FFEvent<TestEventListener>(createTypeKey(StaticTestEvent::class.java)) {
 
     var id: CompId? = null
-    lateinit var key: IndexedTypeKey
 
-    override fun notify(listener: TestEventListener) {
-        listener.notifyComponentCreation(id!!, key)
-    }
+    override fun notify(listener: TestEventListener) =
+        listener(id!!)
 
     inline fun send(init: StaticTestEvent.() -> Unit) {
         this.also(init)
         FFContext.notify(this)
     }
-
-
 }

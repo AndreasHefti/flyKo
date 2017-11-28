@@ -1,0 +1,168 @@
+package com.inari.firefly
+
+import com.inari.commons.event.Event
+import com.inari.commons.event.Event.EventTypeKey
+import com.inari.commons.event.IEventDispatcher
+import com.inari.commons.lang.indexed.IIndexedTypeKey
+import com.inari.commons.lang.list.DynArray
+import com.inari.firefly.asset.AssetSystem
+import com.inari.firefly.component.CompId
+import com.inari.firefly.component.Component
+import com.inari.firefly.component.ComponentType
+import com.inari.firefly.component.IComponentMap
+import com.inari.firefly.entity.EntityComponent
+import com.inari.firefly.entity.EntityComponent.EntityComponentType
+import com.inari.firefly.entity.EntitySystem
+import com.inari.firefly.external.FFAudio
+import com.inari.firefly.external.FFGraphics
+import com.inari.firefly.external.FFInput
+import com.inari.firefly.external.FFTimer
+import com.inari.firefly.system.FFEvent
+import com.inari.firefly.system.component.ComponentSystem
+
+
+object FFContext {
+
+    internal val componentMaps: DynArray<IComponentMap<*>> =
+            DynArray.create(IComponentMap::class.java)
+    private val systemTypeMapping: DynArray<ComponentSystem> =
+            DynArray.create(ComponentSystem::class.java)
+
+
+    val eventDispatcher: IEventDispatcher
+        get() = FFApp.eventDispatcher
+
+    val graphics: FFGraphics
+        get() = FFApp.graphics
+
+    val audio: FFAudio
+        get() = FFApp.audio
+
+    val input: FFInput
+        get() = FFApp.input
+
+    val timer: FFTimer
+        get() = FFApp.timer
+
+    val screenWidth: Int
+        get() = graphics.screenWidth
+
+    val screenHeight: Int
+        get() = graphics.screenHeight
+
+
+    fun <S : ComponentSystem> loadSystem(system: S) {
+        for (aspect in system.supportedComponents) {
+            systemTypeMapping.set(aspect.index(), system)
+        }
+    }
+
+    fun <C : Component> mapper(id: CompId): IComponentMap<C> =
+        mapper(id.typeKey)
+
+    fun <C : Component> mapper(type: ComponentType<C>): IComponentMap<C> =
+        mapper(type.typeKey)
+
+
+    @Suppress("UNCHECKED_CAST")
+    fun <C : Component> mapper(key: IIndexedTypeKey): IComponentMap<C> {
+        val index = key.index()
+        if (!componentMaps.contains(index)) {
+            throw RuntimeException("No Component Mapper registered for type: $key")
+        }
+        return componentMaps[index] as IComponentMap<C>
+    }
+
+    fun <C : Component> get(id: CompId): C =
+            mapper<C>(id).get(id.index)
+
+    fun <C : Component> get(cType: ComponentType<C>, index: Int): C =
+            mapper(cType).get(index)
+
+    fun <C : Component> get(cType: ComponentType<C>, name: String): C =
+            mapper(cType).get(name)
+
+    fun assetInstanceId(assetId: Int): Int =
+            AssetSystem.assets.get(assetId).instanceId()
+
+    fun assetInstanceId(assetName: String): Int =
+            AssetSystem.assets.get(assetName).instanceId()
+
+    fun <E : EntityComponent> get(entityId: Int, ecType: EntityComponentType<E>): E =
+        EntitySystem.entities.get(entityId).get(ecType)
+
+    fun <E : EntityComponent> get(entityName: String, ecType: EntityComponentType<E>): E =
+        EntitySystem.entities.get(entityName).get(ecType)
+
+    fun isActive(cType: ComponentType<*>, index: Int): Boolean =
+        mapper<Component>(cType.typeKey).isActive(index)
+
+    fun isActive(id: CompId): Boolean =
+            mapper<Component>(id).isActive(id.index)
+
+    fun isActive(cType: ComponentType<*>, name: String): Boolean =
+            mapper<Component>(cType.typeKey).isActive(name)
+
+    fun activate(cType: ComponentType<*>, index: Int): FFContext {
+        mapper<Component>(cType.typeKey).activate(index)
+        return this
+    }
+
+    fun activate(id: CompId): FFContext {
+        mapper<Component>(id).activate(id.index)
+        return this
+    }
+
+    fun activate(cType: ComponentType<*>, name: String): FFContext {
+        mapper<Component>(cType.typeKey).activate(name)
+        return this
+    }
+
+    fun deactivate(cType: ComponentType<*>, index: Int): FFContext {
+        mapper<Component>(cType.typeKey).deactivate(index)
+        return this
+    }
+
+    fun deactivate(id: CompId): FFContext {
+        mapper<Component>(id).deactivate(id.index)
+        return this
+    }
+
+    fun deactivate(cType: ComponentType<*>, name: String): FFContext {
+        mapper<Component>(cType.typeKey).deactivate(name)
+        return this
+    }
+
+    fun delete(cType: ComponentType<*>, index: Int): FFContext {
+        mapper<Component>(cType.typeKey).delete(index)
+        return this
+    }
+
+    fun delete(id: CompId): FFContext {
+        mapper<Component>(id).delete(id.index)
+        return this
+    }
+
+    fun delete(cType: ComponentType<*>, name: String): FFContext {
+        mapper<Component>(cType.typeKey).delete(name)
+        return this
+    }
+
+
+
+    fun <L> registerListener(eventType: FFEvent<*>, listener: L): FFContext {
+        eventDispatcher.register(eventType.typeKey, listener)
+        return this
+    }
+
+    fun <L> disposeListener(eventType: EventTypeKey, listener: L): FFContext {
+        eventDispatcher.unregister(eventType, listener)
+        return this
+    }
+
+    fun <L> notify(event: Event<L>): FFContext {
+        eventDispatcher.notify(event)
+        return this
+    }
+
+}

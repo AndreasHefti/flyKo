@@ -2,15 +2,19 @@ package com.inari.firefly.asset
 
 import com.inari.commons.lang.indexed.IIndexedTypeKey
 import com.inari.firefly.component.ComponentType
-import com.inari.firefly.system.FFContext
+import com.inari.firefly.component.NamedReference
+import com.inari.firefly.FFContext
 import com.inari.firefly.system.component.SystemComponent
 
-abstract class Asset: SystemComponent {
+abstract class Asset protected constructor(): SystemComponent() {
 
-    protected constructor()
     override final fun indexedTypeKey(): IIndexedTypeKey = typeKey
 
-    protected var dependsOn: Int = -1
+    protected val depending = NamedReference(Asset)
+    fun dependingIndex(): Int = depending.index
+    fun dependsOn(index: Int): Boolean = depending.index == index
+    fun dependsOn(name: String): Boolean = depending.name == name
+
     fun instanceId(): Int = instanceId(0)
     abstract fun instanceId(index: Int): Int
 
@@ -20,7 +24,7 @@ abstract class Asset: SystemComponent {
 
     protected fun checkNotAlreadyLoaded() {
         if (loaded()) {
-            throw IllegalStateException("Asset: $componentId is already loaded and can not be modified");
+            throw IllegalStateException("Asset: $componentId is already loaded and can not be modified")
         }
     }
 

@@ -1,26 +1,28 @@
 package com.inari.firefly.entity
 
 import com.inari.commons.lang.aspect.AspectGroup
-import com.inari.commons.lang.aspect.Aspects
+import com.inari.commons.lang.indexed.IIndexedTypeKey
 import com.inari.commons.lang.indexed.IndexedType
 import com.inari.commons.lang.indexed.IndexedTypeKey
 import com.inari.commons.lang.indexed.Indexer
 import com.inari.firefly.component.CompId
 import com.inari.firefly.component.Component
+import com.inari.firefly.entity.Entity.EntityComponentBuilder
 
-abstract class EntityComponent : Component, IndexedType {
-    protected constructor()
+abstract class EntityComponent protected constructor() : Component, IndexedType {
 
     /** An EntityComponent instance has no object index (-1) only a type index
      *  supported by the index type key
      */
-    final override val componentId: CompId = CompId(-1, indexedTypeKey())
+    final override val componentId: CompId = CompId(-1, getTypeKey())
     /** For an EntityComponent always the type index is given as the index */
     final override fun index(): Int = componentId.typeKey.index()
 
     final override fun dispose() = EntityProvider.dispose(this)
 
     abstract fun reset()
+
+    private fun getTypeKey(): IIndexedTypeKey = indexedTypeKey()
 
     companion object {
 
@@ -33,7 +35,9 @@ abstract class EntityComponent : Component, IndexedType {
             override fun aspectGroup(): AspectGroup = entityComponentAspectGroup
             override fun baseType(): Class<EntityComponent> = EntityComponent::class.java
             @Suppress("UNCHECKED_CAST") fun baseComponentType(): Class<out C> = indexedType as Class<out C>
-            override fun toString(): String = "EntityComponent:" + type<C>().simpleName;
+            override fun toString(): String = "EntityComponent:" + type<C>().simpleName
         }
     }
+
+    abstract class EntityComponentType<C : EntityComponent> : EntityComponentBuilder<C>()
 }
