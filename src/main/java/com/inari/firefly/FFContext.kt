@@ -31,11 +31,20 @@ object FFContext {
     @JvmField internal val systemTypeMapping: DynArray<ComponentSystem> =
             DynArray.create(ComponentSystem::class.java)
 
-    @JvmField val eventDispatcher: IEventDispatcher = FFApp.eventDispatcher
-    @JvmField val graphics: FFGraphics = FFApp.graphics
-    @JvmField val audio: FFAudio = FFApp.audio
-    @JvmField val input: FFInput = FFApp.input
-    @JvmField val timer: FFTimer = FFApp.timer
+    val eventDispatcher: IEventDispatcher
+        get() = FFApp.eventDispatcher!!
+
+    val graphics: FFGraphics
+        get() = FFApp.graphics!!
+
+    val audio: FFAudio
+        get() = FFApp.audio!!
+
+    val input: FFInput
+        get() = FFApp.input!!
+
+    val timer: FFTimer
+        get() = FFApp.timer!!
 
     val screenWidth: Int
         get() = graphics.screenWidth

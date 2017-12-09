@@ -17,7 +17,8 @@ class Entity internal constructor(): SystemComponent() {
     @JvmField internal val components: IndexedTypeSet =
         IndexedTypeSet(EntityComponent.Companion.TypeKey::class.java)
 
-    @JvmField val aspects: IAspects = components.aspect
+    val aspects: IAspects
+        get() = components.aspect
 
     override fun name(): String {
         if (components.contains(EMeta.typeKey.index())) {

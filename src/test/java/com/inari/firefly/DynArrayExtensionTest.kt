@@ -35,15 +35,6 @@ class DynArrayExtensionTest {
             )
         }
 
-        val consumer: (Integer) -> Unit = { value -> amount += value.toInt() }
-        val predicate: (Integer) -> Boolean = { value -> value.toInt() % 2 == 0 }
-        amount = 0
-        measureTime("forEach with separated funcitons for predicate and expression ", 10000) {
-            dynArray.forEach(
-                { value -> value.toInt() % 2 == 0 },
-                { value -> amount += value.toInt() }
-            )
-        }
     }
 
 }

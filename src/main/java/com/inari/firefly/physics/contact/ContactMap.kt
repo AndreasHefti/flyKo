@@ -5,6 +5,7 @@ import com.inari.commons.lang.IntIterator
 import com.inari.firefly.component.ComponentRefResolver
 import com.inari.firefly.component.ComponentType
 import com.inari.firefly.entity.Entity
+import com.inari.firefly.entity.EntityComponent
 import com.inari.firefly.graphics.ETransform
 import com.inari.firefly.graphics.tile.ETile
 import com.inari.firefly.graphics.view.Layer
@@ -90,6 +91,6 @@ abstract class ContactMap protected constructor() : SystemComponent(), ViewLayer
         override val typeKey = SystemComponent.createTypeKey(ContactMap::class.java)
 
         @JvmField internal val MATCHER =
-            ASPECT_GROUP.createAspects(ETransform, EContact)
+            EntityComponent.Companion.ASPECT_GROUP.createAspects(ETransform, EContact)
     }
 }

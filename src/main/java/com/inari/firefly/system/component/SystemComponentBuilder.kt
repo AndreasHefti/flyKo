@@ -5,7 +5,6 @@ import com.inari.firefly.NO_COMP_ID
 import com.inari.firefly.component.CompId
 import com.inari.firefly.component.ComponentBuilder
 import com.inari.firefly.component.Singleton
-import kotlin.reflect.full.findAnnotation
 
 abstract class SystemComponentBuilder<out C : SystemComponent> : ComponentBuilder<C>() {
 
@@ -51,7 +50,7 @@ abstract class SystemComponentBuilder<out C : SystemComponent> : ComponentBuilde
     }
 
     private fun checkSingleton(comp: C) {
-        if (comp::class.findAnnotation<Singleton>() != null) {
+        if (comp::class.java.isAnnotationPresent(Singleton::class.java)) {
             if (singletonId !== NO_COMP_ID) {
                 throw UnsupportedOperationException("")
             }
