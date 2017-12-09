@@ -8,10 +8,6 @@ import com.inari.firefly.external.*
 import com.inari.firefly.graphics.view.ViewSystem
 import com.inari.firefly.system.FFEvent
 
-
-typealias UpdateEventListener = (FFTimer) -> Unit
-typealias RenderEventListener = (Int, Int, Rectangle, FFTimer) -> Unit
-
 abstract class FFApp protected constructor(
     eventDispatcher: () -> IEventDispatcher,
     graphics: () -> FFGraphics,
@@ -37,7 +33,7 @@ abstract class FFApp protected constructor(
         disposed = false
     }
 
-    fun disppose() {
+    fun dispose() {
         // TODO ?
         //FFContext.dispose()
         disposed = true
@@ -127,20 +123,28 @@ abstract class FFApp protected constructor(
     }
 
 
-    object UpdateEvent : FFEvent<UpdateEventListener>(createTypeKey(UpdateEvent::class.java)) {
+    object UpdateEvent : FFEvent<UpdateEvent.Listener>(createTypeKey(UpdateEvent::class.java)) {
 
-        override fun notify(listener: UpdateEventListener) =
-            listener(FFApp.timer)
+        override fun notify(listener: UpdateEvent.Listener) =
+            listener()
+
+        interface Listener {
+            operator fun invoke()
+        }
     }
 
-    object RenderEvent : FFEvent<RenderEventListener>(createTypeKey(RenderEvent::class.java)) {
+    object RenderEvent : FFEvent<RenderEvent.Listener>(createTypeKey(RenderEvent::class.java)) {
 
         internal var viewIndex: Int = -1
         internal var layerIndex: Int = -1
         internal val clip: Rectangle = Rectangle(0, 0, 0, 0)
 
-        override fun notify(listener: RenderEventListener) =
-            listener(viewIndex, layerIndex, clip, FFApp.timer)
+        override fun notify(listener: RenderEvent.Listener) =
+            listener(viewIndex, layerIndex, clip)
+
+        interface Listener {
+            operator fun invoke(viewId: Int, layerId: Int, clip: Rectangle)
+        }
     }
 
 }

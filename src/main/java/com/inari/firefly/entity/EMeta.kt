@@ -1,40 +1,41 @@
 package com.inari.firefly.entity
 
-import com.inari.commons.lang.indexed.IIndexedTypeKey
 import com.inari.commons.lang.list.IntBag
+import com.inari.commons.lang.list.IntBagRO
 import com.inari.firefly.NO_NAME
+import com.inari.firefly.component.ComponentRefResolver
 import com.inari.firefly.component.NamedComponent
+import com.inari.firefly.control.Controller
 
-class EMeta private constructor (
-    var ff_Name: String = NO_NAME,
-    var ff_Controller: IntBag,
-    var ff_Parent: Int,
-    var ff_ZPos: Int
-) : EntityComponent(), NamedComponent {
+class EMeta private constructor() : EntityComponent(), NamedComponent {
 
+    @JvmField internal var name: String = NO_NAME
+    @JvmField internal val controller: IntBag = IntBag(5, -1, 5)
 
-    private constructor() : this(NO_NAME, IntBag(5, -1, 5), -1, -1)
+    var ff_Name: String
+        get() = name
+        set(value) { name = setIfNotInitialized(value, "ff_Name") }
 
-    override fun indexedTypeKey(): IIndexedTypeKey = typeKey
-    override fun name(): String = ff_Name
+    val ff_Controller: IntBagRO
+        get() = controller
+
+    val ff_addController =
+        ComponentRefResolver(Controller, { index-> if (index !in controller) controller.add(index) })
+    val ff_removeController =
+        ComponentRefResolver(Controller, { index-> controller.remove(index) })
+
+    override fun indexedTypeKey() = typeKey
+    override fun name(): String = name
     override fun reset() {
-        this.also {
-            ff_Name = NO_NAME
-            ff_Controller.clear()
-            ff_Parent = -1
-            ff_ZPos = -1
-        }
+        name = NO_NAME
+        controller.clear()
     }
 
     override fun toString(): String =
-        "EMeta(ff_Name=$ff_Name, " +
-        "ff_Controller=$ff_Controller, " +
-        "ff_Parent=$ff_Parent, " +
-        "ff_ZPos=$ff_ZPos)"
-
+        "EMeta(name='$name', controller=$controller)"
 
     companion object : EntityComponentType<EMeta>() {
         override val typeKey = EntityComponent.createTypeKey(EMeta::class.java)
-        override fun createEmpty(): EMeta = EMeta()
+        override fun createEmpty() = EMeta()
     }
 }

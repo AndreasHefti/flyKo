@@ -4,20 +4,11 @@ import com.inari.commons.geom.Rectangle
 import com.inari.commons.lang.list.DynArray
 import com.inari.commons.lang.list.DynArrayRO
 import com.inari.firefly.component.CompId
-import com.inari.firefly.graphics.view.ViewEvent
-import com.inari.firefly.graphics.view.ViewEventListener
 import com.inari.firefly.external.*
+import com.inari.firefly.graphics.view.ViewEvent
 import java.util.*
 
 object GraphicsMock : FFGraphics {
-
-    private val viewEventListener: ViewEventListener = {
-        id, _, type -> when (type) {
-            ViewEvent.Type.VIEW_ACTIVATED   -> views.add(id)
-            ViewEvent.Type.VIEW_DISPOSED    -> views.remove(id)
-            else -> {}
-        }
-    }
 
     private val loadedAssets = DynArray.create(String::class.java, 20, 10)
     private val views = ArrayList<CompId>()
@@ -31,7 +22,19 @@ object GraphicsMock : FFGraphics {
         get() = 100
 
     init {
-        FFContext.registerListener(ViewEvent, viewEventListener)
+        FFContext.registerListener(
+            ViewEvent,
+            object : ViewEvent.Listener {
+                override fun invoke(id: CompId, viewPort: ViewPortData, type: ViewEvent.Type) {
+                    when (type) {
+                        ViewEvent.Type.VIEW_ACTIVATED -> views.add(id)
+                        ViewEvent.Type.VIEW_DISPOSED -> views.remove(id)
+                        else -> {
+                        }
+                    }
+                }
+            }
+        )
     }
 
     fun clear() {
@@ -40,8 +43,8 @@ object GraphicsMock : FFGraphics {
         log.clear()
     }
 
-    override fun createTexture(data: TextureData): Int {
-        return loadedAssets.add(data.resourceName)
+    override fun createTexture(data: TextureData): Triple<Int, Int, Int> {
+        return Triple(loadedAssets.add(data.resourceName), 0, 0)
     }
 
     override fun disposeTexture(textureId: Int) {

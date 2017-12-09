@@ -7,62 +7,54 @@ import com.inari.commons.lang.list.IntBag
 import com.inari.firefly.FFContext
 import com.inari.firefly.NO_NAME
 import com.inari.firefly.component.IComponentMap
-import com.inari.firefly.component.MapListener
+import com.inari.firefly.component.IComponentMap.MapAction.*
+import com.inari.firefly.control.ControllerSystem
 import com.inari.firefly.external.ViewPortData
 import com.inari.firefly.system.component.ComponentSystem
-import com.inari.firefly.system.component.SystemComponent
+import com.inari.firefly.system.component.SystemComponent.Companion.ASPECT_GROUP
 
 object ViewSystem : ComponentSystem {
 
-    override val supportedComponents: IAspects = SystemComponent.ASPECT_GROUP.createAspects(
-        View.typeKey,
-        Layer.typeKey
+    override val supportedComponents: IAspects =
+        ASPECT_GROUP.createAspects(View, Layer)
+
+    @JvmField val views = ComponentSystem.createComponentMapping(
+        View,
+        activationMapping = true,
+        nameMapping = true,
+        listener = { view, action -> when (action) {
+            CREATED       -> created(view)
+            ACTIVATED     -> activated(view)
+            DEACTIVATED   -> deactivated(view)
+            DELETED       -> deleted(view)
+        } }
+    )
+    @JvmField val layers: IComponentMap<Layer> = ComponentSystem.createComponentMapping(
+        Layer,
+        activationMapping = true,
+        listener = { layer, action -> when (action) {
+            CREATED       -> created(layer)
+//                ACTIVATED     -> activated(layer)
+//                DEACTIVATED   -> deactivated(layer)
+            DELETED       -> deleted(layer)
+            else -> {}
+        } }
     )
 
-    val views: IComponentMap<View>
-    val layers: IComponentMap<Layer>
+    @JvmField internal val baseView: View
+    @JvmField internal val activeViewPorts: DynArray<ViewPortData> = DynArray.create(ViewPortData::class.java)
+    @JvmField internal val layersOfView: DynArray<IntBag> = DynArray.create(IntBag::class.java)
 
-    internal val baseView: View
-    internal val activeViewPorts: DynArray<ViewPortData> = DynArray.create(ViewPortData::class.java)
-    internal val layersOfView: DynArray<IntBag> = DynArray.create(IntBag::class.java)
     private val orderedView: IntBag = IntBag(10, -1, 5)
 
     init {
-        val viewListener: MapListener<View> = {
-                view, action -> when (action) {
-                IComponentMap.MapAction.CREATED       -> created(view)
-                IComponentMap.MapAction.ACTIVATED     -> activated(view)
-                IComponentMap.MapAction.DEACTIVATED   -> deactivated(view)
-                IComponentMap.MapAction.DELETED       -> deleted(view)
-            }
-        }
-        val layerListener: MapListener<Layer> = {
-                layer, action -> when (action) {
-                IComponentMap.MapAction.CREATED       -> created(layer)
-//                IComponentMap.MapAction.ACTIVATED     -> activated(layer)
-//                IComponentMap.MapAction.DEACTIVATED   -> deactivated(layer)
-                IComponentMap.MapAction.DELETED       -> deleted(layer)
-                else -> {}
-            }
-        }
-
-        views = ComponentSystem.createComponentMapping(
-            View,
-            activationMapping = true,
-            nameMapping = true,
-            listener = viewListener
-        )
-        layers = ComponentSystem.createComponentMapping(
-            Layer,
-            activationMapping = true,
-            listener = layerListener
-        )
-
         baseView = View.buildAndGet {
             ff_Name = NO_NAME
             ff_Bounds = Rectangle(0, 0, FFContext.screenWidth, FFContext.screenHeight)
             baseView = true
         }
+
+        FFContext.loadSystem(this)
     }
 
     private fun created(view: View) {
@@ -82,6 +74,12 @@ object ViewSystem : ComponentSystem {
             return
 
         updateViewMapping()
+
+        if (view.ff_ControllerId >= 0) {
+            ControllerSystem.controller
+                .get(view.ff_ControllerId)
+                .register(view.componentId)
+        }
     }
 
     private fun deactivated(view: View) {
@@ -95,6 +93,11 @@ object ViewSystem : ComponentSystem {
             layers.deactivate(i.next())
         }
 
+        if (view.ff_ControllerId >= 0) {
+            ControllerSystem.controller
+                .get(view.ff_ControllerId)
+                .unregister(view.componentId)
+        }
     }
 
     private fun deleted(view: View) {
@@ -115,11 +118,11 @@ object ViewSystem : ComponentSystem {
     }
 
     private fun created(layer: Layer) {
-        if (!views.exists(layer.ff_ViewIndex))
+        if (layer.viewRef in views)
             throw IllegalStateException("No View exists for Layer: $layer")
 
         layersOfView
-            .get(layer.ff_ViewIndex)
+            .get(layer.viewRef)
             .add(layer.index())
     }
 
@@ -129,8 +132,8 @@ object ViewSystem : ComponentSystem {
 
     private fun deleted(layer: Layer) {
         layersOfView
-            .get(layer.ff_ViewIndex)
-            .remove(layer.ff_ViewIndex)
+            .get(layer.viewRef)
+            .remove(layer.viewRef)
     }
 
     private fun updateViewMapping() {

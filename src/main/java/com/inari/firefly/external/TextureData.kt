@@ -2,7 +2,7 @@ package com.inari.firefly.external
 
 interface TextureData {
 
-    var resourceName: String
+    val resourceName: String
     val isMipmap: Boolean
 
     val wrapS: Int
@@ -11,7 +11,4 @@ interface TextureData {
     val magFilter: Int
 
     val colorConverter: (Int) -> Int
-    fun setTextureWidth(width: Int)
-    fun setTextureHeight(height: Int)
-
 }

@@ -42,9 +42,10 @@ interface FFGraphics /*ViewEventListener */ {
     /** This is called from the firefly API when a texture is created/loaded and should be loaded into the GPU
      *
      * @param data The texture DAO
-     * @return the texture identifier to identify the texture on lower level API.
+     * @return the texture identifier to identify the texture on lower level API and
+     *         the width and height of the texture within a Triple
      */
-    fun createTexture(data: TextureData): Int
+    fun createTexture(data: TextureData): Triple<Int, Int, Int>
 
     /** This is called from the firefly API when a texture is disposed and should be deleted from GPU.
      * and must release and delete the texture on GPU level

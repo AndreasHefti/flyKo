@@ -1,14 +1,27 @@
 package com.inari.firefly.misc
 
-import com.inari.firefly.FFApp
+import com.inari.commons.geom.PositionF
+import com.inari.firefly.IntExpr
 import com.inari.firefly.TestApp
+import com.inari.firefly.asset.AssetSystem
+import com.inari.firefly.control.ControllerSystem
+import com.inari.firefly.control.PolyController
+import com.inari.firefly.entity.EMeta
+import com.inari.firefly.entity.Entity
+import com.inari.firefly.entity.EntitySystem
+import com.inari.firefly.graphics.ETransform
+import com.inari.firefly.graphics.sprite.EMultiplier
+import com.inari.firefly.physics.animation.AnimatedInt
+import com.inari.firefly.physics.animation.EAnimation
 
 
 fun main(args: Array<String>) {
 
-//    TestComponentSystem
-//    EntitySystem
-//    AssetSystem
+    TestApp
+    TestComponentSystem
+    EntitySystem
+    AssetSystem
+    ControllerSystem
 //
 //    val comp1 = TestComponent.build {
 //        ff_Name = "srgfgrg"
@@ -81,17 +94,48 @@ fun main(args: Array<String>) {
 //    println(meta.componentId)
 //
 //
-    val propTest2 = PropTest2()
-    propTest2.mutable = "********** 1"
-    println(propTest2.getMutable)
-    propTest2.mutable = "********** 2"
-    println(propTest2.getMutable)
+//    val propTest2 = PropTest2()
+//    propTest2.mutable = "********** 1"
+//    println(propTest2.getMutable)
+//    propTest2.mutable = "********** 2"
+//    println(propTest2.getMutable)
+//
+//    TestApp
+//    FFApp.eventDispatcher
+//    FFApp.eventDispatcher
+//
+//    PropsTest3
+//    PropsTest3.prop
+//    PropsTest3.prop
+//
+    val testControl = object : IntExpr {
+        override fun invoke(i: Int) {
+            println(i)
+        }
+    }
+//
+    PolyController.build {
+        ff_Name = "test"
+        ff_UpdateResolution = 1f
+        ff_ControlExpr = testControl
+    }
 
-    TestApp
-    FFApp.eventDispatcher
-    FFApp.eventDispatcher
+    Entity.build {
+        with(ETransform) {
+            ff_Position.x = 1f
+        }
+        with(EAnimation) {
+            withAnimated(AnimatedInt) {
+                ff_Looping = true
+            }
+        }
+        with(EMultiplier) {
+            ff_Positions.add(PositionF(1f, 3f))
+        }
+        with(EMeta) {
+            ff_addController.name = "sofbno"
+        }
+    }
 
-    PropsTest3
-    PropsTest3.prop
-    PropsTest3.prop
+
 }

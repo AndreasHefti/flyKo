@@ -1,6 +1,7 @@
 package com.inari.firefly.asset
 
 import com.inari.commons.lang.indexed.IndexedTypeKey
+import com.inari.firefly.component.ComponentRefResolver
 import com.inari.firefly.system.component.SubType
 
 class TestAsset private constructor(
@@ -8,11 +9,8 @@ class TestAsset private constructor(
         var ff_Param2: Float = 0.0f
 ) : Asset() {
 
-    private constructor() : this("", 0.0f)
-
-    var ff_DependsOn: String
-        set(value) {depending.name = value}
-        get() = depending.name
+    var ff_DependsOn =
+        ComponentRefResolver(Asset, { index-> dependingRef = setIfNotInitialized(index, "ff_DependsOn") })
 
     private var instanceId: Int = -1
     override fun instanceId(index: Int): Int = instanceId
@@ -30,7 +28,7 @@ class TestAsset private constructor(
             "ff_Param1='$ff_Param1', " +
             "ff_Param2=$ff_Param2, " +
             "instanceId=$instanceId)" +
-            if (depending.defined()) " dependsOn=$depending" else ""
+            " dependsOn=$dependingRef"
     }
 
     companion object : SubType<TestAsset, Asset>() {

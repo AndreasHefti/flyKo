@@ -19,11 +19,14 @@ interface ShapeData {
         TRIANGLE
     }
 
-    val shapeType: ShapeType
+    val type: ShapeType
     val vertices: FloatArray
     val segments: Int
-    val colors: DynArrayRO<RGBColor>
-    val blendMode: BlendMode
-    val isFill: Boolean
-    val shaderId: Int
+    val color1: RGBColor
+    val color2: RGBColor
+    val color3: RGBColor
+    val color4: RGBColor
+    val blend: BlendMode
+    val fill: Boolean
+    val shaderRef: Int
 }

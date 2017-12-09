@@ -3,6 +3,7 @@ package com.inari.firefly.asset
 import com.inari.firefly.NO_NAME
 import com.inari.firefly.FFContext
 import com.inari.firefly.TestApp
+import com.inari.firefly.component.CompId
 import org.junit.Before
 import org.junit.Test
 import kotlin.test.*
@@ -34,7 +35,7 @@ class AssetSystemTest {
         val emptyAsset = FFContext.get<Asset>(emptyAssetId)
         assertNotNull(emptyAsset)
         assertEquals(
-            "TestAsset(name='[[NO_NAME]]', ff_Param1='', ff_Param2=0.0, instanceId=-1)",
+            "TestAsset(name='[[NO_NAME]]', ff_Param1='', ff_Param2=0.0, instanceId=-1) dependsOn=-1",
             emptyAsset.toString()
         )
 
@@ -60,9 +61,13 @@ class AssetSystemTest {
     @Test
     fun simpleLifeCycle() {
         val testEvents = StringBuilder()
-        FFContext.registerListener<AssetEventListener>(
+        FFContext.registerListener<AssetEvent.Listener>(
             AssetEvent,
-            { _, type -> testEvents.append("|").append(type.toString())}
+            object : AssetEvent.Listener{
+                override fun invoke(viewId: CompId, type: AssetEvent.Type) {
+                    testEvents.append("|").append(type.toString())
+                }
+            }
         )
         assertEquals("", testEvents.toString())
 
@@ -106,9 +111,13 @@ class AssetSystemTest {
     @Test
     fun lifeCycleWithDependentAssets() {
         val testEvents = StringBuilder()
-        FFContext.registerListener<AssetEventListener>(
+        FFContext.registerListener<AssetEvent.Listener>(
             AssetEvent,
-            { id, type -> testEvents.append("|id=").append(id.index).append(":").append(type.toString())}
+            object : AssetEvent.Listener{
+                override fun invoke(viewId: CompId, type: AssetEvent.Type) {
+                    testEvents.append("|id=").append(viewId.index).append(":").append(type.toString())
+                }
+            }
         )
         assertEquals("", testEvents.toString())
 
@@ -123,7 +132,7 @@ class AssetSystemTest {
         )
 
         val asset2 = TestAsset.build {
-            ff_DependsOn = "parentAsset"
+            ff_DependsOn.name = "parentAsset"
             ff_Name = "childAsset"
             ff_Param1 = "child"
             ff_Param2 = 1.45f
@@ -134,7 +143,7 @@ class AssetSystemTest {
             testEvents.toString()
         )
         assertEquals(
-            "TestAsset(name='childAsset', ff_Param1='child', ff_Param2=1.45, instanceId=-1) dependsOn=NamedReference(index=0, name='parentAsset')",
+            "TestAsset(name='childAsset', ff_Param1='child', ff_Param2=1.45, instanceId=-1) dependsOn=0",
             FFContext.get<Asset>(asset2).toString()
         )
 

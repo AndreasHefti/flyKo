@@ -47,12 +47,12 @@ object EntityProvider {
             throw IllegalStateException("Entity: $entityId is still active and cannot be disposed")
         }
 
-        entity.disposeComponents()
+        entity.reset()
         disposedEntities.add(entity)
     }
 
     fun dispose(entityComponent: EntityComponent) {
-        entityComponent.reset()
+        entityComponent._reset()
         getOrCreate(entityComponent.index()).add(entityComponent)
     }
 

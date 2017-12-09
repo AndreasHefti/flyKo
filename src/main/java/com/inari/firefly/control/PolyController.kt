@@ -1,29 +1,38 @@
 package com.inari.firefly.control
 
 import com.inari.commons.lang.indexed.IndexedTypeKey
-import com.inari.commons.lang.list.IntBag
-import com.inari.firefly.asset.Asset
+import com.inari.firefly.IntExpr
+import com.inari.firefly.VOID_INT_EXPR
+import com.inari.firefly.component.CompId
 import com.inari.firefly.system.component.SubType
+import java.util.*
 
-class PolyController(
-    var ff_Control: (Int) -> Unit = { _ -> }
-) : Controller() {
+// NOTE using IntExpr here is because of performance reasons to avoid boxing
+// TODO is this the best way to do that?
+class PolyController private constructor() : Controller() {
 
-    private val ids: IntBag = IntBag(10, -1, 5)
+    @JvmField internal val ids: BitSet = BitSet()
+    @JvmField internal var controlExpr = VOID_INT_EXPR
 
-    fun register(index: Int) = ids.add(index)
-    fun unregister(index: Int) = ids.remove(index)
+    var ff_ControlExpr: IntExpr
+        get() = throw UnsupportedOperationException()
+        set(value) {controlExpr = setIfNotInitialized(value, "ff_ControlExpr")}
+
+    override fun register(id: CompId)  =
+        ids.set(id.index)
+
+    override fun unregister(id: CompId)  =
+        ids.set(id.index, false)
 
     override fun update() {
-        val iterator = ids.iterator()
-        while (iterator.hasNext()) {
-            ff_Control(iterator.next())
-        }
+        var i: Int = -1
+        while (ids.nextSetBit(i++) >= 0)
+            controlExpr(i)
     }
 
     companion object : SubType<PolyController, Controller>() {
-        override val typeKey: IndexedTypeKey = Asset.typeKey
-        override fun subType(): Class<PolyController> = PolyController::class.java
-        override fun createEmpty(): PolyController = PolyController()
+        override val typeKey: IndexedTypeKey = Controller.typeKey
+        override fun subType() = PolyController::class.java
+        override fun createEmpty() = PolyController()
     }
 }

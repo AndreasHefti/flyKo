@@ -3,18 +3,15 @@ package com.inari.firefly.control
 import com.inari.commons.lang.aspect.IAspects
 import com.inari.firefly.FFApp
 import com.inari.firefly.FFContext
-import com.inari.firefly.component.IComponentMap
-import com.inari.firefly.external.FFTimer
 import com.inari.firefly.system.component.ComponentSystem
-import com.inari.firefly.system.component.SystemComponent
+import com.inari.firefly.system.component.SystemComponent.Companion.ASPECT_GROUP
 
 object ControllerSystem : ComponentSystem {
 
-    override val supportedComponents: IAspects = SystemComponent.ASPECT_GROUP.createAspects(
-        Controller.typeKey
-    )
+    override val supportedComponents: IAspects =
+        ASPECT_GROUP.createAspects(Controller.typeKey)
 
-    val controller: IComponentMap<Controller> = ComponentSystem.createComponentMapping(
+    @JvmField val controller = ComponentSystem.createComponentMapping(
         Controller,
         activationMapping = true,
         nameMapping = true
@@ -23,8 +20,17 @@ object ControllerSystem : ComponentSystem {
     init {
         FFContext.registerListener(
             FFApp.UpdateEvent,
-            { _: FFTimer -> controller.forEachActive { controller -> controller.processUpdate() } }
+            object : FFApp.UpdateEvent.Listener {
+                override fun invoke() {
+                    controller.forEachActive({ controller ->
+                        if (controller.needsUpdate)
+                            controller.update()
+                    })
+                }
+            }
         )
+
+        FFContext.loadSystem(this)
     }
 
     override fun clearSystem() {

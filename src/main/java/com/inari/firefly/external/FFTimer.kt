@@ -59,7 +59,11 @@ abstract class FFTimer protected constructor() : FFApp.SystemTimer() {
         return builder.toString()
     }
 
-    inner class UpdateScheduler internal constructor(resolution: Float) {
+    interface Scheduler {
+        fun needsUpdate(): Boolean
+    }
+
+    inner class UpdateScheduler internal constructor(resolution: Float) : Scheduler {
         private val delayMillis: Long = (1000 / resolution).toLong()
         private var lastUpdate: Long = -1
         var tick: Long = 0
@@ -78,7 +82,7 @@ abstract class FFTimer protected constructor() : FFApp.SystemTimer() {
             }
         }
 
-        fun needsUpdate(): Boolean {
+        override fun needsUpdate(): Boolean {
             if (needsUpdate) {
                 updated = true
             }

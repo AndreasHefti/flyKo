@@ -1,10 +1,14 @@
 package com.inari.firefly.component
 
 import com.inari.commons.lang.list.DynArrayRO
-import com.inari.commons.lang.list.IntBag
+import com.inari.commons.lang.list.IntBagRO
+import com.inari.firefly.Expr
+import com.inari.firefly.IntReceiver
+import com.inari.firefly.Predicate
+import com.inari.firefly.Receiver
+import java.util.*
 
-typealias MapListener<C> = (C, IComponentMap.MapAction) -> Unit
-interface IComponentMap<C : Component> : Activation {
+interface IComponentMap<C : Component> {
 
     enum class MapAction {
         CREATED, ACTIVATED, DEACTIVATED, DELETED
@@ -16,23 +20,32 @@ interface IComponentMap<C : Component> : Activation {
     val activationMapping: Boolean
     val nameMapping: Boolean
 
-    fun exists(index: Int): Boolean
-    fun exists(name: String): Boolean
+    operator fun contains(index: Int): Boolean
+    operator fun contains(name: String): Boolean
     fun idForName(name: String): CompId
     fun indexForName(name: String): Int
+    fun activate(index: Int)
+    fun deactivate(index: Int)
+    fun isActive(index: Int): Boolean
     fun activate(name: String)
     fun deactivate(name: String)
     fun isActive(name: String): Boolean
-    fun get(index: Int): C
-    fun get(name: String): C
+    operator fun get(index: Int): C
+    operator fun get(name: String): C
+    fun <CC : C> getAs(index: Int): CC
+    fun <CC : C> getAs(name: String): CC
     fun delete(index: Int)
     fun delete(name: String)
-    fun indexIterator(predicate: (C) -> Boolean): (Int) -> Int
-    fun receiver(): (C) -> C
-    fun forEach(expr: (C) -> Unit)
-    fun forEachActive(expr: (C) -> Unit)
-    fun forEachIn(bag: IntBag, expr: (C) -> Unit)
-    fun <CC : C> forEachSubtypeIn(bag: IntBag, expr: (CC) -> Unit)
+    fun deleteAll(predicate: Predicate<C>)
+    fun indexIterator(predicate: Predicate<C>): IntReceiver
+    fun receiver(): Receiver<C>
+    fun forEach(expr: Expr<C>)
+    fun forEachActive(expr: Expr<C>)
+    fun forEachIn(bag: IntBagRO, expr: Expr<C>)
+    fun <CC : C> forEachSubtypeIn(bag: IntBagRO, expr: Expr<CC>)
+//    TODO
+//    fun forEachIn(set: BitSet, expr: Expr<C>)
+//    fun <CC : C> forEachSubtypeIn(set: BitSet, expr: Expr<CC>)
 
     fun clear()
 }

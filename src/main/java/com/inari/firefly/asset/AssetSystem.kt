@@ -2,45 +2,32 @@ package com.inari.firefly.asset
 
 import com.inari.commons.lang.aspect.IAspects
 import com.inari.commons.lang.list.IntBag
-import com.inari.firefly.component.IComponentMap
-import com.inari.firefly.component.IComponentMap.MapAction
-import com.inari.firefly.component.MapListener
 import com.inari.firefly.FFContext
+import com.inari.firefly.component.IComponentMap.MapAction
 import com.inari.firefly.system.component.ComponentSystem
-import com.inari.firefly.system.component.SystemComponent
-import java.util.concurrent.atomic.AtomicInteger
+import com.inari.firefly.system.component.SystemComponent.Companion.ASPECT_GROUP
 
 
 object AssetSystem : ComponentSystem {
 
-    override val supportedComponents: IAspects = SystemComponent.ASPECT_GROUP.createAspects(
-        Asset.typeKey
+    override val supportedComponents: IAspects =
+        ASPECT_GROUP.createAspects(Asset)
+
+    @JvmField val assets = ComponentSystem.createComponentMapping(
+        Asset,
+        activationMapping = true,
+        nameMapping = true,
+        listener = { asset, action  -> when (action) {
+            MapAction.CREATED       -> created(asset)
+            MapAction.ACTIVATED     -> load(asset)
+            MapAction.DEACTIVATED   -> unload(asset)
+            MapAction.DELETED       -> deleted(asset)
+        } }
     )
 
-    val assets: IComponentMap<Asset>
-
-    private val noNameCounter: AtomicInteger = AtomicInteger()
-    private val dependingAssetIds: IntBag
+    private val dependingAssetIds: IntBag = IntBag(1, -1)
 
     init {
-        val mapListener: MapListener<Asset> = {
-            asset, action -> when (action) {
-                MapAction.CREATED       -> created(asset)
-                MapAction.ACTIVATED     -> load(asset)
-                MapAction.DEACTIVATED   -> unload(asset)
-                MapAction.DELETED       -> deleted(asset)
-            }
-        }
-
-        assets = ComponentSystem.createComponentMapping(
-            Asset,
-            activationMapping = true,
-            nameMapping = true,
-            listener = mapListener
-        )
-
-        dependingAssetIds = IntBag(1, -1)
-
         FFContext.loadSystem(this)
     }
 

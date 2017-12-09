@@ -10,6 +10,7 @@ import com.inari.firefly.component.CompId
 import com.inari.firefly.component.Component
 import com.inari.firefly.component.ComponentType
 import com.inari.firefly.component.IComponentMap
+import com.inari.firefly.control.task.TaskSystem
 import com.inari.firefly.entity.EntityComponent
 import com.inari.firefly.entity.EntityComponent.EntityComponentType
 import com.inari.firefly.entity.EntitySystem
@@ -19,34 +20,25 @@ import com.inari.firefly.external.FFInput
 import com.inari.firefly.external.FFTimer
 import com.inari.firefly.system.FFEvent
 import com.inari.firefly.system.component.ComponentSystem
+import com.inari.firefly.system.component.SubType
+import com.inari.firefly.system.component.SystemComponent
 
 
 object FFContext {
 
-    internal val componentMaps: DynArray<IComponentMap<*>> =
+    @JvmField internal val componentMaps: DynArray<IComponentMap<*>> =
             DynArray.create(IComponentMap::class.java)
-    private val systemTypeMapping: DynArray<ComponentSystem> =
+    @JvmField internal val systemTypeMapping: DynArray<ComponentSystem> =
             DynArray.create(ComponentSystem::class.java)
 
-
-    val eventDispatcher: IEventDispatcher
-        get() = FFApp.eventDispatcher
-
-    val graphics: FFGraphics
-        get() = FFApp.graphics
-
-    val audio: FFAudio
-        get() = FFApp.audio
-
-    val input: FFInput
-        get() = FFApp.input
-
-    val timer: FFTimer
-        get() = FFApp.timer
+    @JvmField val eventDispatcher: IEventDispatcher = FFApp.eventDispatcher
+    @JvmField val graphics: FFGraphics = FFApp.graphics
+    @JvmField val audio: FFAudio = FFApp.audio
+    @JvmField val input: FFInput = FFApp.input
+    @JvmField val timer: FFTimer = FFApp.timer
 
     val screenWidth: Int
         get() = graphics.screenWidth
-
     val screenHeight: Int
         get() = graphics.screenHeight
 
@@ -73,26 +65,32 @@ object FFContext {
         return componentMaps[index] as IComponentMap<C>
     }
 
-    fun <C : Component> get(id: CompId): C =
-            mapper<C>(id).get(id.index)
+    operator fun <C : Component> get(id: CompId): C =
+        mapper<C>(id)[id.index]
 
-    fun <C : Component> get(cType: ComponentType<C>, index: Int): C =
-            mapper(cType).get(index)
+    operator fun <C : Component> get(cType: ComponentType<C>, index: Int): C =
+        mapper(cType)[index]
 
-    fun <C : Component> get(cType: ComponentType<C>, name: String): C =
-            mapper(cType).get(name)
+    operator fun <C : Component> get(cType: ComponentType<C>, name: String): C =
+        mapper(cType)[name]
+
+    operator fun <C : SystemComponent, CC : C> get(cType: SubType<CC, C>, index: Int): CC =
+        mapper(cType)[index] as CC
+
+    operator fun <C : SystemComponent, CC : C> get(cType: SubType<CC, C>, name: String): C =
+        mapper(cType)[name] as CC
 
     fun assetInstanceId(assetId: Int): Int =
-            AssetSystem.assets.get(assetId).instanceId()
+            AssetSystem.assets[assetId].instanceId()
 
     fun assetInstanceId(assetName: String): Int =
-            AssetSystem.assets.get(assetName).instanceId()
+            AssetSystem.assets[assetName].instanceId()
 
-    fun <E : EntityComponent> get(entityId: Int, ecType: EntityComponentType<E>): E =
-        EntitySystem.entities.get(entityId).get(ecType)
+    operator fun <E : EntityComponent> get(entityId: Int, ecType: EntityComponentType<E>): E =
+        EntitySystem.entities[entityId][ecType]
 
-    fun <E : EntityComponent> get(entityName: String, ecType: EntityComponentType<E>): E =
-        EntitySystem.entities.get(entityName).get(ecType)
+    operator fun <E : EntityComponent> get(entityName: String, ecType: EntityComponentType<E>): E =
+        EntitySystem.entities[entityName][ecType]
 
     fun isActive(cType: ComponentType<*>, index: Int): Boolean =
         mapper<Component>(cType.typeKey).isActive(index)
@@ -145,6 +143,17 @@ object FFContext {
 
     fun delete(cType: ComponentType<*>, name: String): FFContext {
         mapper<Component>(cType.typeKey).delete(name)
+        return this
+    }
+
+    fun runTask(taskName: String): FFContext =
+        runTask(TaskSystem.tasks.indexForName(taskName))
+
+    fun runTask(taskId: CompId): FFContext =
+        runTask(taskId.index)
+
+    fun runTask(taskIndex: Int): FFContext {
+        TaskSystem.runTask(taskIndex)
         return this
     }
 

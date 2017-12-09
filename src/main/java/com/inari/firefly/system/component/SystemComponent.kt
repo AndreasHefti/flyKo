@@ -20,11 +20,44 @@ abstract class SystemComponent protected constructor() : BaseIndexedObject(), In
     final override val componentId: CompId = CompId(index, indexedTypeKey())
     final override fun indexedObjectType(): Class<out IndexedObject> = indexedTypeKey().type<IndexedObject>()
     override fun name(): String {
-        if (ff_Name != NO_NAME) {
+        if (ff_Name !== NO_NAME) {
             nameInUse = true
         }
         return ff_Name
     }
+
+    var initialized:Boolean = false
+        internal set
+    internal  fun _init() {
+        init()
+        initialized = true
+    }
+    open protected fun init() {
+        initialized = true
+    }
+    override fun dispose() {
+        initialized = false
+        super.dispose()
+    }
+
+    protected fun setIfNotInitialized(value: Int, name: String): Int =
+        if (initialized) alreadyInit(name)
+        else value
+
+    protected fun setIfNotInitialized(value: Float, name: String): Float =
+        if (initialized) alreadyInit(name)
+        else value
+
+    protected fun setIfNotInitialized(value: Boolean, name: String): Boolean =
+        if (initialized) alreadyInit(name)
+        else value
+
+    protected fun <T> setIfNotInitialized(value:T, name: String): T =
+        if (initialized) alreadyInit(name)
+        else value
+
+    private fun <T> alreadyInit(name: String): T =
+        throw IllegalStateException("No set on already initialized property allowed for: $name")
 
     companion object {
 
