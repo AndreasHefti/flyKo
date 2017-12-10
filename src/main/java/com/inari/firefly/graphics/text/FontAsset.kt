@@ -57,6 +57,25 @@ class FontAsset : Asset(), TextureData {
     var ff_MagFilter
         get() = magFilter
         set(value) {magFilter = setIfNotInitialized(value, "ff_MagFilter")}
+    var ff_CharMap
+        get() = charMap
+        set(value) {charMap = setIfNotInitialized(value, "ff_CharMap")}
+    var ff_CharWidth
+        get() = charWidth
+        set(value) {charWidth = setIfNotInitialized(value, "ff_CharWidth")}
+    var ff_CharHeight
+        get() = charHeight
+        set(value) {charHeight = setIfNotInitialized(value, "ff_CharHeight")}
+    var ff_CharSpace
+        get() = charSpace
+        set(value) {charSpace = setIfNotInitialized(value, "ff_CharSpace")}
+    var ff_LineSpace
+        get() = lineSpace
+        set(value) {lineSpace = setIfNotInitialized(value, "ff_LineSpace")}
+    var ff_DefaultChar
+        get() = defaultChar
+        set(value) {defaultChar = setIfNotInitialized(value, "ff_DefaultChar")}
+
 
     override fun instanceId(index: Int): Int =
         throw UnsupportedOperationException()
