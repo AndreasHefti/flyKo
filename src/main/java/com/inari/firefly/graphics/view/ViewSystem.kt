@@ -41,7 +41,7 @@ object ViewSystem : ComponentSystem {
         } }
     )
 
-    @JvmField internal val baseView: View
+    @JvmField val baseView: View
     @JvmField internal val activeViewPorts: DynArray<ViewPortData> = DynArray.create(ViewPortData::class.java)
     @JvmField internal val layersOfView: DynArray<IntBag> = DynArray.create(IntBag::class.java)
 
