@@ -32,19 +32,19 @@ object FFContext {
             DynArray.create(ComponentSystem::class.java)
 
     val eventDispatcher: IEventDispatcher
-        get() = FFApp.eventDispatcher!!
+        get() = FFApp.eventDispatcher
 
     val graphics: FFGraphics
-        get() = FFApp.graphics!!
+        get() = FFApp.graphics
 
     val audio: FFAudio
-        get() = FFApp.audio!!
+        get() = FFApp.audio
 
     val input: FFInput
-        get() = FFApp.input!!
+        get() = FFApp.input
 
     val timer: FFTimer
-        get() = FFApp.timer!!
+        get() = FFApp.timer
 
     val screenWidth: Int
         get() = graphics.screenWidth
@@ -173,8 +173,8 @@ object FFContext {
         return this
     }
 
-    fun <L> disposeListener(eventType: EventTypeKey, listener: L): FFContext {
-        eventDispatcher.unregister(eventType, listener)
+    fun <L> disposeListener(eventType: FFEvent<*>, listener: L): FFContext {
+        eventDispatcher.unregister(eventType.typeKey, listener)
         return this
     }
 

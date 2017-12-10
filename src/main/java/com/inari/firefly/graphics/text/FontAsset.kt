@@ -4,7 +4,9 @@ import com.inari.commons.geom.Rectangle
 import com.inari.commons.lang.indexed.IndexedTypeKey
 import com.inari.commons.lang.list.IntBag
 import com.inari.firefly.FFContext
+import com.inari.firefly.IntFunction
 import com.inari.firefly.NO_NAME
+import com.inari.firefly.NULL_INT_FUNCTION
 import com.inari.firefly.asset.Asset
 import com.inari.firefly.external.SpriteData
 import com.inari.firefly.external.TextureData
@@ -25,8 +27,7 @@ class FontAsset : Asset(), TextureData {
         private set
     override var magFilter: Int = -1
         private set
-    override val colorConverter: (Int) -> Int
-        get() = null!! // TODO
+    override val colorConverter: IntFunction = NULL_INT_FUNCTION
 
     @JvmField internal var charMap: Array<CharArray> = emptyArray()
     @JvmField internal var charWidth = 0
@@ -76,6 +77,14 @@ class FontAsset : Asset(), TextureData {
                 charSpriteMap.set(charMap[y][x].toInt(), charSpriteId)
             }
         }
+    }
+
+    operator fun get(char: Char): Int {
+        val index = char.toInt()
+        return if (index in charSpriteMap)
+            charSpriteMap[index]
+        else
+            defaultChar
     }
 
     override fun unload() {

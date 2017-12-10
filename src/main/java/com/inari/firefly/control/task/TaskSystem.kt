@@ -1,8 +1,6 @@
 package com.inari.firefly.control.task
 
 import com.inari.commons.lang.aspect.IAspects
-import com.inari.firefly.Call
-import com.inari.firefly.Condition
 import com.inari.firefly.FFContext
 import com.inari.firefly.component.CompId
 import com.inari.firefly.component.IComponentMap
@@ -15,41 +13,27 @@ object TaskSystem : ComponentSystem {
     override val supportedComponents: IAspects =
         ASPECT_GROUP.createAspects(Task)
 
-    private val triggerMap = TriggerMap({ index -> createRunCall(index) })
+    @JvmField internal val triggerMap = TriggerMap()
     @JvmField val tasks = ComponentSystem.createComponentMapping(
-        Task,
-        nameMapping = true,
-        listener = { task, action -> when (action) {
-            IComponentMap.MapAction.DELETED -> triggerMap.disposeTrigger(task.index())
-            else -> {}
-        } }
+        Task, nameMapping = true
     )
 
     init {
         FFContext.loadSystem(this)
     }
 
+    fun runTask(name: String) =
+        runTask(tasks.indexForName(name))
+
+    fun runTask(taskId: CompId) =
+        runTask(taskId.checkType(Task::class.java).index)
+
     fun runTask(taskIndex: Int) {
         if (taskIndex in tasks) {
-            tasks[taskIndex].run()
-            if (tasks[taskIndex].ff_RemoveAfterRun)
+            tasks[taskIndex].task()
+            if (tasks[taskIndex].removeAfterRun)
                 tasks.delete(taskIndex)
         }
-    }
-
-    fun createTrigger(taskName: String, condition: Condition) =
-        createTrigger(tasks.indexForName(taskName), condition)
-
-    fun createTrigger(taskId: CompId, condition: Condition) =
-        createTrigger(taskId.index, condition)
-
-    fun createTrigger(taskIndex: Int, condition: Condition) {
-        if (taskIndex in tasks)
-            triggerMap.createTrigger(taskIndex, condition)
-    }
-
-    fun createRunCall(taskIndex: Int): Call = {
-        runTask(taskIndex)
     }
 
     override fun clearSystem() {

@@ -5,7 +5,7 @@ import com.inari.commons.lang.aspect.Aspect
 import com.inari.commons.lang.aspect.Aspects
 import com.inari.commons.lang.list.DynArray
 import com.inari.commons.lang.list.DynArrayRO
-import com.inari.firefly.NULL_CONTACT
+import com.inari.firefly.NO_CONTACT
 
 
 class Contacts internal constructor(
@@ -150,7 +150,7 @@ class Contacts internal constructor(
                 return contact
         }
 
-        return NULL_CONTACT
+        return NO_CONTACT
     }
 
     fun getFirstContactOfType(contactType: Aspect): Contact {
@@ -161,7 +161,7 @@ class Contacts internal constructor(
                 return contact
         }
 
-        return NULL_CONTACT
+        return NO_CONTACT
     }
 
     fun getFirstContactOfMaterial(materialType: Aspect): Contact? {
@@ -172,7 +172,7 @@ class Contacts internal constructor(
                 return contact
         }
 
-        return NULL_CONTACT
+        return NO_CONTACT
     }
 
     fun clear() {

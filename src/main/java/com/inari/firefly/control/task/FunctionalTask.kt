@@ -2,12 +2,12 @@ package com.inari.firefly.control.task
 
 import com.inari.commons.lang.indexed.IndexedTypeKey
 import com.inari.firefly.Call
-import com.inari.firefly.VOID_CALL
+import com.inari.firefly.NULL_CALL
 import com.inari.firefly.system.component.SubType
 
 class FunctionalTask : Task() {
 
-    protected var taskExpr: Call = VOID_CALL
+    protected var taskExpr: Call = NULL_CALL
 
     var ff_TaskExpression: Call
         get() = throw UnsupportedOperationException()

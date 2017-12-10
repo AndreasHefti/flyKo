@@ -16,7 +16,6 @@ abstract class FFApp protected constructor(
     timer: () -> FFTimer
 ) {
 
-    private val NO_VIRTUAL_VIEW_PORTS: DynArrayRO<ViewPortData> = DynArray.create(ViewPortData::class.java)
     private var disposed: Boolean = true
 
     init {
@@ -54,9 +53,6 @@ abstract class FFApp protected constructor(
             var i = 0
             while (i < size) {
                 val view = ViewSystem.activeViewPorts.get(i++)
-                if (!ViewSystem.views.isActive(view.index)) {
-                    continue
-                }
                 render(view)
             }
 
@@ -66,8 +62,7 @@ abstract class FFApp protected constructor(
             graphics.flush(NO_VIRTUAL_VIEW_PORTS)
         }
 
-        // TODO
-        //FFContext.notify(postRenderEvent)
+        FFContext.notify(PostRenderEvent)
     }
 
     private fun render(view: ViewPortData) {
@@ -111,6 +106,9 @@ abstract class FFApp protected constructor(
             private set
         lateinit var timer: FFTimer
             private set
+
+        @JvmField internal val NO_VIRTUAL_VIEW_PORTS: DynArrayRO<ViewPortData> =
+            DynArray.create(ViewPortData::class.java)
     }
 
     abstract class SystemTimer {
@@ -144,6 +142,16 @@ abstract class FFApp protected constructor(
 
         interface Listener {
             operator fun invoke(viewId: Int, layerId: Int, clip: Rectangle)
+        }
+    }
+
+    object PostRenderEvent : FFEvent<PostRenderEvent.Listener>(createTypeKey(PostRenderEvent::class.java)) {
+
+        override fun notify(listener: PostRenderEvent.Listener) =
+            listener()
+
+        interface Listener {
+            operator fun invoke()
         }
     }
 

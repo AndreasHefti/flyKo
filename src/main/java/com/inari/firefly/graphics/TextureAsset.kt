@@ -2,14 +2,14 @@ package com.inari.firefly.graphics
 
 import com.inari.commons.lang.indexed.IndexedTypeKey
 import com.inari.firefly.FFContext
+import com.inari.firefly.IntFunction
 import com.inari.firefly.NO_NAME
+import com.inari.firefly.NULL_INT_FUNCTION
 import com.inari.firefly.asset.Asset
 import com.inari.firefly.external.TextureData
 import com.inari.firefly.system.component.SubType
 
-class TextureAsset private constructor(
-
-) : Asset(), TextureData {
+class TextureAsset private constructor() : Asset(), TextureData {
 
     @JvmField internal var id: Int = -1
     override fun instanceId(index: Int): Int = id
@@ -31,8 +31,8 @@ class TextureAsset private constructor(
         private set
     override var magFilter: Int = -1
         private set
-    override val colorConverter: (Int) -> Int
-        get() = null!! // TODO
+    override var colorConverter: IntFunction = NULL_INT_FUNCTION
+        private set
 
     var ff_ResourceName: String
         get() = resourceName
@@ -52,6 +52,9 @@ class TextureAsset private constructor(
     var ff_MagFilter
         get() = magFilter
         set(value) {magFilter = setIfNotInitialized(value, "ff_MagFilter")}
+    var ff_ColorConverter
+        get() = colorConverter
+        set(value) {colorConverter = setIfNotInitialized(value, "ff_ColorConverter")}
 
     override fun load() {
         if (id < 0) {
@@ -75,5 +78,6 @@ class TextureAsset private constructor(
         override val typeKey: IndexedTypeKey = Asset.typeKey
         override fun subType() = TextureAsset::class.java
         override fun createEmpty() = TextureAsset()
+
     }
 }

@@ -3,10 +3,9 @@ package com.inari.firefly.component
 import com.inari.commons.lang.list.DynArrayRO
 import com.inari.commons.lang.list.IntBagRO
 import com.inari.firefly.Expr
-import com.inari.firefly.IntReceiver
+import com.inari.firefly.IntFunction
 import com.inari.firefly.Predicate
 import com.inari.firefly.Receiver
-import java.util.*
 
 interface IComponentMap<C : Component> {
 
@@ -37,7 +36,7 @@ interface IComponentMap<C : Component> {
     fun delete(index: Int)
     fun delete(name: String)
     fun deleteAll(predicate: Predicate<C>)
-    fun indexIterator(predicate: Predicate<C>): IntReceiver
+    fun indexIterator(predicate: Predicate<C>): IntFunction
     fun receiver(): Receiver<C>
     fun forEach(expr: Expr<C>)
     fun forEachActive(expr: Expr<C>)

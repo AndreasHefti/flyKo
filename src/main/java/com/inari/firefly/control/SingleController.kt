@@ -4,7 +4,7 @@ import com.inari.commons.lang.indexed.IndexedTypeKey
 import com.inari.firefly.Expr
 import com.inari.firefly.FFContext
 import com.inari.firefly.NO_COMP_ID
-import com.inari.firefly.VOID_EXPR
+import com.inari.firefly.NULL_EXPR
 import com.inari.firefly.component.CompId
 import com.inari.firefly.component.Component
 import com.inari.firefly.system.component.SubType
@@ -12,7 +12,7 @@ import com.inari.firefly.system.component.SubType
 class SingleController private constructor() : Controller() {
 
     @JvmField internal var id: CompId = NO_COMP_ID
-    @JvmField internal var controlExpr: Expr<Component> = VOID_EXPR()
+    @JvmField internal var controlExpr: Expr<Component> = NULL_EXPR()
 
     var ff_ControlExpr: Expr<Component>
         get() = throw UnsupportedOperationException()

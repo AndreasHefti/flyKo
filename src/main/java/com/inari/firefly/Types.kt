@@ -25,7 +25,7 @@ interface IntSupplier {
     operator fun invoke(): Int
 }
 
-interface IntReceiver {
+interface IntFunction {
     operator fun invoke(i: Int): Int
 }
 

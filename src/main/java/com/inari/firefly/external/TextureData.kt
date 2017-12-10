@@ -1,5 +1,7 @@
 package com.inari.firefly.external
 
+import com.inari.firefly.IntFunction
+
 interface TextureData {
 
     val resourceName: String
@@ -10,5 +12,5 @@ interface TextureData {
     val minFilter: Int
     val magFilter: Int
 
-    val colorConverter: (Int) -> Int
+    val colorConverter: IntFunction
 }

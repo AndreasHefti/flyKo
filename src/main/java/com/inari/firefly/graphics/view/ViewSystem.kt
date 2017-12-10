@@ -140,7 +140,10 @@ object ViewSystem : ComponentSystem {
         activeViewPorts.clear()
         val i = orderedView.iterator()
         while (i.hasNext()) {
-            activeViewPorts.add(views.get(i.next()))
+            val nextId = i.next()
+            if (views.isActive(nextId)) {
+                activeViewPorts.add(views[nextId])
+            }
         }
     }
 

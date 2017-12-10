@@ -2,7 +2,7 @@ package com.inari.firefly.control
 
 import com.inari.commons.lang.indexed.IndexedTypeKey
 import com.inari.firefly.IntExpr
-import com.inari.firefly.VOID_INT_EXPR
+import com.inari.firefly.NULL_INT_EXPR
 import com.inari.firefly.component.CompId
 import com.inari.firefly.system.component.SubType
 import java.util.*
@@ -12,7 +12,7 @@ import java.util.*
 class PolyController private constructor() : Controller() {
 
     @JvmField internal val ids: BitSet = BitSet()
-    @JvmField internal var controlExpr = VOID_INT_EXPR
+    @JvmField internal var controlExpr = NULL_INT_EXPR
 
     var ff_ControlExpr: IntExpr
         get() = throw UnsupportedOperationException()

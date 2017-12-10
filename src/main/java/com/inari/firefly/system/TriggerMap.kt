@@ -7,10 +7,7 @@ import com.inari.firefly.FFApp
 import com.inari.firefly.FFContext
 import com.inari.firefly.external.FFTimer
 
-class TriggerMap(
-    val callFactory: (Int) -> Call = {throw UnsupportedOperationException("No Call-Factory defined")},
-    updateResolution: Float = 50f
-) {
+class TriggerMap(updateResolution: Float = 50f) {
 
     private val scheduler: FFTimer.UpdateScheduler =
         FFContext.timer.createUpdateScheduler(updateResolution)
@@ -18,12 +15,12 @@ class TriggerMap(
         DynArray.create(Trigger::class.java)
 
     init {
-        FFContext.registerListener( FFApp.UpdateEvent, object : FFApp.UpdateEvent.Listener {
+        FFContext.registerListener(FFApp.UpdateEvent, object : FFApp.UpdateEvent.Listener {
             override fun invoke() {
                 if (scheduler.needsUpdate()) {
                     var i = 0
                     while (i < trigger.capacity()) {
-                        val t = trigger[i] ?: continue
+                        val t = trigger[i++] ?: continue
                         if (t.condition())
                             t.call()
                     }
@@ -32,13 +29,16 @@ class TriggerMap(
         } )
     }
 
-    fun createTrigger(compIndex: Int, condition: Condition) =
-        trigger.add(Trigger(condition, callFactory(compIndex)))
+    fun createTrigger(condition: Condition, call : Call): Int {
+        val t = Trigger(condition, call)
+        trigger.set(t.index(), t)
+        return t.index()
+    }
 
-    fun createTrigger(call: Call, condition: Condition) =
-        trigger.add(Trigger(condition, call))
+    fun disposeTrigger(triggerId: Int) =
+        trigger.remove(triggerId)?.dispose()
 
-    fun disposeTrigger(compIndex: Int) =
-        trigger.remove(compIndex)
-
+    interface TriggerCall {
+        operator fun invoke(compIndex: Int)
+    }
 }

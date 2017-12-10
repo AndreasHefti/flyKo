@@ -141,7 +141,7 @@ interface ComponentSystem : FFSystem {
             else
                 nextIndex(predicate, currentIndex + 1)
 
-        override fun indexIterator(predicate: Predicate<C>): IntReceiver = object : IntReceiver {
+        override fun indexIterator(predicate: Predicate<C>): IntFunction = object : IntFunction {
             override fun invoke(i: Int): Int {
                 return nextIndex(predicate, i)
             }
