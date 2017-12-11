@@ -20,6 +20,8 @@ object EntitySystem : ComponentSystem {
 
     @JvmField val entities: ComponentMap<Entity> = ComponentSystem.createComponentMapping(
         Entity,
+        activationMapping = true,
+        nameMapping = true,
         listener = { entity, action -> when (action) {
             ComponentMap.MapAction.ACTIVATED     -> activated(entity)
             ComponentMap.MapAction.DEACTIVATED   -> deactivated(entity)
