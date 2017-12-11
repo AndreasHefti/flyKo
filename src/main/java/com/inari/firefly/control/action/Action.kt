@@ -3,6 +3,8 @@ package com.inari.firefly.control.action
 import com.inari.firefly.Condition
 import com.inari.firefly.Expr
 import com.inari.firefly.NULL_EXPR
+import com.inari.firefly.control.trigger.Trigger
+import com.inari.firefly.control.trigger.TriggerSystem
 import com.inari.firefly.entity.Entity
 import com.inari.firefly.entity.EntitySystem
 import com.inari.firefly.system.component.SingleType
@@ -20,16 +22,18 @@ class Action private constructor() : SystemComponent() {
         set(value) {entityAction = setIfNotInitialized(value, "ff_Action")}
 
     fun ff_createTrigger(entityId: Int, condition: Condition): Int {
-        val tId = ActionSystem.triggerMap.createTrigger(condition, {
-            entityAction(EntitySystem[entityId])
-        })
+        val call = { entityAction(EntitySystem[entityId]) }
+        val tId = Trigger.build {
+            ff_Condition = condition
+            ff_Call = call
+        }.index
         triggerIds.set(tId)
         return tId
     }
 
     fun ff_disposeTrigger(triggerId: Int) {
         if (triggerIds[triggerId]) {
-            ActionSystem.triggerMap.disposeTrigger(triggerId)
+            TriggerSystem.triggers.delete(triggerId)
             triggerIds.set(triggerId, false)
         }
     }
@@ -38,7 +42,7 @@ class Action private constructor() : SystemComponent() {
         if (!triggerIds.isEmpty) {
             var i = triggerIds.nextSetBit(0)
             while (i >= 0) {
-                ActionSystem.triggerMap.disposeTrigger(i)
+                TriggerSystem.triggers.delete(i)
                 i = triggerIds.nextSetBit(i + 1)
             }
             triggerIds.clear()

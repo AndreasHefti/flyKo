@@ -3,7 +3,6 @@ package com.inari.firefly.control.task
 import com.inari.commons.lang.aspect.IAspects
 import com.inari.firefly.FFContext
 import com.inari.firefly.component.CompId
-import com.inari.firefly.system.TriggerMap
 import com.inari.firefly.system.component.ComponentSystem
 import com.inari.firefly.system.component.SystemComponent.Companion.ASPECT_GROUP
 
@@ -12,7 +11,6 @@ object TaskSystem : ComponentSystem {
     override val supportedComponents: IAspects =
         ASPECT_GROUP.createAspects(Task)
 
-    @JvmField internal val triggerMap = TriggerMap()
     @JvmField val tasks = ComponentSystem.createComponentMapping(
         Task, nameMapping = true
     )

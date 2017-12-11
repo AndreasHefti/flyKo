@@ -69,16 +69,18 @@ fun <T> VOID_EXPR(): Expr<T> = {}
 @JvmField val VOID_INT_FUNCTION: IntFunction = object : IntFunction {
     override fun invoke(i: Int): Int = i
 }
-@JvmField val NULL_CALL: Call = { throw IllegalStateException("NULL_CALL Call called") }
+@JvmField val NULL_CALL: Call = { throw IllegalStateException("NULL_CALL called") }
 @JvmField val VOID_CALL: Call = {}
 
+@JvmField val NULL_CONDITION: Condition = object : Condition {
+    override fun invoke(): Boolean = throw IllegalStateException("NULL_CONDITION called")
+}
 @JvmField val FALSE_CONDITION: Condition = object : Condition {
     override fun invoke(): Boolean = false
 }
 @JvmField val TRUE_CONDITION: Condition = object : Condition {
     override fun invoke(): Boolean = true
 }
-
 @JvmField val INFINITE_SCHEDULER: FFTimer.Scheduler = object : FFTimer.Scheduler {
     override fun needsUpdate(): Boolean = true
 }
