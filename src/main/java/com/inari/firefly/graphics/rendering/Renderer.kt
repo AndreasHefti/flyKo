@@ -50,7 +50,7 @@ abstract class Renderer protected constructor(
             entities.set(viewId, DynArray.createTyped(DynArray::class.java))
         }
         if (layerId !in entities[viewId]) {
-            entities[viewId].set(viewId, DynArray.create(Entity::class.java))
+            entities[viewId].set(layerId, DynArray.create(Entity::class.java))
         }
 
         return entities[viewId][layerId]
