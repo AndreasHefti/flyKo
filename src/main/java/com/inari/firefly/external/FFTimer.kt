@@ -23,17 +23,12 @@ abstract class FFTimer protected constructor() : FFApp.SystemTimer() {
     }
 
     internal fun updateSchedulers() {
-        // TODO what is faster? time matters here
         var i = 0
         val to = schedulers.capacity()
         while ( i < to) {
-            val updateScheduler = schedulers.get(i) ?: continue
+            val updateScheduler = schedulers.get(i++) ?: continue
             updateScheduler.update()
         }
-//        for (i in 0 until schedulers.capacity()) {
-//            val updateScheduler = schedulers.get(i) ?: continue
-//            updateScheduler.update()
-//        }
     }
 
     fun createUpdateScheduler(resolution: Float): UpdateScheduler {
