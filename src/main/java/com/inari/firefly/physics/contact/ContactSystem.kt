@@ -154,7 +154,9 @@ object ContactSystem : ComponentSystem {
         if (!TileGridSystem.exists(transform.viewRef, layerRef))
             return
 
-        val iterator = TileGridSystem[transform.viewRef, layerRef].tileGridIterator(c.worldBounds)
+        val iterator = TileGridSystem[transform.viewRef, layerRef]
+            ?.tileGridIterator(c.worldBounds) ?: return
+
         while (iterator.hasNext()) {
             val otherEntityRef = iterator.next()
             if (entity.index() == otherEntityRef)

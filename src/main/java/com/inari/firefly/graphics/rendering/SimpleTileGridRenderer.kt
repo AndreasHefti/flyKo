@@ -19,7 +19,7 @@ object SimpleTileGridRenderer : Renderer() {
         entity.components.include(matchingAspects)
 
     override fun render(viewIndex: Int, layerIndex: Int, clip: Rectangle) {
-        val tileGrid = TileGridSystem[viewIndex, layerIndex]
+        val tileGrid = TileGridSystem[viewIndex, layerIndex] ?: return
         if (tileGrid.rendererRef == index) {
             val graphics = FFContext.graphics
             val iterator = tileGrid.tileGridIterator(clip)

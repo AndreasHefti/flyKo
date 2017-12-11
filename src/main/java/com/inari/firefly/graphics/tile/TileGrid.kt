@@ -142,14 +142,13 @@ class TileGrid private constructor() : SystemComponent(), ViewLayerAware {
 
     override fun indexedTypeKey() = typeKey
     companion object : SingleType<TileGrid>() {
-        val NULL_TILE_GRID = TileGrid()
         override val typeKey = SystemComponent.createTypeKey(TileGrid::class.java)
         override fun createEmpty() = TileGrid()
     }
 
 
     class TileGridIterator private constructor() : IntIterator {
-
+        private val NULL_TILE_GRID = TileGrid()
         @JvmField internal val tmpClip = Rectangle()
         @JvmField internal val worldPosition = PositionF()
         @JvmField internal val clip = Rectangle()

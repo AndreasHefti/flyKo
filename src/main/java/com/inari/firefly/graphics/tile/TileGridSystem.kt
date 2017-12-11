@@ -68,22 +68,18 @@ object TileGridSystem : ComponentSystem {
     fun exists(viewLayer: ViewLayerAware): Boolean =
         exists(viewLayer.viewIndex, viewLayer.layerIndex)
 
-    operator fun get(viewLayer: ViewLayerAware): TileGrid =
+    operator fun get(viewLayer: ViewLayerAware): TileGrid? =
         this[viewLayer.viewIndex, viewLayer.layerIndex]
 
-    operator fun get(viewIndex: Int, layerIndex: Int): TileGrid =
-        if (exists(viewIndex, layerIndex))
+    operator fun get(viewIndex: Int, layerIndex: Int): TileGrid? =
             viewLayerMapping[viewIndex][layerIndex]
-        else
-            TileGrid.NULL_TILE_GRID
-
 
     override fun clearSystem() {
         grids.clear()
     }
 
     private fun addEntity(entity: Entity) {
-        val tileGrid = this[entity[ETransform]]
+        val tileGrid = this[entity[ETransform]] ?: return
         val positions = entity[ETile].positions
         val entityId = entity.index()
 
@@ -95,7 +91,7 @@ object TileGridSystem : ComponentSystem {
     }
 
     private fun removeEntity(entity: Entity) {
-        val tileGrid = this[entity[ETransform]]
+        val tileGrid = this[entity[ETransform]] ?: return
         val positions = entity[ETile].positions
         val entityId = entity.index()
 
