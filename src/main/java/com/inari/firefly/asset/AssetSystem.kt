@@ -3,7 +3,7 @@ package com.inari.firefly.asset
 import com.inari.commons.lang.aspect.IAspects
 import com.inari.commons.lang.list.IntBag
 import com.inari.firefly.FFContext
-import com.inari.firefly.component.IComponentMap.MapAction
+import com.inari.firefly.component.ComponentMap.MapAction
 import com.inari.firefly.system.component.ComponentSystem
 import com.inari.firefly.system.component.SystemComponent.Companion.ASPECT_GROUP
 

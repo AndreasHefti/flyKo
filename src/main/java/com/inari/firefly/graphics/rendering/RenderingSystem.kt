@@ -4,7 +4,7 @@ import com.inari.commons.geom.Rectangle
 import com.inari.commons.lang.aspect.Aspects
 import com.inari.firefly.FFApp
 import com.inari.firefly.FFContext
-import com.inari.firefly.component.IComponentMap
+import com.inari.firefly.component.ComponentMap
 import com.inari.firefly.entity.Entity
 import com.inari.firefly.entity.EntityActivationEvent
 import com.inari.firefly.system.FFSystem
@@ -26,7 +26,7 @@ object RenderingSystem : FFSystem {
     @JvmField internal val _renderer = ComponentSystem.createComponentMapping(
         Renderer
     )
-    val renderer: IComponentMap<Renderer> = _renderer
+    val renderer: ComponentMap<Renderer> = _renderer
 
     var ff_AllowMultipleAcceptance: Boolean = false
     private var renderingChain: Array<Renderer> = DEFAULT_RENDERING_CHAIN.toTypedArray()

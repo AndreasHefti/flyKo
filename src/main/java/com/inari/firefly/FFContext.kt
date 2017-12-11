@@ -1,7 +1,6 @@
 package com.inari.firefly
 
 import com.inari.commons.event.Event
-import com.inari.commons.event.Event.EventTypeKey
 import com.inari.commons.event.IEventDispatcher
 import com.inari.commons.lang.indexed.IIndexedTypeKey
 import com.inari.commons.lang.list.DynArray
@@ -9,7 +8,7 @@ import com.inari.firefly.asset.AssetSystem
 import com.inari.firefly.component.CompId
 import com.inari.firefly.component.Component
 import com.inari.firefly.component.ComponentType
-import com.inari.firefly.component.IComponentMap
+import com.inari.firefly.component.ComponentMap
 import com.inari.firefly.control.task.TaskSystem
 import com.inari.firefly.entity.EntityComponent
 import com.inari.firefly.entity.EntityComponent.EntityComponentType
@@ -26,8 +25,8 @@ import com.inari.firefly.system.component.SystemComponent
 
 object FFContext {
 
-    @JvmField internal val componentMaps: DynArray<IComponentMap<*>> =
-            DynArray.create(IComponentMap::class.java)
+    @JvmField internal val componentMaps: DynArray<ComponentMap<*>> =
+            DynArray.create(ComponentMap::class.java)
     @JvmField internal val systemTypeMapping: DynArray<ComponentSystem> =
             DynArray.create(ComponentSystem::class.java)
 
@@ -58,20 +57,20 @@ object FFContext {
         }
     }
 
-    fun <C : Component> mapper(id: CompId): IComponentMap<C> =
+    fun <C : Component> mapper(id: CompId): ComponentMap<C> =
         mapper(id.typeKey)
 
-    fun <C : Component> mapper(type: ComponentType<C>): IComponentMap<C> =
+    fun <C : Component> mapper(type: ComponentType<C>): ComponentMap<C> =
         mapper(type.typeKey)
 
 
     @Suppress("UNCHECKED_CAST")
-    fun <C : Component> mapper(key: IIndexedTypeKey): IComponentMap<C> {
+    fun <C : Component> mapper(key: IIndexedTypeKey): ComponentMap<C> {
         val index = key.index()
         if (!componentMaps.contains(index)) {
             throw RuntimeException("No Component Mapper registered for type: $key")
         }
-        return componentMaps[index] as IComponentMap<C>
+        return componentMaps[index] as ComponentMap<C>
     }
 
     operator fun <C : Component> get(id: CompId): C =

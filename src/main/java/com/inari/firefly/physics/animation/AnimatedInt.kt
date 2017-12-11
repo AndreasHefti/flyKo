@@ -6,11 +6,11 @@ import com.inari.firefly.entity.property.IIntPropertyAccessor
 class AnimatedInt private constructor() : AnimatedProperty() {
 
     @JvmField internal var propertyAccessor: IIntPropertyAccessor = null!!
-    @JvmField internal var initValue: Int = 0
+    @JvmField internal var initValue = 0
 
-    @JvmField internal var v1: Int = 0
-    @JvmField internal var v2: Int = 0
-    @JvmField internal var v3: Int = 0
+    @JvmField internal var v1 = 0
+    @JvmField internal var v2 = 0
+    @JvmField internal var v3 = 0
 
     var ff_InitValue: Int
         get() = initValue

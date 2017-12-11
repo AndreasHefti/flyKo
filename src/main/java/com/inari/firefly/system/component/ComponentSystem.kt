@@ -20,9 +20,9 @@ interface ComponentSystem : FFSystem {
             exp: Int = 10,
             activationMapping: Boolean = false,
             nameMapping: Boolean = false,
-            listener:(C, IComponentMap.MapAction) -> Unit = { _, _ -> }
-        ): IComponentMap<C> {
-            val mapper: ComponentMap<C> = ComponentMap(
+            listener:(C, ComponentMap.MapAction) -> Unit = { _, _ -> }
+        ): ComponentMap<C> {
+            val mapper: ComponentMapImpl<C> = ComponentMapImpl(
                 type, size, exp, activationMapping, nameMapping, listener
             )
             FFContext.componentMaps.set(mapper.typeIndex, mapper)
@@ -30,14 +30,14 @@ interface ComponentSystem : FFSystem {
         }
     }
 
-    private class ComponentMap<C : NamedComponent>(
+    private class ComponentMapImpl<C : NamedComponent>(
         override val type: ComponentType<C>,
         size: Int,
         exp: Int,
         override val activationMapping: Boolean,
         override  val nameMapping: Boolean,
-        private val listener: (C, IComponentMap.MapAction) -> Unit
-    ) : IComponentMap<C> {
+        private val listener: (C, ComponentMap.MapAction) -> Unit
+    ) : ComponentMap<C> {
 
         override val typeIndex: Int = type.typeKey.index()
         private val _map: DynArray<C> = DynArray.create(type.typeKey.type(), size, exp)
@@ -51,14 +51,14 @@ interface ComponentSystem : FFSystem {
         override fun activate(index: Int) {
             if (activationMapping && !isActive(index)) {
                 active.set(index)
-                listener(_map.get(index), IComponentMap.MapAction.ACTIVATED)
+                listener(_map.get(index), ComponentMap.MapAction.ACTIVATED)
             }
         }
 
         override fun deactivate(index: Int) {
             if (isActive(index)) {
                 active.set(index, false)
-                listener(_map.get(index),  IComponentMap.MapAction.DEACTIVATED)
+                listener(_map.get(index),  ComponentMap.MapAction.DEACTIVATED)
             }
         }
 
@@ -74,6 +74,13 @@ interface ComponentSystem : FFSystem {
         override fun <CC : C> getAs(index: Int): CC = get(index) as CC
         @Suppress("UNCHECKED_CAST")
         override fun <CC : C> getAs(name: String): CC = get(name) as CC
+        override fun contains(id: CompId): Boolean = contains(id.checkType(type.type()).index)
+        override fun activate(id: CompId) = activate(id.checkType(type.type()).index)
+        override fun deactivate(id: CompId) = deactivate(id.checkType(type.type()).index)
+        override fun isActive(id: CompId): Boolean = isActive(id.checkType(type.type()).index)
+        override fun get(id: CompId): C = get(id.checkType(type.type()).index)
+        override fun <CC : C> getAs(id: CompId): CC = getAs(id.checkType(type.type()).index)
+        override fun delete(id: CompId) = delete(id.checkType(type.type()).index)
         override fun delete(name: String) = delete(indexForName(name))
 
         override fun delete(index: Int) {
@@ -88,11 +95,11 @@ interface ComponentSystem : FFSystem {
                 // if still active, deactivate
                 if (activationMapping) {
                     active.set(index, false)
-                    listener(c, IComponentMap.MapAction.DEACTIVATED )
+                    listener(c, ComponentMap.MapAction.DEACTIVATED )
                 }
 
                 // notify and dispose
-                listener(c, IComponentMap.MapAction.DELETED )
+                listener(c, ComponentMap.MapAction.DELETED )
                 c.dispose()
             }
         }
@@ -132,6 +139,9 @@ interface ComponentSystem : FFSystem {
                 else -> id
             }
         }
+
+        override fun nextActive(from: Int): Int =
+            active.nextSetBit(from)
 
         fun nextIndex(predicate: Predicate<C>, currentIndex: Int): Int =
             if (currentIndex >= map.capacity() )
@@ -190,7 +200,7 @@ interface ComponentSystem : FFSystem {
 
         private fun <CC : C> add(c: CC, alsoActivate: Boolean = false): CC {
             _map.set(c.index(), c)
-            listener(c, IComponentMap.MapAction.CREATED)
+            listener(c, ComponentMap.MapAction.CREATED)
             if (nameMapping && c.name() !== NO_NAME) {
                 nameMap?.put(c.name(), c)
             }

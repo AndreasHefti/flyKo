@@ -6,8 +6,8 @@ import com.inari.commons.lang.list.DynArray
 import com.inari.commons.lang.list.IntBag
 import com.inari.firefly.FFContext
 import com.inari.firefly.NO_NAME
-import com.inari.firefly.component.IComponentMap
-import com.inari.firefly.component.IComponentMap.MapAction.*
+import com.inari.firefly.component.ComponentMap
+import com.inari.firefly.component.ComponentMap.MapAction.*
 import com.inari.firefly.control.ControllerSystem
 import com.inari.firefly.external.ViewPortData
 import com.inari.firefly.system.component.ComponentSystem
@@ -29,7 +29,7 @@ object ViewSystem : ComponentSystem {
             DELETED       -> deleted(view)
         } }
     )
-    @JvmField val layers: IComponentMap<Layer> = ComponentSystem.createComponentMapping(
+    @JvmField val layers: ComponentMap<Layer> = ComponentSystem.createComponentMapping(
         Layer,
         activationMapping = true,
         listener = { layer, action -> when (action) {

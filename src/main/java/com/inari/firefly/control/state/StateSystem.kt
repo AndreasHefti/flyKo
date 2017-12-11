@@ -5,7 +5,7 @@ import com.inari.firefly.Call
 import com.inari.firefly.FFApp
 import com.inari.firefly.FFContext
 import com.inari.firefly.NO_STATE
-import com.inari.firefly.component.IComponentMap
+import com.inari.firefly.component.ComponentMap
 import com.inari.firefly.external.FFTimer
 import com.inari.firefly.system.component.ComponentSystem
 import com.inari.firefly.system.component.SystemComponent.Companion.ASPECT_GROUP
@@ -22,8 +22,8 @@ object StateSystem : ComponentSystem {
         activationMapping = true,
         nameMapping = true,
         listener = { workflow, action -> when (action) {
-            IComponentMap.MapAction.ACTIVATED     -> activated(workflow)
-            IComponentMap.MapAction.DEACTIVATED   -> deactivated(workflow)
+            ComponentMap.MapAction.ACTIVATED     -> activated(workflow)
+            ComponentMap.MapAction.DEACTIVATED   -> deactivated(workflow)
             else -> {}
         } }
     )

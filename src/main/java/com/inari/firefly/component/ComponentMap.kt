@@ -7,7 +7,7 @@ import com.inari.firefly.IntFunction
 import com.inari.firefly.Predicate
 import com.inari.firefly.Receiver
 
-interface IComponentMap<C : Component> {
+interface ComponentMap<C : Component> : ComponentMapRO<C> {
 
     enum class MapAction {
         CREATED, ACTIVATED, DEACTIVATED, DELETED
@@ -19,24 +19,18 @@ interface IComponentMap<C : Component> {
     val activationMapping: Boolean
     val nameMapping: Boolean
 
-    operator fun contains(index: Int): Boolean
-    operator fun contains(name: String): Boolean
-    fun idForName(name: String): CompId
-    fun indexForName(name: String): Int
     fun activate(index: Int)
     fun deactivate(index: Int)
-    fun isActive(index: Int): Boolean
     fun activate(name: String)
     fun deactivate(name: String)
-    fun isActive(name: String): Boolean
-    operator fun get(index: Int): C
-    operator fun get(name: String): C
-    fun <CC : C> getAs(index: Int): CC
-    fun <CC : C> getAs(name: String): CC
+    fun activate(id: CompId)
+    fun deactivate(id: CompId)
     fun delete(index: Int)
     fun delete(name: String)
+    fun delete(id: CompId)
     fun deleteAll(predicate: Predicate<C>)
     fun indexIterator(predicate: Predicate<C>): IntFunction
+    fun nextActive(from: Int): Int
     fun receiver(): Receiver<C>
     fun forEach(expr: Expr<C>)
     fun forEachActive(expr: Expr<C>)

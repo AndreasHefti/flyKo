@@ -3,7 +3,7 @@ package com.inari.firefly.entity
 import com.inari.commons.lang.aspect.IAspects
 import com.inari.firefly.FFContext
 import com.inari.firefly.component.CompId
-import com.inari.firefly.component.IComponentMap
+import com.inari.firefly.component.ComponentMap
 import com.inari.firefly.control.Controller
 import com.inari.firefly.control.ControllerSystem
 import com.inari.firefly.entity.EntityActivationEvent.Type.ACTIVATED
@@ -18,11 +18,11 @@ object EntitySystem : ComponentSystem {
         Entity.typeKey
     )
 
-    @JvmField val entities: IComponentMap<Entity> = ComponentSystem.createComponentMapping(
+    @JvmField val entities: ComponentMap<Entity> = ComponentSystem.createComponentMapping(
         Entity,
         listener = { entity, action -> when (action) {
-            IComponentMap.MapAction.ACTIVATED     -> activated(entity)
-            IComponentMap.MapAction.DEACTIVATED   -> deactivated(entity)
+            ComponentMap.MapAction.ACTIVATED     -> activated(entity)
+            ComponentMap.MapAction.DEACTIVATED   -> deactivated(entity)
             else -> {}
         } }
     )
@@ -34,6 +34,9 @@ object EntitySystem : ComponentSystem {
     operator fun get(entityId: CompId) = entities[entityId.index]
     operator fun get(name: String) = entities[name]
     operator fun get(index: Int) = entities[index]
+    operator fun contains(entityId: CompId) = entityId in entities
+    operator fun contains(name: String) = name in entities
+    operator fun contains(index: Int) = index in entities
 
     private fun activated(entity: Entity) {
         if (entity.has(EMeta)) {

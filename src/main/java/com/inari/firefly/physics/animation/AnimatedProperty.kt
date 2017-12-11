@@ -31,6 +31,7 @@ abstract class AnimatedProperty protected constructor() {
         set(value) { propertyRef = if (active) throw IllegalStateException() else value }
 
     internal fun activate() {
+        reset()
         active = true
     }
 

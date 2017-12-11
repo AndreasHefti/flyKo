@@ -9,8 +9,8 @@ import com.inari.commons.lang.aspect.Aspects
 import com.inari.commons.lang.aspect.IAspects
 import com.inari.firefly.FFContext
 import com.inari.firefly.component.CompId
-import com.inari.firefly.component.IComponentMap.MapAction.CREATED
-import com.inari.firefly.component.IComponentMap.MapAction.DELETED
+import com.inari.firefly.component.ComponentMap.MapAction.CREATED
+import com.inari.firefly.component.ComponentMap.MapAction.DELETED
 import com.inari.firefly.component.ViewLayerMapping
 import com.inari.firefly.entity.Entity
 import com.inari.firefly.entity.EntityActivationEvent
