@@ -5,7 +5,7 @@ import com.inari.commons.lang.aspect.Aspect
 import com.inari.commons.lang.aspect.Aspects
 import com.inari.commons.lang.list.DynArray
 import com.inari.commons.lang.list.DynArrayRO
-import com.inari.firefly.NO_CONTACT
+import com.inari.firefly.physics.contact.Contact.Companion.NO_CONTACT
 
 
 class Contacts internal constructor(

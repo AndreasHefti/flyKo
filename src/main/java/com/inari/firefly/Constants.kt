@@ -2,14 +2,10 @@ package com.inari.firefly
 
 import com.inari.commons.lang.aspect.AspectGroup
 import com.inari.commons.lang.indexed.IIndexedTypeKey
-import com.inari.commons.lang.list.DynArray
-import com.inari.commons.lang.list.DynArrayRO
 import com.inari.firefly.component.CompId
 import com.inari.firefly.entity.Entity
 import com.inari.firefly.entity.property.IVirtualPropertyRef
 import com.inari.firefly.external.FFTimer
-import com.inari.firefly.external.ViewPortData
-import com.inari.firefly.physics.contact.Contact
 
 @JvmField val SYSTEM_FONT = "SYSTEM_FONT"
 
@@ -43,14 +39,10 @@ object GLBlendMode {
     override fun aspectGroup(): AspectGroup = throw IllegalAccessException()
     override fun name(): String = NO_NAME
 })
-@JvmField val NO_CONTACT = Contact()
-
 @JvmField val NO_PROPERTY_REF: IVirtualPropertyRef = object : IVirtualPropertyRef {
     override val propertyName: String = NO_NAME
-    override val type: Class<*>
-        get() = throw IllegalAccessException()
-    override fun accessor(entity: Entity): IVirtualPropertyRef.PropertyAccessor =
-        throw IllegalAccessException()
+    override val type: Class<*> get() = throw IllegalAccessException()
+    override fun accessor(entity: Entity): IVirtualPropertyRef.PropertyAccessor = throw IllegalAccessException()
 }
 
 @JvmField val BASE_VIEW: String = "[[BASE_VIEW]]"

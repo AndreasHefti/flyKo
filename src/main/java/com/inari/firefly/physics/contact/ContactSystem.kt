@@ -72,7 +72,7 @@ object ContactSystem : ComponentSystem {
                 contactMapViewLayer[entity[ETransform]].remove(entity)
             }
 
-            override fun match(aspects: Aspects): Boolean =
+            override fun match(aspects: IAspects): Boolean =
                 EContact in aspects &&
                 ETransform in aspects &&
                 ETile !in aspects

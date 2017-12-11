@@ -1,10 +1,11 @@
 package com.inari.firefly.entity
 
 import com.inari.commons.event.AspectedEventListener
+import com.inari.commons.lang.aspect.IAspects
 import com.inari.firefly.FFContext
-import com.inari.firefly.system.FFEvent
+import com.inari.firefly.system.FFAspectedEvent
 
-object EntityActivationEvent : FFEvent<EntityActivationEvent.Listener>(createTypeKey(EntityActivationEvent::class.java)) {
+object EntityActivationEvent : FFAspectedEvent<EntityActivationEvent.Listener>(createTypeKey(EntityActivationEvent::class.java)) {
 
     enum class Type {
         ACTIVATED,
@@ -13,6 +14,10 @@ object EntityActivationEvent : FFEvent<EntityActivationEvent.Listener>(createTyp
 
     private lateinit var entity: Entity
     private lateinit var type: EntityActivationEvent.Type
+
+    override fun getAspects(): IAspects =
+        entity.aspects
+
 
     override fun notify(listener: EntityActivationEvent.Listener) =
         when(type) {

@@ -34,7 +34,7 @@ object AnimationSystem : ComponentSystem {
                 activateForEntity(entity)
             override fun entityDeactivated(entity: Entity) =
                 deactivateForEntity(entity)
-            override fun match(aspects: Aspects): Boolean =
+            override fun match(aspects: IAspects): Boolean =
                 EAnimation in aspects
         })
 

@@ -2,6 +2,7 @@ package com.inari.firefly.graphics.rendering
 
 import com.inari.commons.geom.Rectangle
 import com.inari.commons.lang.aspect.Aspects
+import com.inari.commons.lang.aspect.IAspects
 import com.inari.firefly.FFApp
 import com.inari.firefly.FFContext
 import com.inari.firefly.component.ComponentMap
@@ -57,7 +58,7 @@ object RenderingSystem : FFSystem {
                     }
                 }
 
-                override fun match(aspects: Aspects) = true
+                override fun match(aspects: IAspects) = true
             }
         )
 

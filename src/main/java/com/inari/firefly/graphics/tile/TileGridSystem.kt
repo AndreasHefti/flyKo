@@ -54,7 +54,7 @@ object TileGridSystem : ComponentSystem {
                     addEntity(entity)
                 override fun entityDeactivated(entity: Entity) =
                     removeEntity(entity)
-                override fun match(aspects: Aspects): Boolean =
+                override fun match(aspects: IAspects): Boolean =
                     aspects.contains(ETile)
             }
         )

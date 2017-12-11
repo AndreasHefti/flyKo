@@ -17,6 +17,7 @@ import com.inari.firefly.external.FFAudio
 import com.inari.firefly.external.FFGraphics
 import com.inari.firefly.external.FFInput
 import com.inari.firefly.external.FFTimer
+import com.inari.firefly.system.FFAspectedEvent
 import com.inari.firefly.system.FFEvent
 import com.inari.firefly.system.component.ComponentSystem
 import com.inari.firefly.system.component.SubType
@@ -173,6 +174,16 @@ object FFContext {
     }
 
     fun <L> disposeListener(eventType: FFEvent<*>, listener: L): FFContext {
+        eventDispatcher.unregister(eventType.typeKey, listener)
+        return this
+    }
+
+    fun <L> registerListener(eventType: FFAspectedEvent<*>, listener: L): FFContext {
+        eventDispatcher.register(eventType.typeKey, listener)
+        return this
+    }
+
+    fun <L> disposeListener(eventType: FFAspectedEvent<*>, listener: L): FFContext {
         eventDispatcher.unregister(eventType.typeKey, listener)
         return this
     }

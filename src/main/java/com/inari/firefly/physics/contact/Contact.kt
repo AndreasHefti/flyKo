@@ -56,5 +56,9 @@ class Contact internal constructor() {
             "material=$material)"
     }
 
+    companion object {
+        @JvmField val NO_CONTACT = Contact()
+    }
+
 
 }

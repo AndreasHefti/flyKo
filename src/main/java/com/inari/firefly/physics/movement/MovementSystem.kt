@@ -1,6 +1,7 @@
 package com.inari.firefly.physics.movement
 
 import com.inari.commons.lang.aspect.Aspects
+import com.inari.commons.lang.aspect.IAspects
 import com.inari.firefly.FFApp.UpdateEvent
 import com.inari.firefly.FFContext
 import com.inari.firefly.entity.Entity
@@ -52,7 +53,7 @@ object MovementSystem : FFSystem {
                 entities.set(entity.index())
             override fun entityDeactivated(entity: Entity) =
                 entities.set(entity.index(), false)
-            override fun match(aspects: Aspects): Boolean =
+            override fun match(aspects: IAspects): Boolean =
                 aspects.contains(EMovement)
         })
     }
