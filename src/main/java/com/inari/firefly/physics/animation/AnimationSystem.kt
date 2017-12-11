@@ -9,11 +9,11 @@ import com.inari.firefly.control.ControllerSystem
 import com.inari.firefly.entity.Entity
 import com.inari.firefly.entity.EntityActivationEvent
 import com.inari.firefly.system.component.ComponentSystem
-import com.inari.firefly.system.component.SystemComponent.Companion.ASPECT_GROUP
+import com.inari.firefly.system.component.SystemComponent.Companion.SYSTEM_COMPONENT_ASPECTS
 
 object AnimationSystem : ComponentSystem {
     override val supportedComponents: IAspects =
-        ASPECT_GROUP.createAspects(Animation)
+        SYSTEM_COMPONENT_ASPECTS.createAspects(Animation)
 
     @JvmField val animations = ComponentSystem.createComponentMapping(
         Animation,

@@ -8,14 +8,14 @@ import com.inari.firefly.NO_STATE
 import com.inari.firefly.component.ComponentMap
 import com.inari.firefly.external.FFTimer
 import com.inari.firefly.system.component.ComponentSystem
-import com.inari.firefly.system.component.SystemComponent.Companion.ASPECT_GROUP
+import com.inari.firefly.system.component.SystemComponent.Companion.SYSTEM_COMPONENT_ASPECTS
 import com.inari.firefly.control.state.Workflow.StateChange
 
 
 
 object StateSystem : ComponentSystem {
     override val supportedComponents: IAspects =
-        ASPECT_GROUP.createAspects(Workflow)
+        SYSTEM_COMPONENT_ASPECTS.createAspects(Workflow)
 
     @JvmField val workflows = ComponentSystem.createComponentMapping(
         Workflow,

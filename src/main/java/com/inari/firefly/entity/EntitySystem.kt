@@ -10,11 +10,11 @@ import com.inari.firefly.entity.EntityActivationEvent.Type.ACTIVATED
 import com.inari.firefly.entity.EntityActivationEvent.Type.DEACTIVATED
 import com.inari.firefly.entity.EntityActivationEvent.send
 import com.inari.firefly.system.component.ComponentSystem
-import com.inari.firefly.system.component.SystemComponent.Companion.ASPECT_GROUP
+import com.inari.firefly.system.component.SystemComponent.Companion.SYSTEM_COMPONENT_ASPECTS
 
 object EntitySystem : ComponentSystem {
 
-    override val supportedComponents: IAspects = ASPECT_GROUP.createAspects(
+    override val supportedComponents: IAspects = SYSTEM_COMPONENT_ASPECTS.createAspects(
         Entity.typeKey
     )
 

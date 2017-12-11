@@ -12,24 +12,13 @@ import com.inari.firefly.system.component.ComponentSystem
 
 object RenderingSystem : FFSystem {
 
-    @JvmField val DEFAULT_RENDERING_CHAIN: List<Renderer> =
-        List(3, { index -> when(index) {
-            0 -> SimpleTileGridRenderer
-            1 -> MultiPositionSpriteRenderer
-            2 -> SimpleSpriteRenderer
-            // TODO
-            4 -> SimpleShapeRenderer
-            5 -> SimpleTextRenderer
-            else -> {throw IllegalStateException()}
-        }})
-
     @JvmField internal val _renderer = ComponentSystem.createComponentMapping(
         Renderer
     )
     val renderer: ComponentMap<Renderer> = _renderer
 
-    var ff_AllowMultipleAcceptance: Boolean = false
-    private var renderingChain: Array<Renderer> = DEFAULT_RENDERING_CHAIN.toTypedArray()
+    @JvmField var allowMultipleAcceptance: Boolean = false
+    private var renderingChain: Array<out Renderer> = emptyArray()
 
     init {
         FFContext.registerListener(
@@ -50,34 +39,50 @@ object RenderingSystem : FFSystem {
                 override fun entityActivated(entity: Entity) {
                     var i = 0
                     while (i < renderingChain.size) {
-                        val renderer = renderingChain[i]
+                        val renderer = renderingChain[i++]
                         if (renderer.match(entity)) {
-                            if (renderer.accept(entity) && !ff_AllowMultipleAcceptance) {
+                            if (renderer.accept(entity) && !allowMultipleAcceptance)
                                 return
-                            }
                         }
-                        i++
                     }
                 }
 
                 override fun entityDeactivated(entity: Entity) {
                     var i = 0
                     while (i < renderingChain.size) {
-                        val renderer = renderingChain[i]
-                        if (renderer.match(entity)) {
+                        val renderer = renderingChain[i++]
+                        if (renderer.match(entity))
                             renderer.dispose(entity)
-                        }
-                        i++
+
                     }
                 }
 
                 override fun match(aspects: Aspects) = true
             }
         )
+
+        setDefaultRenderingChain()
     }
 
-    fun setRenderingChain(renderingChain: List<Renderer>) {
-        this.renderingChain = renderingChain.toTypedArray()
+    fun setDefaultRenderingChain() {
+        setRenderingChain(
+            SimpleTileGridRenderer,
+            MultiPositionSpriteRenderer,
+            SimpleSpriteRenderer,
+            // TODO
+            SimpleShapeRenderer,
+            SimpleTextRenderer
+        )
+    }
+
+    fun setRenderingChain(vararg renderingChain: Renderer) {
+        _renderer.clear()
+        this.renderingChain = renderingChain
+        var i = 0
+        while (i < RenderingSystem.renderingChain.size) {
+            val renderer = RenderingSystem.renderingChain[i++]
+            _renderer.receiver()(renderer)
+        }
     }
 
     override fun clearSystem() {}

@@ -4,6 +4,7 @@ import com.inari.commons.geom.Rectangle
 import com.inari.commons.graphics.RGBColor
 import com.inari.firefly.FFContext
 import com.inari.firefly.entity.Entity
+import com.inari.firefly.entity.EntityComponent
 import com.inari.firefly.external.SpriteRenderable
 import com.inari.firefly.graphics.BlendMode
 import com.inari.firefly.graphics.ETransform
@@ -13,7 +14,7 @@ import com.inari.firefly.setFrom
 
 
 object SimpleTextRenderer : Renderer() {
-    private val matchingAspects = ASPECT_GROUP.createAspects(
+    private val matchingAspects = EntityComponent.ENTITY_ASPECTS.createAspects(
         ETransform, EText
     )
 

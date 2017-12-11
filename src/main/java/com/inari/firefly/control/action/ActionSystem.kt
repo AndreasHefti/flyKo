@@ -4,11 +4,11 @@ import com.inari.commons.lang.aspect.IAspects
 import com.inari.firefly.FFContext
 import com.inari.firefly.entity.EntitySystem
 import com.inari.firefly.system.component.ComponentSystem
-import com.inari.firefly.system.component.SystemComponent.Companion.ASPECT_GROUP
+import com.inari.firefly.system.component.SystemComponent.Companion.SYSTEM_COMPONENT_ASPECTS
 
 object ActionSystem : ComponentSystem {
     override val supportedComponents: IAspects =
-        ASPECT_GROUP.createAspects(Action)
+        SYSTEM_COMPONENT_ASPECTS.createAspects(Action)
 
     @JvmField val actions = ComponentSystem.createComponentMapping(
         Action, nameMapping = true

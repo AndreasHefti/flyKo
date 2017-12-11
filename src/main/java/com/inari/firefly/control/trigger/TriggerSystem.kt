@@ -9,7 +9,7 @@ import com.inari.firefly.system.component.SystemComponent
 object TriggerSystem : ComponentSystem {
 
     override val supportedComponents: IAspects =
-        SystemComponent.ASPECT_GROUP.createAspects(Trigger)
+        SystemComponent.SYSTEM_COMPONENT_ASPECTS.createAspects(Trigger)
 
     @JvmField val triggers = ComponentSystem.createComponentMapping(
         Trigger,

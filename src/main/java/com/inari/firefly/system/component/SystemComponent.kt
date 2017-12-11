@@ -61,12 +61,12 @@ abstract class SystemComponent protected constructor() : BaseIndexedObject(), In
 
     companion object {
 
-        val ASPECT_GROUP = AspectGroup("SystemComponent")
+        val SYSTEM_COMPONENT_ASPECTS = AspectGroup("SystemComponent")
 
         fun <T: SystemComponent> createTypeKey(type: Class<T>): IndexedTypeKey = Indexer.createIndexedTypeKey(TypeKey::class.java, type)
 
         class TypeKey<out C : SystemComponent> private constructor(indexedType: Class<C>) : IndexedTypeKey(indexedType) {
-            override fun aspectGroup(): AspectGroup = ASPECT_GROUP
+            override fun aspectGroup(): AspectGroup = SYSTEM_COMPONENT_ASPECTS
             override fun baseType(): Class<SystemComponent> = SystemComponent::class.java
             @Suppress("UNCHECKED_CAST") fun baseComponentType(): Class<out C> = indexedType as Class<out C>
             override fun toString(): String = "SystemComponent:" + type<C>().simpleName

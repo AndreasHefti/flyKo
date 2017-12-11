@@ -3,6 +3,7 @@ package com.inari.firefly.graphics.rendering
 import com.inari.commons.geom.Rectangle
 import com.inari.firefly.FFContext
 import com.inari.firefly.entity.Entity
+import com.inari.firefly.entity.EntityComponent
 import com.inari.firefly.entity.EntitySystem
 import com.inari.firefly.graphics.ETransform
 import com.inari.firefly.graphics.tile.ETile
@@ -10,7 +11,7 @@ import com.inari.firefly.graphics.tile.TileGridSystem
 
 object FullTileGridRenderer : Renderer() {
 
-    private val matchingAspects = ASPECT_GROUP.createAspects(
+    private val matchingAspects = EntityComponent.ENTITY_ASPECTS.createAspects(
         ETransform, ETile
     )
 

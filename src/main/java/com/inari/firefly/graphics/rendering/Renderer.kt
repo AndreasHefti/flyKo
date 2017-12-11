@@ -20,11 +20,6 @@ abstract class Renderer protected constructor(
     private val sort: Expr<DynArray<Entity>>? = null
 ) : SystemComponent() {
 
-    init {
-        @Suppress("LeakingThis")
-        RenderingSystem._renderer.receiver()(this)
-    }
-
     @JvmField protected val transformCollector = ExactTransformDataCollector()
 
     private val entities: DynArray<DynArray<DynArray<Entity>>> =
@@ -35,7 +30,7 @@ abstract class Renderer protected constructor(
             val renderable = this[entity[ETransform]]
             renderable.add(entity)
             sort?.invoke(renderable)
-            false
+            true
         } else {
             false
         }

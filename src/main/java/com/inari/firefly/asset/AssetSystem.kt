@@ -5,13 +5,13 @@ import com.inari.commons.lang.list.IntBag
 import com.inari.firefly.FFContext
 import com.inari.firefly.component.ComponentMap.MapAction
 import com.inari.firefly.system.component.ComponentSystem
-import com.inari.firefly.system.component.SystemComponent.Companion.ASPECT_GROUP
+import com.inari.firefly.system.component.SystemComponent.Companion.SYSTEM_COMPONENT_ASPECTS
 
 
 object AssetSystem : ComponentSystem {
 
     override val supportedComponents: IAspects =
-        ASPECT_GROUP.createAspects(Asset)
+        SYSTEM_COMPONENT_ASPECTS.createAspects(Asset)
 
     @JvmField val assets = ComponentSystem.createComponentMapping(
         Asset,

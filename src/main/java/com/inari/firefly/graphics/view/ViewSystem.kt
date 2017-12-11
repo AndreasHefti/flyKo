@@ -11,12 +11,12 @@ import com.inari.firefly.component.ComponentMap.MapAction.*
 import com.inari.firefly.control.ControllerSystem
 import com.inari.firefly.external.ViewPortData
 import com.inari.firefly.system.component.ComponentSystem
-import com.inari.firefly.system.component.SystemComponent.Companion.ASPECT_GROUP
+import com.inari.firefly.system.component.SystemComponent.Companion.SYSTEM_COMPONENT_ASPECTS
 
 object ViewSystem : ComponentSystem {
 
     override val supportedComponents: IAspects =
-        ASPECT_GROUP.createAspects(View, Layer)
+        SYSTEM_COMPONENT_ASPECTS.createAspects(View, Layer)
 
     @JvmField val views = ComponentSystem.createComponentMapping(
         View,

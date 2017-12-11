@@ -4,6 +4,7 @@ import com.inari.commons.geom.Rectangle
 import com.inari.firefly.FFApp
 import com.inari.firefly.FFContext
 import com.inari.firefly.TestApp
+import com.inari.firefly.graphics.rendering.RenderingSystem
 import com.inari.firefly.graphics.view.ViewSystem
 import org.junit.Test
 import kotlin.test.assertEquals

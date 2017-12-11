@@ -59,13 +59,13 @@ abstract class EntityComponent protected constructor() : Component, IndexedType 
 
     companion object {
 
-        val ASPECT_GROUP = AspectGroup("EntityComponentTypeKey")
+        val ENTITY_ASPECTS = AspectGroup("EntityComponentTypeKey")
 
         fun <T: EntityComponent> createTypeKey(type: Class<T>): IndexedTypeKey =
                 Indexer.createIndexedTypeKey(TypeKey::class.java, type)
 
         class TypeKey<out C : EntityComponent> private constructor(indexedType: Class<C>) : IndexedTypeKey(indexedType) {
-            override fun aspectGroup(): AspectGroup = ASPECT_GROUP
+            override fun aspectGroup(): AspectGroup = ENTITY_ASPECTS
             override fun baseType(): Class<EntityComponent> = EntityComponent::class.java
             @Suppress("UNCHECKED_CAST") fun baseComponentType(): Class<out C> = indexedType as Class<out C>
             override fun toString(): String = "EntityComponent:" + type<C>().simpleName

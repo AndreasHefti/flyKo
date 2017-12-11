@@ -14,7 +14,7 @@ object TestComponentSystem : ComponentSystem {
     val c2: ComponentMap<Test2Component>
 
     init {
-        supportedComponents = SystemComponent.ASPECT_GROUP.createAspects(
+        supportedComponents = SystemComponent.SYSTEM_COMPONENT_ASPECTS.createAspects(
             TestComponent.typeKey,
             Test2Component.typeKey
         )

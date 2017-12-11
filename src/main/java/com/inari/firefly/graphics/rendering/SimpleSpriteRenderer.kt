@@ -4,6 +4,7 @@ import com.inari.commons.geom.Rectangle
 import com.inari.firefly.FFContext
 import com.inari.firefly.entity.EChild
 import com.inari.firefly.entity.Entity
+import com.inari.firefly.entity.EntityComponent
 import com.inari.firefly.exclude
 import com.inari.firefly.graphics.ETransform
 import com.inari.firefly.graphics.sprite.ESprite
@@ -11,10 +12,10 @@ import com.inari.firefly.graphics.tile.ETile
 
 object SimpleSpriteRenderer : Renderer() {
 
-    private val matchingAspects = ASPECT_GROUP.createAspects(
+    private val matchingAspects = EntityComponent.ENTITY_ASPECTS.createAspects(
         ETransform, ESprite
     )
-    private val excludingAspects = ASPECT_GROUP.createAspects(
+    private val excludingAspects = EntityComponent.ENTITY_ASPECTS.createAspects(
         EChild, ETile
     )
 

@@ -10,7 +10,7 @@ import com.inari.firefly.graphics.sprite.ESprite
 
 object MultiPositionSpriteRenderer : Renderer() {
 
-    private val matchingAspects = EntityComponent.ASPECT_GROUP.createAspects(
+    private val matchingAspects = EntityComponent.ENTITY_ASPECTS.createAspects(
         ETransform, ESprite, EMultiplier
     )
 

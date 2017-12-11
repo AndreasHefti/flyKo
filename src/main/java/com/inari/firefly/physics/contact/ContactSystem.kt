@@ -23,7 +23,7 @@ import com.inari.firefly.graphics.view.ViewEvent
 import com.inari.firefly.physics.movement.EMovement
 import com.inari.firefly.physics.movement.MoveEvent
 import com.inari.firefly.system.component.ComponentSystem
-import com.inari.firefly.system.component.SystemComponent.Companion.ASPECT_GROUP
+import com.inari.firefly.system.component.SystemComponent.Companion.SYSTEM_COMPONENT_ASPECTS
 import java.util.*
 
 
@@ -35,7 +35,7 @@ object ContactSystem : ComponentSystem {
     @JvmField val UNDEFINED_CONTACT_TYPE: Aspect = CONTACT_TYPE_ASPECT_GROUP.createAspect("UNDEFINED_CONTACT_TYPE")
 
     override val supportedComponents: IAspects =
-        ASPECT_GROUP.createAspects(ContactMap, ContactConstraint, CollisionResolver)
+        SYSTEM_COMPONENT_ASPECTS.createAspects(ContactMap, ContactConstraint, CollisionResolver)
 
     @JvmField val contactMapViewLayer = ViewLayerMapping(ContactMap::class.java)
     @JvmField val contactMaps =

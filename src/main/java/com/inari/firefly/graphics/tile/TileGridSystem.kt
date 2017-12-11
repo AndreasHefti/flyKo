@@ -15,13 +15,13 @@ import com.inari.firefly.graphics.view.ViewEvent
 import com.inari.firefly.graphics.view.ViewEvent.Type.VIEW_DELETED
 import com.inari.firefly.graphics.view.ViewLayerAware
 import com.inari.firefly.system.component.ComponentSystem
-import com.inari.firefly.system.component.SystemComponent.Companion.ASPECT_GROUP
+import com.inari.firefly.system.component.SystemComponent.Companion.SYSTEM_COMPONENT_ASPECTS
 
 
 object TileGridSystem : ComponentSystem {
 
     override val supportedComponents: IAspects =
-        ASPECT_GROUP.createAspects(TileGrid)
+        SYSTEM_COMPONENT_ASPECTS.createAspects(TileGrid)
 
     @JvmField val viewLayerMapping = ViewLayerMapping(TileGrid::class.java)
     @JvmField val grids = ComponentSystem.createComponentMapping(

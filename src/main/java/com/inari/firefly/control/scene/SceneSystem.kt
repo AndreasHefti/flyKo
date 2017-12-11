@@ -12,7 +12,7 @@ import com.inari.firefly.system.component.SystemComponent
 object SceneSystem : ComponentSystem {
 
     override val supportedComponents: IAspects =
-        SystemComponent.ASPECT_GROUP.createAspects(Scene)
+        SystemComponent.SYSTEM_COMPONENT_ASPECTS.createAspects(Scene)
 
     private val _scenes = ComponentSystem.createComponentMapping(
         Scene,
