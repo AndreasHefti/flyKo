@@ -1,6 +1,7 @@
-package com.inari.firefly
+package com.inari.firefly.misc
 
 import com.inari.commons.lang.list.DynArray
+import com.inari.firefly.measureTime
 import org.junit.Test
 
 class DynArrayExtensionTest {

@@ -16,8 +16,6 @@ abstract class FFApp protected constructor(
     timer: () -> FFTimer
 ) {
 
-    private var disposed: Boolean = true
-
     init {
         if (initialized) {
             throw IllegalStateException("FFApp is a conceptual singleton and is already initialized")
@@ -28,14 +26,6 @@ abstract class FFApp protected constructor(
         Companion.audio = audio()
         Companion.input = input()
         Companion.timer = timer()
-
-        disposed = false
-    }
-
-    fun dispose() {
-        // TODO ?
-        //FFContext.dispose()
-        disposed = true
     }
 
     fun update() {
@@ -45,9 +35,6 @@ abstract class FFApp protected constructor(
     }
 
     fun render() {
-        if (disposed)
-            return
-
         val size = ViewSystem.activeViewPorts.size()
         if (size > 0) {
             var i = 0
@@ -76,7 +63,7 @@ abstract class FFApp protected constructor(
         graphics.startRendering(view, true)
 
         val layersOfView = ViewSystem.layersOfView.get(view.index)
-        if (!layersOfView.isEmpty) {
+        if (layersOfView.isEmpty) {
             FFContext.notify(RenderEvent)
         } else {
             val layerIterator = layersOfView.iterator()

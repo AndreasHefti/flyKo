@@ -58,15 +58,12 @@ object ViewSystem : ComponentSystem {
     }
 
     private fun created(view: View) {
-        if (view.isBase)
-            return
-
         val index = view.index()
-        orderedView.add(index)
-
-        if (layersOfView.contains(index)) {
+        if (index !in layersOfView)
             layersOfView.set(index, IntBag(10, -1, 5))
-        }
+
+        if (!view.isBase)
+            orderedView.add(index)
     }
 
     private fun activated(view: View) {
