@@ -6,10 +6,10 @@ import com.inari.firefly.FFContext
 import com.inari.firefly.component.Singleton
 import com.inari.firefly.physics.animation.AnimatedProperty
 import com.inari.firefly.physics.animation.Animation
-import com.inari.firefly.system.component.SubType
+import com.inari.firefly.system.component.SingletonComponent
 
 @Singleton
-class IntTimelineAnimation : Animation() {
+class IntTimelineAnimation private constructor() : Animation() {
 
     @JvmField internal val propertyAnimations =
         DynArray.create(IntTimelineAnimated::class.java, 2, 5)
@@ -60,9 +60,10 @@ class IntTimelineAnimation : Animation() {
         }
     }
 
-    companion object : SubType<IntTimelineAnimation, Animation>() {
+    companion object : SingletonComponent<IntTimelineAnimation, Animation>() {
         override val typeKey: IndexedTypeKey = Animation.typeKey
         override fun subType() = IntTimelineAnimation::class.java
-        override fun createEmpty() = IntTimelineAnimation()
+        override fun create(): IntTimelineAnimation =
+            IntTimelineAnimation()
     }
 }

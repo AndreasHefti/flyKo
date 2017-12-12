@@ -6,10 +6,10 @@ import com.inari.firefly.FFContext
 import com.inari.firefly.component.Singleton
 import com.inari.firefly.physics.animation.AnimatedProperty
 import com.inari.firefly.physics.animation.Animation
-import com.inari.firefly.system.component.SubType
+import com.inari.firefly.system.component.SingletonComponent
 
 @Singleton
-class EasingAnimation : Animation() {
+class EasingAnimation private constructor(): Animation() {
 
     @JvmField internal val propertyAnimations =
         DynArray.create(EasingAnimated::class.java)
@@ -61,9 +61,10 @@ class EasingAnimation : Animation() {
         )
     }
 
-    companion object : SubType<EasingAnimation, Animation>() {
+    companion object : SingletonComponent<EasingAnimation, Animation>() {
         override val typeKey: IndexedTypeKey = Animation.typeKey
         override fun subType() = EasingAnimation::class.java
-        override fun createEmpty() = EasingAnimation()
+        override fun create(): EasingAnimation =
+            EasingAnimation()
     }
 }

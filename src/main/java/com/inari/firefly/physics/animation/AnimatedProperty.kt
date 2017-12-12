@@ -12,7 +12,6 @@ abstract class AnimatedProperty protected constructor() {
     @JvmField internal var animationRef = -1
     @JvmField internal var looping: Boolean = false
     @JvmField internal var propertyRef: IVirtualPropertyRef = NO_PROPERTY_REF
-    @JvmField internal var lastUpdate: Long = -1
 
     @JvmField internal var active = false
 

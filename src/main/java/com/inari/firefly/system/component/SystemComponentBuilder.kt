@@ -8,12 +8,8 @@ import com.inari.firefly.component.Singleton
 
 abstract class SystemComponentBuilder<out C : SystemComponent> : ComponentBuilder<C>() {
 
-    var singletonId: CompId = NO_COMP_ID
-        private set
-
     val build: (C.() -> Unit) -> CompId = { configure ->
         val comp: C = createEmpty()
-        checkSingleton(comp)
         comp.also(configure)
         comp._init()
         FFContext.mapper<C>(typeKey).receiver()(comp)
@@ -22,7 +18,6 @@ abstract class SystemComponentBuilder<out C : SystemComponent> : ComponentBuilde
 
     val buildAndGet: (C.() -> Unit) -> C = { configure ->
         val comp: C = createEmpty()
-        checkSingleton(comp)
         comp.also(configure)
         comp._init()
         FFContext.mapper<C>(typeKey).receiver()(comp)
@@ -31,7 +26,6 @@ abstract class SystemComponentBuilder<out C : SystemComponent> : ComponentBuilde
 
     val buildAndActivate: (C.() -> Unit) -> CompId = { configure ->
         val comp: C = createEmpty()
-        checkSingleton(comp)
         comp.also(configure)
         comp._init()
         FFContext.mapper<C>(typeKey).receiver()(comp)
@@ -41,7 +35,6 @@ abstract class SystemComponentBuilder<out C : SystemComponent> : ComponentBuilde
 
     val buildActivateAndGet: (C.() -> Unit) -> C = { configure ->
         val comp: C = createEmpty()
-        checkSingleton(comp)
         comp.also(configure)
         comp._init()
         FFContext.mapper<C>(typeKey).receiver()(comp)
@@ -49,13 +42,4 @@ abstract class SystemComponentBuilder<out C : SystemComponent> : ComponentBuilde
         comp
     }
 
-    private fun checkSingleton(comp: C) {
-        if (comp::class.java.isAnnotationPresent(Singleton::class.java)) {
-            if (singletonId !== NO_COMP_ID) {
-                throw UnsupportedOperationException("")
-            }
-
-            singletonId = comp.componentId
-        }
-    }
 }
