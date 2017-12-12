@@ -134,8 +134,8 @@ object FFInfoSystem : FFSystem {
 
     private val infoDisplayBackground = object : ShapeData {
 
-        @JvmField internal val color = RGBColor(1f, 1f, 1f, 1f)
-         @JvmField internal val rectVertices: FloatArray = floatArrayOf(0f, 0f, 0f, 0f)
+        @JvmField internal val color = RGBColor(0.8f, 0.8f, 0.8f, 0.5f)
+        @JvmField internal val rectVertices: FloatArray = floatArrayOf(0f, 0f, 0f, 0f)
 
         override val type: ShapeData.ShapeType = ShapeData.ShapeType.RECTANGLE
         override val vertices: FloatArray = rectVertices
