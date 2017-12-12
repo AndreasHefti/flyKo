@@ -12,18 +12,18 @@ import com.inari.firefly.system.component.SubType
 class IntTimelineAnimation : Animation() {
 
     @JvmField internal val propertyAnimations =
-        DynArray.create(IntTimelineAimated::class.java, 2, 5)
+        DynArray.create(IntTimelineAnimated::class.java, 2, 5)
 
     override fun register(animated: AnimatedProperty) {
-        if (animated is IntTimelineAimated)
+        if (animated is IntTimelineAnimated)
             propertyAnimations.add(animated)
-        else wrongAnimatedType(IntTimelineAimated::class.java.name, animated::class.java.name)
+        else wrongAnimatedType(IntTimelineAnimated::class.java.name, animated::class.java.name)
     }
 
     override fun dispose(animated: AnimatedProperty) {
-        if (animated is IntTimelineAimated)
+        if (animated is IntTimelineAnimated)
             propertyAnimations.remove(animated)
-        else wrongAnimatedType(IntTimelineAimated::class.java.name, animated::class.java.name)
+        else wrongAnimatedType(IntTimelineAnimated::class.java.name, animated::class.java.name)
     }
 
     override fun invoke() {
@@ -35,8 +35,8 @@ class IntTimelineAnimation : Animation() {
         }
     }
 
-    private fun update(t: IntTimelineAimated) {
-        val frame: IntTimelineAimated.Frame = t.timeline[t.currentIndex]
+    private fun update(t: IntTimelineAnimated) {
+        val frame: IntTimelineAnimated.Frame = t.timeline[t.currentIndex]
 
         t.currentFrameTime += FFContext.timer.timeElapsed
 
@@ -56,7 +56,7 @@ class IntTimelineAnimation : Animation() {
                 return
             }
 
-            t.propertyAccessor.set(t.timeline[t.currentIndex].value)
+            t.propertyAccessor?.set(t.timeline[t.currentIndex].value)
         }
     }
 

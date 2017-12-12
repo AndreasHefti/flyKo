@@ -5,7 +5,7 @@ import com.inari.firefly.entity.property.IFloatPropertyAccessor
 
 class AnimatedFloat private constructor() : AnimatedProperty() {
 
-    @JvmField internal var propertyAccessor: IFloatPropertyAccessor = null!!
+    @JvmField internal var propertyAccessor: IFloatPropertyAccessor? = null
     @JvmField internal var initValue = 0f
 
     @JvmField internal var v1 = 0f
@@ -24,6 +24,7 @@ class AnimatedFloat private constructor() : AnimatedProperty() {
         v1 = initValue
         v2 = initValue
         v3 = initValue
+        propertyAccessor?.set(initValue)
     }
 
     companion object : Builder<AnimatedFloat>() {

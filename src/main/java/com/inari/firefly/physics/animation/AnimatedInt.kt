@@ -5,7 +5,7 @@ import com.inari.firefly.entity.property.IIntPropertyAccessor
 
 class AnimatedInt private constructor() : AnimatedProperty() {
 
-    @JvmField internal var propertyAccessor: IIntPropertyAccessor = null!!
+    @JvmField internal var propertyAccessor: IIntPropertyAccessor? = null
     @JvmField internal var initValue = 0
 
     @JvmField internal var v1 = 0
@@ -24,6 +24,7 @@ class AnimatedInt private constructor() : AnimatedProperty() {
         v1 = initValue
         v2 = initValue
         v3 = initValue
+        propertyAccessor?.set(initValue)
     }
 
     companion object : Builder<AnimatedInt>() {

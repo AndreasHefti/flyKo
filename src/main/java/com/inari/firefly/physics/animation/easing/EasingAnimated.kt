@@ -8,7 +8,7 @@ import com.inari.firefly.physics.animation.AnimatedProperty
 
 class EasingAnimated private constructor() : AnimatedProperty() {
 
-    @JvmField internal var propertyAccessor: IFloatPropertyAccessor = null!!
+    @JvmField internal var propertyAccessor: IFloatPropertyAccessor? = null
     @JvmField internal var easingType: Easing.Type = Easing.Type.LINEAR
     @JvmField internal var startValue = 0f
     @JvmField internal var endValue = 0f
@@ -39,7 +39,7 @@ class EasingAnimated private constructor() : AnimatedProperty() {
 
     override fun reset() {
         runningTime = FFContext.timer.time
-        propertyAccessor.set(startValue)
+        propertyAccessor?.set(startValue)
     }
 
     companion object : Builder<EasingAnimated>() {

@@ -51,7 +51,7 @@ class EasingAnimation : Animation() {
             return
         }
 
-        animated.propertyAccessor.set(
+        animated.propertyAccessor?.set(
             animated.easingType.easing.calc(
                 animated.runningTime.toFloat(),
                 animated.startValue,

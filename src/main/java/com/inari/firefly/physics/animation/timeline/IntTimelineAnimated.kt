@@ -4,9 +4,9 @@ import com.inari.firefly.entity.Entity
 import com.inari.firefly.entity.property.IIntPropertyAccessor
 import com.inari.firefly.physics.animation.AnimatedProperty
 
-class IntTimelineAimated private constructor() : AnimatedProperty() {
+class IntTimelineAnimated private constructor() : AnimatedProperty() {
 
-    @JvmField internal var propertyAccessor: IIntPropertyAccessor = null!!
+    @JvmField internal var propertyAccessor: IIntPropertyAccessor? = null
 
     @JvmField internal var timeline: Array<Frame> = emptyArray()
     @JvmField internal var startValue = 0
@@ -36,11 +36,11 @@ class IntTimelineAimated private constructor() : AnimatedProperty() {
     override fun reset() {
         currentFrameTime = 0
         currentIndex = startValue
-        propertyAccessor.set(startValue)
+        propertyAccessor?.set(startValue)
     }
 
-    companion object : AnimatedProperty.Builder<IntTimelineAimated>() {
-        override fun createEmpty() = IntTimelineAimated()
+    companion object : AnimatedProperty.Builder<IntTimelineAnimated>() {
+        override fun createEmpty() = IntTimelineAnimated()
     }
 
     data class Frame(
