@@ -39,6 +39,8 @@ object FFInfoSystem : FFSystem {
         if (SYSTEM_FONT !in AssetSystem.assets)
             throw ExceptionInInitializerError("No FontAsset for SYSTEM_FONT found in AssetSystem. SYSTEM_FONT must be defined")
         font = AssetSystem.assets.getAs(SYSTEM_FONT)
+        hStep = font.charWidth + font.charSpace
+        vStep = font.charHeight + font.lineSpace
     }
 
 
