@@ -2,7 +2,11 @@ package com.inari.firefly.graphics.sprite
 
 import com.inari.commons.graphics.RGBColor
 import com.inari.firefly.asset.AssetInstanceRefResolver
+import com.inari.firefly.entity.Entity
 import com.inari.firefly.entity.EntityComponent
+import com.inari.firefly.entity.property.IFloatPropertyAccessor
+import com.inari.firefly.entity.property.IIntPropertyAccessor
+import com.inari.firefly.entity.property.IVirtualPropertyRef
 import com.inari.firefly.external.SpriteRenderable
 import com.inari.firefly.graphics.BlendMode
 import com.inari.firefly.setFrom
@@ -50,6 +54,58 @@ class ESprite private constructor () : EntityComponent(), SpriteRenderable {
             "shaderRef=$shaderRef, " +
             "blend=$blend, " +
             "tint=$tint, " 
+    }
+
+    private val accessorSpriteRef: IIntPropertyAccessor = object : IIntPropertyAccessor {
+        override fun set(value: Int) {spriteRef = value}
+        override fun get(): Int = spriteRef
+    }
+    private val accessorTintRed: IFloatPropertyAccessor = object : IFloatPropertyAccessor {
+        override fun set(value: Float) {tint.r = value}
+        override fun get(): Float = tint.r
+    }
+    private val accessorTintGreen: IFloatPropertyAccessor = object : IFloatPropertyAccessor {
+        override fun set(value: Float) {tint.g = value}
+        override fun get(): Float = tint.g
+    }
+    private val accessorTintBlue: IFloatPropertyAccessor = object : IFloatPropertyAccessor {
+        override fun set(value: Float) {tint.b = value}
+        override fun get(): Float = tint.b
+    }
+    private val accessorTintAlpha: IFloatPropertyAccessor = object : IFloatPropertyAccessor {
+        override fun set(value: Float) {tint.a = value}
+        override fun get(): Float = tint.a
+    }
+
+    enum class Property(
+        override val propertyName: String,
+        override val type: Class<*>
+    ) : IVirtualPropertyRef {
+        SPRITE_REFERENCE("spriteRef", Int::class.java) {
+            override fun accessor(entity: Entity): IIntPropertyAccessor {
+                return entity[ESprite].accessorSpriteRef
+            }
+        },
+        TINT_RED("tintRed", Float::class.java) {
+            override fun accessor(entity: Entity): IFloatPropertyAccessor {
+                return entity[ESprite].accessorTintRed
+            }
+        },
+        TINT_GREEN("tintGreen", Float::class.java) {
+            override fun accessor(entity: Entity): IFloatPropertyAccessor {
+                return entity[ESprite].accessorTintGreen
+            }
+        },
+        TINT_BLUE("tintBlue", Float::class.java) {
+            override fun accessor(entity: Entity): IFloatPropertyAccessor {
+                return entity[ESprite].accessorTintBlue
+            }
+        },
+        TINT_ALPHA("tintAlpha", Float::class.java) {
+            override fun accessor(entity: Entity): IFloatPropertyAccessor {
+                return entity[ESprite].accessorTintAlpha
+            }
+        }
     }
 
     override fun indexedTypeKey() = typeKey

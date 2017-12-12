@@ -78,6 +78,5 @@ class TextureAsset private constructor() : Asset(), TextureData {
         override val typeKey: IndexedTypeKey = Asset.typeKey
         override fun subType() = TextureAsset::class.java
         override fun createEmpty() = TextureAsset()
-
     }
 }

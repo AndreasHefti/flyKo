@@ -16,7 +16,7 @@ class EAnimation : EntityComponent() {
             controllerRef = setIfNotInitialized(index, "ff_Controller")
         })
 
-    fun <A : AnimatedProperty> withAnimated(cBuilder: AnimatedProperty.Builder<A>, configure: (A.() -> Unit)): A =
+    fun <A : AnimatedProperty> with(cBuilder: AnimatedProperty.Builder<A>, configure: (A.() -> Unit)): A =
         cBuilder.builder( { comp ->
             animations.add(comp)
             comp
