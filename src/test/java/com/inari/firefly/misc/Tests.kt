@@ -125,7 +125,7 @@ fun main(args: Array<String>) {
             ff_Position.x = 1f
         }
         with(EAnimation) {
-            withAnimated(AnimatedInt) {
+            with(AnimatedInt) {
                 ff_Looping = true
             }
         }
