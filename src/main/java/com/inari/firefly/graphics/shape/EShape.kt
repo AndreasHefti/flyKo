@@ -8,6 +8,7 @@ import com.inari.firefly.external.ShapeData
 import com.inari.firefly.external.ShapeData.ShapeType
 import com.inari.firefly.graphics.BlendMode
 import com.inari.firefly.setFrom
+import java.util.*
 
 class EShape private constructor(): EntityComponent(), ShapeData {
 
@@ -69,6 +70,21 @@ class EShape private constructor(): EntityComponent(), ShapeData {
         fill = false
         blend = BlendMode.NONE
         shaderRef = -1
+    }
+
+
+    override fun toString(): String {
+        return "EShape(type=$type, " +
+            "vertices=${Arrays.toString(vertices)}, " +
+            "color1=$color1, " +
+            "color2=$color2, " +
+            "color3=$color3, " +
+            "color4=$color4, " +
+            "segments=$segments, " +
+            "fill=$fill, " +
+            "blend=$blend, " +
+            "shaderRef=$shaderRef, " +
+            "ff_Shader=$ff_Shader)"
     }
 
     override fun indexedTypeKey(): IIndexedTypeKey = typeKey

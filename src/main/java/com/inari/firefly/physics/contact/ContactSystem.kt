@@ -5,7 +5,6 @@ import com.inari.commons.geom.BitMask
 import com.inari.commons.geom.Rectangle
 import com.inari.commons.lang.aspect.Aspect
 import com.inari.commons.lang.aspect.AspectGroup
-import com.inari.commons.lang.aspect.Aspects
 import com.inari.commons.lang.aspect.IAspects
 import com.inari.firefly.FFContext
 import com.inari.firefly.component.CompId
@@ -15,7 +14,7 @@ import com.inari.firefly.component.ViewLayerMapping
 import com.inari.firefly.entity.Entity
 import com.inari.firefly.entity.EntityActivationEvent
 import com.inari.firefly.entity.EntitySystem
-import com.inari.firefly.external.ViewPortData
+import com.inari.firefly.external.ViewData
 import com.inari.firefly.graphics.ETransform
 import com.inari.firefly.graphics.tile.ETile
 import com.inari.firefly.graphics.tile.TileGridSystem
@@ -55,7 +54,7 @@ object ContactSystem : ComponentSystem {
 
     init {
         FFContext.registerListener(ViewEvent, object : ViewEvent.Listener{
-            override fun invoke(id: CompId, viewPort: ViewPortData, type: ViewEvent.Type) {
+            override fun invoke(id: CompId, viewPort: ViewData, type: ViewEvent.Type) {
                 when(type) {
                     ViewEvent.Type.VIEW_DELETED -> contactMaps.deleteAll { map -> map.viewRef == id.index }
                     else -> {}

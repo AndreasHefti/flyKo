@@ -1,6 +1,5 @@
 package com.inari.firefly.graphics.tile
 
-import com.inari.commons.lang.aspect.Aspects
 import com.inari.commons.lang.aspect.IAspects
 import com.inari.firefly.FFContext
 import com.inari.firefly.component.CompId
@@ -9,7 +8,7 @@ import com.inari.firefly.component.ComponentMap.MapAction.DELETED
 import com.inari.firefly.component.ViewLayerMapping
 import com.inari.firefly.entity.Entity
 import com.inari.firefly.entity.EntityActivationEvent
-import com.inari.firefly.external.ViewPortData
+import com.inari.firefly.external.ViewData
 import com.inari.firefly.graphics.ETransform
 import com.inari.firefly.graphics.view.ViewEvent
 import com.inari.firefly.graphics.view.ViewEvent.Type.VIEW_DELETED
@@ -37,7 +36,7 @@ object TileGridSystem : ComponentSystem {
         FFContext.registerListener(
             ViewEvent,
             object : ViewEvent.Listener {
-                override fun invoke(id: CompId, viewPort: ViewPortData, type: ViewEvent.Type) {
+                override fun invoke(id: CompId, viewPort: ViewData, type: ViewEvent.Type) {
                     when(type) {
                         VIEW_DELETED -> viewLayerMapping[id.index]
                             .forEach { grid -> grids.delete(grid.index()) }

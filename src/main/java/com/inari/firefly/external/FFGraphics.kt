@@ -82,32 +82,32 @@ interface FFGraphics /*ViewEventListener */ {
      */
     fun disposeShader(shaderId: Int)
 
-    /** This is called form the firefly API before rendering to a given [ViewPortData] and must
-     * prepare all the stuff needed to render the that [ViewPortData] on following renderXXX calls.
+    /** This is called form the firefly API before rendering to a given [ViewData] and must
+     * prepare all the stuff needed to render the that [ViewData] on following renderXXX calls.
      *
-     * @param view the [ViewPortData] that is starting to be rendered
-     * @param clear indicates whether the [ViewPortData] should be cleared with the vies clear-color before rendering or not
+     * @param view the [ViewData] that is starting to be rendered
+     * @param clear indicates whether the [ViewData] should be cleared with the vies clear-color before rendering or not
      */
-    fun startRendering(view: ViewPortData, clear: Boolean)
+    fun startRendering(view: ViewData, clear: Boolean)
 
-    /** This is called form the firefly API to render a created sprite on specified position to the actual [ViewPortData]
+    /** This is called form the firefly API to render a created sprite on specified position to the actual [ViewData]
      *
      * @param renderableSprite the sprite DAO
-     * @param xpos the x-axis position in the 2D world of the actual [ViewPortData]
-     * @param ypos the y-axis position in the 2D world of the actual [ViewPortData]
+     * @param xpos the x-axis position in the 2D world of the actual [ViewData]
+     * @param ypos the y-axis position in the 2D world of the actual [ViewData]
      */
     fun renderSprite(renderableSprite: SpriteRenderable, xpos: Float, ypos: Float)
 
-    /** This is called form the firefly API to render a created sprite on specified position and scale to the actual [ViewPortData]
+    /** This is called form the firefly API to render a created sprite on specified position and scale to the actual [ViewData]
      *
      * @param renderableSprite the sprite DAO
-     * @param xpos the x-axis position in the 2D world of the actual [ViewPortData]
-     * @param ypos the y-axis position in the 2D world of the actual [ViewPortData]
+     * @param xpos the x-axis position in the 2D world of the actual [ViewData]
+     * @param ypos the y-axis position in the 2D world of the actual [ViewData]
      * @param scale the x-axis and y-axis scale for the sprite to render
      */
     fun renderSprite(renderableSprite: SpriteRenderable, xpos: Float, ypos: Float, scale: Float)
 
-    /** This is called form the firefly API to render a created sprite with specified [TransformData] to the actual [ViewPortData]
+    /** This is called form the firefly API to render a created sprite with specified [TransformData] to the actual [ViewData]
      *
      * @param renderableSprite the sprite DAO
      * @param transform [TransformData] DAO containing all transform data to render the sprite like: position-offset, scale, pivot, rotation
@@ -128,12 +128,12 @@ interface FFGraphics /*ViewEventListener */ {
      */
     fun renderShape(data: ShapeData, transform: TransformData)
 
-    /** This is called form the firefly API to notify the end of rendering for a specified [ViewPortData].
-     * @param view [ViewPortData] that is ending to be rendered
+    /** This is called form the firefly API to notify the end of rendering for a specified [ViewData].
+     * @param view [ViewData] that is ending to be rendered
      */
-    fun endRendering(view: ViewPortData)
+    fun endRendering(view: ViewData)
 
-    fun flush(virtualViews: DynArrayRO<ViewPortData>)
+    fun flush(virtualViews: DynArrayRO<ViewData>)
 
     fun getScreenshotPixels(area: Rectangle): ByteArray
 

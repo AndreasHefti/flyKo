@@ -3,7 +3,7 @@ package com.inari.firefly.graphics.view
 import com.inari.firefly.component.CompId
 import com.inari.firefly.FFContext
 import com.inari.firefly.system.FFEvent
-import com.inari.firefly.external.ViewPortData
+import com.inari.firefly.external.ViewData
 
 object ViewEvent : FFEvent<ViewEvent.Listener>(createTypeKey(ViewEvent::class.java)) {
 
@@ -15,13 +15,13 @@ object ViewEvent : FFEvent<ViewEvent.Listener>(createTypeKey(ViewEvent::class.ja
     }
 
     private lateinit var id: CompId
-    private lateinit var data: ViewPortData
+    private lateinit var data: ViewData
     private lateinit var type: ViewEvent.Type
 
     override fun notify(listener: ViewEvent.Listener) =
         listener(id, data, type)
 
-    fun send(id: CompId, data: ViewPortData, type: ViewEvent.Type) {
+    fun send(id: CompId, data: ViewData, type: ViewEvent.Type) {
         this.id = id
         this.data = data
         this.type = type
@@ -29,6 +29,6 @@ object ViewEvent : FFEvent<ViewEvent.Listener>(createTypeKey(ViewEvent::class.ja
     }
 
     interface Listener {
-        operator fun invoke(id: CompId, viewPort: ViewPortData, type: Type)
+        operator fun invoke(id: CompId, viewPort: ViewData, type: Type)
     }
 }

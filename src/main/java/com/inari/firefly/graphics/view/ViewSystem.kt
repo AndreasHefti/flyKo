@@ -9,7 +9,7 @@ import com.inari.firefly.NO_NAME
 import com.inari.firefly.component.ComponentMap
 import com.inari.firefly.component.ComponentMap.MapAction.*
 import com.inari.firefly.control.ControllerSystem
-import com.inari.firefly.external.ViewPortData
+import com.inari.firefly.external.ViewData
 import com.inari.firefly.system.component.ComponentSystem
 import com.inari.firefly.system.component.SystemComponent.Companion.SYSTEM_COMPONENT_ASPECTS
 
@@ -42,7 +42,7 @@ object ViewSystem : ComponentSystem {
     )
 
     @JvmField val baseView: View
-    @JvmField internal val activeViewPorts: DynArray<ViewPortData> = DynArray.create(ViewPortData::class.java)
+    @JvmField internal val activeViewPorts: DynArray<ViewData> = DynArray.create(ViewData::class.java)
     @JvmField internal val layersOfView: DynArray<IntBag> = DynArray.create(IntBag::class.java)
 
     private val orderedView: IntBag = IntBag(10, -1, 5)
@@ -72,9 +72,9 @@ object ViewSystem : ComponentSystem {
 
         updateViewMapping()
 
-        if (view.ff_ControllerId >= 0) {
+        if (view.controllerRef >= 0) {
             ControllerSystem.controller
-                .get(view.ff_ControllerId)
+                .get(view.controllerRef)
                 .register(view.componentId)
         }
     }
@@ -90,9 +90,9 @@ object ViewSystem : ComponentSystem {
             layers.deactivate(i.next())
         }
 
-        if (view.ff_ControllerId >= 0) {
+        if (view.controllerRef >= 0) {
             ControllerSystem.controller
-                .get(view.ff_ControllerId)
+                .get(view.controllerRef)
                 .unregister(view.componentId)
         }
     }

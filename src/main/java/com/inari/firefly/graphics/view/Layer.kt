@@ -16,7 +16,6 @@ class Layer private constructor () : SystemComponent() {
     }
 
     override fun indexedTypeKey() = typeKey
-
     companion object : SingleType<Layer>() {
         override val typeKey = SystemComponent.createTypeKey(Layer::class.java)
         override fun createEmpty() = Layer()

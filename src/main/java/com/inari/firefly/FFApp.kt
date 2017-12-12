@@ -52,7 +52,7 @@ abstract class FFApp protected constructor(
         FFContext.notify(PostRenderEvent)
     }
 
-    private fun render(view: ViewPortData) {
+    private fun render(view: ViewData) {
         RenderEvent.viewIndex = view.index
         RenderEvent.layerIndex = 0
         RenderEvent.clip.x = Math.floor(view.worldPosition.x.toDouble()).toInt()
@@ -94,8 +94,8 @@ abstract class FFApp protected constructor(
         lateinit var timer: FFTimer
             private set
 
-        @JvmField internal val NO_VIRTUAL_VIEW_PORTS: DynArrayRO<ViewPortData> =
-            DynArray.create(ViewPortData::class.java)
+        @JvmField internal val NO_VIRTUAL_VIEW_PORTS: DynArrayRO<ViewData> =
+            DynArray.create(ViewData::class.java)
     }
 
     abstract class SystemTimer {

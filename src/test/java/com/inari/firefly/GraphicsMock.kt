@@ -10,10 +10,10 @@ import java.util.*
 
 object GraphicsMock : FFGraphics {
 
-    private val loadedAssets = DynArray.create(String::class.java, 20, 10)
-    private val views = ArrayList<CompId>()
+    val loadedAssets = DynArray.create(String::class.java, 20, 10)
+    val views = ArrayList<CompId>()
 
-    private val log = ArrayList<String>()
+    val log = ArrayList<String>()
 
     override val screenWidth: Int
         get() = 100
@@ -25,7 +25,7 @@ object GraphicsMock : FFGraphics {
         FFContext.registerListener(
             ViewEvent,
             object : ViewEvent.Listener {
-                override fun invoke(id: CompId, viewPort: ViewPortData, type: ViewEvent.Type) {
+                override fun invoke(id: CompId, viewPort: ViewData, type: ViewEvent.Type) {
                     when (type) {
                         ViewEvent.Type.VIEW_ACTIVATED -> views.add(id)
                         ViewEvent.Type.VIEW_DISPOSED -> views.remove(id)
@@ -69,7 +69,7 @@ object GraphicsMock : FFGraphics {
 
 
 
-    override fun startRendering(view: ViewPortData, clear: Boolean) {
+    override fun startRendering(view: ViewData, clear: Boolean) {
         log.add("startRendering::View($view)")
     }
 
@@ -93,11 +93,11 @@ object GraphicsMock : FFGraphics {
         log.add("renderShape:: $data : $transform")
     }
 
-    override fun endRendering(view: ViewPortData) {
+    override fun endRendering(view: ViewData) {
         log.add("endRendering::View($view)")
     }
 
-    override fun flush(virtualViews: DynArrayRO<ViewPortData>) {
+    override fun flush(virtualViews: DynArrayRO<ViewData>) {
         log.add("flush")
     }
 

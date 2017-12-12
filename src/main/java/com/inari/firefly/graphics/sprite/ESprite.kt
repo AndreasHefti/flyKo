@@ -45,6 +45,13 @@ class ESprite private constructor () : EntityComponent(), SpriteRenderable {
         shaderRef = -1
     }
 
+    override fun toString(): String {
+        return "ESprite(spriteRef=$spriteRef, " +
+            "shaderRef=$shaderRef, " +
+            "blend=$blend, " +
+            "tint=$tint, " 
+    }
+
     override fun indexedTypeKey() = typeKey
     companion object : EntityComponentType<ESprite>() {
         override val typeKey = EntityComponent.createTypeKey(ESprite::class.java)

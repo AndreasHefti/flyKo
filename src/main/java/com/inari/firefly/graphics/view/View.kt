@@ -3,55 +3,65 @@ package com.inari.firefly.graphics.view
 import com.inari.commons.geom.PositionF
 import com.inari.commons.geom.Rectangle
 import com.inari.commons.graphics.RGBColor
+import com.inari.firefly.component.ComponentRefResolver
+import com.inari.firefly.control.Controller
 import com.inari.firefly.graphics.BlendMode
 import com.inari.firefly.system.component.SingleType
 import com.inari.firefly.system.component.SystemComponent
-import com.inari.firefly.external.ViewPortData
+import com.inari.firefly.external.ViewData
+import com.inari.firefly.setFrom
 
 class View private constructor (
-    // TODO
-    var ff_Bounds: Rectangle = Rectangle(),
-    var ff_WorldPosition: PositionF = PositionF(),
-    var ff_ClearColor: RGBColor = RGBColor( 0f, 0f, 0f, 1f ),
-    var ff_TintColor: RGBColor = RGBColor( 1f, 1f, 1f, 1f ),
-    var ff_BlendMode: BlendMode = BlendMode.NONE,
-    var ff_Zoom: Float = 1.0f,
-    var ff_FboScaler: Float = 4.0f,
-    var ff_ControllerId: Int = -1,
-    internal var baseView: Boolean = false
-) : SystemComponent(), ViewPortData {
+    @JvmField internal var baseView: Boolean = false
+) : SystemComponent(), ViewData {
+
+    @JvmField internal var controllerRef = -1
+
+    override val index: Int get() = index()
+    override val isBase: Boolean get() = baseView
+    override val bounds = Rectangle()
+    override val worldPosition = PositionF()
+    override val clearColor = RGBColor( 0f, 0f, 0f, 1f )
+    override val tintColor = RGBColor( 1f, 1f, 1f, 1f )
+    override var blendMode = BlendMode.NONE
+    override var zoom = 1.0f
+    override var fboScaler = 4.0f
+
+    var ff_Bounds: Rectangle
+        get() = bounds
+        set(value) { bounds.setFrom(value) }
+    var ff_WorldPosition: PositionF
+        get() = worldPosition
+        set(value) { worldPosition.setFrom(value) }
+    var ff_ClearColor: RGBColor
+        get() = clearColor
+        set(value) { clearColor.setFrom(value) }
+    var ff_TintColor: RGBColor
+        get() = tintColor
+        set(value) { tintColor.setFrom(value) }
+    var ff_BlendMode: BlendMode
+        get() = blendMode
+        set(value) { blendMode = value }
+    var ff_Zoom: Float
+        get() = zoom
+        set(value) { zoom = value }
+    var ff_FboScaler: Float
+        get() = fboScaler
+        set(value) { fboScaler = value }
+    var ff_ControllerId =
+        ComponentRefResolver(Controller, { index-> controllerRef = setIfNotInitialized(index, "ff_ControllerId") })
 
     override fun indexedTypeKey() = typeKey
-
-    override val index: Int
-        get() = index()
-    override val isBase: Boolean
-        get() = baseView
-    override val bounds: Rectangle
-        get() = ff_Bounds
-    override val worldPosition: PositionF
-        get() = ff_WorldPosition
-    override val clearColor: RGBColor
-        get() = ff_ClearColor
-    override val tintColor: RGBColor
-        get() = ff_TintColor
-    override val blendMode: BlendMode
-        get() = ff_BlendMode
-    override val zoom: Float
-        get() = ff_Zoom
-    override val fboScaler: Float
-        get() = ff_FboScaler
-
     override fun toString(): String {
-        return "View(ff_Bounds=$ff_Bounds, " +
-            "ff_WorldPosition=$ff_WorldPosition, " +
-            "ff_ClearColor=$ff_ClearColor, " +
-            "ff_TintColor=$ff_TintColor, " +
-            "ff_BlendMode=$ff_BlendMode, " +
-            "ff_Zoom=$ff_Zoom, " +
-            "ff_FboScaler=$ff_FboScaler, " +
-            "ff_ControllerId=$ff_ControllerId, " +
-            "baseView=$baseView)"
+        return "View(baseView=$baseView, " +
+            "controllerRef=$controllerRef, " +
+            "bounds=$bounds, " +
+            "worldPosition=$worldPosition, " +
+            "clearColor=$clearColor, " +
+            "tintColor=$tintColor, " +
+            "blendMode=$blendMode, " +
+            "zoom=$zoom, " +
+            "fboScaler=$fboScaler)"
     }
 
     companion object : SingleType<View>() {

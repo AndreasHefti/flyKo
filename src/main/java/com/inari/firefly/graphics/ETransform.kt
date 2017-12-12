@@ -16,8 +16,8 @@ import com.inari.firefly.setFrom
 
 class ETransform private constructor() : EntityComponent(), TransformData, ViewLayerAware {
 
-    @JvmField internal var viewRef = -1
-    @JvmField internal var layerRef = -1
+    @JvmField internal var viewRef = 0
+    @JvmField internal var layerRef = 0
     @JvmField internal val position = PositionF(0.0f, 0.0f)
     @JvmField internal val pivot = PositionF(0.0f, 0.0f)
     @JvmField internal val scale = Vector2f(1.0f, 1.0f)
@@ -87,8 +87,8 @@ class ETransform private constructor() : EntityComponent(), TransformData, ViewL
     }
 
     override fun reset() {
-        viewRef = -1
-        layerRef = -1
+        viewRef = 0
+        layerRef = 0
         position.x = 0.0f
         position.y = 0.0f
         pivot.x = 0.0f
@@ -99,7 +99,12 @@ class ETransform private constructor() : EntityComponent(), TransformData, ViewL
     }
 
     override fun toString(): String {
-        return "ETransform(viewRef=$viewRef, layerRef=$layerRef, position=$position, pivot=$pivot, scale=$scale, rot=$rot)"
+        return "ETransform(viewRef=$viewRef, " +
+            "layerRef=$layerRef, " +
+            "position=$position, " +
+            "pivot=$pivot, " +
+            "scale=$scale, " +
+            "rot=$rot)"
     }
 
     private val accessorPosX: IFloatPropertyAccessor = object : IFloatPropertyAccessor {
