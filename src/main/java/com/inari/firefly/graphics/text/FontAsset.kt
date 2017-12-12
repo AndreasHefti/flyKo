@@ -100,10 +100,10 @@ class FontAsset : Asset(), TextureData {
 
     operator fun get(char: Char): Int {
         val index = char.toInt()
-        return if (index in charSpriteMap)
-            charSpriteMap[index]
-        else
+        return if (charSpriteMap.isEmpty(index))
             defaultChar
+        else
+            charSpriteMap[index]
     }
 
     override fun unload() {
