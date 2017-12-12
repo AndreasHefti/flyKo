@@ -66,14 +66,11 @@ object FFInfoSystem : FFSystem {
             return this
 
         infos.add(info)
-        return this
-    }
-
-    fun removeInfo(info: SysInfo): FFInfoSystem {
-        if (info !in infos)
-            return this
-
-        infos.remove(info)
+        buffer.append( CharArray(info.length) )
+        buffer.append( '\n' )
+        if ( width < info.length ) {
+            width = info.length
+        }
         return this
     }
 
