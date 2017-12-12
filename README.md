@@ -1,6 +1,8 @@
 # FlyKo
 
 
+[![Build Status](https://travis-ci.org/Inari-Soft/flyKo.svg?branch=master)](https://travis-ci.org/Inari-Soft/flyKo) 
+
 Projects this depends on:
 [commons](https://github.com/Inari-Soft/inari-commons) [![Build Status](https://travis-ci.org/Inari-Soft/inari-firefly.svg?branch=master)](https://travis-ci.org/Inari-Soft/inari-commons)
 
