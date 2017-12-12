@@ -1,6 +1,5 @@
 package com.inari.firefly.physics.animation
 
-import com.inari.commons.lang.aspect.Aspects
 import com.inari.commons.lang.aspect.IAspects
 import com.inari.firefly.Expr
 import com.inari.firefly.FFApp.UpdateEvent
@@ -43,9 +42,9 @@ object AnimationSystem : ComponentSystem {
 
     private fun activateForEntity(entity: Entity) {
         val eAnim = entity[EAnimation]
-        val i = 0
+        var i = 0
         while (i < eAnim.animations.capacity()) {
-            val animProp = eAnim.animations[i] ?: continue
+            val animProp = eAnim.animations[i++] ?: continue
             animProp.compile(entity)
             animations[animProp.animationRef].register(animProp)
         }
@@ -58,9 +57,9 @@ object AnimationSystem : ComponentSystem {
 
     private fun deactivateForEntity(entity: Entity) {
         val eAnim = entity[EAnimation]
-        val i = 0
+        var i = 0
         while (i < eAnim.animations.capacity()) {
-            val animProp = eAnim.animations[i] ?: continue
+            val animProp = eAnim.animations[i++] ?: continue
             animations[animProp.animationRef].dispose(animProp)
         }
 
