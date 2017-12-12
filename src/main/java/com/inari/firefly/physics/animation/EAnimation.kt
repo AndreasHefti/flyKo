@@ -22,6 +22,15 @@ class EAnimation : EntityComponent() {
             comp
         } )(configure)
 
+    fun <A : AnimatedProperty> withActive(cBuilder: AnimatedProperty.Builder<A>, configure: (A.() -> Unit)): A {
+        val result = cBuilder.builder({ comp ->
+            animations.add(comp)
+            comp
+        })(configure)
+        result.active = true
+        return result
+    }
+
     override fun reset() {
         animations.clear()
     }

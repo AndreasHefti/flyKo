@@ -14,8 +14,8 @@ abstract class AnimatedProperty protected constructor() {
     @JvmField internal var propertyRef: IVirtualPropertyRef = NO_PROPERTY_REF
     @JvmField internal var lastUpdate: Long = -1
 
-    var active = false
-        protected set
+    @JvmField internal var active = false
+
 
     val ff_Animation =
         ComponentRefResolver(Animation, { index->
@@ -30,13 +30,15 @@ abstract class AnimatedProperty protected constructor() {
         get() = propertyRef
         set(value) { propertyRef = if (active) throw IllegalStateException() else value }
 
-    internal fun activate() {
+    fun activate(): AnimatedProperty {
         reset()
         active = true
+        return this
     }
 
-    internal fun deactivate() {
+    fun deactivate(): AnimatedProperty {
         active = false
+        return this
     }
 
     internal fun compile(entity: Entity) {
