@@ -3,7 +3,10 @@ package com.inari.firefly.graphics.shape
 import com.inari.commons.graphics.RGBColor
 import com.inari.commons.lang.indexed.IIndexedTypeKey
 import com.inari.firefly.asset.AssetInstanceRefResolver
+import com.inari.firefly.entity.Entity
 import com.inari.firefly.entity.EntityComponent
+import com.inari.firefly.entity.property.IFloatPropertyAccessor
+import com.inari.firefly.entity.property.IVirtualPropertyRef
 import com.inari.firefly.external.ShapeData
 import com.inari.firefly.external.ShapeData.ShapeType
 import com.inari.firefly.graphics.BlendMode
@@ -72,7 +75,6 @@ class EShape private constructor(): EntityComponent(), ShapeData {
         shaderRef = -1
     }
 
-
     override fun toString(): String {
         return "EShape(type=$type, " +
             "vertices=${Arrays.toString(vertices)}, " +
@@ -85,6 +87,49 @@ class EShape private constructor(): EntityComponent(), ShapeData {
             "blend=$blend, " +
             "shaderRef=$shaderRef, " +
             "ff_Shader=$ff_Shader)"
+    }
+
+    private val accessorColor1Red: IFloatPropertyAccessor = object : IFloatPropertyAccessor {
+        override fun set(value: Float) {color1.r = value}
+        override fun get(): Float = color1.r
+    }
+    private val accessorColor1Green: IFloatPropertyAccessor = object : IFloatPropertyAccessor {
+        override fun set(value: Float) {color1.g = value}
+        override fun get(): Float = color1.g
+    }
+    private val accessorColor1Blue: IFloatPropertyAccessor = object : IFloatPropertyAccessor {
+        override fun set(value: Float) {color1.b = value}
+        override fun get(): Float = color1.b
+    }
+    private val accessorColor1Alpha: IFloatPropertyAccessor = object : IFloatPropertyAccessor {
+        override fun set(value: Float) {color1.a = value}
+        override fun get(): Float = color1.a
+    }
+
+    enum class Property(
+        override val propertyName: String,
+        override val type: Class<*>
+    ) : IVirtualPropertyRef {
+        COLOR1_RED("color1Red", Float::class.java) {
+            override fun accessor(entity: Entity): IFloatPropertyAccessor {
+                return entity[EShape].accessorColor1Red
+            }
+        },
+        COLOR1_GREEN("color1Green", Float::class.java) {
+            override fun accessor(entity: Entity): IFloatPropertyAccessor {
+                return entity[EShape].accessorColor1Green
+            }
+        },
+        COLOR1_BLUE("color1Blue", Float::class.java) {
+            override fun accessor(entity: Entity): IFloatPropertyAccessor {
+                return entity[EShape].accessorColor1Blue
+            }
+        },
+        COLOR1_ALPHA("color1Alpha", Float::class.java) {
+            override fun accessor(entity: Entity): IFloatPropertyAccessor {
+                return entity[EShape].accessorColor1Alpha
+            }
+        }
     }
 
     override fun indexedTypeKey(): IIndexedTypeKey = typeKey

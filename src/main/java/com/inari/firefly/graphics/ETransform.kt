@@ -30,30 +30,12 @@ class ETransform private constructor() : EntityComponent(), TransformData, ViewL
     var ff_Position: PositionF
         get() = position
         set(value) = position.setFrom(value)
-    var ff_PosX: Float
-        get() = position.x
-        set(value) { position.x = value }
-    var ff_PosY: Float
-        get() = position.y
-        set(value) { position.y = value }
     var ff_Pivot: PositionF
         get() = pivot
         set(value) = pivot.setFrom(value)
-    var ff_PivotX: Float
-        get() = pivot.x
-        set(value) { pivot.x = value }
-    var ff_PivotY: Float
-        get() = pivot.y
-        set(value) { pivot.y = value }
     var ff_Scale: Vector2f
         get() = scale
         set(value) { scale.setFrom(value) }
-    var ff_ScaleX: Float
-        get() = scale.dx
-        set(value) { scale.dx = value }
-    var ff_ScaleY: Float
-        get() = scale.dy
-        set(value) { scale.dy = value }
     var ff_Rotation: Float
         get() = rot
         set(value) { rot = value }
