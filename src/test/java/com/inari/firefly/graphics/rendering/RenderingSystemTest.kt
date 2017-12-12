@@ -40,8 +40,8 @@ class RenderingSystemTest {
         Entity.buildAndActivate {
             with(ETransform) {
                 ff_View.index = 0
-                ff_PosX = 1f
-                ff_PivotY = 2f
+                ff_Pivot.x = 1f
+                ff_Pivot.y = 2f
             }
             with(ESprite) {
                 ff_Sprite.id = assetId
