@@ -41,18 +41,40 @@ object FFInfoSystem : FFSystem {
         font = AssetSystem.assets.getAs(SYSTEM_FONT)
     }
 
-    fun activate() {
+
+
+    fun activate(): FFInfoSystem {
         if (active)
-            return
+            return this
+
         FFContext.registerListener(FFApp.PostRenderEvent, renderListener)
         active = true
+        return this
     }
 
-    fun deactivate() {
+    fun deactivate(): FFInfoSystem {
         if (!active)
-            return
+            return this
+
         FFContext.disposeListener(FFApp.PostRenderEvent, renderListener)
         active = false
+        return this
+    }
+
+    fun addInfo(info: SysInfo): FFInfoSystem {
+        if (info in infos)
+            return this
+
+        infos.add(info)
+        return this
+    }
+
+    fun removeInfo(info: SysInfo): FFInfoSystem {
+        if (info !in infos)
+            return this
+
+        infos.remove(info)
+        return this
     }
 
     private fun renderSystemInfoDisplay() {
@@ -91,7 +113,7 @@ object FFInfoSystem : FFSystem {
     }
 
     override fun clearSystem() {
-        TODO("not implemented")
+        infos.clear()
     }
 
     interface SysInfo {
