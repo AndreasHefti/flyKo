@@ -46,7 +46,7 @@ interface ComponentSystem : FFSystem {
         private val nameMap: MutableMap<String, C>? = if (nameMapping) HashMap() else null
 
         override operator fun contains(index: Int): Boolean = map.contains(index)
-        override operator fun contains(name: String): Boolean = map.contains(indexForName(name))
+        override operator fun contains(name: String): Boolean = _indexForName(name) >= 0
 
         override fun activate(index: Int) {
             if (activationMapping && !isActive(index)) {
@@ -125,19 +125,20 @@ interface ComponentSystem : FFSystem {
         }
 
         override fun indexForName(name: String): Int {
-            if (nameMapping) {
-                return nameMap?.get(name)?.index() ?:
-                    throw RuntimeException("Component: ${type.typeKey} for name: $name not found")
-            }
+            val result = _indexForName(name)
+            if (result < 0)
+                throw RuntimeException("Component: ${type.typeKey} for name: $name not found")
 
-            val id: Int = (0 until _map.capacity()).firstOrNull {
+            return result
+        }
+
+        private fun _indexForName(name: String): Int {
+            if (nameMapping)
+                return nameMap?.get(name)?.index() ?: -1
+
+            return (0 until _map.capacity()).firstOrNull {
                 _map[it] != null && _map[it].name() == name
             } ?: -1
-
-            return when(id) {
-                -1 -> throw RuntimeException("Component: ${type.typeKey} for name: $name not found")
-                else -> id
-            }
         }
 
         override fun nextActive(from: Int): Int =
