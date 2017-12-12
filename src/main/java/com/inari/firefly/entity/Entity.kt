@@ -1,7 +1,6 @@
 package com.inari.firefly.entity
 
 import com.inari.commons.lang.aspect.Aspect
-import com.inari.commons.lang.aspect.Aspects
 import com.inari.commons.lang.aspect.IAspects
 import com.inari.commons.lang.indexed.IndexedTypeSet
 import com.inari.firefly.NO_NAME

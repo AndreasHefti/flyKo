@@ -84,9 +84,11 @@ object FFContext {
     operator fun <C : Component> get(cType: ComponentType<C>, name: String): C =
         mapper(cType)[name]
 
+    @Suppress("UNCHECKED_CAST")
     operator fun <C : SystemComponent, CC : C> get(cType: SubType<CC, C>, index: Int): CC =
         mapper(cType)[index] as CC
 
+    @Suppress("UNCHECKED_CAST")
     operator fun <C : SystemComponent, CC : C> get(cType: SubType<CC, C>, name: String): C =
         mapper(cType)[name] as CC
 

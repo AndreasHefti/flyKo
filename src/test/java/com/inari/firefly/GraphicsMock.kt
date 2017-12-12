@@ -27,8 +27,8 @@ object GraphicsMock : FFGraphics {
             object : ViewEvent.Listener {
                 override fun invoke(id: CompId, viewPort: ViewData, type: ViewEvent.Type) {
                     when (type) {
-                        ViewEvent.Type.VIEW_ACTIVATED -> views.add(id)
-                        ViewEvent.Type.VIEW_DISPOSED -> views.remove(id)
+                        ViewEvent.Type.VIEW_CREATED -> views.add(id)
+                        ViewEvent.Type.VIEW_DELETED -> views.remove(id)
                         else -> {
                         }
                     }

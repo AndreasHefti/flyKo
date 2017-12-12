@@ -21,7 +21,7 @@ object ViewEvent : FFEvent<ViewEvent.Listener>(createTypeKey(ViewEvent::class.ja
     override fun notify(listener: ViewEvent.Listener) =
         listener(id, data, type)
 
-    fun send(id: CompId, data: ViewData, type: ViewEvent.Type) {
+    internal fun send(id: CompId, data: ViewData, type: ViewEvent.Type) {
         this.id = id
         this.data = data
         this.type = type

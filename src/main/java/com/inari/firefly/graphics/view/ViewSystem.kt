@@ -34,8 +34,6 @@ object ViewSystem : ComponentSystem {
         activationMapping = true,
         listener = { layer, action -> when (action) {
             CREATED       -> created(layer)
-//                ACTIVATED     -> activated(layer)
-//                DEACTIVATED   -> deactivated(layer)
             DELETED       -> deleted(layer)
             else -> {}
         } }
@@ -64,6 +62,8 @@ object ViewSystem : ComponentSystem {
 
         if (!view.isBase)
             orderedView.add(index)
+
+        ViewEvent.send(view.componentId, view, ViewEvent.Type.VIEW_CREATED)
     }
 
     private fun activated(view: View) {
@@ -72,11 +72,11 @@ object ViewSystem : ComponentSystem {
 
         updateViewMapping()
 
-        if (view.controllerRef >= 0) {
-            ControllerSystem.controller
-                .get(view.controllerRef)
+        if (view.controllerRef >= 0)
+            ControllerSystem.controller[view.controllerRef]
                 .register(view.componentId)
-        }
+
+        ViewEvent.send(view.componentId, view, ViewEvent.Type.VIEW_ACTIVATED)
     }
 
     private fun deactivated(view: View) {
@@ -86,15 +86,14 @@ object ViewSystem : ComponentSystem {
         updateViewMapping()
 
         val i = layersOfView.get(view.index()).iterator()
-        while (i.hasNext()) {
+        while (i.hasNext())
             layers.deactivate(i.next())
-        }
 
-        if (view.controllerRef >= 0) {
-            ControllerSystem.controller
-                .get(view.controllerRef)
+        if (view.controllerRef >= 0)
+            ControllerSystem.controller[view.controllerRef]
                 .unregister(view.componentId)
-        }
+
+        ViewEvent.send(view.componentId, view, ViewEvent.Type.VIEW_DISPOSED)
     }
 
     private fun deleted(view: View) {
@@ -105,13 +104,14 @@ object ViewSystem : ComponentSystem {
         val index = view.index()
         if (layersOfView.contains(index)) {
             val i = layersOfView.get(index).iterator()
-            while (i.hasNext()) {
+            while (i.hasNext())
                 layers.delete(i.next())
-            }
         }
 
         orderedView.remove(index)
         orderedView.trim()
+
+        ViewEvent.send(view.componentId, view, ViewEvent.Type.VIEW_DELETED)
     }
 
     private fun created(layer: Layer) {
@@ -122,10 +122,6 @@ object ViewSystem : ComponentSystem {
             .get(layer.viewRef)
             .add(layer.index())
     }
-
-//    private fun activated(layer: Layer) {}
-//
-//    private fun deactivated(layer: Layer) {}
 
     private fun deleted(layer: Layer) {
         layersOfView
@@ -145,7 +141,14 @@ object ViewSystem : ComponentSystem {
     }
 
     override fun clearSystem() {
-        views.clear()
+        var i = 0
+        while (i < views.map.capacity()) {
+            val view = views.map[i++] ?: continue
+            if (view.isBase)
+                continue
+
+            views.delete(view.index)
+        }
         layers.clear()
     }
 }
