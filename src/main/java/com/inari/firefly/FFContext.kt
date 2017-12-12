@@ -1,5 +1,6 @@
 package com.inari.firefly
 
+import com.inari.commons.event.AspectedEventListener
 import com.inari.commons.event.Event
 import com.inari.commons.event.IEventDispatcher
 import com.inari.commons.lang.indexed.IIndexedTypeKey
@@ -188,7 +189,12 @@ object FFContext {
         return this
     }
 
-    fun <L> notify(event: Event<L>): FFContext {
+    fun <L> notify(event: FFEvent<L>): FFContext {
+        eventDispatcher.notify(event)
+        return this
+    }
+
+    fun <L : AspectedEventListener> notify(event: FFAspectedEvent<L>): FFContext {
         eventDispatcher.notify(event)
         return this
     }
