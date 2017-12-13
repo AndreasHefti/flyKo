@@ -57,7 +57,7 @@ class EasingAnimation private constructor(): Animation() {
                     animated.runningTime.toFloat(),
                     animated.endValue,
                     animated.startValue,
-                    animated.duration.toFloat()) - animated.startValue
+                    animated.duration.toFloat()) + animated.startValue
             else
                 animated.easingType.easing.calc(
                     animated.runningTime.toFloat(),
