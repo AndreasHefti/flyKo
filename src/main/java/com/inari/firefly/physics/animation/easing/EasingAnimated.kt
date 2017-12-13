@@ -15,6 +15,7 @@ class EasingAnimated private constructor() : AnimatedProperty() {
     @JvmField internal var duration: Long = 0
     @JvmField internal var inverseOnLoop = false
 
+    @JvmField internal var changeInValue = 0f
     @JvmField internal var runningTime: Long = 0
 
     var ff_EasingType: Easing.Type
@@ -45,6 +46,7 @@ class EasingAnimated private constructor() : AnimatedProperty() {
 
     override fun reset() {
         runningTime = 0
+        changeInValue  = endValue - startValue
         propertyAccessor?.set(startValue)
     }
 
