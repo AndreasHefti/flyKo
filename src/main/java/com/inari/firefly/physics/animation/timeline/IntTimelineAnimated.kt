@@ -32,7 +32,9 @@ class IntTimelineAnimated private constructor() : AnimatedProperty() {
     override fun init(entity: Entity) {
         propertyAccessor = propertyRef.accessor(entity) as IIntPropertyAccessor
         if (animationRef < 0)
-            animationRef = IntTimelineAnimation.get().index()
+            animationRef = IntTimelineAnimation
+                .activate()
+                .index()
     }
 
     override fun reset() {

@@ -36,7 +36,9 @@ class EasingAnimated private constructor() : AnimatedProperty() {
     override fun init(entity: Entity) {
         propertyAccessor = propertyRef.accessor(entity) as IFloatPropertyAccessor
         if (animationRef < 0)
-            animationRef = EasingAnimation.get().index()
+            animationRef = EasingAnimation
+                .activate()
+                .index()
     }
 
     override fun reset() {

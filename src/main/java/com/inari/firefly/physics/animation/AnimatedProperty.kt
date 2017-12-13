@@ -1,6 +1,5 @@
 package com.inari.firefly.physics.animation
 
-import com.inari.commons.lang.indexed.BaseIndexedObject
 import com.inari.firefly.NO_PROPERTY_REF
 import com.inari.firefly.Receiver
 import com.inari.firefly.component.ComponentRefResolver
@@ -14,7 +13,6 @@ abstract class AnimatedProperty protected constructor() {
     @JvmField internal var propertyRef: IVirtualPropertyRef = NO_PROPERTY_REF
 
     @JvmField internal var active = false
-
 
     val ff_Animation =
         ComponentRefResolver(Animation, { index->

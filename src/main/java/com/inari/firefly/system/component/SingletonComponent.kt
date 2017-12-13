@@ -18,4 +18,10 @@ abstract class SingletonComponent<CC : C, C : SystemComponent> : ComponentType<C
         @Suppress("UNCHECKED_CAST")
         return FFContext[this, subType().simpleName] as CC
     }
+
+    fun activate(): CC {
+        val singleton = get()
+        FFContext.activate(singleton.componentId)
+        return singleton
+    }
 }
