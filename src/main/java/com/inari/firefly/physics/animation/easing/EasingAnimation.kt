@@ -51,14 +51,19 @@ class EasingAnimation private constructor(): Animation() {
             return
         }
 
-        animated.propertyAccessor?.set(
-            animated.easingType.easing.calc(
-                animated.runningTime.toFloat(),
-                animated.startValue,
-                animated.endValue,
-                animated.duration.toFloat()
-            )
+        val easingValue = animated.easingType.easing.calc(
+            animated.runningTime.toFloat(),
+            animated.startValue,
+            animated.endValue,
+            animated.duration.toFloat()
         )
+        val value =
+            if (animated.endValue - animated.startValue < 0 )
+                animated.startValue - easingValue
+            else
+                easingValue
+
+        animated.propertyAccessor?.set(value)
     }
 
     companion object : SingletonComponent<EasingAnimation, Animation>() {
