@@ -42,6 +42,7 @@ class EasingAnimated private constructor() : AnimatedProperty() {
             animationRef = EasingAnimation
                 .activate()
                 .index()
+        reset()
     }
 
     override fun reset() {
