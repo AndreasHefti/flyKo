@@ -51,21 +51,18 @@ class EasingAnimation private constructor(): Animation() {
             return
         }
 
-        val value =
-            if (animated.changeInValue < 0 )
-                animated.startValue - animated.easingType.easing.calc(
-                    animated.runningTime.toFloat(),
-                    animated.endValue,
-                    animated.changeInValue,
-                    animated.duration.toFloat()
-                )
-            else
-                animated.easingType.calc(
-                    animated.runningTime,
-                    animated.startValue,
-                    animated.changeInValue,
-                    animated.duration
-                )
+        val animValue = animated.easingType.calc(
+            animated.runningTime,
+            0f,
+            animated.changeInValue,
+            animated.duration
+        )
+        val value = if (animated.inverse) {
+            animated.startValue - animValue
+        } else {
+            animated.startValue + animValue
+        }
+
 
         animated.propertyAccessor?.set(value)
     }
