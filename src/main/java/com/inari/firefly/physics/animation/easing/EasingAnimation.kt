@@ -53,11 +53,11 @@ class EasingAnimation private constructor(): Animation() {
 
         val value =
             if (animated.endValue - animated.startValue < 0 )
-                animated.endValue + (animated.startValue - animated.easingType.easing.calc(
+                animated.endValue - animated.easingType.easing.calc(
                     animated.runningTime.toFloat(),
                     animated.endValue,
                     animated.startValue,
-                    animated.duration.toFloat()))
+                    animated.duration.toFloat()) - animated.startValue
             else
                 animated.easingType.easing.calc(
                     animated.runningTime.toFloat(),
