@@ -15,14 +15,24 @@ import java.util.*
 
 class EShape private constructor(): EntityComponent(), ShapeData {
 
+    private val color = RGBColor(1f, 1f, 1f, 1f)
+    private var gradientColor1: RGBColor? = null
+    private var gradientColor2: RGBColor? = null
+    private var gradientColor3: RGBColor? = null
+    private var gradientColor4: RGBColor? = null
+
     override var type = ShapeType.POINT
         private set
     override var vertices = floatArrayOf()
         private set
-    override val color1 = RGBColor(1f, 1f, 1f, 1f)
-    override val color2 = RGBColor(1f, 1f, 1f, 1f)
-    override val color3 = RGBColor(1f, 1f, 1f, 1f)
-    override val color4 = RGBColor(1f, 1f, 1f, 1f)
+    override val color1: RGBColor
+        get() { return gradientColor1 ?: color }
+    override val color2: RGBColor
+        get() { return gradientColor2 ?: color }
+    override val color3: RGBColor
+        get() { return gradientColor3 ?: color }
+    override val color4: RGBColor
+        get() { return gradientColor4 ?: color }
     override var segments = 0
         private set
     override var fill = false
@@ -38,18 +48,21 @@ class EShape private constructor(): EntityComponent(), ShapeData {
     var ff_Vertices: FloatArray
         get() = vertices
         set(value) { vertices = value }
-    var ff_Color1: RGBColor
-        get() = color1
-        set(value) = color1.setFrom(value)
-    var ff_Color2: RGBColor
-        get() = color2
-        set(value) = color2.setFrom(value)
-    var ff_Color3: RGBColor
-        get() = color3
-        set(value) = color3.setFrom(value)
-    var ff_Color4: RGBColor
-        get() = color4
-        set(value) = color4.setFrom(value)
+    var ff_Color: RGBColor
+        get() = color
+        set(value) = color.setFrom(value)
+    var ff_GradientColor1: RGBColor
+        get() = gradientColor1!!
+        set(value) {gradientColor1 = value}
+    var ff_GradientColor2: RGBColor
+        get() = gradientColor2!!
+        set(value) {gradientColor2 = value}
+    var ff_GradientColor3: RGBColor
+        get() = gradientColor3!!
+        set(value) {gradientColor3 = value}
+    var ff_GradientColor4: RGBColor
+        get() = gradientColor4!!
+        set(value) {gradientColor4 = value}
     var ff_Segments: Int
         get() = segments
         set(value) { segments = value }
@@ -89,19 +102,19 @@ class EShape private constructor(): EntityComponent(), ShapeData {
             "ff_Shader=$ff_Shader)"
     }
 
-    private val accessorColor1Red: IFloatPropertyAccessor = object : IFloatPropertyAccessor {
+    private val accessorColorRed: IFloatPropertyAccessor = object : IFloatPropertyAccessor {
         override fun set(value: Float) {color1.r = value}
         override fun get(): Float = color1.r
     }
-    private val accessorColor1Green: IFloatPropertyAccessor = object : IFloatPropertyAccessor {
+    private val accessorColorGreen: IFloatPropertyAccessor = object : IFloatPropertyAccessor {
         override fun set(value: Float) {color1.g = value}
         override fun get(): Float = color1.g
     }
-    private val accessorColor1Blue: IFloatPropertyAccessor = object : IFloatPropertyAccessor {
+    private val accessorColorBlue: IFloatPropertyAccessor = object : IFloatPropertyAccessor {
         override fun set(value: Float) {color1.b = value}
         override fun get(): Float = color1.b
     }
-    private val accessorColor1Alpha: IFloatPropertyAccessor = object : IFloatPropertyAccessor {
+    private val accessorColorAlpha: IFloatPropertyAccessor = object : IFloatPropertyAccessor {
         override fun set(value: Float) {color1.a = value}
         override fun get(): Float = color1.a
     }
@@ -110,24 +123,24 @@ class EShape private constructor(): EntityComponent(), ShapeData {
         override val propertyName: String,
         override val type: Class<*>
     ) : IVirtualPropertyRef {
-        COLOR1_RED("color1Red", Float::class.java) {
+        COLOR_RED("colorRed", Float::class.java) {
             override fun accessor(entity: Entity): IFloatPropertyAccessor {
-                return entity[EShape].accessorColor1Red
+                return entity[EShape].accessorColorRed
             }
         },
-        COLOR1_GREEN("color1Green", Float::class.java) {
+        COLOR_GREEN("colorGreen", Float::class.java) {
             override fun accessor(entity: Entity): IFloatPropertyAccessor {
-                return entity[EShape].accessorColor1Green
+                return entity[EShape].accessorColorGreen
             }
         },
-        COLOR1_BLUE("color1Blue", Float::class.java) {
+        COLOR_BLUE("colorBlue", Float::class.java) {
             override fun accessor(entity: Entity): IFloatPropertyAccessor {
-                return entity[EShape].accessorColor1Blue
+                return entity[EShape].accessorColorBlue
             }
         },
-        COLOR1_ALPHA("color1Alpha", Float::class.java) {
+        COLOR_ALPHA("colorAlpha", Float::class.java) {
             override fun accessor(entity: Entity): IFloatPropertyAccessor {
-                return entity[EShape].accessorColor1Alpha
+                return entity[EShape].accessorColorAlpha
             }
         }
     }
