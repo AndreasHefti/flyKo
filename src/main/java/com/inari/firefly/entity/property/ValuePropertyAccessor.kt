@@ -1,6 +1,6 @@
 package com.inari.firefly.entity.property
 
-interface IValuePropertyAccessor<T> : IVirtualPropertyRef.PropertyAccessor {
+interface ValuePropertyAccessor<T> : VirtualPropertyRef.PropertyAccessor {
     fun get(): T
     fun set(value: T)
 }

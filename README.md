@@ -93,6 +93,13 @@ Code example:
 
 FlyKo is still under construction
 
+This is the core API with no lower level implementation. Just the API. 
+At the moment there is only one lower level implementation for the API
+within the famous libGDX in [FlyKoGDX](https://github.com/Inari-Soft/flyKoGDX)
+
+If you want to just to use the Firefly API with a libGDX implementation, 
+this is your starting point.
+
 **Installation**
   
   - TODO

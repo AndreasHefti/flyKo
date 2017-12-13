@@ -1,11 +1,11 @@
 package com.inari.firefly.physics.animation
 
 import com.inari.firefly.entity.Entity
-import com.inari.firefly.entity.property.IFloatPropertyAccessor
+import com.inari.firefly.entity.property.FloatPropertyAccessor
 
 class AnimatedFloat private constructor() : AnimatedProperty() {
 
-    @JvmField internal var propertyAccessor: IFloatPropertyAccessor? = null
+    @JvmField internal var propertyAccessor: FloatPropertyAccessor? = null
     @JvmField internal var initValue = 0f
 
     @JvmField internal var v1 = 0f
@@ -17,7 +17,7 @@ class AnimatedFloat private constructor() : AnimatedProperty() {
         set(value) { initValue = value }
 
     override fun init(entity: Entity) {
-        propertyAccessor = propertyRef.accessor(entity) as IFloatPropertyAccessor
+        propertyAccessor = propertyRef.accessor(entity) as FloatPropertyAccessor
     }
 
     override fun reset() {

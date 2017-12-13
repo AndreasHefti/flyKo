@@ -1,12 +1,12 @@
 package com.inari.firefly.physics.animation.timeline
 
 import com.inari.firefly.entity.Entity
-import com.inari.firefly.entity.property.IIntPropertyAccessor
+import com.inari.firefly.entity.property.IntPropertyAccessor
 import com.inari.firefly.physics.animation.AnimatedProperty
 
 class IntTimelineAnimated private constructor() : AnimatedProperty() {
 
-    @JvmField internal var propertyAccessor: IIntPropertyAccessor? = null
+    @JvmField internal var propertyAccessor: IntPropertyAccessor? = null
 
     @JvmField internal var timeline: Array<Frame> = emptyArray()
     @JvmField internal var startValue = 0
@@ -30,7 +30,7 @@ class IntTimelineAnimated private constructor() : AnimatedProperty() {
         set(value) { inverseOnLoop = value }
 
     override fun init(entity: Entity) {
-        propertyAccessor = propertyRef.accessor(entity) as IIntPropertyAccessor
+        propertyAccessor = propertyRef.accessor(entity) as IntPropertyAccessor
         if (animationRef < 0)
             animationRef = IntTimelineAnimation
                 .activate()

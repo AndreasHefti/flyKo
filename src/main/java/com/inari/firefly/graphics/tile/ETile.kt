@@ -3,9 +3,8 @@ package com.inari.firefly.graphics.tile
 import com.inari.commons.geom.Position
 import com.inari.commons.graphics.RGBColor
 import com.inari.commons.lang.list.DynArray
-import com.inari.commons.lang.list.DynArrayRO
 import com.inari.firefly.asset.AssetInstanceRefResolver
-import com.inari.firefly.component.ArrayPropertyAccessor
+import com.inari.firefly.component.ArrayAccessor
 import com.inari.firefly.entity.EntityComponent
 import com.inari.firefly.external.SpriteRenderable
 import com.inari.firefly.graphics.BlendMode
@@ -33,7 +32,7 @@ class ETile private constructor (
         get() = tint
         set(value) { tint.setFrom(value) }
     val ff_Positions =
-        ArrayPropertyAccessor(positions)
+        ArrayAccessor(positions)
 
     override val spriteId: Int
         get() = spriteRef

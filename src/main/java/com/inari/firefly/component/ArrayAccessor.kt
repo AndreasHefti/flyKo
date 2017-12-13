@@ -4,7 +4,7 @@ import com.inari.commons.lang.list.DynArray
 import com.inari.commons.lang.list.DynArrayRO
 
 
-class ArrayPropertyAccessor<T>(
+class ArrayAccessor<T>(
     private val array: DynArray<T>,
     private val trim: Boolean = false
 ) {

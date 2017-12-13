@@ -1,11 +1,11 @@
 package com.inari.firefly.physics.animation
 
 import com.inari.firefly.entity.Entity
-import com.inari.firefly.entity.property.IIntPropertyAccessor
+import com.inari.firefly.entity.property.IntPropertyAccessor
 
 class AnimatedInt private constructor() : AnimatedProperty() {
 
-    @JvmField internal var propertyAccessor: IIntPropertyAccessor? = null
+    @JvmField internal var propertyAccessor: IntPropertyAccessor? = null
     @JvmField internal var initValue = 0
 
     @JvmField internal var v1 = 0
@@ -17,7 +17,7 @@ class AnimatedInt private constructor() : AnimatedProperty() {
         set(value) { initValue = value }
 
     override fun init(entity: Entity) {
-        propertyAccessor = propertyRef.accessor(entity) as IIntPropertyAccessor
+        propertyAccessor = propertyRef.accessor(entity) as IntPropertyAccessor
     }
 
     override fun reset() {

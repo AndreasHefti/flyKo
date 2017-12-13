@@ -4,13 +4,13 @@ import com.inari.firefly.NO_PROPERTY_REF
 import com.inari.firefly.Receiver
 import com.inari.firefly.component.ComponentRefResolver
 import com.inari.firefly.entity.Entity
-import com.inari.firefly.entity.property.IVirtualPropertyRef
+import com.inari.firefly.entity.property.VirtualPropertyRef
 
 abstract class AnimatedProperty protected constructor() {
 
     @JvmField internal var animationRef = -1
     @JvmField internal var looping: Boolean = false
-    @JvmField internal var propertyRef: IVirtualPropertyRef = NO_PROPERTY_REF
+    @JvmField internal var propertyRef: VirtualPropertyRef = NO_PROPERTY_REF
 
     @JvmField internal var active = false
 
@@ -23,7 +23,7 @@ abstract class AnimatedProperty protected constructor() {
         get() = looping
         set(value) { looping = value }
 
-    var ff_PropertyRef: IVirtualPropertyRef
+    var ff_PropertyRef: VirtualPropertyRef
         get() = propertyRef
         set(value) { propertyRef = if (active) throw IllegalStateException() else value }
 

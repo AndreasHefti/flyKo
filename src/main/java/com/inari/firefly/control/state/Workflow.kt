@@ -4,7 +4,7 @@ import com.inari.commons.lang.list.DynArray
 import com.inari.firefly.Condition
 import com.inari.firefly.FALSE_CONDITION
 import com.inari.firefly.NO_STATE
-import com.inari.firefly.component.ArrayPropertyAccessor
+import com.inari.firefly.component.ArrayAccessor
 import com.inari.firefly.system.component.SingleType
 import com.inari.firefly.system.component.SystemComponent
 
@@ -18,8 +18,8 @@ class Workflow private constructor() : SystemComponent() {
     var ff_StartState
         get() = startState
         set(value) {startState = value}
-    val ff_States = ArrayPropertyAccessor(states)
-    val ff_StateChanges = ArrayPropertyAccessor(stateChanges)
+    val ff_States = ArrayAccessor(states)
+    val ff_StateChanges = ArrayAccessor(stateChanges)
 
     var currentState: String = NO_STATE
         internal set(value) {

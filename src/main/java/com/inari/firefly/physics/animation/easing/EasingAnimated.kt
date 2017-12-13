@@ -1,14 +1,14 @@
 package com.inari.firefly.physics.animation.easing
 
 import com.inari.commons.geom.Easing
-import com.inari.firefly.FFContext
+import com.inari.firefly.NO_PROPERTY_REF
 import com.inari.firefly.entity.Entity
-import com.inari.firefly.entity.property.IFloatPropertyAccessor
+import com.inari.firefly.entity.property.FloatPropertyAccessor
 import com.inari.firefly.physics.animation.AnimatedProperty
 
 class EasingAnimated private constructor() : AnimatedProperty() {
 
-    @JvmField internal var propertyAccessor: IFloatPropertyAccessor? = null
+    @JvmField internal var propertyAccessor: FloatPropertyAccessor? = null
     @JvmField internal var easingType: Easing.Type = Easing.Type.LINEAR
     @JvmField internal var startValue = 0f
     @JvmField internal var endValue = 0f
@@ -34,7 +34,9 @@ class EasingAnimated private constructor() : AnimatedProperty() {
         set(value) { inverseOnLoop = value }
 
     override fun init(entity: Entity) {
-        propertyAccessor = propertyRef.accessor(entity) as IFloatPropertyAccessor
+        if (propertyRef == NO_PROPERTY_REF)
+            throw IllegalStateException("No property reference for animation is set")
+        propertyAccessor = propertyRef.accessor(entity) as FloatPropertyAccessor
         if (animationRef < 0)
             animationRef = EasingAnimation
                 .activate()
