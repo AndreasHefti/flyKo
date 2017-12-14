@@ -1,6 +1,7 @@
 package com.inari.firefly.physics.animation.easing
 
 import com.inari.commons.lang.indexed.IIndexedTypeKey
+import com.inari.firefly.FFContext
 import com.inari.firefly.NO_PROPERTY_REF
 import com.inari.firefly.physics.animation.Animation
 import com.inari.firefly.physics.animation.AnimationSystem
@@ -42,15 +43,40 @@ class EasedProperty : EntityPropertyAnimation(), FloatAnimation {
     }
 
     override fun reset() {
-        data.reset()
+        data.runningTime = 0
+        data.changeInValue  = data.endValue - data.startValue
+        if (data.changeInValue < 0) {
+            data.inverse = true
+            data.changeInValue = Math.abs(data.changeInValue)
+        } else {
+            data.inverse = false
+        }
         propertyAccessor?.set(data.startValue)
     }
 
     override fun update() {
-        if (data.update(looping))
-            propertyAccessor?.set(data.startValue + data.value)
-        else
-            AnimationSystem.animations.deactivate(index)
+        data.runningTime += FFContext.timer.timeElapsed
+        if (data.runningTime > data.duration) {
+            if (looping) {
+                if (data.inverseOnLoop) {
+                    val tmp = data.startValue
+                    data.startValue = data.endValue
+                    data.endValue = tmp
+                }
+                reset()
+            } else {
+                AnimationSystem.animations.deactivate(index)
+            }
+            return
+        }
+
+        val t: Float = data.runningTime.toFloat() / data.duration
+        var value = data.changeInValue * data.easing.calc(t)
+        if (data.inverse) {
+            value *= -1
+        }
+
+        propertyAccessor?.set(data.startValue + value)
     }
 
     companion object : EntityPropertyAnimation.Builder<EasedProperty>(), ISubType<EasedProperty, Animation> {
