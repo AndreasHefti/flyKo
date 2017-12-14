@@ -1,6 +1,5 @@
 package com.inari.firefly.physics.animation.easing
 
-import com.inari.commons.geom.Easing
 import com.inari.firefly.NO_PROPERTY_REF
 import com.inari.firefly.entity.Entity
 import com.inari.firefly.entity.property.FloatPropertyAccessor
@@ -9,7 +8,7 @@ import com.inari.firefly.physics.animation.AnimatedProperty
 class EasingAnimated private constructor() : AnimatedProperty() {
 
     @JvmField internal var propertyAccessor: FloatPropertyAccessor? = null
-    @JvmField internal var easingType: Easing.Type = Easing.Type.LINEAR
+    @JvmField internal var easing: Easing.EasingFunction = Easing.polyIn(2.0)
     @JvmField internal var startValue = 0f
     @JvmField internal var endValue = 0f
     @JvmField internal var duration: Long = 0
@@ -19,9 +18,9 @@ class EasingAnimated private constructor() : AnimatedProperty() {
     @JvmField internal var changeInValue = 0f
     @JvmField internal var runningTime: Long = 0
 
-    var ff_EasingType: Easing.Type
-        get() = easingType
-        set(value) { easingType = value }
+    var ff_Easing: Easing.EasingFunction
+        get() = easing
+        set(value) { easing = value }
     var ff_StartValue: Float
         get() = startValue
         set(value) { startValue = value }

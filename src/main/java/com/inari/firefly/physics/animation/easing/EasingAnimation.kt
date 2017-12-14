@@ -51,20 +51,20 @@ class EasingAnimation private constructor(): Animation() {
             return
         }
 
-        val animValue = animated.easingType.calc(
-            animated.runningTime,
-            0f,
-            animated.changeInValue,
-            animated.duration
-        )
-        val value = if (animated.inverse) {
-            animated.startValue - animValue
-        } else {
-            animated.startValue + animValue
+        val t: Float = animated.runningTime.toFloat() / animated.duration
+        var value: Float = animated.changeInValue * animated.easing.calc(t)
+
+//        var animValue = animated.easingType.calc(
+//            animated.runningTime,
+//            0f,
+//            animated.changeInValue,
+//            animated.duration
+//        )
+        if (animated.inverse) {
+            value *= -1
         }
 
-
-        animated.propertyAccessor?.set(value)
+        animated.propertyAccessor?.set(animated.startValue + value)
     }
 
     companion object : SingletonComponent<EasingAnimation, Animation>() {
