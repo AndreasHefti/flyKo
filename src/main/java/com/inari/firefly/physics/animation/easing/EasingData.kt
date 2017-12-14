@@ -18,7 +18,6 @@ internal class EasingData {
 
     fun reset() {
         runningTime = 0
-        value = startValue
         changeInValue  = endValue - startValue
         if (changeInValue < 0) {
             inverse = true
@@ -31,17 +30,15 @@ internal class EasingData {
     fun update(looping: Boolean): Boolean {
         runningTime += FFContext.timer.timeElapsed
         if (runningTime > duration) {
-            return if (looping) {
+            if (looping) {
                 if (inverseOnLoop) {
                     val tmp = startValue
                     startValue = endValue
                     endValue = tmp
                 }
                 reset()
-                true
-            } else {
-                false
             }
+            return false
         }
 
         val t: Float = runningTime.toFloat() / duration
