@@ -6,15 +6,14 @@ import com.inari.firefly.TestApp
 import com.inari.firefly.asset.AssetSystem
 import com.inari.firefly.control.ControllerSystem
 import com.inari.firefly.control.PolyController
+import com.inari.firefly.physics.animation.easing.EasedProperty
+import com.inari.firefly.physics.animation.entity.EAnimation
 import com.inari.firefly.entity.EMeta
 import com.inari.firefly.entity.Entity
 import com.inari.firefly.entity.EntitySystem
 import com.inari.firefly.graphics.ETransform
 import com.inari.firefly.graphics.sprite.EMultiplier
 import com.inari.firefly.graphics.sprite.ESprite
-import com.inari.firefly.physics.animation.AnimatedInt
-import com.inari.firefly.physics.animation.EAnimation
-import com.inari.firefly.physics.animation.easing.EasingAnimated
 
 
 fun main(args: Array<String>) {
@@ -127,7 +126,7 @@ fun main(args: Array<String>) {
             ff_Position.x = 1f
         }
         with(EAnimation) {
-            with(EasingAnimated) {
+            with(EasedProperty) {
                 ff_Looping = true
                 ff_PropertyRef = ESprite.Property.TINT_ALPHA
             }

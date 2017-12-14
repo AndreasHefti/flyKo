@@ -1,10 +1,8 @@
 package com.inari.firefly.system.component
 
 import com.inari.firefly.FFContext
-import com.inari.firefly.NO_COMP_ID
 import com.inari.firefly.component.CompId
 import com.inari.firefly.component.ComponentBuilder
-import com.inari.firefly.component.Singleton
 
 abstract class SystemComponentBuilder<out C : SystemComponent> : ComponentBuilder<C>() {
 

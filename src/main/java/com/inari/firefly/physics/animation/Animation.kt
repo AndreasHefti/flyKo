@@ -5,16 +5,16 @@ import com.inari.firefly.system.component.SystemComponent
 
 abstract class Animation protected constructor() : SystemComponent() {
 
-    abstract operator fun invoke()
+    @JvmField internal var looping: Boolean = false
 
-    abstract fun register(animated: AnimatedProperty)
-    abstract fun dispose(animated: AnimatedProperty)
+    var ff_Looping: Boolean
+        get() = looping
+        set(value) { looping = value }
 
-    protected fun wrongAnimatedType(expected: String, actual: String) {
-        throw IllegalArgumentException("Animated Type Mismatch. Expected: $expected Actual: $actual")
-    }
+    abstract fun update()
+    abstract fun reset()
 
-    override final fun indexedTypeKey() = Animation.typeKey
+    override final fun indexedTypeKey() = typeKey
     companion object : ComponentType<Animation> {
         override val typeKey = SystemComponent.createTypeKey(Animation::class.java)
     }

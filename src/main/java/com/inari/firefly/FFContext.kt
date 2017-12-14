@@ -21,6 +21,7 @@ import com.inari.firefly.external.FFTimer
 import com.inari.firefly.system.FFAspectedEvent
 import com.inari.firefly.system.FFEvent
 import com.inari.firefly.system.component.ComponentSystem
+import com.inari.firefly.system.component.ISubType
 import com.inari.firefly.system.component.SubType
 import com.inari.firefly.system.component.SystemComponent
 
@@ -85,11 +86,11 @@ object FFContext {
         mapper(cType)[name]
 
     @Suppress("UNCHECKED_CAST")
-    operator fun <C : SystemComponent, CC : C> get(cType: SubType<CC, C>, index: Int): CC =
+    operator fun <C : SystemComponent, CC : C> get(cType: ISubType<CC, C>, index: Int): CC =
         mapper(cType)[index] as CC
 
     @Suppress("UNCHECKED_CAST")
-    operator fun <C : SystemComponent, CC : C> get(cType: SubType<CC, C>, name: String): C =
+    operator fun <C : SystemComponent, CC : C> get(cType: ISubType<CC, C>, name: String): C =
         mapper(cType)[name] as CC
 
     fun assetInstanceId(assetId: Int): Int =
