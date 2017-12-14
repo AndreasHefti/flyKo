@@ -48,7 +48,7 @@ class EasedProperty : EntityPropertyAnimation(), FloatAnimation {
 
     override fun update() {
         if (data.update(looping))
-            propertyAccessor?.set(data.startValue + value)
+            propertyAccessor?.set(data.startValue + data.value)
         else
             AnimationSystem.animations.deactivate(index)
     }

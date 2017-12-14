@@ -14,8 +14,11 @@ internal class EasingData {
     @JvmField var changeInValue = 0f
     @JvmField var runningTime: Long = 0
 
+    @JvmField var value = startValue
+
     fun reset() {
         runningTime = 0
+        value = startValue
         changeInValue  = endValue - startValue
         if (changeInValue < 0) {
             inverse = true
@@ -42,7 +45,7 @@ internal class EasingData {
         }
 
         val t: Float = runningTime.toFloat() / duration
-        var value: Float = changeInValue * easing.calc(t)
+        value = changeInValue * easing.calc(t)
         if (inverse) {
             value *= -1
         }
