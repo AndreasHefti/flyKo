@@ -13,8 +13,12 @@ abstract class Asset protected constructor(): SystemComponent() {
     fun instanceId(): Int = instanceId(0)
     abstract fun instanceId(index: Int): Int
 
-    abstract fun load()
-    abstract fun unload()
+    internal fun activate() = load()
+    internal fun deactivate() = unload()
+
+    protected abstract fun load()
+    protected abstract fun unload()
+
     fun loaded():Boolean = FFContext.isActive(componentId)
 
     override final fun indexedTypeKey() = typeKey

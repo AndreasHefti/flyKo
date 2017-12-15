@@ -135,7 +135,7 @@ fun main(args: Array<String>) {
             ff_Positions.add(PositionF(1f, 3f))
         }
         with(EMeta) {
-            ff_addController.name = "sofbno"
+            ff_Controller.name = "sofbno"
         }
     }
 

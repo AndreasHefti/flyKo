@@ -7,14 +7,12 @@ import com.inari.firefly.Expr
 import com.inari.firefly.Predicate
 import com.inari.firefly.TRUE_PREDICATE
 import com.inari.firefly.component.ComponentType
-import com.inari.firefly.component.Singleton
 import com.inari.firefly.entity.Entity
 import com.inari.firefly.external.TransformData
 import com.inari.firefly.graphics.ETransform
 import com.inari.firefly.graphics.view.ViewLayerAware
 import com.inari.firefly.system.component.SystemComponent
 
-@Singleton
 abstract class Renderer protected constructor(
     private val acceptance: Predicate<Entity> = TRUE_PREDICATE(),
     private val sort: Expr<DynArray<Entity>>? = null

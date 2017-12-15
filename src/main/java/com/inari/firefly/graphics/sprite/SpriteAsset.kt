@@ -8,9 +8,7 @@ import com.inari.firefly.component.ComponentRefResolver
 import com.inari.firefly.external.SpriteData
 import com.inari.firefly.system.component.SubType
 
-class SpriteAsset private constructor(
-
-) : Asset(), SpriteData {
+class SpriteAsset private constructor() : Asset(), SpriteData {
 
     @JvmField internal var spriteId: Int = -1
 
@@ -52,6 +50,7 @@ class SpriteAsset private constructor(
             spriteId = -1
         }
     }
+
 
     companion object : SubType<SpriteAsset, Asset>() {
         override val typeKey: IndexedTypeKey = Asset.typeKey

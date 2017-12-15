@@ -44,7 +44,7 @@ object AssetSystem : ComponentSystem {
             assets.activate(dependingIndex)
         }
 
-        asset.load()
+        asset.activate()
         AssetEvent.send(
             id = asset.componentId,
             type = AssetEvent.Type.ASSET_LOADED
@@ -62,7 +62,7 @@ object AssetSystem : ComponentSystem {
                 .forEach { assets.deactivate(it) }
         }
 
-        asset.unload()
+        asset.deactivate()
         AssetEvent.send(
             id = asset.componentId,
             type = AssetEvent.Type.ASSET_DISPOSED
