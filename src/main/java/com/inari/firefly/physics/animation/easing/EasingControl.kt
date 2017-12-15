@@ -1,0 +1,61 @@
+package com.inari.firefly.physics.animation.easing
+
+import com.inari.firefly.FFContext
+import com.inari.firefly.entity.property.FloatPropertyAccessor
+import com.inari.firefly.physics.animation.Animation
+import com.inari.firefly.physics.animation.AnimationSystem
+
+internal class EasingControl(
+    val animation: Animation
+) {
+
+    @JvmField  var propertyAccessor: FloatPropertyAccessor? = null
+
+    @JvmField var easing: EasingFunctions.EasingFunction = EasingFunctions.linear
+    @JvmField var startValue = 0f
+    @JvmField var endValue = 0f
+    @JvmField var duration: Long = 0
+    @JvmField var inverseOnLoop = false
+
+    @JvmField var inverse = false
+    @JvmField var changeInValue = 0f
+    @JvmField var runningTime: Long = 0
+
+    fun reset() {
+        runningTime = 0
+        changeInValue  = endValue - startValue
+        if (changeInValue < 0) {
+            inverse = true
+            changeInValue = Math.abs(changeInValue)
+        } else {
+            inverse = false
+        }
+        propertyAccessor?.set(startValue)
+    }
+
+    fun update() {
+        runningTime += FFContext.timer.timeElapsed
+        if (runningTime > duration) {
+            if (animation.looping) {
+                if (inverseOnLoop) {
+                    val tmp = startValue
+                    startValue = endValue
+                    endValue = tmp
+                }
+                reset()
+            } else {
+                AnimationSystem.animations.deactivate(animation.index())
+            }
+            return
+        }
+
+        val t: Float = runningTime.toFloat() / duration
+        var value = changeInValue * easing.calc(t)
+        if (inverse) {
+            value *= -1
+        }
+
+        propertyAccessor?.set(startValue + value)
+    }
+
+}

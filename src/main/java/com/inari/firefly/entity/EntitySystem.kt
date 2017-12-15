@@ -4,7 +4,6 @@ import com.inari.commons.lang.aspect.IAspects
 import com.inari.firefly.FFContext
 import com.inari.firefly.component.CompId
 import com.inari.firefly.component.ComponentMap
-import com.inari.firefly.control.Controller
 import com.inari.firefly.control.ControllerSystem
 import com.inari.firefly.entity.EntityActivationEvent.Type.ACTIVATED
 import com.inari.firefly.entity.EntityActivationEvent.Type.DEACTIVATED
@@ -41,8 +40,10 @@ object EntitySystem : ComponentSystem {
     operator fun contains(index: Int) = index in entities
 
     private fun activated(entity: Entity) {
-        if (entity.has(EMeta)) {
-            notifyEntityController(entity, true)
+        if (EMeta in entity.components.aspect ) {
+            val controllerRef = entity[EMeta].controllerRef
+            if (controllerRef >= 0)
+                ControllerSystem.register(controllerRef, entity.componentId)
         }
 
         send(
@@ -52,8 +53,10 @@ object EntitySystem : ComponentSystem {
     }
 
     private fun deactivated(entity: Entity) {
-        if (entity.has(EMeta)) {
-            notifyEntityController(entity, false)
+        if (EMeta in entity.components.aspect ) {
+            val controllerRef = entity[EMeta].controllerRef
+            if (controllerRef >= 0)
+                ControllerSystem.unregister(controllerRef, entity.componentId)
         }
 
         send(
@@ -62,16 +65,7 @@ object EntitySystem : ComponentSystem {
         )
     }
 
-    private fun notifyEntityController(entity: Entity, activated: Boolean) {
-        val expr: (Controller) -> Unit =
-            if (activated) { controller: Controller -> controller.register(entity.componentId) }
-            else { controller -> controller.unregister(entity.componentId) }
 
-        ControllerSystem.controller.forEachIn(
-            entity[EMeta].controller,
-            expr
-        )
-    }
 
     override fun clearSystem() = entities.clear()
 

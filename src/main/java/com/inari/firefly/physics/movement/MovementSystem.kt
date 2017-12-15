@@ -1,9 +1,9 @@
 package com.inari.firefly.physics.movement
 
-import com.inari.commons.lang.aspect.Aspects
 import com.inari.commons.lang.aspect.IAspects
 import com.inari.firefly.FFApp.UpdateEvent
 import com.inari.firefly.FFContext
+import com.inari.firefly.control.ControllerSystem
 import com.inari.firefly.entity.Entity
 import com.inari.firefly.entity.EntityActivationEvent
 import com.inari.firefly.entity.EntitySystem
@@ -49,10 +49,20 @@ object MovementSystem : FFSystem {
         })
 
         FFContext.registerListener(EntityActivationEvent, object : EntityActivationEvent.Listener {
-            override fun entityActivated(entity: Entity) =
+            override fun entityActivated(entity: Entity) {
                 entities.set(entity.index())
-            override fun entityDeactivated(entity: Entity) =
+                val movement = entity[EMovement]
+                if (movement.controllerRef >= 0) {
+                    ControllerSystem.register(movement.controllerRef, entity.componentId)
+                }
+            }
+            override fun entityDeactivated(entity: Entity) {
                 entities.set(entity.index(), false)
+                val movement = entity[EMovement]
+                if (movement.controllerRef >= 0) {
+                    ControllerSystem.unregister(movement.controllerRef, entity.componentId)
+                }
+            }
             override fun match(aspects: IAspects): Boolean =
                 aspects.contains(EMovement)
         })
