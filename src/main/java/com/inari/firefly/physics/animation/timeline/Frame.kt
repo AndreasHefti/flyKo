@@ -1,6 +1,6 @@
 package com.inari.firefly.physics.animation.timeline
 
-import com.inari.firefly.graphics.sprite.SpriteSetAsset
+import com.inari.firefly.graphics.sprite.Sprite
 
 interface Frame {
 
@@ -17,7 +17,7 @@ interface Frame {
     }
 
     class SpriteFrame(
-        val sprite: SpriteSetAsset.Sprite,
+        val sprite: Sprite,
         override val timeInterval: Long
     ) : IntFrame {
         override val value: Int
