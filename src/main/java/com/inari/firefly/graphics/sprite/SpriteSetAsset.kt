@@ -6,6 +6,7 @@ import com.inari.firefly.FFContext
 import com.inari.firefly.NO_NAME
 import com.inari.firefly.asset.Asset
 import com.inari.firefly.component.ArrayAccessor
+import com.inari.firefly.component.ComponentRefResolver
 import com.inari.firefly.external.SpriteData
 import com.inari.firefly.system.component.SubType
 
@@ -15,6 +16,7 @@ class SpriteSetAsset private constructor() : Asset() {
     private val spriteData = DynArray.create(Sprite::class.java, 30)
 
     val ff_SpriteData = ArrayAccessor<Sprite>(spriteData)
+    var ff_Texture = ComponentRefResolver(Asset, { index-> dependingRef = setIfNotInitialized(index, "ff_Texture") })
 
     override fun instanceId(index: Int): Int =
         if (index in spriteData) spriteData[index].instanceId
