@@ -13,7 +13,7 @@ class IntTimelineProperty private constructor() : EntityPropertyAnimation(), Int
     @JvmField internal var propertyAccessor: IntPropertyAccessor? = null
     @JvmField internal val data = IntTimelineData()
 
-    var ff_Timeline: Array<Frame>
+    var ff_Timeline: Array<Frame.IntFrame>
         get() = data.timeline
         set(value) { data.timeline = value }
     var ff_StartValue: Int
@@ -50,8 +50,4 @@ class IntTimelineProperty private constructor() : EntityPropertyAnimation(), Int
             IntTimelineProperty()
     }
 
-    data class Frame(
-        @JvmField var value: Int,
-        @JvmField var time: Long
-    )
 }

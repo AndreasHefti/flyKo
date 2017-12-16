@@ -4,7 +4,7 @@ import com.inari.firefly.FFContext
 
 internal class IntTimelineData {
 
-    @JvmField var timeline: Array<IntTimelineProperty.Frame> = emptyArray()
+    @JvmField var timeline: Array<Frame.IntFrame> = emptyArray()
     @JvmField var startValue = 0
     @JvmField var endValue = 0
     @JvmField var inverseOnLoop = false
@@ -22,7 +22,7 @@ internal class IntTimelineData {
 
         currentFrameTime += FFContext.timer.timeElapsed
 
-        if (currentFrameTime > frame.time) {
+        if (currentFrameTime > frame.timeInterval) {
             currentIndex++
             if (currentIndex > endValue) {
                 return if (looping) {

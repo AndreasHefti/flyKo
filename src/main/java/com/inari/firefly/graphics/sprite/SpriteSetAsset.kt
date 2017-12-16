@@ -3,11 +3,11 @@ package com.inari.firefly.graphics.sprite
 import com.inari.commons.lang.indexed.IndexedTypeKey
 import com.inari.commons.lang.list.DynArray
 import com.inari.firefly.FFContext
-import com.inari.firefly.NO_NAME
 import com.inari.firefly.asset.Asset
 import com.inari.firefly.component.ArrayAccessor
 import com.inari.firefly.component.ComponentRefResolver
 import com.inari.firefly.external.SpriteData
+import com.inari.firefly.graphics.sprite.Sprite.Companion.NULL_SPRITE
 import com.inari.firefly.system.component.SubType
 
 
@@ -58,24 +58,9 @@ class SpriteSetAsset private constructor() : Asset() {
         override val isVerticalFlip: Boolean get() = sprite.flipV
     }
 
-    class Sprite(
-        @JvmField val x: Int,
-        @JvmField val y: Int,
-        @JvmField val width: Int,
-        @JvmField val height: Int,
-        @JvmField val flipH: Boolean = false,
-        @JvmField val flipV: Boolean = false,
-        @JvmField val name: String = NO_NAME
-    ) {
-        @JvmField internal var instId = -1
-        val instanceId: Int get() = instId
-    }
-
     companion object : SubType<SpriteSetAsset, Asset>() {
         override val typeKey: IndexedTypeKey = Asset.typeKey
         override fun subType() = SpriteSetAsset::class.java
         override fun createEmpty() = SpriteSetAsset()
-
-        @JvmField val NULL_SPRITE = Sprite(0, 0, 0, 0)
     }
 }
