@@ -28,14 +28,13 @@ class SpriteAsset private constructor() : Asset(), SpriteData {
         get() = verticalFlip
         set(value) { verticalFlip = value }
 
-    override val textureId: Int
-        get() = dependingRef
-    override val textureRegion: Rectangle
-        get() = region
-    override val isHorizontalFlip: Boolean
-        get() = horizontalFlip
-    override val isVerticalFlip: Boolean
-        get() = verticalFlip
+    override val textureId: Int get() = dependingRef
+    override val x: Int get() = region.x
+    override val y: Int get() = region.y
+    override val width: Int get() = region.width
+    override val height: Int get() = region.height
+    override val isHorizontalFlip: Boolean get() = horizontalFlip
+    override val isVerticalFlip: Boolean get() = verticalFlip
 
     override fun instanceId(index: Int): Int = spriteId
 
@@ -50,7 +49,6 @@ class SpriteAsset private constructor() : Asset(), SpriteData {
             spriteId = -1
         }
     }
-
 
     companion object : SubType<SpriteAsset, Asset>() {
         override val typeKey: IndexedTypeKey = Asset.typeKey

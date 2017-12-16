@@ -84,13 +84,15 @@ class FontAsset : Asset(), TextureData {
         val graphics = FFContext.graphics
 
         textureId = graphics.createTexture(this).first
-        val textureRegion = Rectangle(0, 0, charWidth, charHeight)
-        val spriteData = InternalSpriteData(this, textureRegion)
+        val texReg = Rectangle(0, 0, charWidth, charHeight)
+        val spriteData = InternalSpriteData(
+            this, texReg.x, texReg.y, texReg.width, texReg.height
+        )
 
         for (y in 0 until charMap.size) {
             for (x in 0 until charMap[y].size) {
-                textureRegion.x = x * charWidth
-                textureRegion.y = y * charHeight
+                texReg.x = x * charWidth
+                texReg.y = y * charHeight
 
                 val charSpriteId = graphics.createSprite(spriteData)
                 charSpriteMap.set(charMap[y][x].toInt(), charSpriteId)
@@ -127,7 +129,10 @@ class FontAsset : Asset(), TextureData {
 
     private inner class InternalSpriteData(
         fontAsset: FontAsset,
-        override val textureRegion: Rectangle
+        override val x: Int,
+        override val y: Int,
+        override val width: Int,
+        override val height: Int
     ) : SpriteData {
         override val textureId: Int = fontAsset.textureId
         override val isHorizontalFlip: Boolean = false

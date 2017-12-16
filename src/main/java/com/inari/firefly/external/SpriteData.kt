@@ -1,10 +1,11 @@
 package com.inari.firefly.external
 
-import com.inari.commons.geom.Rectangle
-
 interface SpriteData {
     val textureId: Int
-    val textureRegion: Rectangle
+    val x: Int
+    val y: Int
+    val width: Int
+    val height: Int
     val isHorizontalFlip: Boolean
     val isVerticalFlip: Boolean
 }

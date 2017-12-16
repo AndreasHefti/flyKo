@@ -1,6 +1,5 @@
 package com.inari.firefly.graphics.sprite
 
-import com.inari.commons.geom.Rectangle
 import com.inari.commons.lang.indexed.IndexedTypeKey
 import com.inari.commons.lang.list.DynArray
 import com.inari.firefly.FFContext
@@ -49,16 +48,22 @@ class SpriteSetAsset private constructor() : Asset() {
         @JvmField var sprite: Sprite = NULL_SPRITE
 
         override val textureId: Int get() = texId
-        override val textureRegion: Rectangle get() = sprite.textureRegion
-        override val isHorizontalFlip: Boolean get() = sprite.flipHorizontal
-        override val isVerticalFlip: Boolean get() = sprite.flipVertical
+        override val x: Int get() = sprite.x
+        override val y: Int get() = sprite.y
+        override val width: Int get() = sprite.width
+        override val height: Int get() = sprite.height
+        override val isHorizontalFlip: Boolean get() = sprite.flipH
+        override val isVerticalFlip: Boolean get() = sprite.flipV
     }
 
     class Sprite(
-        @JvmField val name: String = NO_NAME,
-        @JvmField val textureRegion: Rectangle,
-        @JvmField val flipHorizontal: Boolean = false,
-        @JvmField val flipVertical: Boolean = false
+        @JvmField val x: Int,
+        @JvmField val y: Int,
+        @JvmField val width: Int,
+        @JvmField val height: Int,
+        @JvmField val flipH: Boolean = false,
+        @JvmField val flipV: Boolean = false,
+        @JvmField val name: String = NO_NAME
     ) {
         @JvmField internal var instId = -1
         val instanceId: Int get() = instId
@@ -69,6 +74,6 @@ class SpriteSetAsset private constructor() : Asset() {
         override fun subType() = SpriteSetAsset::class.java
         override fun createEmpty() = SpriteSetAsset()
 
-        @JvmField val NULL_SPRITE = Sprite(textureRegion = Rectangle())
+        @JvmField val NULL_SPRITE = Sprite(0, 0, 0, 0)
     }
 }
