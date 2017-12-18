@@ -41,4 +41,8 @@ interface FloatConsumer {
     operator fun invoke(i: Float)
 }
 
+interface Named {
+    val name: String
+}
+
 

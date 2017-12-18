@@ -20,12 +20,14 @@ interface ComponentSystem : FFSystem {
             exp: Int = 10,
             activationMapping: Boolean = false,
             nameMapping: Boolean = false,
-            listener:(C, ComponentMap.MapAction) -> Unit = { _, _ -> }
+            listener:(C, ComponentMap.MapAction) -> Unit = { _, _ -> },
+            mapToContext: Boolean = true
         ): ComponentMap<C> {
             val mapper: ComponentMapImpl<C> = ComponentMapImpl(
                 type, size, exp, activationMapping, nameMapping, listener
             )
-            FFContext.componentMaps.set(mapper.typeIndex, mapper)
+            if (mapToContext)
+                FFContext.componentMaps.set(mapper.typeIndex, mapper)
             return mapper
         }
     }

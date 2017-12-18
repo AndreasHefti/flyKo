@@ -1,15 +1,11 @@
 package com.inari.firefly
 
 import com.inari.commons.event.AspectedEventListener
-import com.inari.commons.event.Event
 import com.inari.commons.event.IEventDispatcher
 import com.inari.commons.lang.indexed.IIndexedTypeKey
 import com.inari.commons.lang.list.DynArray
 import com.inari.firefly.asset.AssetSystem
-import com.inari.firefly.component.CompId
-import com.inari.firefly.component.Component
-import com.inari.firefly.component.ComponentType
-import com.inari.firefly.component.ComponentMap
+import com.inari.firefly.component.*
 import com.inari.firefly.control.task.TaskSystem
 import com.inari.firefly.entity.EntityComponent
 import com.inari.firefly.entity.EntityComponent.EntityComponentType
@@ -22,7 +18,6 @@ import com.inari.firefly.system.FFAspectedEvent
 import com.inari.firefly.system.FFEvent
 import com.inari.firefly.system.component.ComponentSystem
 import com.inari.firefly.system.component.ISubType
-import com.inari.firefly.system.component.SubType
 import com.inari.firefly.system.component.SystemComponent
 
 
@@ -60,7 +55,12 @@ object FFContext {
         }
     }
 
+
+
     fun <C : Component> mapper(id: CompId): ComponentMap<C> =
+        mapper(id.typeKey)
+
+    fun <C : Component> mapper(id: CompNameId): ComponentMap<C> =
         mapper(id.typeKey)
 
     fun <C : Component> mapper(type: ComponentType<C>): ComponentMap<C> =
@@ -78,6 +78,9 @@ object FFContext {
 
     operator fun <C : Component> get(id: CompId): C =
         mapper<C>(id)[id.index]
+
+    operator fun <C : Component> get(id: CompNameId): C =
+        mapper<C>(id)[id.name]
 
     operator fun <C : Component> get(cType: ComponentType<C>, index: Int): C =
         mapper(cType)[index]
@@ -111,6 +114,9 @@ object FFContext {
     fun isActive(id: CompId): Boolean =
             mapper<Component>(id).isActive(id.index)
 
+    fun isActive(id: CompNameId): Boolean =
+        mapper<Component>(id).isActive(id.name)
+
     fun isActive(cType: ComponentType<*>, name: String): Boolean =
             mapper<Component>(cType.typeKey).isActive(name)
 
@@ -121,6 +127,11 @@ object FFContext {
 
     fun activate(id: CompId): FFContext {
         mapper<Component>(id).activate(id.index)
+        return this
+    }
+
+    fun activate(id: CompNameId): FFContext {
+        mapper<Component>(id).activate(id.name)
         return this
     }
 
@@ -139,6 +150,11 @@ object FFContext {
         return this
     }
 
+    fun deactivate(id: CompNameId): FFContext {
+        mapper<Component>(id).deactivate(id.name)
+        return this
+    }
+
     fun deactivate(cType: ComponentType<*>, name: String): FFContext {
         mapper<Component>(cType.typeKey).deactivate(name)
         return this
@@ -154,19 +170,13 @@ object FFContext {
         return this
     }
 
-    fun delete(cType: ComponentType<*>, name: String): FFContext {
-        mapper<Component>(cType.typeKey).delete(name)
+    fun delete(id: CompNameId): FFContext {
+        mapper<Component>(id).delete(id.name)
         return this
     }
 
-    fun runTask(taskName: String): FFContext =
-        runTask(TaskSystem.tasks.indexForName(taskName))
-
-    fun runTask(taskId: CompId): FFContext =
-        runTask(taskId.index)
-
-    fun runTask(taskIndex: Int): FFContext {
-        TaskSystem.runTask(taskIndex)
+    fun delete(cType: ComponentType<*>, name: String): FFContext {
+        mapper<Component>(cType.typeKey).delete(name)
         return this
     }
 
