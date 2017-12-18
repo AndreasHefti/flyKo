@@ -21,9 +21,9 @@ class ETile private constructor (
     @JvmField internal var tint: RGBColor = RGBColor(1f, 1f, 1f, 1f)
     @JvmField internal var positions: DynArray<Position> = DynArray.create(Position::class.java)
 
-    val ff_SpriteAsset =
+    val ff_Sprite =
         AssetInstanceRefResolver({ index -> spriteRef = setIfNotInitialized(index, "ff_SpriteAsset") })
-    val ff_ShaderAsset =
+    val ff_Shader =
         AssetInstanceRefResolver({ index -> shaderRef = setIfNotInitialized(index, "ff_ShaderAsset") })
     var ff_Blend: BlendMode
         get() = blend
