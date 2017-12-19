@@ -78,7 +78,8 @@ class Entity internal constructor(): SystemComponent() {
         internal fun builder(receiver: Receiver<C>): (C.() -> Unit) -> CompId = {
             configure -> doBuild(EntityProvider.getComponent(this), configure, receiver)
         }
-        internal abstract fun createEmpty(): C
+        internal fun create(): C = createEmpty()
+        protected abstract fun createEmpty(): C
     }
 
 }

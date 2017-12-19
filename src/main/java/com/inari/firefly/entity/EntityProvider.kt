@@ -19,7 +19,7 @@ object EntityProvider {
     fun createComponentForLaterUse(number: Int, builder: EntityComponentBuilder<*>) {
         val cache = getOrCreate(builder.typeKey.index())
         for (i in 0 until number) {
-            cache.add(builder.createEmpty())
+            cache.add(builder.create())
         }
     }
 
@@ -27,7 +27,7 @@ object EntityProvider {
     fun <C : EntityComponent> getComponent(builder: EntityComponentBuilder<C>): C {
         val cache = getOrCreate(builder.typeKey.index())
         return if (cache.isEmpty()) {
-            builder.createEmpty()
+            builder.create()
         } else {
             cache.pop() as C
         }
