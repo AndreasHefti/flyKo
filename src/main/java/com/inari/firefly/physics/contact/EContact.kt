@@ -10,7 +10,7 @@ class EContact private constructor() : EntityComponent() {
 
     @JvmField internal var resolverRef = -1
     @JvmField internal val bounds = Rectangle()
-    @JvmField internal var mask = BitMask(0, 0)
+    @JvmField internal val mask = BitMask(0, 0)
     @JvmField internal var material = ContactSystem.UNDEFINED_MATERIAL
     @JvmField internal var contactType = ContactSystem.UNDEFINED_CONTACT_TYPE
 

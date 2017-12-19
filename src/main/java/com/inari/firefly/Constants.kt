@@ -1,11 +1,13 @@
 package com.inari.firefly
 
+import com.inari.commons.geom.PositionF
 import com.inari.commons.lang.aspect.AspectGroup
 import com.inari.commons.lang.indexed.IIndexedTypeKey
 import com.inari.firefly.component.CompId
 import com.inari.firefly.entity.Entity
 import com.inari.firefly.entity.property.VirtualPropertyRef
 import com.inari.firefly.external.FFTimer
+import com.inari.firefly.graphics.view.camera.CameraPivot
 
 @JvmField val SYSTEM_FONT = "SYSTEM_FONT"
 
@@ -43,6 +45,10 @@ object GLBlendMode {
     override val propertyName: String = NO_NAME
     override val type: Class<*> get() = throw IllegalAccessException()
     override fun accessor(entity: Entity): VirtualPropertyRef.PropertyAccessor = throw IllegalAccessException()
+}
+@JvmField val NO_CAMERA_PIVOT = object : CameraPivot {
+    override fun init() = throw IllegalAccessException()
+    override val pivot: PositionF get() = throw IllegalAccessException()
 }
 
 @JvmField val BASE_VIEW: String = "[[BASE_VIEW]]"

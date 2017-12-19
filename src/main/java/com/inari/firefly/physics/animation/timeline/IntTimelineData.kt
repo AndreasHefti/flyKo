@@ -6,7 +6,7 @@ internal class IntTimelineData {
 
     @JvmField var timeline: Array<Frame.IntFrame> = emptyArray()
     @JvmField var startValue = 0
-    @JvmField var endValue = 0
+    @JvmField var endValue = -1
     @JvmField var inverseOnLoop = false
 
     @JvmField var currentFrameTime: Long = 0
@@ -24,7 +24,7 @@ internal class IntTimelineData {
 
         if (currentFrameTime > frame.timeInterval) {
             currentIndex++
-            if (currentIndex > endValue) {
+            if ((endValue >= 0 && currentIndex < endValue) || currentIndex > timeline.size - 1) {
                 return if (looping) {
                     if (inverseOnLoop) {
                         val tmp = startValue
