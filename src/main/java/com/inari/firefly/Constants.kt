@@ -48,7 +48,7 @@ object GLBlendMode {
 }
 @JvmField val NO_CAMERA_PIVOT = object : CameraPivot {
     override fun init() = throw IllegalAccessException()
-    override val pivot: PositionF get() = throw IllegalAccessException()
+    override operator fun invoke(): PositionF = throw IllegalAccessException()
 }
 
 @JvmField val BASE_VIEW: String = "[[BASE_VIEW]]"
