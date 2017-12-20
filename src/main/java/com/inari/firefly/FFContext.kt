@@ -104,11 +104,11 @@ object FFContext {
         mapper(cType)[indexed.index()] as CC
 
     @Suppress("UNCHECKED_CAST")
-    operator fun <C : SystemComponent, CC : C> get(cType: ISubType<CC, C>, name: String): C =
+    operator fun <C : SystemComponent, CC : C> get(cType: ISubType<CC, C>, name: String): CC =
         mapper(cType)[name] as CC
 
     @Suppress("UNCHECKED_CAST")
-    operator fun <C : SystemComponent, CC : C> get(cType: ISubType<CC, C>, named: Named): C =
+    operator fun <C : SystemComponent, CC : C> get(cType: ISubType<CC, C>, named: Named): CC =
         mapper(cType)[named.name] as CC
 
     fun assetInstanceId(assetId: Int): Int =
