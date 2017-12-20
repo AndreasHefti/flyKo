@@ -3,6 +3,7 @@ package com.inari.firefly
 import com.inari.commons.event.AspectedEventListener
 import com.inari.commons.event.IEventDispatcher
 import com.inari.commons.lang.indexed.IIndexedTypeKey
+import com.inari.commons.lang.indexed.Indexed
 import com.inari.commons.lang.list.DynArray
 import com.inari.firefly.asset.AssetSystem
 import com.inari.firefly.component.*
@@ -85,16 +86,30 @@ object FFContext {
     operator fun <C : Component> get(cType: ComponentType<C>, index: Int): C =
         mapper(cType)[index]
 
+    operator fun <C : Component> get(cType: ComponentType<C>, indexed: Indexed): C =
+        mapper(cType)[indexed.index()]
+
     operator fun <C : Component> get(cType: ComponentType<C>, name: String): C =
         mapper(cType)[name]
+
+    operator fun <C : Component> get(cType: ComponentType<C>, named: Named): C =
+        mapper(cType)[named.name]
 
     @Suppress("UNCHECKED_CAST")
     operator fun <C : SystemComponent, CC : C> get(cType: ISubType<CC, C>, index: Int): CC =
         mapper(cType)[index] as CC
 
     @Suppress("UNCHECKED_CAST")
+    operator fun <C : SystemComponent, CC : C> get(cType: ISubType<CC, C>, indexed: Indexed): CC =
+        mapper(cType)[indexed.index()] as CC
+
+    @Suppress("UNCHECKED_CAST")
     operator fun <C : SystemComponent, CC : C> get(cType: ISubType<CC, C>, name: String): C =
         mapper(cType)[name] as CC
+
+    @Suppress("UNCHECKED_CAST")
+    operator fun <C : SystemComponent, CC : C> get(cType: ISubType<CC, C>, named: Named): C =
+        mapper(cType)[named.name] as CC
 
     fun assetInstanceId(assetId: Int): Int =
             AssetSystem.assets[assetId].instanceId()
