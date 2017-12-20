@@ -24,6 +24,12 @@ class SimpleCamaraController private constructor() : Controller() {
     var ff_Pivot: CameraPivot
         get() = throw UnsupportedOperationException()
         set(value) { pivot = value }
+    var ff_SnapToBounds: Rectangle
+        get() = snapToBounds
+        set(value) {snapToBounds.setFrom(value)}
+    var ff_Velocity: Float
+        get() = velocity
+        set(value) {velocity = value}
 
     override fun register(id: CompId) {
         view = ViewSystem.views[id]
