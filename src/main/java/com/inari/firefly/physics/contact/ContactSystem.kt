@@ -6,7 +6,9 @@ import com.inari.commons.geom.Rectangle
 import com.inari.commons.lang.aspect.Aspect
 import com.inari.commons.lang.aspect.AspectGroup
 import com.inari.commons.lang.aspect.IAspects
+import com.inari.commons.lang.indexed.Indexed
 import com.inari.firefly.FFContext
+import com.inari.firefly.Named
 import com.inari.firefly.component.CompId
 import com.inari.firefly.component.ComponentMap.MapAction.CREATED
 import com.inari.firefly.component.ComponentMap.MapAction.DELETED
@@ -94,6 +96,84 @@ object ContactSystem : ComponentSystem {
             Contacts(constraint)
         else
             throw IllegalArgumentException("No ContactConstraint found for id: $constraint")
+
+
+
+
+
+    fun updateContacts(entityId: Int) {
+        val entity = EntitySystem[entityId]
+        val contacts = entity[EContact]
+        if (contacts.contactScan.contacts.isEmpty)
+            return
+
+        scanContacts(entity, contacts)
+    }
+
+    fun updateContacts(indexed: Indexed) {
+        updateContacts(indexed.index())
+    }
+
+    fun updateContacts(entityName: String) {
+        val entity = EntitySystem[entityName]
+        val contacts = entity[EContact]
+        if (contacts.contactScan.contacts.isEmpty)
+            return
+
+        scanContacts(entity, contacts)
+    }
+
+    fun updateContacts(entityName: Named) {
+        updateContacts(entityName.name)
+    }
+
+    fun updateContacts(entityId: Int, constraintName: String) {
+        val entity = EntitySystem[entityId]
+        val contacts = entity[EContact]
+        val contactConstraint = constraints[constraintName]
+        val constraint = contacts.contactScan.contacts.get(contactConstraint.index()) ?: return
+
+        updateContacts(entity, constraint)
+    }
+
+    fun updateContacts(indexed: Indexed, constraintName: String) {
+        updateContacts(indexed.index(), constraintName)
+    }
+
+    fun updateContacts(entityName: String, constraintName: String) {
+        val entity = EntitySystem[entityName]
+        val contacts = entity[EContact]
+        val contactConstraint = constraints[constraintName]
+        val constraint = contacts.contactScan.contacts.get(contactConstraint.index()) ?: return
+
+        updateContacts(entity, constraint)
+    }
+
+    fun updateContacts(entityName: Named, constraintName: String) {
+        updateContacts(entityName.name, constraintName)
+    }
+
+    fun updateContacts(entityId: Int, contacts: Contacts) {
+        updateContacts(EntitySystem[entityId], contacts)
+    }
+
+    fun updateContacts(indexed: Indexed, constraint: Contacts) {
+        updateContacts(indexed.index(), constraint)
+    }
+
+    fun updateContacts(entityName: String, constraint: Contacts) {
+        updateContacts(EntitySystem[entityName], constraint)
+    }
+
+    fun updateContacts(entityName: Named, constraint: Contacts) {
+        updateContacts(entityName.name, constraint)
+    }
+
+
+
+
+
+
 
     private fun update(entities: BitSet) {
         var i = entities.nextSetBit(0)
