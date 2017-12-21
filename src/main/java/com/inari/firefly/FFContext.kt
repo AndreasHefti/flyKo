@@ -120,8 +120,14 @@ object FFContext {
     operator fun <E : EntityComponent> get(entityId: Int, ecType: EntityComponentType<E>): E =
         EntitySystem.entities[entityId][ecType]
 
+    operator fun <E : EntityComponent> get(entityId: CompId, ecType: EntityComponentType<E>): E =
+        EntitySystem.entities[entityId][ecType]
+
     operator fun <E : EntityComponent> get(entityName: String, ecType: EntityComponentType<E>): E =
         EntitySystem.entities[entityName][ecType]
+
+    operator fun <E : EntityComponent> get(entityName: Named, ecType: EntityComponentType<E>): E =
+        EntitySystem.entities[entityName.name][ecType]
 
     fun isActive(cType: ComponentType<*>, index: Int): Boolean =
         mapper<Component>(cType.typeKey).isActive(index)
