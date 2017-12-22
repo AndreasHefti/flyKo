@@ -26,6 +26,7 @@ class EMeta private constructor() : EntityComponent(), NamedComponent {
             aspects.set(value)
         }
 
+
     override fun indexedTypeKey() = typeKey
     override fun name(): String = name
     override fun reset() {

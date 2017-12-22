@@ -3,6 +3,9 @@ package com.inari.firefly.physics.contact
 import com.inari.commons.geom.BitMask
 import com.inari.commons.geom.Rectangle
 import com.inari.commons.lang.aspect.Aspect
+import com.inari.commons.lang.indexed.Indexed
+import com.inari.firefly.Named
+import com.inari.firefly.component.CompId
 import com.inari.firefly.component.ComponentRefResolver
 import com.inari.firefly.entity.EntityComponent
 
@@ -43,6 +46,24 @@ class EContact private constructor() : EntityComponent() {
         ComponentRefResolver(ContactConstraint, { id ->
             contactScan.contacts.remove(id)?.clear()
         })
+
+    fun contacts(constraint: ContactConstraint): Contacts =
+        contacts(constraint.index())
+
+    fun contacts(constraint: CompId): Contacts =
+        contacts(constraint.index)
+
+    fun contacts(constraint: Named): Contacts =
+        contacts(constraint.name)
+
+    fun contacts(constraint: String): Contacts =
+        contacts(ContactSystem.constraints[constraint].index())
+
+    fun contacts(constraint: Indexed): Contacts =
+        contacts(constraint.index())
+
+    fun contacts(constraint: Int): Contacts =
+        contactScan[constraint]
 
 
     override fun reset() {
