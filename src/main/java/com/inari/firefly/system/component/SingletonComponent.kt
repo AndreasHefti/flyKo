@@ -7,7 +7,7 @@ abstract class SingletonComponent<CC : C, C : SystemComponent> : ComponentType<C
     abstract fun subType(): Class<CC>
     protected abstract fun create(): CC
 
-    fun get(): CC {
+    operator fun invoke(): CC {
         if (!FFContext.mapper(this).contains(subType().simpleName)) {
             val comp = create()
             comp.ff_Name = subType().simpleName
@@ -20,8 +20,18 @@ abstract class SingletonComponent<CC : C, C : SystemComponent> : ComponentType<C
     }
 
     fun activate(): CC {
-        val singleton = get()
+        val singleton = invoke()
         FFContext.activate(singleton.componentId)
         return singleton
+    }
+
+    fun deactivate() {
+        if (FFContext.mapper(this).contains(subType().simpleName))
+            FFContext.deactivate(this, subType().simpleName)
+    }
+
+    fun dispose() {
+        if (FFContext.mapper(this).contains(subType().simpleName))
+            FFContext.delete(this, subType().simpleName)
     }
 }
