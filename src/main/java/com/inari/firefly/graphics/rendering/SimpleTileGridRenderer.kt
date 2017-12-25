@@ -11,7 +11,7 @@ import com.inari.firefly.graphics.tile.TileGridSystem
 
 object SimpleTileGridRenderer : Renderer() {
 
-    private val matchingAspects = EntityComponent.ENTITY_ASPECTS.createAspects(
+    private val matchingAspects = EntityComponent.ENTITY_COMPONENT_ASPECTS.createAspects(
         ETransform, ETile
     )
 

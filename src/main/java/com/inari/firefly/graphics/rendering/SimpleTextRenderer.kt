@@ -14,7 +14,7 @@ import com.inari.firefly.setFrom
 
 
 object SimpleTextRenderer : Renderer() {
-    private val matchingAspects = EntityComponent.ENTITY_ASPECTS.createAspects(
+    private val matchingAspects = EntityComponent.ENTITY_COMPONENT_ASPECTS.createAspects(
         ETransform, EText
     )
 

@@ -91,6 +91,6 @@ abstract class ContactMap protected constructor() : SystemComponent(), ViewLayer
         override val typeKey = SystemComponent.createTypeKey(ContactMap::class.java)
 
         @JvmField internal val MATCHER =
-            EntityComponent.Companion.ENTITY_ASPECTS.createAspects(ETransform, EContact)
+            EntityComponent.Companion.ENTITY_COMPONENT_ASPECTS.createAspects(ETransform, EContact)
     }
 }
