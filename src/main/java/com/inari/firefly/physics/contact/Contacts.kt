@@ -164,7 +164,7 @@ class Contacts internal constructor(
         return NO_CONTACT
     }
 
-    fun getFirstContactOfMaterial(materialType: Aspect): Contact? {
+    fun getFirstContactOfMaterial(materialType: Aspect): Contact {
         var i = 0
         while (i < contacts.capacity()) {
             val contact = contacts.get(i++) ?: continue
