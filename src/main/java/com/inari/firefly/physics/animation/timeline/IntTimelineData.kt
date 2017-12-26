@@ -4,7 +4,7 @@ import com.inari.firefly.FFContext
 
 internal class IntTimelineData {
 
-    @JvmField var timeline: Array<Frame.IntFrame> = emptyArray()
+    @JvmField var timeline: Array<out Frame.IntFrame> = emptyArray()
     @JvmField var startValue = 0
     @JvmField var endValue = -1
     @JvmField var inverseOnLoop = false
