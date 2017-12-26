@@ -18,8 +18,9 @@ class ContactConstraint private constructor() : SystemComponent() {
         ComponentRefResolver(Layer, { index->
             layerRef = setIfNotInitialized(index, "ff_Layer")
         })
-    val ff_Bounds: Rectangle
+    var ff_Bounds: Rectangle
         get() = bounds
+        set(value) {bounds.setFrom(value)}
     val ff_MaterialFilter: Aspects
         get() = materialFilter
 

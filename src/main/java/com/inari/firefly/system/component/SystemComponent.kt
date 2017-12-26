@@ -5,6 +5,7 @@ import com.inari.commons.lang.indexed.*
 import com.inari.firefly.component.CompId
 import com.inari.firefly.component.NamedComponent
 import com.inari.firefly.NO_NAME
+import com.inari.firefly.Named
 
 abstract class SystemComponent protected constructor() : BaseIndexedObject(), IndexedType, NamedComponent {
 

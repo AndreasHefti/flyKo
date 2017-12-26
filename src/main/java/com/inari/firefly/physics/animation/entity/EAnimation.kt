@@ -30,7 +30,7 @@ class EAnimation : EntityComponent() {
         return animation
     }
 
-    override fun reset() {
+    fun clearAnimations() {
         var i = animations.nextSetBit(0)
         while (i >= 0) {
             AnimationSystem.animations.delete(i)
@@ -38,6 +38,11 @@ class EAnimation : EntityComponent() {
         }
         animations.clear()
         activeAnimations.clear()
+    }
+
+    override fun reset() {
+        controllerRef = -1
+        clearAnimations()
     }
 
     override fun indexedTypeKey() = typeKey

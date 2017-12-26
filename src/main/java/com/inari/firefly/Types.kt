@@ -47,8 +47,4 @@ interface Named {
     val name: String
 }
 
-interface Aspected {
-    val aspect: Aspect
-}
-
 
