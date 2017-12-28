@@ -117,6 +117,9 @@ object FFContext {
     fun assetInstanceId(assetName: String): Int =
             AssetSystem.assets[assetName].instanceId()
 
+    fun assetInstanceId(assetName: Named): Int =
+        AssetSystem.assets[assetName.name].instanceId()
+
     operator fun <E : EntityComponent> get(entityId: Int, ecType: EntityComponentType<E>): E =
         EntitySystem.entities[entityId][ecType]
 
@@ -132,6 +135,9 @@ object FFContext {
     fun isActive(cType: ComponentType<*>, index: Int): Boolean =
         mapper<Component>(cType.typeKey).isActive(index)
 
+    fun isActive(cType: ComponentType<*>, indexed: Indexed): Boolean =
+        mapper<Component>(cType.typeKey).isActive(indexed.index())
+
     fun isActive(id: CompId): Boolean =
             mapper<Component>(id).isActive(id.index)
 
@@ -139,10 +145,18 @@ object FFContext {
         mapper<Component>(id).isActive(id.name)
 
     fun isActive(cType: ComponentType<*>, name: String): Boolean =
-            mapper<Component>(cType.typeKey).isActive(name)
+        mapper<Component>(cType.typeKey).isActive(name)
+
+    fun isActive(cType: ComponentType<*>, named: Named): Boolean =
+        mapper<Component>(cType.typeKey).isActive(named.name)
 
     fun activate(cType: ComponentType<*>, index: Int): FFContext {
         mapper<Component>(cType.typeKey).activate(index)
+        return this
+    }
+
+    fun activate(cType: ComponentType<*>, indexed: Indexed): FFContext {
+        mapper<Component>(cType.typeKey).activate(indexed.index())
         return this
     }
 
@@ -161,8 +175,18 @@ object FFContext {
         return this
     }
 
+    fun activate(cType: ComponentType<*>, named: Named): FFContext {
+        mapper<Component>(cType.typeKey).activate(named.name)
+        return this
+    }
+
     fun deactivate(cType: ComponentType<*>, index: Int): FFContext {
         mapper<Component>(cType.typeKey).deactivate(index)
+        return this
+    }
+
+    fun deactivate(cType: ComponentType<*>, indexed: Indexed): FFContext {
+        mapper<Component>(cType.typeKey).deactivate(indexed.index())
         return this
     }
 
@@ -181,8 +205,18 @@ object FFContext {
         return this
     }
 
+    fun deactivate(cType: ComponentType<*>, named: Named): FFContext {
+        mapper<Component>(cType.typeKey).deactivate(named.name)
+        return this
+    }
+
     fun delete(cType: ComponentType<*>, index: Int): FFContext {
         mapper<Component>(cType.typeKey).delete(index)
+        return this
+    }
+
+    fun delete(cType: ComponentType<*>, indexed: Indexed): FFContext {
+        mapper<Component>(cType.typeKey).delete(indexed.index())
         return this
     }
 
@@ -198,6 +232,11 @@ object FFContext {
 
     fun delete(cType: ComponentType<*>, name: String): FFContext {
         mapper<Component>(cType.typeKey).delete(name)
+        return this
+    }
+
+    fun delete(cType: ComponentType<*>, named: Named): FFContext {
+        mapper<Component>(cType.typeKey).delete(named.name)
         return this
     }
 
