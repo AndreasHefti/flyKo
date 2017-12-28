@@ -7,7 +7,6 @@ import com.inari.commons.lang.indexed.Indexed
 import com.inari.commons.lang.list.DynArray
 import com.inari.firefly.asset.AssetSystem
 import com.inari.firefly.component.*
-import com.inari.firefly.control.task.TaskSystem
 import com.inari.firefly.entity.EntityComponent
 import com.inari.firefly.entity.EntityComponent.EntityComponentType
 import com.inari.firefly.entity.EntitySystem
