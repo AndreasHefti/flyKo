@@ -1,31 +1,50 @@
 package com.inari.firefly.control.trigger
 
+import com.inari.commons.lang.indexed.BaseIndexedObject
+import com.inari.commons.lang.list.DynArray
 import com.inari.firefly.Call
 import com.inari.firefly.Condition
-import com.inari.firefly.NULL_CALL
-import com.inari.firefly.NULL_CONDITION
-import com.inari.firefly.system.component.SingleType
-import com.inari.firefly.system.component.SystemComponent
+import com.inari.firefly.TRUE_CONDITION
 
-class Trigger : SystemComponent() {
+abstract class Trigger protected constructor() : BaseIndexedObject() {
 
-    @JvmField internal var removeAfter = false
-    @JvmField internal var condition: Condition = NULL_CONDITION
-    @JvmField internal var call: Call = NULL_CALL
+    @JvmField protected var disposeAfter = false
+    @JvmField protected var condition: Condition = TRUE_CONDITION
 
-    var ff_RemoveAfter: Boolean
-        get() = removeAfter
-        set(value) { removeAfter = value }
+    var ff_DisposeAfter: Boolean
+        get() = disposeAfter
+        set(value) { disposeAfter = value }
     var ff_Condition: Condition
         get() = throw UnsupportedOperationException()
         set(value) { condition = value }
-    var ff_Call: Call
-        get() = throw UnsupportedOperationException()
-        set(value) { call = value }
 
-    override fun indexedTypeKey() = typeKey
-    companion object : SingleType<Trigger>() {
-        override val typeKey = SystemComponent.createTypeKey(Trigger::class.java)
-        override fun createEmpty() = Trigger()
+    abstract fun register(call: Call)
+
+    protected fun doTrigger(call: Call) {
+        if (condition()) {
+            call()
+            if (disposeAfter)
+                dispose()
+        }
+    }
+
+    override fun dispose() {
+        Trigger.TRIGGER_MAP.remove(index)
+        super.dispose()
+    }
+
+    override fun indexedObjectType() = Trigger::class.java
+    companion object {
+        @JvmField internal val TRIGGER_MAP = DynArray.create(Trigger::class.java)
+    }
+
+    abstract class Subtype<out A : Trigger> {
+        internal fun doBuild(configure: A.() -> Unit): A {
+            val result = createEmpty()
+            result.also(configure)
+            TRIGGER_MAP.set(result.index, result)
+            return result
+        }
+        protected abstract fun createEmpty(): A
     }
 }

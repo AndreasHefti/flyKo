@@ -1,13 +1,10 @@
 package com.inari.firefly.physics.animation.easing
 
-import com.inari.commons.lang.indexed.IIndexedTypeKey
 import com.inari.firefly.NO_PROPERTY_REF
 import com.inari.firefly.entity.Entity
 import com.inari.firefly.entity.property.FloatPropertyAccessor
-import com.inari.firefly.physics.animation.Animation
 import com.inari.firefly.physics.animation.FloatAnimation
 import com.inari.firefly.physics.animation.entity.EntityPropertyAnimation
-import com.inari.firefly.system.component.ISubType
 
 class EasedProperty : EntityPropertyAnimation(), FloatAnimation {
 
@@ -42,9 +39,8 @@ class EasedProperty : EntityPropertyAnimation(), FloatAnimation {
     override fun reset() = control.reset()
     override fun update() = control.update()
 
-    companion object : EntityPropertyAnimation.Builder<EasedProperty>(), ISubType<EasedProperty, Animation> {
+    companion object : PropertyAnimationSubtype<EasedProperty>() {
         override fun subType(): Class<EasedProperty> = EasedProperty::class.java
-        override val typeKey: IIndexedTypeKey = Animation.typeKey
         override fun createEmpty(): EasedProperty =
             EasedProperty()
     }

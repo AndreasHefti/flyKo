@@ -17,13 +17,13 @@ class EAnimation : EntityComponent() {
             controllerRef = setIfNotInitialized(index, "ff_Controller")
         })
 
-    fun <A : EntityPropertyAnimation> with(cBuilder: EntityPropertyAnimation.Builder<A>, configure: (A.() -> Unit)): A {
+    fun <A : EntityPropertyAnimation> with(cBuilder: EntityPropertyAnimation.PropertyAnimationSubtype<A>, configure: (A.() -> Unit)): A {
         val animation = cBuilder.doBuild(configure)
         animations.set(animation.index())
         return animation
     }
 
-    fun <A : EntityPropertyAnimation> withActive(cBuilder: EntityPropertyAnimation.Builder<A>, configure: (A.() -> Unit)): A {
+    fun <A : EntityPropertyAnimation> withActive(cBuilder: EntityPropertyAnimation.PropertyAnimationSubtype<A>, configure: (A.() -> Unit)): A {
         val animation = cBuilder.doBuild(configure)
         animations.set(animation.index())
         activeAnimations.set(animation.index())

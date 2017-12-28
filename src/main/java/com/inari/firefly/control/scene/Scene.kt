@@ -4,7 +4,7 @@ import com.inari.firefly.Call
 import com.inari.firefly.Condition
 import com.inari.firefly.VOID_CALL
 import com.inari.firefly.component.ComponentType
-import com.inari.firefly.control.trigger.Trigger
+import com.inari.firefly.control.trigger.TriggerDef
 import com.inari.firefly.control.trigger.TriggerSystem
 import com.inari.firefly.system.component.SystemComponent
 import java.util.*
@@ -54,7 +54,7 @@ abstract class Scene protected constructor() : SystemComponent() {
     protected abstract fun update()
 
     private fun createTrigger(call: Call, condition: Condition): Int {
-        val tId = Trigger.build {
+        val tId = TriggerDef.build {
             ff_Condition = condition
             ff_Call = call
         }.index
