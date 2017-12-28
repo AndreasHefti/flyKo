@@ -40,6 +40,9 @@ abstract class Renderer protected constructor(
         }
     }
 
+    protected fun contains(viewId: Int, layerId: Int): Boolean =
+        viewId in entities && layerId !in entities[viewId]
+
     protected operator fun get(viewLayer: ViewLayerAware): DynArray<Entity> =
         get(viewLayer.viewIndex, viewLayer.layerIndex)
 
@@ -178,6 +181,5 @@ abstract class Renderer protected constructor(
 
         override val hasScale: Boolean
             get() = scaleX != 1f || scaleY != 1f
-
     }
 }
