@@ -1,15 +1,14 @@
 package com.inari.firefly.control.scene
 
 import com.inari.firefly.Call
-import com.inari.firefly.Condition
 import com.inari.firefly.VOID_CALL
 import com.inari.firefly.component.ComponentType
-import com.inari.firefly.control.trigger.TriggerDef
-import com.inari.firefly.control.trigger.TriggerSystem
+import com.inari.firefly.control.trigger.Trigger
+import com.inari.firefly.control.trigger.TriggeredSystemComponent
 import com.inari.firefly.system.component.SystemComponent
 import java.util.*
 
-abstract class Scene protected constructor() : SystemComponent() {
+abstract class Scene protected constructor() : TriggeredSystemComponent() {
 
     @JvmField internal var removeAfterRun = false
     @JvmField internal var callback: Call = VOID_CALL
@@ -24,24 +23,17 @@ abstract class Scene protected constructor() : SystemComponent() {
         get() = removeAfterRun
         set(value) { removeAfterRun = value }
 
-    fun ff_createRunTrigger(callback: Call, condition: Condition): Int =
-        createTrigger({ SceneSystem.runScene(index, callback) }, condition)
+    fun <A : Trigger> withRunTrigger(cBuilder: Trigger.Subtype<A>, callback: Call, configure: (A.() -> Unit)): A =
+        super.with(cBuilder, { SceneSystem.runScene(index, callback) }, configure)
 
-    fun ff_createStopTrigger(condition: Condition): Int =
-        createTrigger(stopCall, condition)
+    fun <A : Trigger> withStopTrigger(cBuilder: Trigger.Subtype<A>, configure: (A.() -> Unit)): A =
+        super.with(cBuilder, stopCall, configure)
 
-    fun ff_createPauseTrigger(condition: Condition): Int =
-        createTrigger(pauseCall, condition)
+    fun <A : Trigger> withPauseTrigger(cBuilder: Trigger.Subtype<A>, configure: (A.() -> Unit)): A =
+        super.with(cBuilder, pauseCall, configure)
 
-    fun ff_createResumeTrigger(condition: Condition): Int =
-        createTrigger(resumeCall, condition)
-
-    fun ff_disposeTrigger(triggerId: Int) {
-        if (triggerIds[triggerId]) {
-            TriggerSystem.triggers.delete(triggerId)
-            triggerIds.set(triggerId, false)
-        }
-    }
+    fun <A : Trigger> withResumeTrigger(cBuilder: Trigger.Subtype<A>, configure: (A.() -> Unit)): A =
+        super.with(cBuilder, resumeCall, configure)
 
     protected fun run(callback: Call) {
         this.callback = callback
@@ -52,16 +44,6 @@ abstract class Scene protected constructor() : SystemComponent() {
 
     internal operator fun invoke() = update()
     protected abstract fun update()
-
-    private fun createTrigger(call: Call, condition: Condition): Int {
-        val tId = TriggerDef.build {
-            ff_Condition = condition
-            ff_Call = call
-        }.index
-
-        triggerIds.set(tId)
-        return tId
-    }
 
     override final fun indexedTypeKey() = Scene.typeKey
     companion object : ComponentType<Scene> {

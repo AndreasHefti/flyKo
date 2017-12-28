@@ -1,16 +1,14 @@
 package com.inari.firefly.control.action
 
-import com.inari.firefly.Call
 import com.inari.firefly.Expr
-import com.inari.firefly.NO_COMP_ID
 import com.inari.firefly.NULL_EXPR
 import com.inari.firefly.component.CompId
+import com.inari.firefly.control.trigger.Trigger
 import com.inari.firefly.control.trigger.TriggeredSystemComponent
 import com.inari.firefly.entity.Entity
 import com.inari.firefly.entity.EntitySystem
 import com.inari.firefly.system.component.SingleType
 import com.inari.firefly.system.component.SystemComponent
-import com.sun.tools.internal.ws.wsdl.framework.EntityAction
 import java.util.*
 
 class Action private constructor() : TriggeredSystemComponent() {
@@ -23,11 +21,8 @@ class Action private constructor() : TriggeredSystemComponent() {
         get() = throw UnsupportedOperationException()
         set(value) { entityAction = setIfNotInitialized(value, "ff_Action") }
 
-    override fun triggerCall(compId: CompId): Call {
-        if (compId === NO_COMP_ID)
-            throw IllegalArgumentException()
-        return { entityAction(EntitySystem[compId]) }
-    }
+    fun <A : Trigger> withTrigger(cBuilder: Trigger.Subtype<A>, entityId: CompId, configure: (A.() -> Unit)): A =
+        super.with(cBuilder, { entityAction(EntitySystem[entityId])}, configure)
 
     override fun indexedTypeKey() = typeKey
     companion object : SingleType<Action>() {

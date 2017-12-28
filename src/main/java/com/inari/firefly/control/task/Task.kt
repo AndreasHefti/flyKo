@@ -3,6 +3,7 @@ package com.inari.firefly.control.task
 import com.inari.firefly.Call
 import com.inari.firefly.NULL_CALL
 import com.inari.firefly.component.CompId
+import com.inari.firefly.control.trigger.Trigger
 import com.inari.firefly.control.trigger.TriggeredSystemComponent
 import com.inari.firefly.system.component.SingleType
 import com.inari.firefly.system.component.SystemComponent
@@ -22,8 +23,8 @@ class Task private constructor() : TriggeredSystemComponent() {
         get() = throw UnsupportedOperationException()
         set(value) { task = value }
 
-    override fun triggerCall(compId: CompId): Call =
-        triggerCall
+    fun <A : Trigger> withTrigger(cBuilder: Trigger.Subtype<A>, configure: (A.() -> Unit)): A =
+        super.with(cBuilder, triggerCall, configure)
 
     override fun indexedTypeKey() = typeKey
     companion object : SingleType<Task>() {

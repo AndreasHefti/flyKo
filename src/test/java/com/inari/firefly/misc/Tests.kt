@@ -1,11 +1,15 @@
 package com.inari.firefly.misc
 
 import com.inari.commons.geom.PositionF
+import com.inari.firefly.Condition
 import com.inari.firefly.IntExpr
+import com.inari.firefly.NO_COMP_ID
 import com.inari.firefly.TestApp
 import com.inari.firefly.asset.AssetSystem
 import com.inari.firefly.control.ControllerSystem
 import com.inari.firefly.control.PolyController
+import com.inari.firefly.control.action.Action
+import com.inari.firefly.control.trigger.UpdateEventTrigger
 import com.inari.firefly.physics.animation.easing.EasedProperty
 import com.inari.firefly.physics.animation.entity.EAnimation
 import com.inari.firefly.entity.EMeta
@@ -136,6 +140,16 @@ fun main(args: Array<String>) {
         }
         with(EMeta) {
             ff_Controller.name = "sofbno"
+        }
+    }
+
+    Action.build {
+        ff_Name = ""
+        withTrigger(UpdateEventTrigger, NO_COMP_ID) {
+            ff_Condition = object : Condition {
+                override fun invoke(): Boolean = true
+            }
+            ff_DisposeAfter = true
         }
     }
 

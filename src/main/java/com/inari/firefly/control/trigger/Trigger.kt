@@ -5,7 +5,9 @@ import com.inari.commons.lang.list.DynArray
 import com.inari.firefly.Call
 import com.inari.firefly.Condition
 import com.inari.firefly.TRUE_CONDITION
+import com.inari.firefly.component.ComponentDSL
 
+@ComponentDSL
 abstract class Trigger protected constructor() : BaseIndexedObject() {
 
     @JvmField protected var disposeAfter = false
