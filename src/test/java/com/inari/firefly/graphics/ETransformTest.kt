@@ -20,8 +20,8 @@ class ETransformTest {
 
         val entityId = Entity.build {
             with(ETransform) {
-                ff_View.index = 0
-                ff_Layer.index = 1
+                ff_View(0)
+                ff_Layer(1)
                 ff_Position.x = 10f
                 ff_Position.y = 30f
                 ff_Scale.dx = 2f
@@ -59,7 +59,7 @@ class ETransformTest {
 
         val entityId = Entity.build {
             with(ETransform) {
-                ff_View.name = "Test"
+                ff_View("Test")
             }
         }
 

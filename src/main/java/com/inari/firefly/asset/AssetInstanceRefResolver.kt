@@ -10,31 +10,18 @@ class AssetInstanceRefResolver(
     private val i: Int = 0
 ) {
 
-    var id : CompId
-        get() = throw IllegalAccessException()
-        set(value) { comp = AssetSystem.assets[value.index] }
-
-    var index : Int
-        get() = throw IllegalAccessException()
-        set(value) { comp = AssetSystem.assets[value] }
-
-    var indexed : Indexed
-        get() = throw IllegalAccessException()
-        set(value) { comp = AssetSystem.assets[value.index()] }
-
-    var name : String
-        get() = throw IllegalAccessException()
-        set(value) { comp = AssetSystem.assets[value] }
-
-    var named : Named
-        get() = throw IllegalAccessException()
-        set(value) { comp = AssetSystem.assets[value.name] }
+    operator fun invoke(id: CompId) =
+        receiver( AssetSystem.assets[id.index].instanceId() )
+    operator fun invoke(index: Int) =
+        receiver(AssetSystem.assets[index].instanceId())
+    operator fun invoke(indexed: Indexed) =
+        receiver(AssetSystem.assets[indexed.index()].instanceId())
+    operator fun invoke(name: String) =
+        receiver(AssetSystem.assets[name].instanceId())
+    operator fun invoke(named: Named) =
+        receiver(AssetSystem.assets[named.name].instanceId())
 
     var instanceId : Int
         get() = throw IllegalAccessException()
         set(value) { receiver(value) }
-
-    var comp : Asset
-        get() = throw IllegalAccessException()
-        set(value) { receiver(value.instanceId(i)) }
 }

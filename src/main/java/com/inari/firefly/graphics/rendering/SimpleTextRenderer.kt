@@ -47,9 +47,9 @@ object SimpleTextRenderer : Renderer() {
             val horizontalStep = (font.charWidth + font.charSpace) * transform.scale.dx
             val verticalStep = (font.charHeight + font.lineSpace) * transform.scale.dy
 
-            var i = 0
-            while (i < chars.length) {
-                val char = chars[i++]
+            var j = 0
+            while (j < chars.length) {
+                val char = chars[j++]
                 if (char == '\n') {
                     renderingTransform.xOffset = transform.position.x
                     renderingTransform.yOffset += verticalStep

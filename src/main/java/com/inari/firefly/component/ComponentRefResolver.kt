@@ -10,23 +10,10 @@ class ComponentRefResolver<T : Component>(
     private val receiver: Expr<Int>
 ) {
 
-    var id : CompId
-        get() = throw IllegalAccessException()
-        set(value) { receiver(value.index) }
+    operator fun invoke(id: CompId) = receiver(id.index)
+    operator fun invoke(index: Int) = receiver(index)
+    operator fun invoke(indexed: Indexed) = receiver(indexed.index())
+    operator fun invoke(name: String) = receiver(FFContext[type, name].index())
+    operator fun invoke(named: Named) = receiver(FFContext[type, named.name].index())
 
-    var index : Int
-        get() = throw IllegalAccessException()
-        set(value) { receiver(value) }
-
-    var indexed : Indexed
-        get() = throw IllegalAccessException()
-        set(value) { receiver(value.index()) }
-
-    var name : String
-        get() = throw IllegalAccessException()
-        set(value) { receiver(FFContext[type, value].index()) }
-
-    var named : Named
-        get() = throw IllegalAccessException()
-        set(value) { receiver(FFContext[type, value.name].index()) }
 }

@@ -132,7 +132,7 @@ class AssetSystemTest {
         )
 
         val asset2 = TestAsset.build {
-            ff_DependsOn.name = "parentAsset"
+            ff_DependsOn("parentAsset")
             ff_Name = "childAsset"
             ff_Param1 = "child"
             ff_Param2 = 1.45f

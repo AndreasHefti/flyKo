@@ -26,7 +26,7 @@ class RenderingSystemTest {
     }
 
     @Test
-    fun testrenderSprite() {
+    fun testRenderSprite() {
         TestApp
         AssetSystem
         ViewSystem
@@ -39,12 +39,12 @@ class RenderingSystemTest {
 
         Entity.buildAndActivate {
             with(ETransform) {
-                ff_View.index = 0
+                ff_View(0)
                 ff_Pivot.x = 1f
                 ff_Pivot.y = 2f
             }
             with(ESprite) {
-                ff_Sprite.id = assetId
+                ff_Sprite( assetId)
             }
         }
 
