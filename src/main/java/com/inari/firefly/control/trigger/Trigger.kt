@@ -41,7 +41,7 @@ abstract class Trigger protected constructor() : BaseIndexedObject() {
     }
 
     abstract class Subtype<out A : Trigger> {
-        internal fun doBuild(configure: A.() -> Unit): A {
+        fun doBuild(configure: A.() -> Unit): A {
             val result = createEmpty()
             result.also(configure)
             TRIGGER_MAP.set(result.index, result)
