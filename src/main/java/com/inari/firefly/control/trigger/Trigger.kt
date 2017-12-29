@@ -1,14 +1,14 @@
 package com.inari.firefly.control.trigger
 
-import com.inari.commons.lang.indexed.BaseIndexedObject
-import com.inari.commons.lang.list.DynArray
 import com.inari.firefly.Call
 import com.inari.firefly.Condition
 import com.inari.firefly.TRUE_CONDITION
 import com.inari.firefly.component.ComponentDSL
+import com.inari.firefly.component.ComponentType
+import com.inari.firefly.system.component.SystemComponent
 
 @ComponentDSL
-abstract class Trigger protected constructor() : BaseIndexedObject() {
+abstract class Trigger protected constructor() : SystemComponent() {
 
     @JvmField protected var disposeAfter = false
     @JvmField protected var condition: Condition = TRUE_CONDITION
@@ -30,22 +30,22 @@ abstract class Trigger protected constructor() : BaseIndexedObject() {
         }
     }
 
-    override fun dispose() {
-        Trigger.TRIGGER_MAP.remove(index)
-        super.dispose()
-    }
-
-    override fun indexedObjectType() = Trigger::class.java
-    companion object {
-        @JvmField internal val TRIGGER_MAP = DynArray.create(Trigger::class.java)
+    override final fun indexedTypeKey() = typeKey
+    companion object : ComponentType<Trigger> {
+        override val typeKey = SystemComponent.createTypeKey(Trigger::class.java)
     }
 
     abstract class Subtype<out A : Trigger> {
-        fun doBuild(configure: A.() -> Unit): A {
+        internal fun doBuild(configure: A.() -> Unit): A {
             val result = createEmpty()
             result.also(configure)
-            TRIGGER_MAP.set(result.index, result)
+            TriggerSystem.trigger.receiver()(result)
             return result
+        }
+        fun build(call: Call, configure: A.() -> Unit): Int {
+            val result = doBuild(configure)
+            result.register(call)
+            return result.index
         }
         protected abstract fun createEmpty(): A
     }

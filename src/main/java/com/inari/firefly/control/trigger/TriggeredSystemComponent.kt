@@ -10,7 +10,7 @@ abstract class TriggeredSystemComponent : SystemComponent() {
 
     protected fun <A : Trigger> with(cBuilder: Trigger.Subtype<A>, call: Call, configure: (A.() -> Unit)): A {
         val trigger = cBuilder.doBuild(configure)
-        Trigger.TRIGGER_MAP[trigger.index()] = trigger
+        TriggerSystem.trigger.receiver()(trigger)
         trigger.register(call)
         return trigger
     }
@@ -18,8 +18,7 @@ abstract class TriggeredSystemComponent : SystemComponent() {
     override fun dispose() {
         var i = trigger.nextSetBit(0)
         while (i >= 0) {
-            val t = Trigger.TRIGGER_MAP[i]
-            t.dispose()
+            TriggerSystem.trigger.delete(i)
             i = trigger.nextSetBit(i + 1)
         }
         super.dispose()
