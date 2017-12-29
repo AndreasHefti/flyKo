@@ -3,6 +3,7 @@ package com.inari.firefly
 import com.inari.commons.geom.PositionF
 import com.inari.commons.lang.aspect.AspectGroup
 import com.inari.commons.lang.indexed.IIndexedTypeKey
+import com.inari.commons.lang.indexed.Indexed
 import com.inari.firefly.component.CompId
 import com.inari.firefly.entity.Entity
 import com.inari.firefly.entity.property.VirtualPropertyRef
@@ -32,6 +33,7 @@ object GLBlendMode {
 
 
 @JvmField val NO_NAME: String = "[[NO_NAME]]"
+@JvmField val NO_NAMED = object : Named { override val name = NO_NAME }
 @JvmField val NO_STATE: String = "[[NO_STATE]]"
 @JvmField val NO_PROGRAM: String = "[[NO_PROGRAM]]"
 @JvmField val NO_COMP_ID: CompId = CompId(-1, object : IIndexedTypeKey {
@@ -41,6 +43,7 @@ object GLBlendMode {
     override fun aspectGroup(): AspectGroup = throw IllegalAccessException()
     override fun name(): String = NO_NAME
 })
+@JvmField val NO_INDEXED = Indexed { -1 }
 @JvmField val NO_PROPERTY_REF: VirtualPropertyRef = object : VirtualPropertyRef {
     override val propertyName: String = NO_NAME
     override val type: Class<*> get() = throw IllegalAccessException()
@@ -52,9 +55,6 @@ object GLBlendMode {
 }
 
 @JvmField val BASE_VIEW: String = "[[BASE_VIEW]]"
-
-fun <T> NULL_EXPR(): Expr<T> = { throw IllegalStateException("NULL_EXPR called") }
-fun <T> VOID_EXPR(): Expr<T> = {}
 @JvmField val NULL_INT_EXPR: IntExpr = object : IntExpr {
     override fun invoke(i: Int) { throw IllegalStateException("NULL_INT_EXPR called") }
 }
@@ -83,6 +83,8 @@ fun <T> VOID_EXPR(): Expr<T> = {}
     override fun needsUpdate(): Boolean = true
 }
 
+fun <T> NULL_EXPR(): Expr<T> = { throw IllegalStateException("NULL_EXPR called") }
+fun <T> VOID_EXPR(): Expr<T> = {}
 fun <T> TRUE_PREDICATE(): Predicate<T> = {true}
 fun <T> FALSE_PREDICATE(): Predicate<T> = {false}
 
