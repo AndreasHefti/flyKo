@@ -48,7 +48,7 @@ class View private constructor (
     var ff_FboScaler: Float
         get() = fboScaler
         set(value) { fboScaler = value }
-    var ff_ControllerId =
+    var ff_Controller =
         ComponentRefResolver(Controller, { index-> controllerRef = setIfNotInitialized(index, "ff_ControllerId") })
 
     override fun indexedTypeKey() = typeKey

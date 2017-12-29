@@ -72,9 +72,9 @@ class FontAsset : Asset(), TextureData {
     var ff_LineSpace
         get() = lineSpace
         set(value) {lineSpace = setIfNotInitialized(value, "ff_LineSpace")}
-    var ff_DefaultChar
-        get() = defaultChar
-        set(value) {defaultChar = setIfNotInitialized(value, "ff_DefaultChar")}
+    var ff_DefaultChar : Char
+        get() = defaultChar.toChar()
+        set(value) {defaultChar = setIfNotInitialized(value.toInt(), "ff_DefaultChar")}
 
 
     override fun instanceId(index: Int): Int =
