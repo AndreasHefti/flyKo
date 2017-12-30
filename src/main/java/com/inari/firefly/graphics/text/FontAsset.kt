@@ -34,7 +34,7 @@ class FontAsset : Asset(), TextureData {
     @JvmField internal var defaultChar = -1
 
     internal val charSpriteMap = IntBag(256, -1)
-    private var textureId = -1
+    private var texId = -1
 
     var ff_ResourceName: String
         get() = resourceName
@@ -80,7 +80,7 @@ class FontAsset : Asset(), TextureData {
     override fun load() {
         val graphics = FFContext.graphics
 
-        textureId = graphics.createTexture(this).first
+        texId = graphics.createTexture(this).first
         tmpSpriteData.rect(0, 0, charWidth, charHeight)
         for (y in 0 until charMap.size) {
             for (x in 0 until charMap[y].size) {
@@ -110,8 +110,8 @@ class FontAsset : Asset(), TextureData {
         }
         charSpriteMap.clear()
 
-        graphics.disposeTexture(textureId)
-        textureId = -1
+        graphics.disposeTexture(texId)
+        texId = -1
     }
 
     companion object : SubType<FontAsset, Asset>() {
@@ -121,10 +121,9 @@ class FontAsset : Asset(), TextureData {
     }
 
     private val tmpSpriteData = object : SpriteData {
-        lateinit var fontAsset: FontAsset
         var rect = Rectangle()
 
-        override val textureId: Int = fontAsset.textureId
+        override val textureId get() = texId
         override val x get() = rect.x
         override val y get() = rect.y
         override val width get() = rect.width
