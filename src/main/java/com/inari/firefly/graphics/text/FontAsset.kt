@@ -3,10 +3,7 @@ package com.inari.firefly.graphics.text
 import com.inari.commons.geom.Rectangle
 import com.inari.commons.lang.indexed.IndexedTypeKey
 import com.inari.commons.lang.list.IntBag
-import com.inari.firefly.FFContext
-import com.inari.firefly.IntFunction
-import com.inari.firefly.NO_NAME
-import com.inari.firefly.NULL_INT_FUNCTION
+import com.inari.firefly.*
 import com.inari.firefly.asset.Asset
 import com.inari.firefly.external.SpriteData
 import com.inari.firefly.external.TextureData
@@ -84,17 +81,13 @@ class FontAsset : Asset(), TextureData {
         val graphics = FFContext.graphics
 
         textureId = graphics.createTexture(this).first
-        val texReg = Rectangle(0, 0, charWidth, charHeight)
-        val spriteData = InternalSpriteData(
-            this, texReg.x, texReg.y, texReg.width, texReg.height
-        )
-
+        tmpSpriteData.rect(0, 0, charWidth, charHeight)
         for (y in 0 until charMap.size) {
             for (x in 0 until charMap[y].size) {
-                texReg.x = x * charWidth
-                texReg.y = y * charHeight
+                tmpSpriteData.rect.x = x * charWidth
+                tmpSpriteData.rect.y = y * charHeight
 
-                val charSpriteId = graphics.createSprite(spriteData)
+                val charSpriteId = graphics.createSprite(tmpSpriteData)
                 charSpriteMap.set(charMap[y][x].toInt(), charSpriteId)
             }
         }
@@ -127,15 +120,16 @@ class FontAsset : Asset(), TextureData {
         override fun createEmpty() = FontAsset()
     }
 
-    private inner class InternalSpriteData(
-        fontAsset: FontAsset,
-        override val x: Int,
-        override val y: Int,
-        override val width: Int,
-        override val height: Int
-    ) : SpriteData {
+    private val tmpSpriteData = object : SpriteData {
+        lateinit var fontAsset: FontAsset
+        var rect = Rectangle()
+
         override val textureId: Int = fontAsset.textureId
-        override val isHorizontalFlip: Boolean = false
-        override val isVerticalFlip: Boolean = false
+        override val x get() = rect.x
+        override val y get() = rect.y
+        override val width get() = rect.width
+        override val height get() = rect.height
+        override val isHorizontalFlip = false
+        override val isVerticalFlip = false
     }
 }
