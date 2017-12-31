@@ -8,9 +8,11 @@ import com.inari.firefly.entity.EntityComponent
 import com.inari.firefly.entity.EntitySystem
 import com.inari.firefly.graphics.ETransform
 import com.inari.firefly.graphics.sprite.ESprite
+import com.inari.firefly.physics.contact.CollisionResolver
+import com.inari.firefly.system.component.SingletonComponent
 
 
-object SpriteGroupRenderer : Renderer() {
+class SpriteGroupRenderer : Renderer() {
 
     private val matchingAspects = EntityComponent.ENTITY_COMPONENT_ASPECTS.createAspects(
         ETransform, ESprite, EChild
@@ -65,5 +67,11 @@ object SpriteGroupRenderer : Renderer() {
             p1 < p2 -> -1
             else -> 1
         }
+    }
+
+    companion object : SingletonComponent<SpriteGroupRenderer, Renderer>() {
+        override val typeKey = CollisionResolver.typeKey
+        override fun subType() = SpriteGroupRenderer::class.java
+        override fun create() = SpriteGroupRenderer()
     }
 }

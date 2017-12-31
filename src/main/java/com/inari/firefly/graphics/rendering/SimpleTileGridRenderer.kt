@@ -8,8 +8,10 @@ import com.inari.firefly.entity.EntitySystem
 import com.inari.firefly.graphics.ETransform
 import com.inari.firefly.graphics.tile.ETile
 import com.inari.firefly.graphics.tile.TileGridSystem
+import com.inari.firefly.physics.contact.CollisionResolver
+import com.inari.firefly.system.component.SingletonComponent
 
-object SimpleTileGridRenderer : Renderer() {
+class SimpleTileGridRenderer : Renderer() {
 
     private val matchingAspects = EntityComponent.ENTITY_COMPONENT_ASPECTS.createAspects(
         ETransform, ETile
@@ -31,5 +33,11 @@ object SimpleTileGridRenderer : Renderer() {
                 )
             }
         }
+    }
+
+    companion object : SingletonComponent<SimpleTileGridRenderer, Renderer>() {
+        override val typeKey = CollisionResolver.typeKey
+        override fun subType() = SimpleTileGridRenderer::class.java
+        override fun create() = SimpleTileGridRenderer()
     }
 }

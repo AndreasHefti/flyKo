@@ -7,8 +7,10 @@ import com.inari.firefly.entity.EntityComponent
 import com.inari.firefly.graphics.ETransform
 import com.inari.firefly.graphics.sprite.EMultiplier
 import com.inari.firefly.graphics.sprite.ESprite
+import com.inari.firefly.physics.contact.CollisionResolver
+import com.inari.firefly.system.component.SingletonComponent
 
-object MultiPositionSpriteRenderer : Renderer() {
+class MultiPositionSpriteRenderer : Renderer() {
 
     private val matchingAspects = EntityComponent.ENTITY_COMPONENT_ASPECTS.createAspects(
         ETransform, ESprite, EMultiplier
@@ -41,5 +43,11 @@ object MultiPositionSpriteRenderer : Renderer() {
                 graphics.renderSprite(sprite, transformCollector)
             }
         }
+    }
+
+    companion object : SingletonComponent<MultiPositionSpriteRenderer, Renderer>() {
+        override val typeKey = CollisionResolver.typeKey
+        override fun subType() = MultiPositionSpriteRenderer::class.java
+        override fun create() = MultiPositionSpriteRenderer()
     }
 }

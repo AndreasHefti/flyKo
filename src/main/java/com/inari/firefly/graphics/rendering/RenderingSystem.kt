@@ -1,7 +1,6 @@
 package com.inari.firefly.graphics.rendering
 
 import com.inari.commons.geom.Rectangle
-import com.inari.commons.lang.aspect.Aspects
 import com.inari.commons.lang.aspect.IAspects
 import com.inari.firefly.FFApp
 import com.inari.firefly.FFContext
@@ -10,16 +9,16 @@ import com.inari.firefly.entity.Entity
 import com.inari.firefly.entity.EntityActivationEvent
 import com.inari.firefly.system.FFSystem
 import com.inari.firefly.system.component.ComponentSystem
+import com.inari.firefly.system.component.SingletonComponent
 
 object RenderingSystem : FFSystem {
 
-    @JvmField internal val _renderer = ComponentSystem.createComponentMapping(
-        Renderer
-    )
+    @JvmField internal val _renderer =
+        ComponentSystem.createComponentMapping(Renderer)
     val renderer: ComponentMap<Renderer> = _renderer
 
     @JvmField var allowMultipleAcceptance: Boolean = false
-    private var renderingChain: Array<out Renderer> = emptyArray()
+    private var renderingChain: Array<Renderer> = emptyArray()
 
     init {
         FFContext.registerListener(
@@ -70,19 +69,20 @@ object RenderingSystem : FFSystem {
             SimpleTileGridRenderer,
             MultiPositionSpriteRenderer,
             SimpleSpriteRenderer,
-            // TODO
+            SpriteGroupRenderer,
             SimpleShapeRenderer,
             SimpleTextRenderer
         )
     }
 
-    fun setRenderingChain(vararg renderingChain: Renderer) {
+    fun setRenderingChain(vararg renderingChain: SingletonComponent<out Renderer, Renderer>) {
         _renderer.clear()
-        this.renderingChain = renderingChain
+
         var i = 0
         while (i < RenderingSystem.renderingChain.size) {
-            val renderer = RenderingSystem.renderingChain[i++]
+            val renderer: Renderer = renderingChain[i++]()
             _renderer.receiver()(renderer)
+            this.renderingChain[i] = renderer
         }
     }
 

@@ -130,7 +130,7 @@ abstract class Renderer protected constructor(
             get() = scaleX != 1f || scaleY != 1f
     }
 
-    protected class DiskreteTransformDataCollector internal constructor() : TransformDataCollector {
+    protected class DiscreteTransformDataCollector internal constructor() : TransformDataCollector {
 
         override var xOffset: Float = 0f
         override var yOffset: Float = 0f

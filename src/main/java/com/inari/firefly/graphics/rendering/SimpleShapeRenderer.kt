@@ -5,8 +5,10 @@ import com.inari.firefly.FFContext
 import com.inari.firefly.entity.Entity
 import com.inari.firefly.graphics.ETransform
 import com.inari.firefly.graphics.shape.EShape
+import com.inari.firefly.physics.contact.CollisionResolver
+import com.inari.firefly.system.component.SingletonComponent
 
-object SimpleShapeRenderer : Renderer() {
+class SimpleShapeRenderer : Renderer() {
 
     override fun match(entity: Entity): Boolean =
         EShape in entity.aspects
@@ -26,5 +28,11 @@ object SimpleShapeRenderer : Renderer() {
                 entity[ETransform]
             )
         }
+    }
+
+    companion object : SingletonComponent<SimpleShapeRenderer, Renderer>() {
+        override val typeKey = CollisionResolver.typeKey
+        override fun subType() = SimpleShapeRenderer::class.java
+        override fun create() = SimpleShapeRenderer()
     }
 }
