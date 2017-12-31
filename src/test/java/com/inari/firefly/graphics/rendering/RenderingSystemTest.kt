@@ -21,7 +21,7 @@ class RenderingSystemTest {
         RenderingSystem
 
         assertTrue(
-            RenderingSystem.renderer[SimpleSpriteRenderer.index()] === SimpleSpriteRenderer
+            RenderingSystem[SimpleSpriteRenderer] === SimpleSpriteRenderer.instance
         )
     }
 

@@ -9,10 +9,9 @@ import com.inari.firefly.exclude
 import com.inari.firefly.graphics.ETransform
 import com.inari.firefly.graphics.sprite.ESprite
 import com.inari.firefly.graphics.tile.ETile
-import com.inari.firefly.physics.contact.CollisionResolver
 import com.inari.firefly.system.component.SingletonComponent
 
-class SimpleSpriteRenderer : Renderer() {
+class SimpleSpriteRenderer private constructor() : Renderer() {
 
     private val matchingAspects = EntityComponent.ENTITY_COMPONENT_ASPECTS.createAspects(
         ETransform, ESprite
@@ -43,7 +42,7 @@ class SimpleSpriteRenderer : Renderer() {
     }
 
     companion object : SingletonComponent<SimpleSpriteRenderer, Renderer>() {
-        override val typeKey = CollisionResolver.typeKey
+        override val typeKey = Renderer.typeKey
         override fun subType() = SimpleSpriteRenderer::class.java
         override fun create() = SimpleSpriteRenderer()
     }

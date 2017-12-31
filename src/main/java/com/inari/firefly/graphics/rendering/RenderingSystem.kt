@@ -4,7 +4,6 @@ import com.inari.commons.geom.Rectangle
 import com.inari.commons.lang.aspect.IAspects
 import com.inari.firefly.FFApp
 import com.inari.firefly.FFContext
-import com.inari.firefly.component.ComponentMap
 import com.inari.firefly.entity.Entity
 import com.inari.firefly.entity.EntityActivationEvent
 import com.inari.firefly.system.FFSystem
@@ -13,9 +12,8 @@ import com.inari.firefly.system.component.SingletonComponent
 
 object RenderingSystem : FFSystem {
 
-    @JvmField internal val _renderer =
+    @JvmField internal val renderer =
         ComponentSystem.createComponentMapping(Renderer)
-    val renderer: ComponentMap<Renderer> = _renderer
 
     @JvmField var allowMultipleAcceptance: Boolean = false
     private var renderingChain: Array<Renderer> = emptyArray()
@@ -64,6 +62,9 @@ object RenderingSystem : FFSystem {
         setDefaultRenderingChain()
     }
 
+    operator fun get(rendererKey: SingletonComponent<out Renderer, Renderer>): Renderer =
+        renderer[rendererKey.instance.index()]
+
     fun setDefaultRenderingChain() {
         setRenderingChain(
             SimpleTileGridRenderer,
@@ -76,14 +77,12 @@ object RenderingSystem : FFSystem {
     }
 
     fun setRenderingChain(vararg renderingChain: SingletonComponent<out Renderer, Renderer>) {
-        _renderer.clear()
-
-        var i = 0
-        while (i < RenderingSystem.renderingChain.size) {
-            val renderer: Renderer = renderingChain[i++]()
-            _renderer.receiver()(renderer)
-            this.renderingChain[i] = renderer
-        }
+        renderer.clear()
+        this.renderingChain = Array(renderingChain.size, {
+            val r: Renderer = renderingChain[it].instance
+            renderer.receiver()(r)
+            r
+        })
     }
 
     override fun clearSystem() {}

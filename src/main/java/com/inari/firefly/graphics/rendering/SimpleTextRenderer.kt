@@ -10,12 +10,11 @@ import com.inari.firefly.graphics.BlendMode
 import com.inari.firefly.graphics.ETransform
 import com.inari.firefly.graphics.text.EText
 import com.inari.firefly.graphics.text.FontAsset
-import com.inari.firefly.physics.contact.CollisionResolver
 import com.inari.firefly.setFrom
 import com.inari.firefly.system.component.SingletonComponent
 
 
-class SimpleTextRenderer : Renderer() {
+class SimpleTextRenderer private constructor() : Renderer() {
     private val matchingAspects = EntityComponent.ENTITY_COMPONENT_ASPECTS.createAspects(
         ETransform, EText
     )
@@ -90,7 +89,7 @@ class SimpleTextRenderer : Renderer() {
     }
 
     companion object : SingletonComponent<SimpleTextRenderer, Renderer>() {
-        override val typeKey = CollisionResolver.typeKey
+        override val typeKey = Renderer.typeKey
         override fun subType() = SimpleTextRenderer::class.java
         override fun create() = SimpleTextRenderer()
     }

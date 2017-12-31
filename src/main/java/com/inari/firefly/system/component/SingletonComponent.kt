@@ -16,20 +16,21 @@ abstract class SingletonComponent<CC : C, C : SystemComponent> : ComponentType<C
             else NO_COMP_ID
         }
 
-    operator fun invoke(): CC {
-        if (!FFContext.mapper(this).contains(subType().simpleName)) {
-            val comp = create()
-            comp.ff_Name = subType().simpleName
-            comp.name()
-            FFContext.mapper(this).receiver()(comp)
+    val instance: CC
+        get() {
+            if (!FFContext.mapper(this).contains(subType().simpleName)) {
+                val comp = create()
+                comp.ff_Name = subType().simpleName
+                comp.name()
+                FFContext.mapper(this).receiver()(comp)
+            }
+
+            @Suppress("UNCHECKED_CAST")
+            return FFContext[this, subType().simpleName] as CC
         }
 
-        @Suppress("UNCHECKED_CAST")
-        return FFContext[this, subType().simpleName] as CC
-    }
-
     fun activate(): CC {
-        val singleton = invoke()
+        val singleton = instance
         FFContext.activate(singleton.componentId)
         return singleton
     }
