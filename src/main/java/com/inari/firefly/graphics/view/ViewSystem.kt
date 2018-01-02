@@ -115,7 +115,7 @@ object ViewSystem : ComponentSystem {
     }
 
     private fun created(layer: Layer) {
-        if (layer.viewRef in views)
+        if (layer.viewRef !in views)
             throw IllegalStateException("No View exists for Layer: $layer")
 
         layersOfView
