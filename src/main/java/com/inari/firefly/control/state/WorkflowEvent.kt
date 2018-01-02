@@ -37,6 +37,7 @@ object WorkflowEvent : FFEvent<WorkflowEvent.Listener>(createTypeKey(WorkflowEve
         this.stateChangeName = stateChangeName
         this.fromName = fromName
         this.toName = toName
+        FFContext.notify(this)
     }
 
     fun send(
@@ -50,6 +51,7 @@ object WorkflowEvent : FFEvent<WorkflowEvent.Listener>(createTypeKey(WorkflowEve
         this.stateChangeName = stateChange.name
         this.fromName = stateChange.from
         this.toName = stateChange.to
+        FFContext.notify(this)
     }
 
     interface Listener {
