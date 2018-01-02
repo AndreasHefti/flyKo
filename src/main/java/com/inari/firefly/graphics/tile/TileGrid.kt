@@ -25,12 +25,9 @@ class TileGrid private constructor() : SystemComponent(), ViewLayerAware {
     @JvmField internal var layerRef = -1
     @JvmField internal var rendererRef = -1
 
-    val ff_View =
-        ComponentRefResolver(View, { index-> viewRef = setIfNotInitialized(index, "ff_View") })
-    val ff_Layer =
-        ComponentRefResolver(Layer, { index-> layerRef = setIfNotInitialized(index, "ff_Layer") })
-    var ff_Renderer =
-        ComponentRefResolver(Renderer, { index-> rendererRef = setIfNotInitialized(index, "ff_Renderer") })
+    val ff_View = ComponentRefResolver(View, { index-> viewRef = index })
+    val ff_Layer = ComponentRefResolver(Layer, { index-> layerRef = index })
+    var ff_Renderer = ComponentRefResolver(Renderer, { index-> rendererRef = index })
     var ff_GridWidth: Int = -1
         set(value) {field = setIfNotInitialized(value, "ff_GridWidth")}
     var ff_GridHeight: Int = -1
@@ -52,13 +49,7 @@ class TileGrid private constructor() : SystemComponent(), ViewLayerAware {
     @JvmField internal val normalisedWorldBounds = Rectangle(0, 0, 0, 0)
 
     override fun init() {
-        grid = Array(ff_GridHeight, { IntArray(ff_GridWidth) })
-        for (y in 0..grid.size) {
-            for (x in 0..grid[y].size) {
-                grid[y][x] = -1
-            }
-        }
-
+        grid = Array(ff_GridHeight, { IntArray(ff_GridWidth, { _ -> -1 }) })
         normalisedWorldBounds.width = ff_GridWidth
         normalisedWorldBounds.height = ff_GridHeight
 
