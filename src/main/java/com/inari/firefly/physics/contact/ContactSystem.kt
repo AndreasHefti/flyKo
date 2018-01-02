@@ -66,11 +66,15 @@ object ContactSystem : ComponentSystem {
 
         FFContext.registerListener(EntityActivationEvent, object : EntityActivationEvent.Listener{
             override fun entityActivated(entity: Entity) {
-                contactMapViewLayer[entity[ETransform]].add(entity)
+                val transform = entity[ETransform]
+                if (transform in contactMapViewLayer)
+                    contactMapViewLayer[transform].add(entity)
             }
 
             override fun entityDeactivated(entity: Entity) {
-                contactMapViewLayer[entity[ETransform]].remove(entity)
+                val transform = entity[ETransform]
+                if (transform in contactMapViewLayer)
+                    contactMapViewLayer[entity[ETransform]].remove(entity)
             }
 
             override fun match(aspects: IAspects): Boolean =
