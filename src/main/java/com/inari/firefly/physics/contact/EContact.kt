@@ -19,10 +19,7 @@ class EContact private constructor() : EntityComponent() {
 
     @JvmField internal val contactScan = ContactScan()
 
-    val ff_CollisionResolver =
-        ComponentRefResolver(CollisionResolver, { index ->
-            resolverRef = setIfNotInitialized(index, "ff_CollisionResolver")
-        })
+    val ff_CollisionResolver = ComponentRefResolver(CollisionResolver, { index -> resolverRef = index })
     var ff_Bounds: Rectangle
         get() = bounds
         set(value) = bounds.setFrom(value)
