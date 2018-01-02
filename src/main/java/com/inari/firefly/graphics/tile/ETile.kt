@@ -53,8 +53,7 @@ class ETile private constructor (
         shaderRef = -1
     }
 
-    override fun indexedTypeKey() = ESprite.typeKey
-
+    override fun indexedTypeKey() = ETile.typeKey
     companion object : EntityComponentType<ETile>() {
         override val typeKey = EntityComponent.createTypeKey(ETile::class.java)
         override fun createEmpty() = ETile()
