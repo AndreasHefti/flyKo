@@ -8,7 +8,7 @@ object EulerIntegrator : Integrator {
     var shift = Math.pow(10.0, 0.0).toFloat()
     var scale = -1
         set(value) {
-            scale = value
+            field = value
             shift = if (value < 0)
                 Math.pow(10.0, 0.0).toFloat()
             else
@@ -18,7 +18,7 @@ object EulerIntegrator : Integrator {
     override fun integrate(movement: EMovement, transform: ETransform, deltaTimeInSeconds: Float) {
         gravityIntegration( movement )
         val velocity = movement.velocity
-        val acceleration = movement!!.acceleration
+        val acceleration = movement.acceleration
 
         velocity.dx = velocity.dx + acceleration.dx * deltaTimeInSeconds
         velocity.dy = velocity.dy + acceleration.dy * deltaTimeInSeconds
@@ -28,7 +28,7 @@ object EulerIntegrator : Integrator {
         transform.move(
             Math.round( movement.velocity.dx * deltaTimeInSeconds * shift ) / shift,
             Math.round( movement.velocity.dy * deltaTimeInSeconds * shift ) / shift
-        );
+        )
     }
 
     private fun gravityIntegration(movement: EMovement) {
