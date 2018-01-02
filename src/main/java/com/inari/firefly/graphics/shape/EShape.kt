@@ -72,8 +72,7 @@ class EShape private constructor(): EntityComponent(), ShapeData {
     var ff_Blend: BlendMode
         get() = blend
         set(value) { blend = value }
-    val ff_Shader =
-        AssetInstanceRefResolver({ index -> shaderRef = setIfNotInitialized(index, "ff_Shader") })
+    val ff_Shader = AssetInstanceRefResolver({ index -> shaderRef = index })
 
     override fun reset() {
         type = ShapeType.POINT

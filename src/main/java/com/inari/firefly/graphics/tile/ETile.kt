@@ -22,9 +22,9 @@ class ETile private constructor (
     @JvmField internal var positions: DynArray<Position> = DynArray.create(Position::class.java)
 
     val ff_Sprite =
-        AssetInstanceRefResolver({ index -> spriteRef = setIfNotInitialized(index, "ff_SpriteAsset") })
+        AssetInstanceRefResolver({ index -> spriteRef = index })
     val ff_Shader =
-        AssetInstanceRefResolver({ index -> shaderRef = setIfNotInitialized(index, "ff_ShaderAsset") })
+        AssetInstanceRefResolver({ index -> shaderRef = index })
     var ff_Blend: BlendMode
         get() = blend
         set(value) { blend = value }

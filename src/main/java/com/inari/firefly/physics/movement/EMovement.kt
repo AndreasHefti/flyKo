@@ -57,10 +57,7 @@ class EMovement private constructor() : EntityComponent() {
     var ff_UpdateResolution: Float
         get() = throw UnsupportedOperationException()
         set(value) { scheduler = FFContext.timer.createUpdateScheduler(value) }
-    val ff_Controller =
-        ComponentRefResolver(Controller, { index->
-            controllerRef = setIfNotInitialized(index, "ff_Controller")
-        })
+    val ff_Controller = ComponentRefResolver(Controller, { index-> controllerRef = index })
 
     override fun reset() {
         active = false

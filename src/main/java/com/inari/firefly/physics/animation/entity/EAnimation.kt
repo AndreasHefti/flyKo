@@ -12,10 +12,7 @@ class EAnimation : EntityComponent() {
     @JvmField internal val animations: BitSet = BitSet()
     @JvmField internal val activeAnimations: BitSet = BitSet()
 
-    val ff_Controller =
-        ComponentRefResolver(Controller, { index->
-            controllerRef = setIfNotInitialized(index, "ff_Controller")
-        })
+    val ff_Controller = ComponentRefResolver(Controller, { index-> controllerRef = index })
 
     fun <A : EntityPropertyAnimation> with(cBuilder: EntityPropertyAnimation.PropertyAnimationSubtype<A>, configure: (A.() -> Unit)): A {
         val animation = cBuilder.doBuild(configure)

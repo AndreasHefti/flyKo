@@ -17,12 +17,9 @@ class EText private constructor() : EntityComponent() {
     @JvmField internal val tint = RGBColor(1f, 1f, 1f, 1f)
     @JvmField internal var blend = BlendMode.NONE
 
-    var ff_Renderer =
-        ComponentRefResolver(Renderer, { index-> rendererRef = setIfNotInitialized(index, "ff_Renderer") })
-    var ff_FontAsset =
-        AssetInstanceRefResolver({ index -> fontRef = setIfNotInitialized(index, "ff_Shader") })
-    val ff_Shader =
-        AssetInstanceRefResolver({ index -> shaderRef = setIfNotInitialized(index, "ff_Shader") })
+    var ff_Renderer = ComponentRefResolver(Renderer, { index-> rendererRef =index })
+    var ff_FontAsset = AssetInstanceRefResolver({ index -> fontRef = setIfNotInitialized(index, "ff_Shader") })
+    val ff_Shader = AssetInstanceRefResolver({ index -> shaderRef = index })
 
     val ff_TextBuffer: StringBuffer
         get() = textBuffer

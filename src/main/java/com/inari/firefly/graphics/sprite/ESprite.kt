@@ -19,10 +19,8 @@ class ESprite private constructor () : EntityComponent(), SpriteRenderable {
     @JvmField internal var blend = BlendMode.NONE
     @JvmField internal val tint = RGBColor(1f, 1f, 1f, 1f)
 
-    val ff_Sprite =
-        AssetInstanceRefResolver({ index -> spriteRef = setIfNotInitialized(index, "ff_Sprite") })
-    val ff_Shader =
-        AssetInstanceRefResolver({ index -> shaderRef = setIfNotInitialized(index, "ff_Shader") })
+    val ff_Sprite = AssetInstanceRefResolver({ index -> spriteRef = index })
+    val ff_Shader = AssetInstanceRefResolver({ index -> shaderRef = index })
     var ff_Blend: BlendMode
         get() = blend
         set(value) { blend = value }

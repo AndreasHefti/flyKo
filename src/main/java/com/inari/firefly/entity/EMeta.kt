@@ -16,10 +16,7 @@ class EMeta private constructor() : EntityComponent(), NamedComponent {
     var ff_Name: String
         get() = name
         set(value) { name = setIfNotInitialized(value, "ff_Name") }
-    val ff_Controller =
-        ComponentRefResolver(Controller, { index->
-            controllerRef = setIfNotInitialized(index, "ff_Controller")
-        })
+    val ff_Controller = ComponentRefResolver(Controller, { index-> controllerRef = index })
     var ff_Aspects: Aspects
         get() = aspects
         set(value) {

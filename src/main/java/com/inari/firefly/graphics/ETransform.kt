@@ -23,10 +23,8 @@ class ETransform private constructor() : EntityComponent(), TransformData, ViewL
     @JvmField internal val scale = Vector2f(1.0f, 1.0f)
     @JvmField internal var rot = 0.0f
 
-    val ff_View =
-        ComponentRefResolver(View, { index-> viewRef = setIfNotInitialized(index, "ff_View") })
-    val ff_Layer =
-        ComponentRefResolver(Layer, { index-> layerRef = setIfNotInitialized(index, "ff_Layer") })
+    val ff_View = ComponentRefResolver(View, { index-> viewRef = index })
+    val ff_Layer = ComponentRefResolver(Layer, { index-> layerRef = index })
     var ff_Position: PositionF
         get() = position
         set(value) = position.setFrom(value)
