@@ -26,7 +26,7 @@ class Workflow private constructor() : SystemComponent() {
             field = value
             currentStateChanges.clear()
             stateChanges.forEach { st ->
-                if (st.from == currentState)
+                if (st.from != currentState)
                     currentStateChanges.add(st)
             }
         }
