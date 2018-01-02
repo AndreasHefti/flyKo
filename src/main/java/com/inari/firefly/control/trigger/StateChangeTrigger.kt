@@ -22,23 +22,24 @@ class StateChangeTrigger private constructor(): Trigger() {
     private var triggerType = Type.STATE_CHANGE
     private var call: Call = NULL_CALL
     private val listener = object : WorkflowEvent.Listener {
-        override fun invoke(type: WorkflowEvent.Type, workflow: CompId, stateChange: Workflow.StateChange) {
+
+        override fun invoke(type: WorkflowEvent.Type, workflow: CompId, workflowName: String, stateChangeName: String, fromName: String, toName: String) {
             if (workflow.index != workflowRef)
                 return
 
             when (triggerType) {
                 Type.STATE_CHANGE ->
-                    if (type === WorkflowEvent.Type.STATE_CHANGED && typeName == stateChange.name)
+                    if (type === WorkflowEvent.Type.STATE_CHANGED && typeName == stateChangeName)
                         doTrigger(call)
                 Type.ENTER_STATE ->
                     if ((type === WorkflowEvent.Type.STATE_CHANGED ||
                         type === WorkflowEvent.Type.WORKFLOW_STARTED) &&
-                        typeName == stateChange.to)
+                        typeName == toName)
                         doTrigger(call)
                 Type.EXIT_STATE ->
                     if ((type === WorkflowEvent.Type.STATE_CHANGED ||
                         type === WorkflowEvent.Type.WORKFLOW_FINISHED) &&
-                        typeName == stateChange.from)
+                        typeName == fromName)
                         doTrigger(call)
             }
         }

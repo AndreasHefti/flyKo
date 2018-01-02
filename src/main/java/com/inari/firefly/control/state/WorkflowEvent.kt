@@ -1,6 +1,8 @@
 package com.inari.firefly.control.state
 
 import com.inari.firefly.FFContext
+import com.inari.firefly.NO_COMP_ID
+import com.inari.firefly.NO_NAME
 import com.inari.firefly.component.CompId
 import com.inari.firefly.system.FFEvent
 
@@ -13,28 +15,51 @@ object WorkflowEvent : FFEvent<WorkflowEvent.Listener>(createTypeKey(WorkflowEve
     }
 
     private lateinit var type: WorkflowEvent.Type
-    private lateinit var workflow: CompId
-    private lateinit var stateChange : Workflow.StateChange
+    private var workflow: CompId = NO_COMP_ID
+    private var workflowName = NO_NAME
+    private var stateChangeName = NO_NAME
+    private var fromName = NO_NAME
+    private var toName = NO_NAME
 
     override fun notify(listener: WorkflowEvent.Listener) =
-        listener(type, workflow, stateChange)
+        listener(type, workflow, workflowName, stateChangeName, fromName, toName)
 
     fun send(
         type: WorkflowEvent.Type,
-        workflow: CompId,
-        stateChange : Workflow.StateChange = null!!
+        workflowId: CompId,
+        stateChangeName: String = NO_NAME,
+        fromName: String = NO_NAME,
+        toName: String = NO_NAME
     ) {
         this.type = type
-        this.workflow = workflow
-        this.stateChange = stateChange
-        FFContext.notify(this)
+        this.workflow = workflowId
+        workflowName = StateSystem.workflows[workflowId].name()
+        this.stateChangeName = stateChangeName
+        this.fromName = fromName
+        this.toName = toName
+    }
+
+    fun send(
+        type: WorkflowEvent.Type,
+        workflowId: CompId,
+        stateChange: Workflow.StateChange
+    ) {
+        this.type = type
+        this.workflow = workflowId
+        workflowName = StateSystem.workflows[workflowId].name()
+        this.stateChangeName = stateChange.name
+        this.fromName = stateChange.from
+        this.toName = stateChange.to
     }
 
     interface Listener {
         operator fun invoke(
             type: WorkflowEvent.Type,
             workflow: CompId,
-            stateChange: Workflow.StateChange
+            workflowName: String,
+            stateChangeName: String,
+            fromName: String,
+            toName: String
         )
     }
 }

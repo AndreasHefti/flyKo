@@ -1,10 +1,9 @@
 package com.inari.firefly.control.state
 
 import com.inari.commons.lang.aspect.IAspects
-import com.inari.firefly.Call
-import com.inari.firefly.FFApp
-import com.inari.firefly.FFContext
-import com.inari.firefly.NO_STATE
+import com.inari.commons.lang.indexed.Indexed
+import com.inari.firefly.*
+import com.inari.firefly.component.CompId
 import com.inari.firefly.component.ComponentMap
 import com.inari.firefly.external.FFTimer
 import com.inari.firefly.system.component.ComponentSystem
@@ -48,16 +47,22 @@ object StateSystem : ComponentSystem {
     operator fun get(workflowIndex: Int): String =
         workflows[workflowIndex].currentState
 
+    operator fun get(workflowIndex: Indexed): String =
+        workflows[workflowIndex.index()].currentState
+
+    operator fun get(workflowId: CompId): String =
+        workflows[workflowId].currentState
+
     operator fun get(workflowName: String): String =
         workflows[workflowName].currentState
+
+    operator fun get(workflowName: Named): String =
+        workflows[workflowName.name].currentState
 
     private fun update() {
         var j = 0
         while (j < workflows.map.capacity()) {
             val workflow = workflows.map[j++] ?: continue
-//            doStateChange(workflow, workflow.currentStateChanges.first {
-//                st -> st.condition()
-//            } )
             var i = 0
             while (i < workflow.currentStateChanges.capacity()) {
                 val st = workflow.currentStateChanges[i++] ?: continue
