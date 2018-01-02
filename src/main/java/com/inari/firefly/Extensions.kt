@@ -10,9 +10,9 @@ import com.inari.commons.lang.aspect.Aspects
 import com.inari.commons.lang.indexed.IndexedTypeSet
 
 fun RGBColor.setFrom(other: RGBColor) {
-    this.a = other.a
-    this.g = other.b
     this.r = other.r
+    this.g = other.g
+    this.b = other.b
     this.a = other.a
 }
 
@@ -22,9 +22,9 @@ operator fun RGBColor.invoke(
     b: Float = this.b,
     a: Float = this.a
 ) {
-    this.a = a
-    this.g = b
     this.r = r
+    this.g = g
+    this.b = b
     this.a = a
 }
 
