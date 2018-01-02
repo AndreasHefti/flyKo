@@ -2,7 +2,6 @@ package com.inari.firefly.physics.contact
 
 import com.inari.commons.geom.Rectangle
 import com.inari.commons.lang.IntIterator
-import com.inari.commons.lang.indexed.IndexedTypeKey
 import com.inari.firefly.entity.Entity
 import com.inari.firefly.system.component.SubType
 import java.util.*
@@ -43,7 +42,7 @@ class SimpleContactMap : ContactMap() {
 
 
     companion object : SubType<SimpleContactMap, ContactMap>() {
-        override val typeKey: IndexedTypeKey = SimpleContactMap.typeKey
+        override val typeKey= ContactMap.typeKey
         override fun subType() = SimpleContactMap::class.java
         override fun createEmpty() = SimpleContactMap()
     }
