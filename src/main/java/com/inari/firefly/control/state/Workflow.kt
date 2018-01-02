@@ -25,11 +25,10 @@ class Workflow private constructor() : SystemComponent() {
         internal set(value) {
             field = value
             currentStateChanges.clear()
-            stateChanges.forEach({ st ->
-                if (st.from == currentState) {
+            stateChanges.forEach { st ->
+                if (st.from == currentState)
                     currentStateChanges.add(st)
-                }
-            })
+            }
         }
 
     internal val currentStateChanges: DynArray<StateChange> =
