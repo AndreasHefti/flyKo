@@ -21,7 +21,7 @@ class SimpleTileGridRenderer private constructor() : Renderer() {
 
     override fun render(viewIndex: Int, layerIndex: Int, clip: Rectangle) {
         val tileGrid = TileGridSystem[viewIndex, layerIndex] ?: return
-        if (tileGrid.rendererRef == index) {
+        if (tileGrid.rendererRef < 0 || tileGrid.rendererRef == index) {
             val graphics = FFContext.graphics
             val iterator = tileGrid.tileGridIterator(clip)
             while (iterator.hasNext()) {
