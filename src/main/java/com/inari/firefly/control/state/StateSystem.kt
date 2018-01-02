@@ -111,6 +111,7 @@ object StateSystem : ComponentSystem {
     }
 
     private fun activated(workflow: Workflow) {
+        workflow.currentState = workflow.startState
         WorkflowEvent.send(
             WorkflowEvent.Type.WORKFLOW_STARTED,
             workflow.componentId
