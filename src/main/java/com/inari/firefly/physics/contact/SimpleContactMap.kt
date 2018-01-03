@@ -50,7 +50,7 @@ class SimpleContactMap : ContactMap() {
 
     private inner class EntityIdIterator : IntIterator {
 
-        private var index: Int = entities.nextSetBit(0)
+        private var index: Int = -1
         private var exclude: Int = -1
 
         override fun hasNext(): Boolean =
@@ -64,7 +64,7 @@ class SimpleContactMap : ContactMap() {
 
         private fun findNext() {
             index = entities.nextSetBit(index + 1)
-            if (index != exclude)
+            if (index == exclude)
                 index = entities.nextSetBit(index + 1)
 
             if (index < 0)
@@ -72,7 +72,8 @@ class SimpleContactMap : ContactMap() {
         }
 
         internal fun reset(exclude: Int) {
-            index = entities.nextSetBit(0)
+            index = -1
+            findNext()
             this.exclude = exclude
         }
     }
