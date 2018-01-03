@@ -259,7 +259,7 @@ object ContactSystem : ComponentSystem {
         val otherContact = otherEntity[EContact]
         val constraint = constraints[c.constraintRef]
 
-        if (constraint.match(otherContact.material))
+        if (!constraint.match(otherContact.material))
             return
 
         val contact = ContactsPool.createContact(
