@@ -23,10 +23,7 @@ class SimpleTextRenderer private constructor() : Renderer() {
         entity.components.include(matchingAspects)
 
     override fun render(viewIndex: Int, layerIndex: Int, clip: Rectangle) {
-        val toRender = this[viewIndex, layerIndex]
-        if (toRender.isEmpty) {
-            return
-        }
+        val toRender = getIfNotEmpty(viewIndex, layerIndex) ?: return
 
         val graphics = FFContext.graphics
         var i = 0

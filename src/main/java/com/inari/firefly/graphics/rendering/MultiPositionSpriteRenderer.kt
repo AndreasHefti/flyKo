@@ -19,13 +19,9 @@ class MultiPositionSpriteRenderer private constructor() : Renderer() {
         entity.aspects.include(matchingAspects)
 
     override fun render(viewIndex: Int, layerIndex: Int, clip: Rectangle) {
-        val toRender = this[viewIndex, layerIndex]
-        if (toRender.isEmpty) {
-            return
-        }
+        val toRender = getIfNotEmpty(viewIndex, layerIndex) ?: return
 
         val graphics = FFContext.graphics
-
         var i = 0
         while (i < toRender.capacity()) {
             val entity = toRender.get(i++) ?: continue

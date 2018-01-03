@@ -25,7 +25,7 @@ abstract class Renderer protected constructor(
 
     fun accept(entity: Entity): Boolean {
         return if (acceptance(entity)) {
-            val renderable = this[entity[ETransform]]
+            val renderable = forceGet(entity[ETransform])
             renderable.add(entity)
             sort?.invoke(renderable)
             true
@@ -35,18 +35,29 @@ abstract class Renderer protected constructor(
     }
 
     fun dispose(entity: Entity) {
-        if (acceptance(entity)) {
-            this[entity[ETransform]].remove(entity)
-        }
+        if (acceptance(entity))
+            this[entity[ETransform]]?.remove(entity)
     }
 
-    protected fun contains(viewId: Int, layerId: Int): Boolean =
-        viewId in entities && layerId !in entities[viewId]
+    internal fun clearView(viewIndex: Int) =
+        entities.remove(viewIndex)
 
-    protected operator fun get(viewLayer: ViewLayerAware): DynArray<Entity> =
-        get(viewLayer.viewIndex, viewLayer.layerIndex)
+    internal fun clearLayer(viewIndex: Int, layerIndex: Int) =
+        entities[viewIndex]?.remove(layerIndex)
 
-    protected operator fun get(viewId: Int, layerId: Int): DynArray<Entity> {
+    protected operator fun get(viewLayer: ViewLayerAware): DynArray<Entity>? =
+        entities.get(viewLayer.viewIndex)?.get(viewLayer.layerIndex)
+
+    protected fun getIfNotEmpty(viewIndex: Int, layerIndex: Int): DynArray<Entity>? {
+        val result = entities.get(viewIndex)?.get(layerIndex)
+        return if (result != null && !result.isEmpty) result
+            else null
+    }
+
+    private fun forceGet(viewLayer: ViewLayerAware): DynArray<Entity> =
+        forceGet(viewLayer.viewIndex, viewLayer.layerIndex)
+
+    private fun forceGet(viewId: Int, layerId: Int): DynArray<Entity> {
         if (viewId !in entities) {
             entities.set(viewId, DynArray.createTyped(DynArray::class.java))
         }

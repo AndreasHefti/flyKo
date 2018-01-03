@@ -21,14 +21,12 @@ class SpriteGroupRenderer private constructor() : Renderer() {
         entity.aspects.include(matchingAspects)
 
     override fun render(viewIndex: Int, layerIndex: Int, clip: Rectangle) {
-        if (!contains(viewIndex, layerIndex))
-            return
+        val toRender = getIfNotEmpty(viewIndex, layerIndex) ?: return
 
         val graphics = FFContext.graphics
-        val spritesToRender = get(viewIndex, layerIndex)
         var i = 0
-        while (i < spritesToRender.capacity()) {
-            val entity = spritesToRender.get(i++) ?: continue
+        while (i < toRender.capacity()) {
+            val entity = toRender.get(i++) ?: continue
 
             val sprite = entity[ESprite]
             val transform = entity[ETransform]
