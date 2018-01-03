@@ -102,9 +102,6 @@ object ContactSystem : ComponentSystem {
             throw IllegalArgumentException("No ContactConstraint found for id: $constraint")
 
 
-
-
-
     fun updateContacts(entityId: Int) {
         val entity = EntitySystem[entityId]
         val contacts = entity[EContact]
@@ -173,12 +170,6 @@ object ContactSystem : ComponentSystem {
         updateContacts(entityName.name, constraint)
     }
 
-
-
-
-
-
-
     private fun update(entities: BitSet) {
         var i = entities.nextSetBit(0)
         while (i >= 0) {
@@ -220,7 +211,7 @@ object ContactSystem : ComponentSystem {
         val movement = entity[EMovement]
 
         var layerRef = constraint.layerRef
-        if (transform.layerRef < 0)
+        if (layerRef < 0)
             layerRef = transform.layerRef
 
         c.update(
