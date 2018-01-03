@@ -82,8 +82,8 @@ class SimpleCamaraController private constructor() : Controller() {
         if (pos.y < snapToBounds.y)
             pos.y = snapToBounds.y.toFloat()
 
-        pos.x = Math.max(pos.x, xMax)
-        pos.y = Math.max(pos.y, yMax)
+        pos.x = Math.min(pos.x, xMax)
+        pos.y = Math.min(pos.y, yMax)
         pos.x = Math.ceil(pos.x.toDouble() - worldPosition.x).toFloat()
         pos.y = Math.floor(pos.y.toDouble() - worldPosition.y).toFloat()
 
