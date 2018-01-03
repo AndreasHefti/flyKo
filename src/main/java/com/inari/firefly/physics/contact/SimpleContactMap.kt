@@ -64,7 +64,7 @@ class SimpleContactMap : ContactMap() {
 
         private fun findNext() {
             index = entities.nextSetBit(index + 1)
-            if (index == exclude)
+            if (index != exclude)
                 index = entities.nextSetBit(index + 1)
 
             if (index < 0)
