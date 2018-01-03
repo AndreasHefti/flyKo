@@ -73,8 +73,8 @@ class SimpleContactMap : ContactMap() {
 
         internal fun reset(exclude: Int) {
             index = -1
-            findNext()
             this.exclude = exclude
+            findNext()
         }
     }
 }
