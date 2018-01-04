@@ -75,7 +75,7 @@ object SceneSystem : ComponentSystem {
         if (!_scenes.isActive(index))
             return
 
-        _scenes[index].paused = false
+        _scenes.deactivate(index)
     }
 
     private fun internalStop(index: Int) {
