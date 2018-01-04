@@ -18,6 +18,7 @@ import com.inari.firefly.system.FFAspectedEvent
 import com.inari.firefly.system.FFEvent
 import com.inari.firefly.system.component.ComponentSystem
 import com.inari.firefly.system.component.ISubType
+import com.inari.firefly.system.component.SingletonComponent
 import com.inari.firefly.system.component.SystemComponent
 
 
@@ -149,6 +150,9 @@ object FFContext {
     fun isActive(cType: ComponentType<*>, named: Named): Boolean =
         mapper<Component>(cType.typeKey).isActive(named.name)
 
+    fun isActive(singleton: SingletonComponent<*, *>): Boolean =
+        mapper<Component>(singleton.typeKey).isActive(singleton.instance.index())
+
     fun activate(cType: ComponentType<*>, index: Int): FFContext {
         mapper<Component>(cType.typeKey).activate(index)
         return this
@@ -176,6 +180,11 @@ object FFContext {
 
     fun activate(cType: ComponentType<*>, named: Named): FFContext {
         mapper<Component>(cType.typeKey).activate(named.name)
+        return this
+    }
+
+    fun activate(singleton: SingletonComponent<*,*>): FFContext {
+        mapper<Component>(singleton.typeKey).activate(singleton.instance.index())
         return this
     }
 
@@ -209,6 +218,11 @@ object FFContext {
         return this
     }
 
+    fun deactivate(singleton: SingletonComponent<*,*>): FFContext {
+        mapper<Component>(singleton.typeKey).deactivate(singleton.instance.index())
+        return this
+    }
+
     fun delete(cType: ComponentType<*>, index: Int): FFContext {
         mapper<Component>(cType.typeKey).delete(index)
         return this
@@ -238,6 +252,13 @@ object FFContext {
         mapper<Component>(cType.typeKey).delete(named.name)
         return this
     }
+
+    fun delete(singleton: SingletonComponent<*,*>): FFContext {
+        singleton.dispose()
+        return this
+    }
+
+
 
 
 
