@@ -29,17 +29,6 @@ abstract class SingletonComponent<CC : C, C : SystemComponent> : ComponentType<C
             return FFContext[this, subType().simpleName] as CC
         }
 
-    fun activate(): CC {
-        val singleton = instance
-        FFContext.activate(singleton.componentId)
-        return singleton
-    }
-
-    fun deactivate() {
-        if (FFContext.mapper(this).contains(subType().simpleName))
-            FFContext.deactivate(this, subType().simpleName)
-    }
-
     fun dispose() {
         if (FFContext.mapper(this).contains(subType().simpleName))
             FFContext.delete(this, subType().simpleName)

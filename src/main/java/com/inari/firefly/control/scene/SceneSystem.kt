@@ -50,7 +50,10 @@ object SceneSystem : ComponentSystem {
         if (index !in _scenes)
             return
 
-        _scenes[index].callback = callback
+        val scene = _scenes[index]
+        scene.callback = callback
+        scene.paused = false
+        scene.sceneInit()
         _scenes.activate(index)
     }
 
@@ -81,7 +84,7 @@ object SceneSystem : ComponentSystem {
         if (scene.removeAfterRun)
             _scenes.delete(scene.index())
         else
-            scene.reset()
+            scene.sceneReset()
     }
 
     override fun clearSystem() {

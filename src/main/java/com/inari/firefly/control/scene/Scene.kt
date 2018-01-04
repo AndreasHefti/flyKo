@@ -35,12 +35,8 @@ abstract class Scene protected constructor() : TriggeredSystemComponent() {
     fun <A : Trigger> withResumeTrigger(cBuilder: Trigger.Subtype<A>, configure: (A.() -> Unit)): A =
         super.with(cBuilder, resumeCall, configure)
 
-    protected fun run(callback: Call) {
-        this.callback = callback
-        paused = false
-    }
-
-    abstract fun reset()
+    abstract fun sceneInit()
+    abstract fun sceneReset()
 
     internal operator fun invoke() = update()
     protected abstract fun update()
