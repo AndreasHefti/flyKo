@@ -23,9 +23,9 @@ object ControllerSystem : ComponentSystem {
             FFApp.UpdateEvent,
             object : FFApp.UpdateEvent.Listener {
                 override fun invoke() {
-                    controller.forEachActive({ controller ->
-                        if (controller.needsUpdate)
-                            controller.update()
+                    controller.forEachActive({ c ->
+                        if (c.needsUpdate)
+                            c.update()
                     })
                 }
             }
