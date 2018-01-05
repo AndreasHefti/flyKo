@@ -11,12 +11,8 @@ import com.inari.firefly.system.component.SingletonComponent
 
 class MultiPositionSpriteRenderer private constructor() : Renderer() {
 
-    private val matchingAspects = EntityComponent.ENTITY_COMPONENT_ASPECTS.createAspects(
-        ETransform, ESprite, EMultiplier
-    )
-
     override fun match(entity: Entity): Boolean =
-        entity.aspects.include(matchingAspects)
+        entity.aspects.include(MATCHING_ASPECTS)
 
     override fun render(viewIndex: Int, layerIndex: Int, clip: Rectangle) {
         val toRender = getIfNotEmpty(viewIndex, layerIndex) ?: return
@@ -44,5 +40,9 @@ class MultiPositionSpriteRenderer private constructor() : Renderer() {
         override val typeKey = Renderer.typeKey
         override fun subType() = MultiPositionSpriteRenderer::class.java
         override fun create() = MultiPositionSpriteRenderer()
+
+        private val MATCHING_ASPECTS = EntityComponent.ENTITY_COMPONENT_ASPECTS.createAspects(
+            ETransform, ESprite, EMultiplier
+        )
     }
 }

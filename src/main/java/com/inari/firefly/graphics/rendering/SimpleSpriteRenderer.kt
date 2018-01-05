@@ -13,16 +13,11 @@ import com.inari.firefly.system.component.SingletonComponent
 
 class SimpleSpriteRenderer private constructor() : Renderer() {
 
-    private val matchingAspects = EntityComponent.ENTITY_COMPONENT_ASPECTS.createAspects(
-        ETransform, ESprite
-    )
-    private val excludingAspects = EntityComponent.ENTITY_COMPONENT_ASPECTS.createAspects(
-        EChild, ETile
-    )
+
 
     override fun match(entity: Entity): Boolean =
-        entity.components.include(matchingAspects) &&
-            entity.components.exclude(excludingAspects)
+        entity.components.include(MATCHING_ASPECTS) &&
+            entity.components.exclude(EXCLUDING_ASPECTS)
 
     override fun render(viewIndex: Int, layerIndex: Int, clip: Rectangle) {
         val toRender = getIfNotEmpty(viewIndex, layerIndex) ?: return
@@ -42,5 +37,12 @@ class SimpleSpriteRenderer private constructor() : Renderer() {
         override val typeKey = Renderer.typeKey
         override fun subType() = SimpleSpriteRenderer::class.java
         override fun create() = SimpleSpriteRenderer()
+
+        private val MATCHING_ASPECTS = EntityComponent.ENTITY_COMPONENT_ASPECTS.createAspects(
+            ETransform, ESprite
+        )
+        private val EXCLUDING_ASPECTS = EntityComponent.ENTITY_COMPONENT_ASPECTS.createAspects(
+            EChild, ETile
+        )
     }
 }

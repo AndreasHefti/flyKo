@@ -12,12 +12,8 @@ import com.inari.firefly.system.component.SingletonComponent
 
 class FullTileGridRenderer private constructor() : Renderer() {
 
-    private val matchingAspects = EntityComponent.ENTITY_COMPONENT_ASPECTS.createAspects(
-        ETransform, ETile
-    )
-
     override fun match(entity: Entity): Boolean =
-        entity.components.include(matchingAspects)
+        entity.components.include(MATCHING_ASPECTS)
 
     override fun render(viewIndex: Int, layerIndex: Int, clip: Rectangle) {
         val tileGrid = TileGridSystem[viewIndex, layerIndex] ?: return
@@ -39,5 +35,9 @@ class FullTileGridRenderer private constructor() : Renderer() {
         override val typeKey = Renderer.typeKey
         override fun subType() = FullTileGridRenderer::class.java
         override fun create() = FullTileGridRenderer()
+
+        private val MATCHING_ASPECTS = EntityComponent.ENTITY_COMPONENT_ASPECTS.createAspects(
+            ETransform, ETile
+        )
     }
 }

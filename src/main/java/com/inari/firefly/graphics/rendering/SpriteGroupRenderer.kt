@@ -13,12 +13,8 @@ import com.inari.firefly.system.component.SingletonComponent
 
 class SpriteGroupRenderer private constructor() : Renderer() {
 
-    private val matchingAspects = EntityComponent.ENTITY_COMPONENT_ASPECTS.createAspects(
-        ETransform, ESprite, EChild
-    )
-
     override fun match(entity: Entity): Boolean =
-        entity.aspects.include(matchingAspects)
+        entity.aspects.include(MATCHING_ASPECTS)
 
     override fun render(viewIndex: Int, layerIndex: Int, clip: Rectangle) {
         val toRender = getIfNotEmpty(viewIndex, layerIndex) ?: return
@@ -70,5 +66,9 @@ class SpriteGroupRenderer private constructor() : Renderer() {
         override val typeKey = Renderer.typeKey
         override fun subType() = SpriteGroupRenderer::class.java
         override fun create() = SpriteGroupRenderer()
+
+        private val MATCHING_ASPECTS = EntityComponent.ENTITY_COMPONENT_ASPECTS.createAspects(
+            ETransform, ESprite, EChild
+        )
     }
 }

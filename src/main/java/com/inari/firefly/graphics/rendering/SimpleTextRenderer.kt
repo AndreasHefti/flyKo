@@ -15,12 +15,10 @@ import com.inari.firefly.system.component.SingletonComponent
 
 
 class SimpleTextRenderer private constructor() : Renderer() {
-    private val matchingAspects = EntityComponent.ENTITY_COMPONENT_ASPECTS.createAspects(
-        ETransform, EText
-    )
 
     override fun match(entity: Entity): Boolean =
-        entity.components.include(matchingAspects)
+        entity.components.include(MATCHING_ASPECTS) &&
+            entity[EText].rendererRef == index
 
     override fun render(viewIndex: Int, layerIndex: Int, clip: Rectangle) {
         val toRender = getIfNotEmpty(viewIndex, layerIndex) ?: return
@@ -31,9 +29,6 @@ class SimpleTextRenderer private constructor() : Renderer() {
             val entity = toRender.get(i++) ?: continue
 
             val text = entity[EText]
-            if (text.rendererRef != index)
-                continue
-
             val transform = entity[ETransform]
             val font = FFContext[FontAsset, text.fontRef]
             val chars = text.textBuffer
@@ -89,5 +84,9 @@ class SimpleTextRenderer private constructor() : Renderer() {
         override val typeKey = Renderer.typeKey
         override fun subType() = SimpleTextRenderer::class.java
         override fun create() = SimpleTextRenderer()
+
+        private val MATCHING_ASPECTS = EntityComponent.ENTITY_COMPONENT_ASPECTS.createAspects(
+            ETransform, EText
+        )
     }
 }
