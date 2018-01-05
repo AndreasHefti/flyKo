@@ -3,6 +3,7 @@ package com.inari.firefly.graphics.sprite
 import com.inari.commons.lang.indexed.IndexedTypeKey
 import com.inari.commons.lang.list.DynArray
 import com.inari.firefly.FFContext
+import com.inari.firefly.NO_NAME
 import com.inari.firefly.asset.Asset
 import com.inari.firefly.component.ArrayAccessor
 import com.inari.firefly.component.ComponentRefResolver
@@ -21,6 +22,17 @@ class SpriteSetAsset private constructor() : Asset() {
     override fun instanceId(index: Int): Int =
         if (index in spriteData) spriteData[index].instanceId
         else -1
+
+    fun instanceId(name: String): Int {
+        if (name == NO_NAME)
+            return -1
+
+        spriteData
+            .filter { name == it.name }
+            .forEach { return it.instanceId }
+
+        return -1
+    }
 
     override fun load() {
         val graphics = FFContext.graphics
