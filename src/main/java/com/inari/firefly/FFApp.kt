@@ -21,11 +21,11 @@ abstract class FFApp protected constructor(
             throw IllegalStateException("FFApp is a conceptual singleton and is already initialized")
         }
 
-        Companion.eventDispatcher = eventDispatcher()
-        Companion.graphics = graphics()
-        Companion.audio = audio()
-        Companion.input = input()
-        Companion.timer = timer()
+        FFApp.eventDispatcher = eventDispatcher()
+        FFApp.graphics = graphics()
+        FFApp.audio = audio()
+        FFApp.input = input()
+        FFApp.timer = timer()
     }
 
     fun update() {
@@ -45,7 +45,7 @@ abstract class FFApp protected constructor(
 
             graphics.flush(ViewSystem.activeViewPorts)
         } else {
-            render(ViewSystem.baseView)
+            render(ViewSystem.baseView.data)
             graphics.flush(NO_VIRTUAL_VIEW_PORTS)
         }
 

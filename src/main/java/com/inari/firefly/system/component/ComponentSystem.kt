@@ -48,7 +48,7 @@ interface ComponentSystem : FFSystem {
         private val nameMap: MutableMap<String, C>? = if (nameMapping) HashMap() else null
 
         override operator fun contains(index: Int): Boolean = map.contains(index)
-        override operator fun contains(name: String): Boolean = _indexForName(name) >= 0
+        override operator fun contains(name: String): Boolean = internalIndexForName(name) >= 0
 
         override fun activate(index: Int) {
             if (activationMapping && !isActive(index)) {
@@ -127,14 +127,14 @@ interface ComponentSystem : FFSystem {
         }
 
         override fun indexForName(name: String): Int {
-            val result = _indexForName(name)
+            val result = internalIndexForName(name)
             if (result < 0)
                 throw RuntimeException("Component: ${type.typeKey} for name: $name not found")
 
             return result
         }
 
-        private fun _indexForName(name: String): Int {
+        private fun internalIndexForName(name: String): Int {
             if (nameMapping)
                 return nameMap?.get(name)?.index() ?: -1
 
@@ -163,7 +163,7 @@ interface ComponentSystem : FFSystem {
         override fun receiver(): Receiver<C> = { c -> add(c) }
 
         override  fun forEach(expr: Expr<C>) =
-            map.forEach({ c -> expr(c) })
+            map.forEach{ c -> expr(c) }
 
         override fun forEachActive(expr: (C) -> Unit) {
             var i = active.nextSetBit(0)

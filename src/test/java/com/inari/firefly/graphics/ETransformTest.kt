@@ -40,7 +40,7 @@ class ETransformTest {
         xposAccessor.set(30f)
         assertTrue(30f == xposAccessor.get())
         assertTrue(30f == transform.ff_Position.x)
-        assertTrue(30f == transform.xOffset)
+        assertTrue(30f == transform.data.position.x)
 
         measureTime("accessor preformance", 10000) {
             xposAccessor.set(30f)

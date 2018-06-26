@@ -28,7 +28,7 @@ class SimpleSpriteRenderer private constructor() : Renderer() {
             val entity = toRender.get(i++) ?: continue
             graphics.renderSprite(
                 entity[ESprite],
-                entity[ETransform]
+                entity[ETransform].data
             )
         }
     }

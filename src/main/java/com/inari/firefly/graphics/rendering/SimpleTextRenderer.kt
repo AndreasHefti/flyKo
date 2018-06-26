@@ -36,27 +36,27 @@ class SimpleTextRenderer private constructor() : Renderer() {
             textRenderable.shader = text.shaderRef
             textRenderable.tint.setFrom(text.tint)
             textRenderable.blend = text.blend
-            renderingTransform.set(transform)
-            val horizontalStep = (font.charWidth + font.charSpace) * transform.scale.dx
-            val verticalStep = (font.charHeight + font.lineSpace) * transform.scale.dy
+            renderingTransform.set(transform.data)
+            val horizontalStep = (font.charWidth + font.charSpace) * transform.data.scale.dx
+            val verticalStep = (font.charHeight + font.lineSpace) * transform.data.scale.dy
 
             var j = 0
             while (j < chars.length) {
                 val char = chars[j++]
                 if (char == '\n') {
-                    renderingTransform.xOffset = transform.position.x
-                    renderingTransform.yOffset += verticalStep
+                    renderingTransform.data.position.x = transform.data.position.x
+                    renderingTransform.data.position.y += verticalStep
                     continue
                 }
 
                 if ( char == ' ' ) {
-                    renderingTransform.xOffset += horizontalStep
+                    renderingTransform.data.position.x += horizontalStep
                     continue
                 }
 
                 textRenderable.sprite = font.charSpriteMap[char.toInt()]
-                graphics.renderSprite(textRenderable, renderingTransform)
-                renderingTransform.xOffset += horizontalStep
+                graphics.renderSprite(textRenderable, renderingTransform.data)
+                renderingTransform.data.position.x += horizontalStep
             }
         }
     }
@@ -64,10 +64,10 @@ class SimpleTextRenderer private constructor() : Renderer() {
     private val renderingTransform = ExactTransformDataCollector()
     private val textRenderable = object : SpriteRenderable {
 
-        internal var sprite = -1
-        internal var shader = -1
-        internal val tint = RGBColor()
-        internal var blend = BlendMode.NONE
+        var sprite = -1
+        var shader = -1
+        val tint = RGBColor()
+        var blend = BlendMode.NONE
 
         override val tintColor: RGBColor
             get() = tint

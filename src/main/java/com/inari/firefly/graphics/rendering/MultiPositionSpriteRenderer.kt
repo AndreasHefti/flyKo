@@ -24,14 +24,14 @@ class MultiPositionSpriteRenderer private constructor() : Renderer() {
             val sprite = entity[ESprite]
             val transform = entity[ETransform]
             val multiplier = entity[EMultiplier]
-            transformCollector.set(transform)
+            transformCollector.set(transform.data)
 
             var j = 0
             val positions = multiplier.positions
             while (j < positions.capacity()) {
                 val pos = positions[j++] ?: continue
                 transformCollector.set(pos)
-                graphics.renderSprite(sprite, transformCollector)
+                graphics.renderSprite(sprite, transformCollector.data)
             }
         }
     }

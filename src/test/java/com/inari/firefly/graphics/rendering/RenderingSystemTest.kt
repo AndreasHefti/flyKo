@@ -53,10 +53,7 @@ class RenderingSystemTest {
         TestApp.render()
 
         assertEquals(
-            "[startRendering::View(View(baseView=true, controllerRef=-1, bounds=[x=0,y=0,width=100,height=100], worldPosition=[x=0.0,y=0.0], clearColor=[r=0.0,g=0.0,b=0.0,a=1.0], tintColor=[r=1.0,g=1.0,b=1.0,a=1.0], blendMode=NONE, zoom=1.0, fboScaler=4.0)), " +
-                "renderSprite::Sprite(ESprite(spriteRef=1, shaderRef=-1, blend=NONE, tint=[r=1.0,g=1.0,b=1.0,a=1.0], ), " +
-                "endRendering::View(View(baseView=true, controllerRef=-1, bounds=[x=0,y=0,width=100,height=100], worldPosition=[x=0.0,y=0.0], clearColor=[r=0.0,g=0.0,b=0.0,a=1.0], tintColor=[r=1.0,g=1.0,b=1.0,a=1.0], blendMode=NONE, zoom=1.0, fboScaler=4.0)), " +
-                "flush]",
+            "[startRendering::ViewData(baseView=true, bounds=[x=0,y=0,width=100,height=100], worldPosition=[x=0.0,y=0.0], clearColor=[r=0.0,g=0.0,b=0.0,a=1.0], tintColor=[r=1.0,g=1.0,b=1.0,a=1.0], blendMode=NONE, zoom=1.0, fboScaler=4.0), renderSprite::Sprite(ESprite(spriteRef=1, shaderRef=-1, blend=NONE, tint=[r=1.0,g=1.0,b=1.0,a=1.0], ), endRendering::ViewData(baseView=true, bounds=[x=0,y=0,width=100,height=100], worldPosition=[x=0.0,y=0.0], clearColor=[r=0.0,g=0.0,b=0.0,a=1.0], tintColor=[r=1.0,g=1.0,b=1.0,a=1.0], blendMode=NONE, zoom=1.0, fboScaler=4.0), flush]",
             GraphicsMock.log())
     }
 }

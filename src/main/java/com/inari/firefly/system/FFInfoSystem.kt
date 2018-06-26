@@ -29,9 +29,9 @@ object FFInfoSystem : FFSystem {
 
     private val renderListener = object : FFApp.PostRenderEvent.Listener{
         override fun invoke() {
-            graphics.startRendering( ViewSystem.baseView, false )
+            graphics.startRendering( ViewSystem.baseView.data, false )
             renderSystemInfoDisplay()
-            graphics.endRendering( ViewSystem.baseView )
+            graphics.endRendering( ViewSystem.baseView.data )
             graphics.flush(FFApp.NO_VIRTUAL_VIEW_PORTS)
         }
     }

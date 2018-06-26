@@ -24,9 +24,9 @@ class FullTileGridRenderer private constructor() : Renderer() {
             while (iterator.hasNext()) {
                 val entity = EntitySystem.entities[iterator.next()]
 
-                transformCollector.set(entity[ETransform])
+                transformCollector.set(entity[ETransform].data)
                 transformCollector.addOffset(iterator.worldXPos, iterator.worldYPos)
-                graphics.renderSprite(entity[ETile], transformCollector)
+                graphics.renderSprite(entity[ETile], transformCollector.data)
             }
         }
     }

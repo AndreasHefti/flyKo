@@ -60,14 +60,14 @@ object ViewSystem : ComponentSystem {
         if (index !in layersOfView)
             layersOfView.set(index, IntBag(10, -1, 5))
 
-        if (!view.isBase)
+        if (!view.baseView)
             orderedView.add(index)
 
-        ViewEvent.send(view.componentId, view, ViewEvent.Type.VIEW_CREATED)
+        ViewEvent.send(view.componentId, view.data, ViewEvent.Type.VIEW_CREATED)
     }
 
     private fun activated(view: View) {
-        if (view.isBase)
+        if (view.baseView)
             return
 
         updateViewMapping()
@@ -76,11 +76,11 @@ object ViewSystem : ComponentSystem {
             ControllerSystem.controller[view.controllerRef]
                 .register(view.componentId)
 
-        ViewEvent.send(view.componentId, view, ViewEvent.Type.VIEW_ACTIVATED)
+        ViewEvent.send(view.componentId, view.data, ViewEvent.Type.VIEW_ACTIVATED)
     }
 
     private fun deactivated(view: View) {
-        if (view.isBase)
+        if (view.baseView)
             throw IllegalStateException("Base View cannot be deactivated")
 
         updateViewMapping()
@@ -93,11 +93,11 @@ object ViewSystem : ComponentSystem {
             ControllerSystem.controller[view.controllerRef]
                 .unregister(view.componentId)
 
-        ViewEvent.send(view.componentId, view, ViewEvent.Type.VIEW_DISPOSED)
+        ViewEvent.send(view.componentId, view.data, ViewEvent.Type.VIEW_DISPOSED)
     }
 
     private fun deleted(view: View) {
-        if (view.isBase)
+        if (view.baseView)
             throw IllegalStateException("Base View cannot be deactivated")
 
         // delete also all layers of this view
@@ -111,7 +111,7 @@ object ViewSystem : ComponentSystem {
         orderedView.remove(index)
         orderedView.trim()
 
-        ViewEvent.send(view.componentId, view, ViewEvent.Type.VIEW_DELETED)
+        ViewEvent.send(view.componentId, view.data, ViewEvent.Type.VIEW_DELETED)
     }
 
     private fun created(layer: Layer) {
@@ -135,7 +135,7 @@ object ViewSystem : ComponentSystem {
         while (i.hasNext()) {
             val nextId = i.next()
             if (views.isActive(nextId)) {
-                activeViewPorts.add(views[nextId])
+                activeViewPorts.add(views[nextId].data)
             }
         }
     }
@@ -144,10 +144,10 @@ object ViewSystem : ComponentSystem {
         var i = 0
         while (i < views.map.capacity()) {
             val view = views.map[i++] ?: continue
-            if (view.isBase)
+            if (view.baseView)
                 continue
 
-            views.delete(view.index)
+            views.delete(view.index())
         }
         layers.clear()
     }

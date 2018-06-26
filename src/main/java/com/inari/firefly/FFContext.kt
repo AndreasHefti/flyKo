@@ -132,6 +132,9 @@ object FFContext {
     operator fun <E : EntityComponent> get(entityName: Named, ecType: EntityComponentType<E>): E =
         EntitySystem.entities[entityName.name][ecType]
 
+    fun isActive(component: Component): Boolean =
+        isActive(component.componentId)
+
     fun isActive(cType: ComponentType<*>, index: Int): Boolean =
         mapper<Component>(cType.typeKey).isActive(index)
 
@@ -152,6 +155,11 @@ object FFContext {
 
     fun isActive(singleton: SingletonComponent<*, *>): Boolean =
         mapper<Component>(singleton.typeKey).isActive(singleton.instance.index())
+
+    fun activate(component: Component): FFContext {
+        activate(component.componentId)
+        return this
+    }
 
     fun activate(cType: ComponentType<*>, index: Int): FFContext {
         mapper<Component>(cType.typeKey).activate(index)
@@ -188,6 +196,11 @@ object FFContext {
         return this
     }
 
+    fun deactivate(component: Component): FFContext {
+        deactivate(component.componentId)
+        return this
+    }
+
     fun deactivate(cType: ComponentType<*>, index: Int): FFContext {
         mapper<Component>(cType.typeKey).deactivate(index)
         return this
@@ -220,6 +233,11 @@ object FFContext {
 
     fun deactivate(singleton: SingletonComponent<*,*>): FFContext {
         mapper<Component>(singleton.typeKey).deactivate(singleton.instance.index())
+        return this
+    }
+
+    fun delete(component: Component): FFContext {
+        delete(component.componentId)
         return this
     }
 

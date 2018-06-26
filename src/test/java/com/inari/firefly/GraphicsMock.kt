@@ -70,7 +70,7 @@ object GraphicsMock : FFGraphics {
 
 
     override fun startRendering(view: ViewData, clear: Boolean) {
-        log.add("startRendering::View($view)")
+        log.add("startRendering::$view")
     }
 
     override fun renderSprite(renderableSprite: SpriteRenderable, xpos: Float, ypos: Float) {
@@ -94,7 +94,7 @@ object GraphicsMock : FFGraphics {
     }
 
     override fun endRendering(view: ViewData) {
-        log.add("endRendering::View($view)")
+        log.add("endRendering::$view")
     }
 
     override fun flush(virtualViews: DynArrayRO<ViewData>) {

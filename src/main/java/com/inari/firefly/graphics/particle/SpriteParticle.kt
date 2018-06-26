@@ -18,7 +18,17 @@ class SpriteParticle(
     xVelocity: Float = 0f,
     yVelocity: Float = 0f,
     mass: Float = 1f
-) : Particle(x, y, xScale, yScale, xPivot, yPivot, rot, xVelocity, yVelocity, mass), SpriteRenderable {
+) : Particle(xVelocity, yVelocity, mass), SpriteRenderable {
+
+    init {
+        super.transformData.position.x = x
+        super.transformData.position.y = y
+        super.transformData.scale.dx = xScale
+        super.transformData.scale.dy = yScale
+        super.transformData.pivot.x = xPivot
+        super.transformData.pivot.y = yPivot
+        super.transformData.rotation = rot
+    }
 
     override val spriteId: Int = spriteRef
     override val tintColor: RGBColor = tint

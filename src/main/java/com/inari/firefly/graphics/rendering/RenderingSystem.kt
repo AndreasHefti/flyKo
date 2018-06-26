@@ -78,11 +78,11 @@ object RenderingSystem : FFSystem {
 
     fun setRenderingChain(vararg renderingChain: SingletonComponent<out Renderer, Renderer>) {
         renderer.clear()
-        this.renderingChain = Array(renderingChain.size, {
+        this.renderingChain = Array(renderingChain.size) {
             val r: Renderer = renderingChain[it].instance
             renderer.receiver()(r)
             r
-        })
+        }
     }
 
     override fun clearSystem() {}

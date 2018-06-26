@@ -43,9 +43,9 @@ class SimpleCamaraController private constructor() : Controller() {
     fun adjust() {
         val view = this.view ?: return
 
-        if (getPos(view.zoom, view.bounds, view.worldPosition)) {
-            view.worldPosition.x = Math.floor(view.worldPosition.x.toDouble() + pos.x).toFloat()
-            view.worldPosition.y = Math.floor(view.worldPosition.y.toDouble() + pos.y).toFloat()
+        if (getPos(view.data.zoom, view.data.bounds, view.data.worldPosition)) {
+            view.data.worldPosition.x = Math.floor(view.data.worldPosition.x.toDouble() + pos.x).toFloat()
+            view.data.worldPosition.y = Math.floor(view.data.worldPosition.y.toDouble() + pos.y).toFloat()
             ViewChangeEvent.send(view.componentId, ViewChangeEvent.Type.ORIENTATION)
         }
     }
@@ -53,9 +53,9 @@ class SimpleCamaraController private constructor() : Controller() {
     override fun update() {
         val view = this.view ?: return
 
-        if (getPos(view.zoom, view.bounds, view.worldPosition)) {
-            view.worldPosition.x += pos.x * velocity
-            view.worldPosition.y += pos.y * velocity
+        if (getPos(view.data.zoom, view.data.bounds, view.data.worldPosition)) {
+            view.data.worldPosition.x += pos.x * velocity
+            view.data.worldPosition.y += pos.y * velocity
             ViewChangeEvent.send(view.componentId, ViewChangeEvent.Type.ORIENTATION)
         }
     }

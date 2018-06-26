@@ -72,14 +72,13 @@ abstract class Renderer protected constructor(
 
     abstract fun render(viewIndex: Int, layerIndex: Int, clip: Rectangle)
 
-    override final fun indexedTypeKey() = Renderer.typeKey
+    final override fun indexedTypeKey() = Renderer.typeKey
     companion object : ComponentType<Renderer> {
         override val typeKey = SystemComponent.createTypeKey(Renderer::class.java)
     }
 
-
-
-    protected interface TransformDataCollector : TransformData {
+    protected interface TransformDataCollector {
+        val data : TransformData
         fun set(transform: TransformData)
         fun set(transform: TransformData, xOffset: Float, yOffset: Float)
         fun set(position: PositionF)
@@ -88,109 +87,83 @@ abstract class Renderer protected constructor(
     }
 
     protected class ExactTransformDataCollector internal constructor() : TransformDataCollector {
-
-        override var xOffset: Float = 0f
-        override var yOffset: Float = 0f
-        override var pivotX: Float = 0f
-        override var pivotY: Float = 0f
-        override var scaleX: Float = 1f
-        override var scaleY: Float = 1f
-        override var rotation: Float = 0f
+        override val data = TransformData()
 
         override fun set(transform: TransformData, xOffset: Float, yOffset: Float) {
             set(transform)
-            this.xOffset += xOffset
-            this.yOffset += yOffset
+            data.position.x += xOffset
+            data.position.y += yOffset
         }
 
         override fun set(position: PositionF) {
-            xOffset += position.x
-            yOffset += position.y
+            data.position.x = position.x
+            data.position.y = position.y
         }
 
         override fun set(transform: TransformData) {
-            xOffset = transform.xOffset
-            yOffset = transform.yOffset
-            pivotX = transform.pivotX
-            pivotY = transform.pivotY
-            scaleX = transform.scaleX
-            scaleY = transform.scaleY
-            rotation = transform.rotation
+            data.position.x = transform.position.x
+            data.position.y = transform.position.y
+            data.pivot.x = transform.pivot.x
+            data.pivot.y = transform.pivot.y
+            data.scale.dx = transform.scale.dx
+            data.scale.dy = transform.scale.dy
+            data.rotation = transform.rotation
         }
 
         override fun add(transform: TransformData) {
-            xOffset += transform.xOffset
-            yOffset += transform.yOffset
-            pivotX += transform.pivotX
-            pivotY += transform.pivotY
-            scaleX *= transform.scaleX
-            scaleY *= transform.scaleY
-            rotation += transform.rotation
+            data.position.x += transform.position.x
+            data.position.y += transform.position.y
+            data.pivot.x += transform.pivot.x
+            data.pivot.y += transform.pivot.y
+            data.scale.dx *= transform.scale.dx
+            data.scale.dy *= transform.scale.dy
+            data.rotation += transform.rotation
         }
 
         override fun addOffset(x: Float, y: Float) {
-            xOffset += x
-            yOffset += y
+            data.position.x += x
+            data.position.y += y
         }
-
-        override val hasRotation: Boolean
-            get() = rotation != 0f
-
-
-        override val hasScale: Boolean
-            get() = scaleX != 1f || scaleY != 1f
     }
 
     protected class DiscreteTransformDataCollector internal constructor() : TransformDataCollector {
 
-        override var xOffset: Float = 0f
-        override var yOffset: Float = 0f
-        override var pivotX: Float = 0f
-        override var pivotY: Float = 0f
-        override var scaleX: Float = 0f
-        override var scaleY: Float = 0f
-        override var rotation: Float = 0f
+        override val data = TransformData()
 
         override fun set(transform: TransformData, xOffset: Float, yOffset: Float) {
             set(transform)
-            this.xOffset = Math.floor((transform.xOffset + xOffset).toDouble()).toFloat()
-            this.yOffset = Math.floor((transform.yOffset + yOffset).toDouble()).toFloat()
+            data.position.x = Math.floor((transform.position.x + xOffset).toDouble()).toFloat()
+            data.position.y = Math.floor((transform.position.y + yOffset).toDouble()).toFloat()
         }
 
         override fun set(position: PositionF) {
-            this.xOffset = Math.floor((position.x + xOffset).toDouble()).toFloat()
-            this.yOffset = Math.floor((position.y + yOffset).toDouble()).toFloat()
+            data.position.x = Math.floor((position.x).toDouble()).toFloat()
+            data.position.y = Math.floor((position.y).toDouble()).toFloat()
         }
 
         override fun set(transform: TransformData) {
-            xOffset = Math.floor(transform.xOffset.toDouble()).toFloat()
-            yOffset = Math.floor(transform.yOffset.toDouble()).toFloat()
-            pivotX = Math.floor(transform.pivotX.toDouble()).toFloat()
-            pivotY = Math.floor(transform.pivotY.toDouble()).toFloat()
-            scaleX = transform.scaleX
-            scaleY = transform.scaleY
-            rotation = transform.rotation
+            data.position.x = Math.floor(transform.position.x.toDouble()).toFloat()
+            data.position.y = Math.floor(transform.position.y.toDouble()).toFloat()
+            data.pivot.x = Math.floor(transform.pivot.x.toDouble()).toFloat()
+            data.pivot.y = Math.floor(transform.pivot.y.toDouble()).toFloat()
+            data.scale.dx = transform.scale.dx
+            data.scale.dy = transform.scale.dy
+            data.rotation = transform.rotation
         }
 
         override fun add(transform: TransformData) {
-            xOffset += Math.floor(transform.xOffset.toDouble()).toFloat()
-            yOffset += Math.floor(transform.yOffset.toDouble()).toFloat()
-            pivotX += Math.floor(transform.pivotX.toDouble()).toFloat()
-            pivotY += Math.floor(transform.pivotY.toDouble()).toFloat()
-            scaleX *= transform.scaleX
-            scaleY *= transform.scaleY
-            rotation += transform.rotation
+            data.position.x += Math.floor(transform.position.x.toDouble()).toFloat()
+            data.position.y += Math.floor(transform.position.y.toDouble()).toFloat()
+            data.pivot.x += Math.floor(transform.pivot.x.toDouble()).toFloat()
+            data.pivot.y += Math.floor(transform.pivot.y.toDouble()).toFloat()
+            data.scale.dx *= transform.scale.dx
+            data.scale.dy *= transform.scale.dy
+            data.rotation += transform.rotation
         }
 
         override fun addOffset(x: Float, y: Float) {
-            xOffset += Math.floor(x.toDouble()).toFloat()
-            yOffset += Math.floor(y.toDouble()).toFloat()
+            data.position.x += Math.floor(x.toDouble()).toFloat()
+            data.position.y += Math.floor(y.toDouble()).toFloat()
         }
-
-        override val hasRotation: Boolean
-            get() = rotation != 0f
-
-        override val hasScale: Boolean
-            get() = scaleX != 1f || scaleY != 1f
     }
 }

@@ -216,7 +216,7 @@ object ContactSystem : ComponentSystem {
 
         c.update(
             constraint.bounds,
-            transform.position,
+            transform.data.position,
             movement.velocity
         )
 
@@ -250,7 +250,7 @@ object ContactSystem : ComponentSystem {
 
         val iterator = contactMapViewLayer[transform.viewRef, layerRef][c.worldBounds, entity]
         while (iterator.hasNext()) {
-            scanContact(c, EntitySystem[iterator.next()], transform.position.x, transform.position.y)
+            scanContact(c, EntitySystem[iterator.next()], transform.data.position.x, transform.data.position.y)
         }
     }
 

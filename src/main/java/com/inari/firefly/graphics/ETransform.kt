@@ -14,106 +14,79 @@ import com.inari.firefly.graphics.view.View
 import com.inari.firefly.graphics.view.ViewLayerAware
 import com.inari.firefly.setFrom
 
-class ETransform private constructor() : EntityComponent(), TransformData, ViewLayerAware {
+class ETransform private constructor() : EntityComponent(), ViewLayerAware {
 
     @JvmField internal var viewRef = 0
     @JvmField internal var layerRef = 0
-    @JvmField internal val position = PositionF(0.0f, 0.0f)
-    @JvmField internal val pivot = PositionF(0.0f, 0.0f)
-    @JvmField internal val scale = Vector2f(1.0f, 1.0f)
-    @JvmField internal var rot = 0.0f
+    @JvmField internal val data = TransformData()
 
-    val ff_View = ComponentRefResolver(View, { index-> viewRef = index })
-    val ff_Layer = ComponentRefResolver(Layer, { index-> layerRef = index })
+    val ff_View = ComponentRefResolver(View) { index-> viewRef = index }
+    val ff_Layer = ComponentRefResolver(Layer) { index-> layerRef = index }
     var ff_Position: PositionF
-        get() = position
-        set(value) = position.setFrom(value)
+        get() = data.position
+        set(value) = data.position.setFrom(value)
     var ff_Pivot: PositionF
-        get() = pivot
-        set(value) = pivot.setFrom(value)
+        get() = data.pivot
+        set(value) = data.pivot.setFrom(value)
     var ff_Scale: Vector2f
-        get() = scale
-        set(value) { scale.setFrom(value) }
+        get() = data.scale
+        set(value) { data.scale.setFrom(value) }
     var ff_Rotation: Float
-        get() = rot
-        set(value) { rot = value }
+        get() = data.rotation
+        set(value) { data.rotation = value }
 
-    override val xOffset: Float
-        get() = position.x
-    override val yOffset: Float
-        get() = position.y
-    override val scaleX: Float
-        get() = scale.dx
-    override val scaleY: Float
-        get() = scale.dy
-    override val pivotX: Float
-        get() = pivot.x
-    override val pivotY: Float
-        get() = pivot.y
-    override val rotation: Float
-        get() = rot
-    override val hasRotation: Boolean
-        get() = rot != 0.0f
-    override val hasScale: Boolean
-        get() = scale.dx != 1.0f || scale.dy != 1.0f
     override val viewIndex: Int
         get() = viewRef
     override val layerIndex: Int
         get() = layerRef
 
     fun move(dx: Float, dy: Float) {
-        position.x += dx
-        position.y += dy
+        data.position.x += dx
+        data.position.y += dy
     }
 
     override fun reset() {
         viewRef = 0
         layerRef = 0
-        position.x = 0.0f
-        position.y = 0.0f
-        pivot.x = 0.0f
-        pivot.y = 0.0f
-        scale.dx = 1.0f
-        scale.dy = 1.0f
-        rot = 0.0f
+        data.reset()
     }
 
     override fun toString(): String {
         return "ETransform(viewRef=$viewRef, " +
             "layerRef=$layerRef, " +
-            "position=$position, " +
-            "pivot=$pivot, " +
-            "scale=$scale, " +
-            "rot=$rot)"
+            "position=${data.position}, " +
+            "pivot=${data.pivot}, " +
+            "scale=${data.scale}, " +
+            "rot=${data.rotation})"
     }
 
     private val accessorPosX: FloatPropertyAccessor = object : FloatPropertyAccessor {
-        override fun set(value: Float) {position.x = value}
-        override fun get(): Float = position.x
+        override fun set(value: Float) {data.position.x = value}
+        override fun get(): Float = data.position.x
     }
     private val accessorPosY: FloatPropertyAccessor = object : FloatPropertyAccessor {
-        override fun set(value: Float) {position.y = value}
-        override fun get(): Float = position.y
+        override fun set(value: Float) {data.position.y = value}
+        override fun get(): Float = data.position.y
     }
     private val accessorPivotX: FloatPropertyAccessor = object : FloatPropertyAccessor {
-        override fun set(value: Float) {pivot.x = value}
-        override fun get(): Float = pivot.x
+        override fun set(value: Float) {data.pivot.x = value}
+        override fun get(): Float = data.pivot.x
     }
     private val accessorPivotY: FloatPropertyAccessor = object : FloatPropertyAccessor {
-        override fun set(value: Float) {pivot.y = value}
-        override fun get(): Float = pivot.y
+        override fun set(value: Float) {data.pivot.y = value}
+        override fun get(): Float = data.pivot.y
     }
     private val accessorScaleX: FloatPropertyAccessor = object : FloatPropertyAccessor {
-        override fun set(value: Float) {scale.dx = value}
-        override fun get(): Float = scale.dx
+        override fun set(value: Float) {data.scale.dx = value}
+        override fun get(): Float = data.scale.dx
     }
     private val accessorScaleY: FloatPropertyAccessor = object : FloatPropertyAccessor {
-        override fun set(value: Float) {scale.dy = value}
-        override fun get(): Float = scale.dy
+        override fun set(value: Float) {data.scale.dy = value}
+        override fun get(): Float = data.scale.dy
     }
     private val accessorRotation: FloatPropertyAccessor = object : FloatPropertyAccessor {
-        override fun set(value: Float) {rot = value}
-        override fun get(): Float = rot
+        override fun set(value: Float) {data.rotation = value}
+        override fun get(): Float = data.rotation
     }
 
     enum class Property(

@@ -28,9 +28,9 @@ class SpriteParticleRenderer private constructor() : Renderer() {
             var ii = 0
             while (ii < spriteParticle.capacity()) {
                 val particle = spriteParticle[ii++] ?: continue
-                transformCollector.set(transform)
-                transformCollector.add(particle)
-                graphics.renderSprite(particle, transformCollector)
+                transformCollector.set(transform.data)
+                transformCollector.add(particle.transformData)
+                graphics.renderSprite(particle, transformCollector.data)
             }
         }
     }

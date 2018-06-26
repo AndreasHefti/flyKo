@@ -12,7 +12,7 @@ class EParticle private constructor() : EntityComponent() {
     @JvmField internal var rendererRef = -1
     private val particle: DynArray<Particle> = DynArray.create(Particle::class.java)
 
-    var ff_Renderer = ComponentRefResolver(Renderer, { index-> rendererRef =index })
+    var ff_Renderer = ComponentRefResolver(Renderer) { index-> rendererRef =index }
     var ff_Particle = ArrayAccessor(particle)
 
     @Suppress("UNCHECKED_CAST")

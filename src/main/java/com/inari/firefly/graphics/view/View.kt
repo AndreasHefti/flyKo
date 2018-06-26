@@ -13,41 +13,37 @@ import com.inari.firefly.setFrom
 
 class View private constructor (
     @JvmField internal var baseView: Boolean = false
-) : SystemComponent(), ViewData {
+) : SystemComponent() {
 
     @JvmField internal var controllerRef = -1
-
-    override val index: Int get() = index()
-    override val isBase: Boolean get() = baseView
-    override val bounds = Rectangle()
-    override val worldPosition = PositionF()
-    override val clearColor = RGBColor( 0f, 0f, 0f, 1f )
-    override val tintColor = RGBColor( 1f, 1f, 1f, 1f )
-    override var blendMode = BlendMode.NONE
-    override var zoom = 1.0f
-    override var fboScaler = 4.0f
+    @JvmField internal val data = object : ViewData() {
+        override val index: Int
+            get() = index()
+        override val isBase: Boolean
+            get() = baseView
+    }
 
     var ff_Bounds: Rectangle
-        get() = bounds
-        set(value) { bounds.setFrom(value) }
+        get() = data.bounds
+        set(value) { data.bounds.setFrom(value) }
     var ff_WorldPosition: PositionF
-        get() = worldPosition
-        set(value) { worldPosition.setFrom(value) }
+        get() = data.worldPosition
+        set(value) { data.worldPosition.setFrom(value) }
     var ff_ClearColor: RGBColor
-        get() = clearColor
-        set(value) { clearColor.setFrom(value) }
+        get() = data.clearColor
+        set(value) { data.clearColor.setFrom(value) }
     var ff_TintColor: RGBColor
-        get() = tintColor
-        set(value) { tintColor.setFrom(value) }
+        get() = data.tintColor
+        set(value) { data.tintColor.setFrom(value) }
     var ff_BlendMode: BlendMode
-        get() = blendMode
-        set(value) { blendMode = value }
+        get() = data.blendMode
+        set(value) { data.blendMode = value }
     var ff_Zoom: Float
-        get() = zoom
-        set(value) { zoom = value }
+        get() = data.zoom
+        set(value) { data.zoom = value }
     var ff_FboScaler: Float
-        get() = fboScaler
-        set(value) { fboScaler = value }
+        get() = data.fboScaler
+        set(value) { data.fboScaler = value }
     var ff_Controller =
         ComponentRefResolver(Controller, { index-> controllerRef = setIfNotInitialized(index, "ff_ControllerId") })
 
@@ -55,13 +51,13 @@ class View private constructor (
     override fun toString(): String {
         return "View(baseView=$baseView, " +
             "controllerRef=$controllerRef, " +
-            "bounds=$bounds, " +
-            "worldPosition=$worldPosition, " +
-            "clearColor=$clearColor, " +
-            "tintColor=$tintColor, " +
-            "blendMode=$blendMode, " +
-            "zoom=$zoom, " +
-            "fboScaler=$fboScaler)"
+            "bounds=${data.bounds}, " +
+            "worldPosition=${data.worldPosition}, " +
+            "clearColor=${data.clearColor}, " +
+            "tintColor=${data.tintColor}, " +
+            "blendMode=${data.blendMode}, " +
+            "zoom=${data.zoom}, " +
+            "fboScaler=${data.fboScaler})"
     }
 
     companion object : SingleType<View>() {
