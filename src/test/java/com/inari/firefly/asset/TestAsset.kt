@@ -24,7 +24,7 @@ class TestAsset private constructor(
     }
 
     override fun toString(): String {
-        return "TestAsset(name='${name()}', " +
+        return "TestAsset(name='${name}', " +
             "ff_Param1='$ff_Param1', " +
             "ff_Param2=$ff_Param2, " +
             "instanceId=$instanceId)" +
