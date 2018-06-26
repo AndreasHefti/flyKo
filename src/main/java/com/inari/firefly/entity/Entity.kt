@@ -13,19 +13,21 @@ import com.inari.firefly.system.component.SystemComponent
 
 class Entity internal constructor(): SystemComponent() {
 
+
     @JvmField internal val components: IndexedTypeSet =
         IndexedTypeSet(EntityComponent.Companion.TypeKey::class.java)
 
     val aspects: IAspects
         get() = components.aspect
 
-    override fun name(): String {
-        if (components.contains(EMeta.typeKey.index())) {
-            return components.get<EMeta>(EMeta.typeKey.index()).name()
-        }
+    override var name: String = NO_NAME
+        get() {
+            if (components.contains(EMeta.typeKey.index())) {
+                return components.get<EMeta>(EMeta.typeKey.index()).name
+            }
 
-        return NO_NAME
-    }
+            return NO_NAME
+        }
 
     fun has(aspect: Aspect): Boolean =
         aspects.contains(aspect)

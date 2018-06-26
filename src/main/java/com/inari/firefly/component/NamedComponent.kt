@@ -1,5 +1,5 @@
 package com.inari.firefly.component
 
-interface NamedComponent : Component {
-    fun name(): String
-}
+import com.inari.firefly.Named
+
+interface NamedComponent : Component, Named

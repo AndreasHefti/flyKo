@@ -91,7 +91,7 @@ interface ComponentSystem : FFSystem {
                 // first remove from map
                 val c: C = _map.remove(index)
                 if (nameMapping) {
-                    nameMap?.remove(c.name())
+                    nameMap?.remove(c.name)
                 }
 
                 // if still active, deactivate
@@ -117,7 +117,7 @@ interface ComponentSystem : FFSystem {
             }
 
             val id: Int = (0 until _map.capacity()).firstOrNull {
-                _map[it] != null && _map[it].name() == name
+                _map[it] != null && _map[it].name == name
             } ?: -1
 
             return when(id) {
@@ -139,7 +139,7 @@ interface ComponentSystem : FFSystem {
                 return nameMap?.get(name)?.index() ?: -1
 
             return (0 until _map.capacity()).firstOrNull {
-                _map[it] != null && _map[it].name() == name
+                _map[it] != null && _map[it].name == name
             } ?: -1
         }
 
@@ -204,8 +204,8 @@ interface ComponentSystem : FFSystem {
         private fun <CC : C> add(c: CC, alsoActivate: Boolean = false): CC {
             _map.set(c.index(), c)
             listener(c, ComponentMap.MapAction.CREATED)
-            if (nameMapping && c.name() !== NO_NAME) {
-                nameMap?.put(c.name(), c)
+            if (nameMapping && c.name !== NO_NAME) {
+                nameMap?.put(c.name, c)
             }
             if (alsoActivate) {
                 activate(c.index())

@@ -8,7 +8,7 @@ import com.inari.firefly.system.component.SingletonComponent
 
 class ComponentRefResolver<T : Component>(
     private val type: ComponentType<T>,
-    private val receiver: Expr<Int>
+    private val receiver: (Int) -> Unit
 ) {
 
     operator fun invoke(id: CompId) = receiver(id.index)

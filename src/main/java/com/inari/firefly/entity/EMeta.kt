@@ -10,12 +10,19 @@ import com.inari.firefly.control.Controller
 class EMeta private constructor() : EntityComponent(), NamedComponent {
 
     @JvmField internal var controllerRef = -1
-    @JvmField internal var name: String = NO_NAME
+    override var name: String = NO_NAME
+        private set
     @JvmField internal val aspects = ENTITY_META_ASPECTS.createAspects()
 
+
     var ff_Name: String
+        set(ff_Name) {
+            if (name !== com.inari.firefly.NO_NAME) {
+                throw IllegalStateException("Illegal reassignment of name: $ff_Name to: $ff_Name" )
+            }
+            name = ff_Name
+        }
         get() = name
-        set(value) { name = setIfNotInitialized(value, "ff_Name") }
     val ff_Controller = ComponentRefResolver(Controller, { index-> controllerRef = index })
     var ff_Aspects: Aspects
         get() = aspects
@@ -26,7 +33,6 @@ class EMeta private constructor() : EntityComponent(), NamedComponent {
 
 
     override fun indexedTypeKey() = typeKey
-    override fun name(): String = name
     override fun reset() {
         name = NO_NAME
         controllerRef = -1

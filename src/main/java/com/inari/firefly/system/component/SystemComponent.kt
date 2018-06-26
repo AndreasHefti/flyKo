@@ -5,27 +5,22 @@ import com.inari.commons.lang.indexed.*
 import com.inari.firefly.component.CompId
 import com.inari.firefly.component.NamedComponent
 import com.inari.firefly.NO_NAME
-import com.inari.firefly.Named
 
 abstract class SystemComponent protected constructor() : BaseIndexedObject(), IndexedType, NamedComponent {
 
-    private var nameInUse = false
-    var ff_Name: String = NO_NAME
-        set(ff_Name) {
-            if (nameInUse) {
+    override var name: String = NO_NAME
+        protected set
+    var ff_Name: String
+        set(value) {
+            if (name !== NO_NAME) {
                 throw IllegalStateException("Illegal reassignment of name: $ff_Name to: $ff_Name" )
             }
-            field = ff_Name
+            name = value
         }
+        get() = name
 
     final override val componentId: CompId = CompId(index, indexedTypeKey())
     final override fun indexedObjectType(): Class<out IndexedObject> = indexedTypeKey().type<IndexedObject>()
-    override fun name(): String {
-        if (ff_Name !== NO_NAME) {
-            nameInUse = true
-        }
-        return ff_Name
-    }
 
     var initialized:Boolean = false
         internal set

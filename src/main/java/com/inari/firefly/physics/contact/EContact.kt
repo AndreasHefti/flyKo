@@ -36,13 +36,13 @@ class EContact private constructor() : EntityComponent() {
         get() = contactType
         set(value) {contactType = value}
     val ff_addConstraint =
-        ComponentRefResolver(ContactConstraint, { id ->
+        ComponentRefResolver(ContactConstraint) { id ->
             if (id !in contactScan.contacts) contactScan.contacts.set(id, Contacts(id))
-        })
+        }
     val ff_removeConstraint =
-        ComponentRefResolver(ContactConstraint, { id ->
+        ComponentRefResolver(ContactConstraint) { id: Int ->
             contactScan.contacts.remove(id)
-        })
+        }
     fun ff_clearConstraints() =
         contactScan.clear()
 

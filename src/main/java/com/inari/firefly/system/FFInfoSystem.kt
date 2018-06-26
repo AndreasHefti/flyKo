@@ -23,7 +23,7 @@ object FFInfoSystem : FFSystem {
     private var hStep = 0
     private var vStep = 0
 
-    private lateinit var font: FontAsset
+    private var font: FontAsset
     private val graphics = FFContext.graphics
 
     private val renderListener = object : FFApp.PostRenderEvent.Listener{

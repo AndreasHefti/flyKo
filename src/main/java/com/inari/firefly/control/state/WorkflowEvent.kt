@@ -33,7 +33,7 @@ object WorkflowEvent : FFEvent<WorkflowEvent.Listener>(createTypeKey(WorkflowEve
     ) {
         this.type = type
         this.workflow = workflowId
-        workflowName = StateSystem.workflows[workflowId].name()
+        workflowName = StateSystem.workflows[workflowId].name
         this.stateChangeName = stateChangeName
         this.fromName = fromName
         this.toName = toName
@@ -47,7 +47,7 @@ object WorkflowEvent : FFEvent<WorkflowEvent.Listener>(createTypeKey(WorkflowEve
     ) {
         this.type = type
         this.workflow = workflowId
-        workflowName = StateSystem.workflows[workflowId].name()
+        workflowName = StateSystem.workflows[workflowId].name
         this.stateChangeName = stateChange.name
         this.fromName = stateChange.from
         this.toName = stateChange.to

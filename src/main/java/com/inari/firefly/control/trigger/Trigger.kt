@@ -30,7 +30,7 @@ abstract class Trigger protected constructor() : SystemComponent() {
         }
     }
 
-    override final fun indexedTypeKey() = typeKey
+    final override fun indexedTypeKey() = typeKey
     companion object : ComponentType<Trigger> {
         override val typeKey = SystemComponent.createTypeKey(Trigger::class.java)
     }

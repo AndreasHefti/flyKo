@@ -21,7 +21,6 @@ abstract class SingletonComponent<CC : C, C : SystemComponent> : ComponentType<C
             if (!FFContext.mapper(this).contains(subType().simpleName)) {
                 val comp = create()
                 comp.ff_Name = subType().simpleName
-                comp.name()
                 FFContext.mapper(this).receiver()(comp)
             }
 

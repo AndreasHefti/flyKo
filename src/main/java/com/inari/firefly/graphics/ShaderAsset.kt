@@ -15,7 +15,7 @@ class ShaderAsset private constructor(
     @JvmField internal var shaderId: Int = -1
     override fun instanceId(index: Int): Int = shaderId
 
-    override val name: String
+    override var name: String = NO_NAME
         get() = name()
     override var vertexShaderResourceName: String = NO_NAME
         private set
