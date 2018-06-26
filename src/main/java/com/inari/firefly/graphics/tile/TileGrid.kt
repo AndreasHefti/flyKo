@@ -3,8 +3,8 @@ package com.inari.firefly.graphics.tile
 import com.inari.commons.GeomUtils
 import com.inari.commons.geom.Direction
 import com.inari.commons.geom.Orientation.*
-import com.inari.commons.geom.Position
-import com.inari.commons.geom.PositionF
+import com.inari.util.geom.Position
+import com.inari.util.geom.PositionF
 import com.inari.commons.geom.Rectangle
 import com.inari.commons.lang.IntIterator
 import com.inari.firefly.component.ComponentRefResolver

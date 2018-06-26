@@ -1,32 +1,30 @@
 package com.inari.firefly.external
 
 import com.inari.commons.graphics.RGBColor
-import com.inari.commons.lang.list.DynArrayRO
 import com.inari.firefly.graphics.BlendMode
 
-interface ShapeData {
-
-    enum class ShapeType {
-        POINT,
-        LINE,
-        POLI_LINE,
-        POLIGON,
-        RECTANGLE,
-        CIRCLE,
-        CONE,
-        ARC,
-        CURVE,
-        TRIANGLE
+class ShapeData constructor(
+    @JvmField var type: ShapeType = ShapeType.POINT,
+    @JvmField var vertices: FloatArray = floatArrayOf(),
+    @JvmField var segments: Int = -1,
+    @JvmField var color1: RGBColor = RGBColor(1f, 1f, 1f, 1f),
+    @JvmField var color2: RGBColor? = null,
+    @JvmField var color3: RGBColor? = null,
+    @JvmField var color4: RGBColor? = null,
+    @JvmField var blend: BlendMode = BlendMode.NONE,
+    @JvmField var fill: Boolean = false,
+    @JvmField var shaderRef: Int = -1
+) {
+    fun reset() {
+        type = ShapeType.POINT
+        vertices = floatArrayOf()
+        segments = -1
+        color1 = RGBColor(1f, 1f, 1f, 1f)
+        color2 = null
+        color3 = null
+        color4 = null
+        blend = BlendMode.NONE
+        fill = false
+        shaderRef = -1
     }
-
-    val type: ShapeType
-    val vertices: FloatArray
-    val segments: Int
-    val color1: RGBColor
-    val color2: RGBColor
-    val color3: RGBColor
-    val color4: RGBColor
-    val blend: BlendMode
-    val fill: Boolean
-    val shaderRef: Int
 }

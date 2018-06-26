@@ -1,6 +1,6 @@
 package com.inari.firefly.misc
 
-import com.inari.commons.geom.Position
+import com.inari.util.geom.Position
 import com.inari.commons.lang.indexed.IIndexedTypeKey
 import com.inari.commons.lang.list.IntBag
 import com.inari.firefly.system.component.SingleType

@@ -2,46 +2,40 @@ package com.inari.firefly.graphics
 
 import com.inari.commons.lang.indexed.IndexedTypeKey
 import com.inari.firefly.FFContext
-import com.inari.firefly.NO_NAME
-import com.inari.firefly.NO_PROGRAM
 import com.inari.firefly.asset.Asset
 import com.inari.firefly.external.ShaderData
 import com.inari.firefly.system.component.SubType
 
-class ShaderAsset private constructor(
-
-) : Asset(), ShaderData {
+class ShaderAsset private constructor() : Asset() {
 
     @JvmField internal var shaderId: Int = -1
     override fun instanceId(index: Int): Int = shaderId
 
-    override var name: String = NO_NAME
-        get() = name()
-    override var vertexShaderResourceName: String = NO_NAME
-        private set
-    override var vertexShaderProgram: String = NO_PROGRAM
-        private set
-    override var fragmentShaderResourceName: String = NO_NAME
-        private set
-    override var fragmentShaderProgram: String = NO_PROGRAM
-        private set
+    private val data = ShaderData()
+
+    override var name
+        get() = data.name
+        set(value) {
+            super.name = value
+            data.name = value
+        }
 
     var ff_VertexShaderName: String
-        get() = vertexShaderResourceName
-        set(value) {vertexShaderResourceName = setIfNotInitialized(value, "ff_VertexShaderName")}
+        get() = data.vertexShaderResourceName
+        set(value) {data.vertexShaderResourceName = setIfNotInitialized(value, "ff_VertexShaderName")}
     var ff_VertexShaderProgr: String
-        get() = vertexShaderProgram
-        set(value) {vertexShaderProgram = setIfNotInitialized(value, "ff_VertexShaderProgr")}
+        get() = data.vertexShaderProgram
+        set(value) {data.vertexShaderProgram = setIfNotInitialized(value, "ff_VertexShaderProgr")}
     var ff_FragmentShaderName: String
-        get() = fragmentShaderResourceName
-        set(value) {fragmentShaderResourceName = setIfNotInitialized(value, "ff_FragmentShaderName")}
+        get() = data.fragmentShaderResourceName
+        set(value) {data.fragmentShaderResourceName = setIfNotInitialized(value, "ff_FragmentShaderName")}
     var ff_FragmentShaderProgr: String
-        get() = fragmentShaderProgram
-        set(value) {fragmentShaderProgram = setIfNotInitialized(value, "ff_FragmentShaderProgr")}
+        get() = data.fragmentShaderProgram
+        set(value) {data.fragmentShaderProgram = setIfNotInitialized(value, "ff_FragmentShaderProgr")}
 
     override fun load() {
         if (shaderId < 0)
-            FFContext.graphics.createShader(this)
+            FFContext.graphics.createShader(data)
     }
 
     override fun unload() {

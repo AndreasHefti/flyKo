@@ -1,6 +1,6 @@
 package com.inari.firefly.graphics.tile
 
-import com.inari.commons.geom.Position
+import com.inari.util.geom.Position
 import com.inari.commons.graphics.RGBColor
 import com.inari.commons.lang.list.DynArray
 import com.inari.firefly.asset.AssetInstanceRefResolver

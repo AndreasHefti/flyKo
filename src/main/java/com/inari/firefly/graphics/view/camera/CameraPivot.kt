@@ -1,6 +1,6 @@
 package com.inari.firefly.graphics.view.camera
 
-import com.inari.commons.geom.PositionF
+import com.inari.util.geom.PositionF
 
 interface CameraPivot {
     fun init()

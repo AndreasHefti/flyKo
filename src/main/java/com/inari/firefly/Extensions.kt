@@ -1,7 +1,7 @@
 package com.inari.firefly
 
-import com.inari.commons.geom.Position
-import com.inari.commons.geom.PositionF
+import com.inari.util.geom.Position
+import com.inari.util.geom.PositionF
 import com.inari.commons.geom.Rectangle
 import com.inari.commons.geom.Vector2f
 import com.inari.commons.graphics.RGBColor

@@ -6,6 +6,8 @@ import com.inari.commons.lang.aspect.Aspects
 import com.inari.commons.lang.list.DynArray
 import com.inari.commons.lang.list.DynArrayRO
 import com.inari.firefly.physics.contact.Contact.Companion.NO_CONTACT
+import com.inari.util.geom.Position
+import com.inari.util.geom.PositionF
 
 
 class Contacts internal constructor(

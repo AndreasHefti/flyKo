@@ -1,6 +1,6 @@
 package com.inari.firefly.misc
 
-import com.inari.commons.geom.PositionF
+import com.inari.util.geom.PositionF
 import com.inari.firefly.Condition
 import com.inari.firefly.IntExpr
 import com.inari.firefly.NO_COMP_ID

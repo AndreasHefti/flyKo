@@ -1,6 +1,6 @@
 package com.inari.firefly.graphics.view.camera
 
-import com.inari.commons.geom.PositionF
+import com.inari.util.geom.PositionF
 import com.inari.commons.geom.Rectangle
 import com.inari.commons.lang.indexed.IndexedTypeKey
 import com.inari.firefly.NO_CAMERA_PIVOT

@@ -48,7 +48,7 @@ class StateChangeTrigger private constructor(): Trigger() {
     var ff_Type : Type
         get() = triggerType
         set(value) {triggerType = value}
-    val ff_Workflow = ComponentRefResolver(Workflow, { index-> workflowRef = index })
+    val ff_Workflow = ComponentRefResolver(Workflow) { index -> workflowRef = index }
     var ff_TypeName : String
         get() = typeName
         set(value) {typeName = value}

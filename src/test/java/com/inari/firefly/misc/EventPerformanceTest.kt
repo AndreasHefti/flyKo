@@ -1,6 +1,6 @@
 package com.inari.firefly.misc
 
-import com.inari.commons.geom.Position
+import com.inari.util.geom.Position
 import com.inari.firefly.FFContext
 import com.inari.firefly.TestApp
 import com.inari.firefly.measureTime

@@ -1,6 +1,6 @@
 package com.inari.firefly.external
 
-import com.inari.commons.geom.PositionF
+import com.inari.util.geom.PositionF
 import com.inari.commons.geom.Rectangle
 import com.inari.commons.graphics.RGBColor
 import com.inari.firefly.graphics.BlendMode

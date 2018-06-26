@@ -20,7 +20,7 @@ class SimpleShapeRenderer private constructor() : Renderer() {
         while (i < toRender.capacity()) {
             val entity = toRender.get(i++) ?: continue
             graphics.renderShape(
-                entity[EShape],
+                entity[EShape].data,
                 entity[ETransform]
             )
         }

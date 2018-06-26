@@ -8,114 +8,77 @@ import com.inari.firefly.entity.EntityComponent
 import com.inari.firefly.entity.property.FloatPropertyAccessor
 import com.inari.firefly.entity.property.VirtualPropertyRef
 import com.inari.firefly.external.ShapeData
-import com.inari.firefly.external.ShapeData.ShapeType
+import com.inari.firefly.external.ShapeType
 import com.inari.firefly.graphics.BlendMode
 import com.inari.firefly.setFrom
 import java.util.*
 
-class EShape private constructor(): EntityComponent(), ShapeData {
+class EShape private constructor(): EntityComponent() {
 
-    private val color = RGBColor(1f, 1f, 1f, 1f)
-    private var gradientColor1: RGBColor? = null
-    private var gradientColor2: RGBColor? = null
-    private var gradientColor3: RGBColor? = null
-    private var gradientColor4: RGBColor? = null
-
-    override var type = ShapeType.POINT
-        private set
-    override var vertices = floatArrayOf()
-        private set
-    override val color1: RGBColor
-        get() { return gradientColor1 ?: color }
-    override val color2: RGBColor
-        get() { return gradientColor2 ?: color }
-    override val color3: RGBColor
-        get() { return gradientColor3 ?: color }
-    override val color4: RGBColor
-        get() { return gradientColor4 ?: color }
-    override var segments = 0
-        private set
-    override var fill = false
-        private set
-    override var blend = BlendMode.NONE
-        private set
-    override var shaderRef = -1
-        private set
+    @JvmField val data = ShapeData()
 
     var ff_Type: ShapeType
-        get() = type
-        set(value) { type = value }
+        get() = data.type
+        set(value) { data.type = value }
     var ff_Vertices: FloatArray
-        get() = vertices
-        set(value) { vertices = value }
+        get() = data.vertices
+        set(value) { data.vertices = value }
     var ff_Color: RGBColor
-        get() = color
-        set(value) = color.setFrom(value)
+        get() = data.color1
+        set(value) = data.color1.setFrom(value)
     var ff_GradientColor1: RGBColor
-        get() = gradientColor1!!
-        set(value) {gradientColor1 = value}
+        get() = data.color2!!
+        set(value) {data.color2 = value}
     var ff_GradientColor2: RGBColor
-        get() = gradientColor2!!
-        set(value) {gradientColor2 = value}
+        get() = data.color3!!
+        set(value) {data.color3 = value}
     var ff_GradientColor3: RGBColor
-        get() = gradientColor3!!
-        set(value) {gradientColor3 = value}
-    var ff_GradientColor4: RGBColor
-        get() = gradientColor4!!
-        set(value) {gradientColor4 = value}
+        get() = data.color4!!
+        set(value) {data.color4 = value}
     var ff_Segments: Int
-        get() = segments
-        set(value) { segments = value }
+        get() = data.segments
+        set(value) { data.segments = value }
     var ff_Fill: Boolean
-        get() = fill
-        set(value) { fill = value }
+        get() = data.fill
+        set(value) { data.fill = value }
     var ff_Blend: BlendMode
-        get() = blend
-        set(value) { blend = value }
-    val ff_Shader = AssetInstanceRefResolver({ index -> shaderRef = index })
+        get() = data.blend
+        set(value) { data.blend = value }
+    val ff_Shader = AssetInstanceRefResolver({ index -> data.shaderRef = index })
 
     override fun reset() {
-        type = ShapeType.POINT
-        vertices = floatArrayOf()
-        color1.r = 1f; color1.g = 1f; color1.b = 1f; color1.a = 1f
-        color2.r = 1f; color2.g = 1f; color2.b = 1f; color2.a = 1f
-        color3.r = 1f; color3.g = 1f; color3.b = 1f; color3.a = 1f
-        color4.r = 1f; color4.g = 1f; color4.b = 1f; color4.a = 1f
-        segments = 0
-        fill = false
-        blend = BlendMode.NONE
-        shaderRef = -1
+        data.reset()
     }
 
     override fun toString(): String {
-        return "EShape(type=$type, " +
-            "vertices=${Arrays.toString(vertices)}, " +
-            "color1=$color1, " +
-            "color2=$color2, " +
-            "color3=$color3, " +
-            "color4=$color4, " +
-            "segments=$segments, " +
-            "fill=$fill, " +
-            "blend=$blend, " +
-            "shaderRef=$shaderRef, " +
+        return "EShape(type=$data.type, " +
+            "vertices=${Arrays.toString(data.vertices)}, " +
+            "color1=$data.color1, " +
+            "color2=$data.color2, " +
+            "color3=$data.color3, " +
+            "color4=$data.color4, " +
+            "segments=$data.segments, " +
+            "fill=$data.fill, " +
+            "blend=$data.blend, " +
+            "shaderRef=$data.shaderRef, " +
             "ff_Shader=$ff_Shader)"
     }
 
     private val accessorColorRed: FloatPropertyAccessor = object : FloatPropertyAccessor {
-        override fun set(value: Float) {color1.r = value}
-        override fun get(): Float = color1.r
+        override fun set(value: Float) {data.color1.r = value}
+        override fun get(): Float = data.color1.r
     }
     private val accessorColorGreen: FloatPropertyAccessor = object : FloatPropertyAccessor {
-        override fun set(value: Float) {color1.g = value}
-        override fun get(): Float = color1.g
+        override fun set(value: Float) {data.color1.g = value}
+        override fun get(): Float = data.color1.g
     }
     private val accessorColorBlue: FloatPropertyAccessor = object : FloatPropertyAccessor {
-        override fun set(value: Float) {color1.b = value}
-        override fun get(): Float = color1.b
+        override fun set(value: Float) {data.color1.b = value}
+        override fun get(): Float = data.color1.b
     }
     private val accessorColorAlpha: FloatPropertyAccessor = object : FloatPropertyAccessor {
-        override fun set(value: Float) {color1.a = value}
-        override fun get(): Float = color1.a
+        override fun set(value: Float) {data.color1.a = value}
+        override fun get(): Float = data.color1.a
     }
 
     enum class Property(

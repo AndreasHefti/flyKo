@@ -36,10 +36,10 @@ class Entity internal constructor(): SystemComponent() {
             components.get(type.typeKey.index())
 
     fun <C : EntityComponent> with(cBuilder: EntityComponentBuilder<C>, configure: (C.() -> Unit)): CompId =
-            cBuilder.builder( { comp ->
+            cBuilder.builder{ comp ->
                 components.set(comp)
                 comp
-            } )(configure)
+            } (configure)
 
     internal fun reset() {
         if (EntitySystem.entities.isActive(index)) {
@@ -67,7 +67,7 @@ class Entity internal constructor(): SystemComponent() {
     override fun indexedTypeKey() = typeKey
     companion object : SingleType<Entity>() {
         override val typeKey = SystemComponent.createTypeKey(Entity::class.java)
-        override public fun createEmpty() = EntityProvider.get()
+        public override fun createEmpty() = EntityProvider.get()
     }
 
     abstract class EntityComponentBuilder<C : EntityComponent> : ComponentType<C> {

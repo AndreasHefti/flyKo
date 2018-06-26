@@ -23,10 +23,10 @@ object ControllerSystem : ComponentSystem {
             FFApp.UpdateEvent,
             object : FFApp.UpdateEvent.Listener {
                 override fun invoke() {
-                    controller.forEachActive({ c ->
+                    controller.forEachActive{ c ->
                         if (c.needsUpdate)
                             c.update()
-                    })
+                    }
                 }
             }
         )

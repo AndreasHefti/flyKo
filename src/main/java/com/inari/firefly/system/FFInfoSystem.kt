@@ -7,6 +7,7 @@ import com.inari.firefly.FFContext
 import com.inari.firefly.SYSTEM_FONT
 import com.inari.firefly.asset.AssetSystem
 import com.inari.firefly.external.ShapeData
+import com.inari.firefly.external.ShapeType
 import com.inari.firefly.external.SpriteRenderable
 import com.inari.firefly.graphics.BlendMode
 import com.inari.firefly.graphics.text.FontAsset
@@ -81,7 +82,7 @@ object FFInfoSystem : FFSystem {
 
         infoDisplayBackground.rectVertices[2] = (width * hStep + hStep).toFloat()
         infoDisplayBackground.rectVertices[3] = (infos.size() * vStep + vStep).toFloat()
-        graphics.renderShape(infoDisplayBackground)
+        graphics.renderShape(infoDisplayBackground.data)
 
         var xpos = 5f
         var ypos = 5f
@@ -123,8 +124,8 @@ object FFInfoSystem : FFSystem {
 
     private val textRenderable = object : SpriteRenderable {
 
-        @JvmField internal var sprId = -1
-        @JvmField internal val tint = RGBColor(1f, 1f, 1f, 1f)
+        @JvmField var sprId = -1
+        @JvmField val tint = RGBColor(1f, 1f, 1f, 1f)
 
         override val spriteId: Int get() = sprId
         override val tintColor: RGBColor = tint
@@ -132,21 +133,20 @@ object FFInfoSystem : FFSystem {
         override val shaderId: Int = -1
     }
 
-    private val infoDisplayBackground = object : ShapeData {
+    private val infoDisplayBackground = object {
 
-        @JvmField internal val color = RGBColor(0.8f, 0.8f, 0.8f, 0.5f)
-        @JvmField internal val rectVertices: FloatArray = floatArrayOf(0f, 0f, 0f, 0f)
-
-        override val type: ShapeData.ShapeType = ShapeData.ShapeType.RECTANGLE
-        override val vertices: FloatArray = rectVertices
-        override val segments: Int = 0
-        override val color1: RGBColor = color
-        override val color2: RGBColor = color
-        override val color3: RGBColor = color
-        override val color4: RGBColor = color
-        override val blend: BlendMode = BlendMode.NORMAL_ALPHA
-        override val fill: Boolean = true
-        override val shaderRef: Int = -1
+        @JvmField val color = RGBColor(0.8f, 0.8f, 0.8f, 0.5f)
+        @JvmField val rectVertices: FloatArray = floatArrayOf(0f, 0f, 0f, 0f)
+        @JvmField val data = ShapeData(
+            type = ShapeType.RECTANGLE,
+            vertices = rectVertices,
+            color1 = color,
+            color2 = color,
+            color3 = color,
+            color4 = color,
+            blend = BlendMode.NORMAL_ALPHA,
+            fill = true
+        )
     }
 
 }

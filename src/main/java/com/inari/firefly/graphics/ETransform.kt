@@ -1,6 +1,6 @@
 package com.inari.firefly.graphics
 
-import com.inari.commons.geom.PositionF
+import com.inari.util.geom.PositionF
 import com.inari.commons.geom.Vector2f
 import com.inari.commons.lang.indexed.IIndexedTypeKey
 import com.inari.firefly.component.ComponentRefResolver

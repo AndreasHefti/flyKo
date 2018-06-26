@@ -1,6 +1,6 @@
 package com.inari.firefly
 
-import com.inari.commons.geom.PositionF
+import com.inari.util.geom.PositionF
 import com.inari.commons.lang.aspect.AspectGroup
 import com.inari.commons.lang.indexed.IIndexedTypeKey
 import com.inari.commons.lang.indexed.Indexed
@@ -10,24 +10,24 @@ import com.inari.firefly.entity.property.VirtualPropertyRef
 import com.inari.firefly.external.FFTimer
 import com.inari.firefly.graphics.view.camera.CameraPivot
 
-@JvmField val SYSTEM_FONT = "SYSTEM_FONT"
+const val SYSTEM_FONT = "SYSTEM_FONT"
 
 object GLBlendMode {
-    val GL_ZERO = 0x0
-    val GL_ONE = 0x1
-    val GL_SRC_COLOR = 0x300
-    val GL_ONE_MINUS_SRC_COLOR = 0x301
-    val GL_SRC_ALPHA = 0x302
-    val GL_ONE_MINUS_SRC_ALPHA = 0x303
-    val GL_DST_ALPHA = 0x304
-    val GL_ONE_MINUS_DST_ALPHA = 0x305
-    val GL_DST_COLOR = 0x306
-    val GL_ONE_MINUS_DST_COLOR = 0x307
-    val GL_SRC_ALPHA_SATURATE = 0x308
-    val GL_CONSTANT_COLOR = 0x8001
-    val GL_ONE_MINUS_CONSTANT_COLOR = 0x8002
-    val GL_CONSTANT_ALPHA = 0x8003
-    val GL_ONE_MINUS_CONSTANT_ALPHA = 0x8004
+    const val GL_ZERO = 0x0
+    const val GL_ONE = 0x1
+    const val GL_SRC_COLOR = 0x300
+    const val GL_ONE_MINUS_SRC_COLOR = 0x301
+    const val GL_SRC_ALPHA = 0x302
+    const val GL_ONE_MINUS_SRC_ALPHA = 0x303
+    const val GL_DST_ALPHA = 0x304
+    const val GL_ONE_MINUS_DST_ALPHA = 0x305
+    const val GL_DST_COLOR = 0x306
+    const val GL_ONE_MINUS_DST_COLOR = 0x307
+    const val GL_SRC_ALPHA_SATURATE = 0x308
+    const val GL_CONSTANT_COLOR = 0x8001
+    const val GL_ONE_MINUS_CONSTANT_COLOR = 0x8002
+    const val GL_CONSTANT_ALPHA = 0x8003
+    const val GL_ONE_MINUS_CONSTANT_ALPHA = 0x8004
 }
 
 
