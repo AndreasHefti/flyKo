@@ -1,8 +1,9 @@
 package com.inari.firefly.component
 
-import com.inari.commons.lang.indexed.IIndexedTypeKey
+import com.inari.util.indexed.IIndexedTypeKey
+
 
 abstract class ComponentBuilder<out C : Component> {
-    abstract val typeKey: IIndexedTypeKey
+    abstract val indexedTypeKey: IIndexedTypeKey
     protected abstract fun createEmpty(): C
 }

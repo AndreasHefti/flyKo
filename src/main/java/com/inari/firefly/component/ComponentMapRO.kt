@@ -1,7 +1,5 @@
 package com.inari.firefly.component
 
-import com.inari.firefly.IntFunction
-
 interface ComponentMapRO<C : Component> {
 
     operator fun contains(index: Int): Boolean

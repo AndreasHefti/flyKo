@@ -1,8 +1,6 @@
 package com.inari.firefly.graphics.view.camera
 
 import com.inari.util.geom.PositionF
-import com.inari.commons.geom.Rectangle
-import com.inari.commons.lang.indexed.IndexedTypeKey
 import com.inari.firefly.NO_CAMERA_PIVOT
 import com.inari.firefly.component.CompId
 import com.inari.firefly.control.Controller
@@ -10,9 +8,10 @@ import com.inari.firefly.graphics.view.View
 import com.inari.firefly.graphics.view.ViewChangeEvent
 import com.inari.firefly.graphics.view.ViewSystem
 import com.inari.firefly.system.component.SubType
+import com.inari.util.geom.Rectangle
 
 
-class SimpleCamaraController private constructor() : Controller() {
+class SimpleCameraController private constructor() : Controller() {
 
     private var pivot: CameraPivot = NO_CAMERA_PIVOT
     private val snapToBounds = Rectangle()
@@ -26,7 +25,7 @@ class SimpleCamaraController private constructor() : Controller() {
         set(value) { pivot = value }
     var ff_SnapToBounds: Rectangle
         get() = snapToBounds
-        set(value) {snapToBounds.setFrom(value)}
+        set(value) {snapToBounds(value)}
     var ff_Velocity: Float
         get() = velocity
         set(value) {velocity = value}
@@ -77,10 +76,10 @@ class SimpleCamaraController private constructor() : Controller() {
         pos.x = following.x + oneDivZoom - viewHorizontalHalf
         pos.y = following.y + oneDivZoom - viewVerticalHalf
 
-        if (pos.x < snapToBounds.x)
-            pos.x = snapToBounds.x.toFloat()
-        if (pos.y < snapToBounds.y)
-            pos.y = snapToBounds.y.toFloat()
+        if (pos.x < snapToBounds.pos.x)
+            pos.x = snapToBounds.pos.x.toFloat()
+        if (pos.y < snapToBounds.pos.y)
+            pos.y = snapToBounds.pos.y.toFloat()
 
         pos.x = Math.min(pos.x, xMax)
         pos.y = Math.min(pos.y, yMax)
@@ -90,9 +89,9 @@ class SimpleCamaraController private constructor() : Controller() {
         return pos.x != 0f || pos.y != 0f
     }
 
-    companion object : SubType<SimpleCamaraController, Controller>() {
-        override val typeKey: IndexedTypeKey = Controller.typeKey
-        override fun subType() = SimpleCamaraController::class.java
-        override fun createEmpty() = SimpleCamaraController()
+    companion object : SubType<SimpleCameraController, Controller>() {
+        override val indexedTypeKey = Controller.indexedTypeKey
+        override val subType = SimpleCameraController::class.java
+        override fun createEmpty() = SimpleCameraController()
     }
 }

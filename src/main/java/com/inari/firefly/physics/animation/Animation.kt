@@ -14,8 +14,22 @@ abstract class Animation protected constructor() : SystemComponent() {
     abstract fun update()
     abstract fun reset()
 
-    override final fun indexedTypeKey() = typeKey
+    override fun componentType(): ComponentType<Animation> =
+        Animation.Companion
+
     companion object : ComponentType<Animation> {
-        override val typeKey = SystemComponent.createTypeKey(Animation::class.java)
+        override val indexedTypeKey by lazy { TypeKeyBuilder.create(Animation::class.java) }
     }
+}
+
+interface FloatAnimation {
+    val value: Float
+}
+
+interface IntAnimation {
+    val value: Int
+}
+
+interface ValueAnimation<out T> {
+    val value: T
 }

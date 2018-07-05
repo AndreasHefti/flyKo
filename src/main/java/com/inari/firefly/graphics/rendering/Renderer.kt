@@ -1,7 +1,6 @@
 package com.inari.firefly.graphics.rendering
 
 import com.inari.util.geom.PositionF
-import com.inari.commons.geom.Rectangle
 import com.inari.commons.lang.list.DynArray
 import com.inari.firefly.Expr
 import com.inari.firefly.Predicate
@@ -12,6 +11,7 @@ import com.inari.firefly.external.TransformData
 import com.inari.firefly.graphics.ETransform
 import com.inari.firefly.graphics.view.ViewLayerAware
 import com.inari.firefly.system.component.SystemComponent
+import com.inari.util.geom.Rectangle
 
 abstract class Renderer protected constructor(
     private val acceptance: Predicate<Entity> = TRUE_PREDICATE(),
@@ -72,57 +72,50 @@ abstract class Renderer protected constructor(
 
     abstract fun render(viewIndex: Int, layerIndex: Int, clip: Rectangle)
 
-    final override fun indexedTypeKey() = Renderer.typeKey
+    override fun componentType(): ComponentType<Renderer> =
+        Renderer.Companion
+
     companion object : ComponentType<Renderer> {
-        override val typeKey = SystemComponent.createTypeKey(Renderer::class.java)
+        override val indexedTypeKey by lazy { TypeKeyBuilder.create(Renderer::class.java) }
     }
+
+
+
 
     protected interface TransformDataCollector {
         val data : TransformData
-        fun set(transform: TransformData)
-        fun set(transform: TransformData, xOffset: Float, yOffset: Float)
-        fun set(position: PositionF)
-        fun add(transform: TransformData)
-        fun addOffset(x: Float, y: Float)
+        operator fun invoke(transform: TransformData)
+        operator fun invoke(position: PositionF)
+        operator fun set(offset: PositionF, transform: TransformData)
+        operator fun plus(transform: TransformData)
+        operator fun plus(offset: PositionF)
     }
 
     protected class ExactTransformDataCollector internal constructor() : TransformDataCollector {
         override val data = TransformData()
 
-        override fun set(transform: TransformData, xOffset: Float, yOffset: Float) {
-            set(transform)
-            data.position.x += xOffset
-            data.position.y += yOffset
-        }
-
-        override fun set(position: PositionF) {
-            data.position.x = position.x
-            data.position.y = position.y
-        }
-
-        override fun set(transform: TransformData) {
-            data.position.x = transform.position.x
-            data.position.y = transform.position.y
-            data.pivot.x = transform.pivot.x
-            data.pivot.y = transform.pivot.y
-            data.scale.dx = transform.scale.dx
-            data.scale.dy = transform.scale.dy
+        override operator fun invoke(transform: TransformData) {
+            data.position(transform.position)
+            data.pivot(transform.pivot)
+            data.scale(transform.scale)
             data.rotation = transform.rotation
         }
 
-        override fun add(transform: TransformData) {
-            data.position.x += transform.position.x
-            data.position.y += transform.position.y
-            data.pivot.x += transform.pivot.x
-            data.pivot.y += transform.pivot.y
-            data.scale.dx *= transform.scale.dx
-            data.scale.dy *= transform.scale.dy
-            data.rotation += transform.rotation
+        override operator fun invoke(position: PositionF) {
+            data.position + position
         }
 
-        override fun addOffset(x: Float, y: Float) {
-            data.position.x += x
-            data.position.y += y
+        override operator fun set(offset: PositionF, transform: TransformData) {
+            this(transform)
+            data.position + offset
+        }
+
+        override operator fun plus(transform: TransformData) {
+            data + transform
+        }
+
+        override operator fun plus(offset: PositionF) {
+            data.position + offset
         }
     }
 
@@ -130,28 +123,35 @@ abstract class Renderer protected constructor(
 
         override val data = TransformData()
 
-        override fun set(transform: TransformData, xOffset: Float, yOffset: Float) {
-            set(transform)
-            data.position.x = Math.floor((transform.position.x + xOffset).toDouble()).toFloat()
-            data.position.y = Math.floor((transform.position.y + yOffset).toDouble()).toFloat()
-        }
-
-        override fun set(position: PositionF) {
-            data.position.x = Math.floor((position.x).toDouble()).toFloat()
-            data.position.y = Math.floor((position.y).toDouble()).toFloat()
-        }
-
-        override fun set(transform: TransformData) {
-            data.position.x = Math.floor(transform.position.x.toDouble()).toFloat()
-            data.position.y = Math.floor(transform.position.y.toDouble()).toFloat()
-            data.pivot.x = Math.floor(transform.pivot.x.toDouble()).toFloat()
-            data.pivot.y = Math.floor(transform.pivot.y.toDouble()).toFloat()
-            data.scale.dx = transform.scale.dx
-            data.scale.dy = transform.scale.dy
+        override operator fun invoke(transform: TransformData) {
+            data.position(
+                Math.floor(transform.position.x.toDouble()).toFloat(),
+                Math.floor(transform.position.y.toDouble()).toFloat()
+            )
+            data.pivot(
+                Math.floor(transform.pivot.x.toDouble()).toFloat(),
+                Math.floor(transform.pivot.y.toDouble()).toFloat()
+            )
+            data.scale(transform.scale)
             data.rotation = transform.rotation
         }
 
-        override fun add(transform: TransformData) {
+        override operator fun invoke(position: PositionF) {
+            data.position(
+                Math.floor(position.x.toDouble()).toFloat(),
+                Math.floor(position.y.toDouble()).toFloat()
+            )
+        }
+
+        override operator fun set(offset: PositionF, transform: TransformData) {
+            this(transform)
+            data.position(
+                Math.floor((transform.position.x + offset.x).toDouble()).toFloat(),
+                Math.floor((transform.position.y + offset.y).toDouble()).toFloat()
+            )
+        }
+
+        override operator fun plus(transform: TransformData) {
             data.position.x += Math.floor(transform.position.x.toDouble()).toFloat()
             data.position.y += Math.floor(transform.position.y.toDouble()).toFloat()
             data.pivot.x += Math.floor(transform.pivot.x.toDouble()).toFloat()
@@ -161,9 +161,9 @@ abstract class Renderer protected constructor(
             data.rotation += transform.rotation
         }
 
-        override fun addOffset(x: Float, y: Float) {
-            data.position.x += Math.floor(x.toDouble()).toFloat()
-            data.position.y += Math.floor(y.toDouble()).toFloat()
+        override operator fun plus(offset: PositionF) {
+            data.position.x += Math.floor(offset.x.toDouble()).toFloat()
+            data.position.y += Math.floor(offset.y.toDouble()).toFloat()
         }
     }
 }

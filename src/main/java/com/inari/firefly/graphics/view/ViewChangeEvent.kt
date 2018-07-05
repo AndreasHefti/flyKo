@@ -2,9 +2,9 @@ package com.inari.firefly.graphics.view
 
 import com.inari.firefly.FFContext
 import com.inari.firefly.component.CompId
-import com.inari.firefly.system.FFEvent
+import com.inari.util.event.Event
 
-object ViewChangeEvent : FFEvent<ViewChangeEvent.Listener>(createTypeKey(ViewChangeEvent::class.java)) {
+object ViewChangeEvent : Event<ViewChangeEvent.Listener>() {
 
     enum class Type {
         POSITION,

@@ -5,7 +5,6 @@ import com.inari.firefly.VOID_CALL
 import com.inari.firefly.component.ComponentType
 import com.inari.firefly.control.trigger.Trigger
 import com.inari.firefly.control.trigger.TriggeredSystemComponent
-import com.inari.firefly.system.component.SystemComponent
 import java.util.*
 
 abstract class Scene protected constructor() : TriggeredSystemComponent() {
@@ -41,8 +40,10 @@ abstract class Scene protected constructor() : TriggeredSystemComponent() {
     internal operator fun invoke() = update()
     protected abstract fun update()
 
-    override final fun indexedTypeKey() = Scene.typeKey
+    override fun componentType(): ComponentType<Scene> =
+        Scene.Companion
+
     companion object : ComponentType<Scene> {
-        override val typeKey = SystemComponent.createTypeKey(Scene::class.java)
+        override val indexedTypeKey by lazy { TypeKeyBuilder.create(Scene::class.java) }
     }
 }

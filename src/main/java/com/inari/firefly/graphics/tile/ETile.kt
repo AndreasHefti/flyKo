@@ -1,10 +1,10 @@
 package com.inari.firefly.graphics.tile
 
 import com.inari.util.geom.Position
-import com.inari.commons.graphics.RGBColor
 import com.inari.commons.lang.list.DynArray
 import com.inari.firefly.asset.AssetInstanceRefResolver
 import com.inari.firefly.component.ArrayAccessor
+import com.inari.firefly.component.ComponentType
 import com.inari.firefly.entity.Entity
 import com.inari.firefly.entity.EntityComponent
 import com.inari.firefly.entity.property.FloatPropertyAccessor
@@ -12,7 +12,7 @@ import com.inari.firefly.entity.property.IntPropertyAccessor
 import com.inari.firefly.entity.property.VirtualPropertyRef
 import com.inari.firefly.external.SpriteRenderable
 import com.inari.firefly.graphics.BlendMode
-import com.inari.firefly.setFrom
+import com.inari.util.graphics.RGBColor
 
 class ETile private constructor (
 
@@ -33,7 +33,7 @@ class ETile private constructor (
         set(value) { blend = value }
     var ff_Tint: RGBColor
         get() = tint
-        set(value) { tint.setFrom(value) }
+        set(value) { tint(value) }
     val ff_Positions =
         ArrayAccessor(positions)
 
@@ -108,9 +108,11 @@ class ETile private constructor (
         }
     }
 
-    override fun indexedTypeKey() = ETile.typeKey
+    override fun componentType(): ComponentType<ETile> =
+        ETile.Companion
+
     companion object : EntityComponentType<ETile>() {
-        override val typeKey = EntityComponent.createTypeKey(ETile::class.java)
+        override val indexedTypeKey by lazy { EntityComponent.create(ETile::class.java) }
         override fun createEmpty() = ETile()
     }
 }

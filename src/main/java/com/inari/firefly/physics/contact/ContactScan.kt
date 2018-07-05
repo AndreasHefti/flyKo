@@ -1,8 +1,8 @@
 package com.inari.firefly.physics.contact
 
-import com.inari.commons.lang.aspect.Aspect
 import com.inari.commons.lang.list.DynArray
 import com.inari.firefly.component.CompId
+import com.inari.util.aspect.Aspect
 
 
 class ContactScan internal constructor() {
@@ -31,7 +31,7 @@ class ContactScan internal constructor() {
     }
 
     operator fun get(constraint: ContactConstraint): Contacts =
-        get(constraint.index())
+        get(constraint.index)
 
     operator fun get(constraint: CompId): Contacts =
         get(constraint.index)

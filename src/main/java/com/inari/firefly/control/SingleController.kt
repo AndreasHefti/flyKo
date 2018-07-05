@@ -1,6 +1,5 @@
 package com.inari.firefly.control
 
-import com.inari.commons.lang.indexed.IndexedTypeKey
 import com.inari.firefly.Expr
 import com.inari.firefly.FFContext
 import com.inari.firefly.NO_COMP_ID
@@ -31,8 +30,8 @@ class SingleController private constructor() : Controller() {
     }
 
     companion object : SubType<SingleController, Controller>() {
-        override val typeKey: IndexedTypeKey = Controller.typeKey
-        override fun subType() = SingleController::class.java
+        override val indexedTypeKey get() = Controller.indexedTypeKey
+        override val subType = SingleController::class.java
         override fun createEmpty() = SingleController()
     }
 }

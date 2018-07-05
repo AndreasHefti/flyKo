@@ -1,3 +1,7 @@
 package com.inari.firefly.system.component
 
-abstract class SubType<CC : C, C : SystemComponent> : ISubType<CC, C>, SystemComponentBuilder<CC>()
+import com.inari.firefly.component.ComponentType
+
+abstract class SubType<CC : C, C : SystemComponent> : ComponentType<C>, SystemComponentBuilder<CC>() {
+    abstract val subType: Class<CC>
+}

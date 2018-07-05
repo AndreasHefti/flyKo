@@ -1,13 +1,12 @@
 package com.inari.firefly.graphics.text
 
-import com.inari.commons.geom.Rectangle
-import com.inari.commons.lang.indexed.IndexedTypeKey
 import com.inari.commons.lang.list.IntBag
 import com.inari.firefly.*
 import com.inari.firefly.asset.Asset
 import com.inari.firefly.external.SpriteData
 import com.inari.firefly.external.TextureData
 import com.inari.firefly.system.component.SubType
+import com.inari.util.geom.Rectangle
 
 
 class FontAsset : Asset(), TextureData {
@@ -84,8 +83,8 @@ class FontAsset : Asset(), TextureData {
         tmpSpriteData.rect(0, 0, charWidth, charHeight)
         for (y in 0 until charMap.size) {
             for (x in 0 until charMap[y].size) {
-                tmpSpriteData.rect.x = x * charWidth
-                tmpSpriteData.rect.y = y * charHeight
+                tmpSpriteData.rect.pos.x = x * charWidth
+                tmpSpriteData.rect.pos.y = y * charHeight
 
                 val charSpriteId = graphics.createSprite(tmpSpriteData)
                 charSpriteMap.set(charMap[y][x].toInt(), charSpriteId)
@@ -115,8 +114,8 @@ class FontAsset : Asset(), TextureData {
     }
 
     companion object : SubType<FontAsset, Asset>() {
-        override val typeKey: IndexedTypeKey = Asset.typeKey
-        override fun subType() = FontAsset::class.java
+        override val indexedTypeKey = Asset.indexedTypeKey
+        override val subType = FontAsset::class.java
         override fun createEmpty() = FontAsset()
     }
 
@@ -124,8 +123,8 @@ class FontAsset : Asset(), TextureData {
         var rect = Rectangle()
 
         override val textureId get() = texId
-        override val x get() = rect.x
-        override val y get() = rect.y
+        override val x get() = rect.pos.x
+        override val y get() = rect.pos.y
         override val width get() = rect.width
         override val height get() = rect.height
         override val isHorizontalFlip = false

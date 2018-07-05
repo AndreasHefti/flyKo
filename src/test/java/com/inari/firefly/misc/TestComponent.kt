@@ -1,6 +1,6 @@
 package com.inari.firefly.misc
 
-import com.inari.commons.lang.indexed.IIndexedTypeKey
+import com.inari.firefly.component.ComponentType
 import com.inari.firefly.system.component.SingleType
 import com.inari.firefly.system.component.SystemComponent
 
@@ -12,11 +12,11 @@ class TestComponent private constructor (
 
     private constructor() : this("Param1", 0)
 
-    override fun indexedTypeKey(): IIndexedTypeKey = typeKey
+    override fun componentType(): ComponentType<TestComponent> =
+        TestComponent.Companion
 
     companion object : SingleType<TestComponent>() {
-        override val typeKey: IIndexedTypeKey =
-                SystemComponent.createTypeKey(TestComponent::class.java)
+        override val indexedTypeKey by lazy { TypeKeyBuilder.create(TestComponent::class.java) }
         override fun createEmpty(): TestComponent = TestComponent()
     }
 

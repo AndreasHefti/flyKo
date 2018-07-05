@@ -1,7 +1,5 @@
 package com.inari.firefly.graphics.rendering
 
-import com.inari.commons.geom.Rectangle
-import com.inari.commons.lang.aspect.IAspects
 import com.inari.firefly.FFApp
 import com.inari.firefly.FFContext
 import com.inari.firefly.entity.Entity
@@ -9,6 +7,8 @@ import com.inari.firefly.entity.EntityActivationEvent
 import com.inari.firefly.system.FFSystem
 import com.inari.firefly.system.component.ComponentSystem
 import com.inari.firefly.system.component.SingletonComponent
+import com.inari.util.aspect.Aspects
+import com.inari.util.geom.Rectangle
 
 object RenderingSystem : FFSystem {
 
@@ -55,7 +55,7 @@ object RenderingSystem : FFSystem {
                     }
                 }
 
-                override fun match(aspects: IAspects) = true
+                override fun match(aspects: Aspects) = true
             }
         )
 
@@ -63,7 +63,7 @@ object RenderingSystem : FFSystem {
     }
 
     operator fun get(rendererKey: SingletonComponent<out Renderer, Renderer>): Renderer =
-        renderer[rendererKey.instance.index()]
+        renderer[rendererKey.instance.index]
 
     fun setDefaultRenderingChain() {
         setRenderingChain(

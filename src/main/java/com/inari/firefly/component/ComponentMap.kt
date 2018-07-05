@@ -13,7 +13,7 @@ interface ComponentMap<C : Component> : ComponentMapRO<C> {
         CREATED, ACTIVATED, DEACTIVATED, DELETED
     }
 
-    val type: ComponentType<C>
+    val componentType: ComponentType<C>
     val typeIndex: Int
     val map: DynArrayRO<C>
     val activationMapping: Boolean

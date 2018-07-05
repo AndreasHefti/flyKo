@@ -1,9 +1,5 @@
 package com.inari.util.geom
 
-import sun.text.normalizer.UTF16.append
-
-
-
 
 /** A simple position in a 2D Cartesian coordinate system with float precision.  */
 data class PositionF constructor(
@@ -21,10 +17,15 @@ data class PositionF constructor(
     /** Use this as a copy constructor  */
     constructor(loc: PositionF) : this(loc.x, loc.y)
 
+    operator fun invoke(x: Float, y: Float) {
+        this.x = x
+        this.y = y
+    }
+
     /** Use this to set the x/y axis values from specified Position p
      * @param p the Position to get/take the attributes from
      */
-    fun setFrom(p: Position) {
+    operator fun invoke(p: Position) {
         x = p.x.toFloat()
         y = p.y.toFloat()
     }
@@ -32,9 +33,45 @@ data class PositionF constructor(
     /** Use this to set the x/y axis values from specified PositionF p
      * @param p the PositionF to get/take the attributes from
      */
-    fun setFrom(p: PositionF) {
+    operator fun invoke(p: PositionF) {
         x = p.x
         y = p.y
+    }
+
+    operator fun plus(pos: PositionF): PositionF {
+        this.x += pos.x
+        this.y += pos.y
+        return this
+    }
+
+    operator fun plus(offset: Vector2f): PositionF {
+        this.x += offset.dx
+        this.y += offset.dy
+        return this
+    }
+
+    operator fun plus(pos: Position): PositionF {
+        this.x += pos.x.toFloat()
+        this.y += pos.y.toFloat()
+        return this
+    }
+
+    operator fun minus(pos: PositionF): PositionF {
+        this.x -= pos.x
+        this.y -= pos.y
+        return this
+    }
+
+    operator fun minus(pos: Position): PositionF {
+        this.x -= pos.x.toFloat()
+        this.y -= pos.y.toFloat()
+        return this
+    }
+
+    operator fun minus(offset: Vector2f): PositionF {
+        this.x -= offset.dx
+        this.y -= offset.dy
+        return this
     }
 
     override fun toString(): String {

@@ -44,7 +44,7 @@ internal class EasingControl(
                 }
                 reset()
             } else {
-                AnimationSystem.animations.deactivate(animation.index())
+                AnimationSystem.animations.deactivate(animation.index)
             }
             return
         }

@@ -1,8 +1,9 @@
 package com.inari.firefly.physics.contact
 
-import com.inari.firefly.system.FFEvent
+import com.inari.util.event.Event
 
-object ContactEvent : FFEvent<ContactEvent.Listener>(createTypeKey(ContactEvent::class.java)) {
+
+object ContactEvent : Event<ContactEvent.Listener>() {
 
     @JvmField internal var entity: Int = -1
 

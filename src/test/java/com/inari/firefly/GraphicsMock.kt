@@ -1,11 +1,11 @@
 package com.inari.firefly
 
-import com.inari.commons.geom.Rectangle
 import com.inari.commons.lang.list.DynArray
 import com.inari.commons.lang.list.DynArrayRO
 import com.inari.firefly.component.CompId
 import com.inari.firefly.external.*
 import com.inari.firefly.graphics.view.ViewEvent
+import com.inari.util.geom.Rectangle
 import java.util.*
 
 object GraphicsMock : FFGraphics {

@@ -40,8 +40,8 @@ class EasedProperty : EntityPropertyAnimation(), FloatAnimation {
     override fun update() = control.update()
 
     companion object : PropertyAnimationSubtype<EasedProperty>() {
-        override fun subType(): Class<EasedProperty> = EasedProperty::class.java
-        override fun createEmpty(): EasedProperty =
-            EasedProperty()
+        override val indexedTypeKey by lazy { TypeKeyBuilder.create(EasedProperty::class.java) }
+        override val subType = EasedProperty::class.java
+        override fun createEmpty(): EasedProperty = EasedProperty()
     }
 }

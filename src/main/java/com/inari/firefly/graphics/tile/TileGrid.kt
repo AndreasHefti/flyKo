@@ -1,60 +1,75 @@
 package com.inari.firefly.graphics.tile
 
-import com.inari.commons.GeomUtils
-import com.inari.commons.geom.Direction
-import com.inari.commons.geom.Orientation.*
-import com.inari.util.geom.Position
-import com.inari.util.geom.PositionF
-import com.inari.commons.geom.Rectangle
 import com.inari.commons.lang.IntIterator
 import com.inari.firefly.component.ComponentRefResolver
+import com.inari.firefly.component.ComponentType
 import com.inari.firefly.graphics.rendering.Renderer
 import com.inari.firefly.graphics.view.Layer
 import com.inari.firefly.graphics.view.View
 import com.inari.firefly.graphics.view.ViewLayerAware
 import com.inari.firefly.system.component.SingleType
 import com.inari.firefly.system.component.SystemComponent
+import com.inari.util.geom.Direction.*
+import com.inari.util.geom.*
 import java.util.*
 
 
 class TileGrid private constructor() : SystemComponent(), ViewLayerAware {
 
-
-
     @JvmField internal var viewRef = -1
     @JvmField internal var layerRef = -1
     @JvmField internal var rendererRef = -1
+    @JvmField internal val gridDim = Vector2i(-1, -1)
+    @JvmField internal val cellDim = Vector2i(-1, -1)
+    @JvmField internal val position = PositionF(0.0f, 0.0f)
+    @JvmField internal var spherical = false
 
-    val ff_View = ComponentRefResolver(View, { index-> viewRef = index })
-    val ff_Layer = ComponentRefResolver(Layer, { index-> layerRef = index })
-    var ff_Renderer = ComponentRefResolver(Renderer, { index-> rendererRef = index })
-    var ff_GridWidth: Int = -1
-        set(value) {field = setIfNotInitialized(value, "ff_GridWidth")}
-    var ff_GridHeight: Int = -1
-        set(value) {field = setIfNotInitialized(value, "ff_GridHeight")}
-    var ff_CellWidth: Int = -1
-        set(value) {field = setIfNotInitialized(value, "ff_CellWidth")}
-    var ff_CellHeight: Int = -1
-        set(value) {field = setIfNotInitialized(value, "ff_CellHeight")}
-    val ff_Position: PositionF = PositionF(0.0f, 0.0f)
-    var ff_Spherical: Boolean = false
-        set(value) {field = setIfNotInitialized(value, "ff_Spherical")}
+    val ff_View = ComponentRefResolver(View) { index-> viewRef = index }
+    val ff_Layer = ComponentRefResolver(Layer) { index-> layerRef = index }
+    var ff_Renderer = ComponentRefResolver(Renderer) { index-> rendererRef = index }
+    var ff_GridWidth: Int
+        get() = gridDim.dx
+        set(value) {gridDim.dx = setIfNotInitialized(value, "ff_GridWidth")}
+    var ff_GridHeight: Int
+        get() = gridDim.dy
+        set(value) {gridDim.dy = setIfNotInitialized(value, "ff_GridHeight")}
+    var ff_CellWidth: Int
+        get() = cellDim.dx
+        set(value) {cellDim.dx = setIfNotInitialized(value, "ff_CellWidth")}
+    var ff_CellHeight: Int
+        get() = cellDim.dy
+        set(value) {cellDim.dy = setIfNotInitialized(value, "ff_CellHeight")}
+    var ff_Position: PositionF
+        get() = position
+        set(value) = position(value)
+    var ff_Spherical: Boolean
+        get() = spherical
+        set(value) {spherical = setIfNotInitialized(value, "ff_Spherical")}
 
     override val viewIndex: Int
         get() = viewRef
     override val layerIndex: Int
         get() = layerRef
 
-    @JvmField internal var grid: Array<IntArray> = Array(0, { IntArray(0) })
+    @JvmField internal var grid: Array<IntArray> = Array(0) { IntArray(0) }
     @JvmField internal val normalisedWorldBounds = Rectangle(0, 0, 0, 0)
 
     override fun init() {
-        grid = Array(ff_GridHeight, { IntArray(ff_GridWidth, { _ -> -1 }) })
+        grid = Array(ff_GridHeight) { IntArray(ff_GridWidth) { _ -> -1 } }
         normalisedWorldBounds.width = ff_GridWidth
         normalisedWorldBounds.height = ff_GridHeight
 
         super.init()
     }
+
+    operator fun get(rectPos: Rectangle): Int =
+        this[rectPos.pos]
+
+    operator fun get(pos: Position): Int =
+        if (ff_Spherical)
+            grid[pos.y % ff_GridHeight][pos.x % ff_GridWidth]
+        else
+            grid[pos.y][pos.x]
 
     operator fun get(ypos: Int, xpos: Int): Int =
         if (ff_Spherical)
@@ -130,10 +145,11 @@ class TileGrid private constructor() : SystemComponent(), ViewLayerAware {
     fun tileGridIterator(worldClip: Rectangle): TileGridIterator =
         TileGridIterator.getInstance(worldClip, this)
 
+    override fun componentType(): ComponentType<TileGrid> =
+        TileGrid.Companion
 
-    override fun indexedTypeKey() = typeKey
     companion object : SingleType<TileGrid>() {
-        override val typeKey = SystemComponent.createTypeKey(TileGrid::class.java)
+        override val indexedTypeKey by lazy { TypeKeyBuilder.create(TileGrid::class.java) }
         override fun createEmpty() = TileGrid()
     }
 
@@ -154,18 +170,15 @@ class TileGrid private constructor() : SystemComponent(), ViewLayerAware {
 
         override fun hasNext(): Boolean = hasNext
         override fun next(): Int {
-            val result = tileGrid[clip.y, clip.x]
+            val result = tileGrid[clip]
             calcWorldPosition()
-            clip.x++
+            clip.pos.x++
             findNext()
             return result
         }
 
         private fun reset(tileGrid: TileGrid) {
-            clip.x = 0
-            clip.y = 0
-            clip.width = tileGrid.ff_GridWidth
-            clip.height = tileGrid.ff_GridHeight
+            clip(0, 0, tileGrid.gridDim.dx, tileGrid.gridDim.dy)
             init(tileGrid)
         }
 
@@ -175,9 +188,9 @@ class TileGrid private constructor() : SystemComponent(), ViewLayerAware {
         }
 
         private fun init(tileGrid: TileGrid) {
-            xorig = clip.x
-            xsize = clip.x + clip.width
-            ysize = clip.y + clip.height
+            xorig = clip.pos.x
+            xsize = clip.pos.x + clip.width
+            ysize = clip.pos.y + clip.height
 
             this.tileGrid = tileGrid
 
@@ -185,27 +198,29 @@ class TileGrid private constructor() : SystemComponent(), ViewLayerAware {
         }
 
         private fun mapWorldClipToTileGridClip(worldClip: Rectangle, tileGrid: TileGrid, result: Rectangle) {
-            tmpClip.x = Math.floor((worldClip.x.toDouble() - tileGrid.ff_Position.x) / tileGrid.ff_CellWidth).toInt()
-            tmpClip.y = Math.floor((worldClip.y.toDouble() - tileGrid.ff_Position.y) / tileGrid.ff_CellHeight).toInt()
-            val x2 = Math.ceil((worldClip.x.toDouble() - tileGrid.ff_Position.x + worldClip.width) / tileGrid.ff_CellWidth).toInt()
-            val y2 = Math.ceil((worldClip.y.toDouble() - tileGrid.ff_Position.y + worldClip.height) / tileGrid.ff_CellHeight).toInt()
-            tmpClip.width = x2 - tmpClip.x
-            tmpClip.height = y2 - tmpClip.y
+            tmpClip(
+                Math.floor((worldClip.pos.x.toDouble() - tileGrid.position.x) / tileGrid.cellDim.dx).toInt(),
+                Math.floor((worldClip.pos.y.toDouble() - tileGrid.position.y) / tileGrid.cellDim.dy).toInt()
+            )
+            val x2 = Math.ceil((worldClip.pos.x.toDouble() - tileGrid.position.x + worldClip.width) / tileGrid.cellDim.dx).toInt()
+            val y2 = Math.ceil((worldClip.pos.y.toDouble() - tileGrid.position.y + worldClip.height) / tileGrid.cellDim.dy).toInt()
+            tmpClip.width = x2 - tmpClip.pos.x
+            tmpClip.height = y2 - tmpClip.pos.y
             GeomUtils.intersection(tmpClip, tileGrid.normalisedWorldBounds, result)
         }
 
         @Suppress("NOTHING_TO_INLINE")
         private inline fun findNext() {
-            while (clip.y < ysize) {
-                while (clip.x < xsize) {
-                    if (tileGrid[clip.y, clip.x] != -1) {
+            while (clip.pos.y < ysize) {
+                while (clip.pos.x < xsize) {
+                    if (tileGrid[clip] != -1) {
                         hasNext = true
                         return
                     }
-                    clip.x++
+                    clip.pos.x++
                 }
-                clip.x = xorig
-                clip.y++
+                clip.pos.x = xorig
+                clip.pos.y++
             }
             dispose()
         }
@@ -221,8 +236,10 @@ class TileGrid private constructor() : SystemComponent(), ViewLayerAware {
 
         @Suppress("NOTHING_TO_INLINE")
         private inline fun calcWorldPosition() {
-            worldPosition.x = tileGrid.ff_Position.x + clip.x * tileGrid.ff_CellWidth
-            worldPosition.y = tileGrid.ff_Position.y + clip.y * tileGrid.ff_CellHeight
+            worldPosition(
+                tileGrid.position.x + clip.pos.x * tileGrid.cellDim.dx,
+                tileGrid.position.y + clip.pos.y * tileGrid.cellDim.dy
+            )
         }
 
         companion object {

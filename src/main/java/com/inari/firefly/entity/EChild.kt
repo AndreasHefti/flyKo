@@ -1,6 +1,7 @@
 package com.inari.firefly.entity
 
 import com.inari.firefly.component.ComponentRefResolver
+import com.inari.firefly.component.ComponentType
 
 class EChild private constructor () : EntityComponent() {
 
@@ -12,17 +13,19 @@ class EChild private constructor () : EntityComponent() {
         get() = zpos
         set(value) { zpos = value }
 
-    override fun indexedTypeKey() = EChild.typeKey
     override fun reset() {
         parent = -1
         zpos = -1
     }
 
+    override fun componentType(): ComponentType<EChild> =
+        EChild.Companion
+
     override fun toString(): String =
         "EChild(parent=$parent, zpos=$zpos)"
 
     companion object : EntityComponentType<EChild>() {
-        override val typeKey = EntityComponent.createTypeKey(EChild::class.java)
+        override val indexedTypeKey by lazy { EntityComponent.create(EChild::class.java) }
         override fun createEmpty() = EChild()
     }
 }

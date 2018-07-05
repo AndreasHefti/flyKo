@@ -1,20 +1,19 @@
 package com.inari.firefly.control.state
 
-import com.inari.commons.lang.aspect.IAspects
-import com.inari.commons.lang.indexed.Indexed
 import com.inari.firefly.*
 import com.inari.firefly.component.CompId
 import com.inari.firefly.component.ComponentMap
 import com.inari.firefly.external.FFTimer
 import com.inari.firefly.system.component.ComponentSystem
-import com.inari.firefly.system.component.SystemComponent.Companion.SYSTEM_COMPONENT_ASPECTS
 import com.inari.firefly.control.state.Workflow.StateChange
-
+import com.inari.firefly.system.component.SystemComponent
+import com.inari.util.aspect.Aspects
+import com.inari.util.indexed.Indexed
 
 
 object StateSystem : ComponentSystem {
-    override val supportedComponents: IAspects =
-        SYSTEM_COMPONENT_ASPECTS.createAspects(Workflow)
+    override val supportedComponents: Aspects =
+        SystemComponent.ASPECT_GROUP.createAspects(Workflow)
 
     @JvmField val workflows = ComponentSystem.createComponentMapping(
         Workflow,
@@ -48,7 +47,7 @@ object StateSystem : ComponentSystem {
         workflows[workflowIndex].currentState
 
     operator fun get(workflowIndex: Indexed): String =
-        workflows[workflowIndex.index()].currentState
+        workflows[workflowIndex.index].currentState
 
     operator fun get(workflowId: CompId): String =
         workflows[workflowId].currentState

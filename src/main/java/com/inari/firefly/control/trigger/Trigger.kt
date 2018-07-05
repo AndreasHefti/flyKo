@@ -30,9 +30,11 @@ abstract class Trigger protected constructor() : SystemComponent() {
         }
     }
 
-    final override fun indexedTypeKey() = typeKey
+    override fun componentType(): ComponentType<Trigger> =
+        Trigger.Companion
+
     companion object : ComponentType<Trigger> {
-        override val typeKey = SystemComponent.createTypeKey(Trigger::class.java)
+        override val indexedTypeKey by lazy { TypeKeyBuilder.create(Trigger::class.java) }
     }
 
     abstract class Subtype<out A : Trigger> {

@@ -11,8 +11,10 @@ abstract class CollisionResolver protected constructor() : SystemComponent() {
 
     abstract fun resolve(entity: Entity)
 
-    override final fun indexedTypeKey() = typeKey
+    override fun componentType(): ComponentType<CollisionResolver> =
+        CollisionResolver.Companion
+
     companion object : ComponentType<CollisionResolver> {
-        override val typeKey = SystemComponent.createTypeKey(CollisionResolver::class.java)
+        override val indexedTypeKey by lazy { TypeKeyBuilder.create(CollisionResolver::class.java) }
     }
 }

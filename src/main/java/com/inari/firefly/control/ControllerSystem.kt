@@ -1,16 +1,16 @@
 package com.inari.firefly.control
 
-import com.inari.commons.lang.aspect.IAspects
 import com.inari.firefly.FFApp
 import com.inari.firefly.FFContext
 import com.inari.firefly.component.CompId
 import com.inari.firefly.system.component.ComponentSystem
-import com.inari.firefly.system.component.SystemComponent.Companion.SYSTEM_COMPONENT_ASPECTS
+import com.inari.firefly.system.component.SystemComponent
+import com.inari.util.aspect.Aspects
 
 object ControllerSystem : ComponentSystem {
 
-    override val supportedComponents: IAspects =
-        SYSTEM_COMPONENT_ASPECTS.createAspects(Controller.typeKey)
+    override val supportedComponents: Aspects =
+        SystemComponent.ASPECT_GROUP.createAspects(Controller)
 
     @JvmField val controller = ComponentSystem.createComponentMapping(
         Controller,

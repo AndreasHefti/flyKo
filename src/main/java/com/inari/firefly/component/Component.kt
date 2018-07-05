@@ -1,6 +1,7 @@
 package com.inari.firefly.component
 
-import com.inari.commons.lang.indexed.Indexed
+import com.inari.util.indexed.Indexed
+
 
 @ComponentDSL
 interface Component : Indexed {

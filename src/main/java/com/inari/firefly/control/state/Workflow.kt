@@ -5,6 +5,7 @@ import com.inari.firefly.Condition
 import com.inari.firefly.FALSE_CONDITION
 import com.inari.firefly.NO_STATE
 import com.inari.firefly.component.ArrayAccessor
+import com.inari.firefly.component.ComponentType
 import com.inari.firefly.system.component.SingleType
 import com.inari.firefly.system.component.SystemComponent
 
@@ -34,8 +35,6 @@ class Workflow private constructor() : SystemComponent() {
     internal val currentStateChanges: DynArray<StateChange> =
         DynArray.create(StateChange::class.java)
 
-    override fun indexedTypeKey() = typeKey
-
     fun findStateChangeForTargetState(targetStateName: String): StateChange? =
         stateChanges.firstOrNull {
             it.from == currentState && targetStateName == it.to
@@ -51,8 +50,11 @@ class Workflow private constructor() : SystemComponent() {
         currentState = ff_StartState
     }
 
+    override fun componentType(): ComponentType<Workflow> =
+        Workflow.Companion
+
     companion object : SingleType<Workflow>() {
-        override val typeKey = SystemComponent.createTypeKey(Workflow::class.java)
+        override val indexedTypeKey by lazy { TypeKeyBuilder.create(Workflow::class.java) }
         override fun createEmpty() = Workflow()
     }
 

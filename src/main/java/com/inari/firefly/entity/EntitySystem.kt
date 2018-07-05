@@ -1,6 +1,5 @@
 package com.inari.firefly.entity
 
-import com.inari.commons.lang.aspect.IAspects
 import com.inari.firefly.FFContext
 import com.inari.firefly.component.CompId
 import com.inari.firefly.component.ComponentMap
@@ -9,13 +8,13 @@ import com.inari.firefly.entity.EntityActivationEvent.Type.ACTIVATED
 import com.inari.firefly.entity.EntityActivationEvent.Type.DEACTIVATED
 import com.inari.firefly.entity.EntityActivationEvent.send
 import com.inari.firefly.system.component.ComponentSystem
-import com.inari.firefly.system.component.SystemComponent.Companion.SYSTEM_COMPONENT_ASPECTS
+import com.inari.firefly.system.component.SystemComponent
+import com.inari.util.aspect.Aspects
 
 object EntitySystem : ComponentSystem {
 
-    override val supportedComponents: IAspects = SYSTEM_COMPONENT_ASPECTS.createAspects(
-        Entity.typeKey
-    )
+    override val supportedComponents: Aspects =
+        SystemComponent.ASPECT_GROUP.createAspects(Entity.indexedTypeKey)
 
     @JvmField val entities: ComponentMap<Entity> = ComponentSystem.createComponentMapping(
         Entity,
@@ -64,8 +63,6 @@ object EntitySystem : ComponentSystem {
             type = DEACTIVATED
         )
     }
-
-
 
     override fun clearSystem() = entities.clear()
 

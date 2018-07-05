@@ -1,7 +1,5 @@
 package com.inari.firefly.physics.contact
 
-import com.inari.commons.geom.Rectangle
-import com.inari.commons.lang.IntIterator
 import com.inari.firefly.component.ComponentRefResolver
 import com.inari.firefly.component.ComponentType
 import com.inari.firefly.entity.Entity
@@ -12,6 +10,7 @@ import com.inari.firefly.graphics.view.Layer
 import com.inari.firefly.graphics.view.View
 import com.inari.firefly.graphics.view.ViewLayerAware
 import com.inari.firefly.system.component.SystemComponent
+import com.inari.util.geom.Rectangle
 
 
 abstract class ContactMap protected constructor() : SystemComponent(), ViewLayerAware {
@@ -20,9 +19,9 @@ abstract class ContactMap protected constructor() : SystemComponent(), ViewLayer
     @JvmField internal var layerRef = -1
 
     val ff_View =
-        ComponentRefResolver(View, { index-> viewRef = setIfNotInitialized(index, "ff_View") })
+        ComponentRefResolver(View) { index-> viewRef = setIfNotInitialized(index, "ff_View") }
     val ff_Layer =
-        ComponentRefResolver(Layer, { index-> layerRef = setIfNotInitialized(index, "ff_Layer") })
+        ComponentRefResolver(Layer) { index-> layerRef = setIfNotInitialized(index, "ff_Layer") }
 
     override val viewIndex: Int
         get() = viewRef
@@ -84,13 +83,13 @@ abstract class ContactMap protected constructor() : SystemComponent(), ViewLayer
     /** Use this to clear all entity id's form a specified pool instance  */
     abstract fun clear()
 
+    override fun componentType(): ComponentType<ContactMap> =
+        ContactMap.Companion
 
-
-    override final fun indexedTypeKey() = typeKey
     companion object : ComponentType<ContactMap> {
-        override val typeKey = SystemComponent.createTypeKey(ContactMap::class.java)
+        override val indexedTypeKey by lazy { TypeKeyBuilder.create(ContactMap::class.java) }
 
         @JvmField internal val MATCHER =
-            EntityComponent.Companion.ENTITY_COMPONENT_ASPECTS.createAspects(ETransform, EContact)
+            EntityComponent.ENTITY_COMPONENT_ASPECTS.createAspects(ETransform, EContact)
     }
 }

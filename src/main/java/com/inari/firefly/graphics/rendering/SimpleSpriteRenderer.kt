@@ -1,15 +1,14 @@
 package com.inari.firefly.graphics.rendering
 
-import com.inari.commons.geom.Rectangle
 import com.inari.firefly.FFContext
 import com.inari.firefly.entity.EChild
 import com.inari.firefly.entity.Entity
 import com.inari.firefly.entity.EntityComponent
-import com.inari.firefly.exclude
 import com.inari.firefly.graphics.ETransform
 import com.inari.firefly.graphics.sprite.ESprite
 import com.inari.firefly.graphics.tile.ETile
 import com.inari.firefly.system.component.SingletonComponent
+import com.inari.util.geom.Rectangle
 
 class SimpleSpriteRenderer private constructor() : Renderer() {
 
@@ -34,8 +33,8 @@ class SimpleSpriteRenderer private constructor() : Renderer() {
     }
 
     companion object : SingletonComponent<SimpleSpriteRenderer, Renderer>() {
-        override val typeKey = Renderer.typeKey
-        override fun subType() = SimpleSpriteRenderer::class.java
+        override val indexedTypeKey = Renderer.indexedTypeKey
+        override val subType = SimpleSpriteRenderer::class.java
         override fun create() = SimpleSpriteRenderer()
 
         private val MATCHING_ASPECTS = EntityComponent.ENTITY_COMPONENT_ASPECTS.createAspects(

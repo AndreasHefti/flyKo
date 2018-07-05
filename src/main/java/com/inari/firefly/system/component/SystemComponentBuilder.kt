@@ -10,7 +10,7 @@ abstract class SystemComponentBuilder<out C : SystemComponent> : ComponentBuilde
         val comp: C = createEmpty()
         comp.also(configure)
         comp._init()
-        FFContext.mapper<C>(typeKey).receiver()(comp)
+        FFContext.mapper<C>(indexedTypeKey).receiver()(comp)
         comp.componentId
     }
 
@@ -18,7 +18,7 @@ abstract class SystemComponentBuilder<out C : SystemComponent> : ComponentBuilde
         val comp: C = createEmpty()
         comp.also(configure)
         comp._init()
-        FFContext.mapper<C>(typeKey).receiver()(comp)
+        FFContext.mapper<C>(indexedTypeKey).receiver()(comp)
         comp
     }
 
@@ -26,7 +26,7 @@ abstract class SystemComponentBuilder<out C : SystemComponent> : ComponentBuilde
         val comp: C = createEmpty()
         comp.also(configure)
         comp._init()
-        FFContext.mapper<C>(typeKey).receiver()(comp)
+        FFContext.mapper<C>(indexedTypeKey).receiver()(comp)
         FFContext.activate(comp.componentId)
         comp.componentId
     }
@@ -35,7 +35,7 @@ abstract class SystemComponentBuilder<out C : SystemComponent> : ComponentBuilde
         val comp: C = createEmpty()
         comp.also(configure)
         comp._init()
-        FFContext.mapper<C>(typeKey).receiver()(comp)
+        FFContext.mapper<C>(indexedTypeKey).receiver()(comp)
         FFContext.activate(comp.componentId)
         comp
     }

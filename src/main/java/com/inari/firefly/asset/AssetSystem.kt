@@ -1,17 +1,17 @@
 package com.inari.firefly.asset
 
-import com.inari.commons.lang.aspect.IAspects
 import com.inari.commons.lang.list.IntBag
 import com.inari.firefly.FFContext
 import com.inari.firefly.component.ComponentMap.MapAction
 import com.inari.firefly.system.component.ComponentSystem
-import com.inari.firefly.system.component.SystemComponent.Companion.SYSTEM_COMPONENT_ASPECTS
+import com.inari.firefly.system.component.SystemComponent
+import com.inari.util.aspect.Aspects
 
 
 object AssetSystem : ComponentSystem {
 
-    override val supportedComponents: IAspects =
-        SYSTEM_COMPONENT_ASPECTS.createAspects(Asset)
+    override val supportedComponents: Aspects =
+        SystemComponent.ASPECT_GROUP.createAspects(Asset)
 
     @JvmField val assets = ComponentSystem.createComponentMapping(
         Asset,
@@ -53,7 +53,7 @@ object AssetSystem : ComponentSystem {
     }
 
     private fun unload(asset: Asset) {
-        findDependingAssets(asset.index())
+        findDependingAssets(asset.index)
         if (!dependingAssetIds.isEmpty) {
             (0 until dependingAssetIds.length())
                 .filterNot { dependingAssetIds.isEmpty(it) }
@@ -90,6 +90,6 @@ object AssetSystem : ComponentSystem {
         dependingAssetIds.clear()
         assets.map
             .filter { it.dependsOn(assetId) }
-            .forEach { dependingAssetIds.add(it.index()) }
+            .forEach { dependingAssetIds.add(it.index) }
     }
 }

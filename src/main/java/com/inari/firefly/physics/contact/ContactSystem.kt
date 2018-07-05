@@ -1,12 +1,5 @@
 package com.inari.firefly.physics.contact
 
-import com.inari.commons.GeomUtils
-import com.inari.commons.geom.BitMask
-import com.inari.commons.geom.Rectangle
-import com.inari.commons.lang.aspect.Aspect
-import com.inari.commons.lang.aspect.AspectGroup
-import com.inari.commons.lang.aspect.IAspects
-import com.inari.commons.lang.indexed.Indexed
 import com.inari.firefly.FFContext
 import com.inari.firefly.Named
 import com.inari.firefly.component.CompId
@@ -24,7 +17,14 @@ import com.inari.firefly.graphics.view.ViewEvent
 import com.inari.firefly.physics.movement.EMovement
 import com.inari.firefly.physics.movement.MoveEvent
 import com.inari.firefly.system.component.ComponentSystem
-import com.inari.firefly.system.component.SystemComponent.Companion.SYSTEM_COMPONENT_ASPECTS
+import com.inari.firefly.system.component.SystemComponent
+import com.inari.util.aspect.Aspect
+import com.inari.util.aspect.AspectGroup
+import com.inari.util.aspect.Aspects
+import com.inari.util.geom.BitMask
+import com.inari.util.geom.GeomUtils
+import com.inari.util.geom.Rectangle
+import com.inari.util.indexed.Indexed
 import java.util.*
 
 
@@ -35,8 +35,8 @@ object ContactSystem : ComponentSystem {
     @JvmField val CONTACT_TYPE_ASPECT_GROUP = AspectGroup("CONTACT_TYPE_ASPECT_GROUP")
     @JvmField val UNDEFINED_CONTACT_TYPE: Aspect = CONTACT_TYPE_ASPECT_GROUP.createAspect("UNDEFINED_CONTACT_TYPE")
 
-    override val supportedComponents: IAspects =
-        SYSTEM_COMPONENT_ASPECTS.createAspects(ContactMap, ContactConstraint, CollisionResolver)
+    override val supportedComponents: Aspects =
+        SystemComponent.ASPECT_GROUP.createAspects(ContactMap, ContactConstraint, CollisionResolver)
 
     @JvmField val contactMapViewLayer = ViewLayerMapping(ContactMap::class.java)
     @JvmField val contactMaps =
@@ -77,7 +77,7 @@ object ContactSystem : ComponentSystem {
                     contactMapViewLayer[entity[ETransform]].remove(entity)
             }
 
-            override fun match(aspects: IAspects): Boolean =
+            override fun match(aspects: Aspects): Boolean =
                 EContact in aspects &&
                 ETransform in aspects &&
                 ETile !in aspects
@@ -90,7 +90,7 @@ object ContactSystem : ComponentSystem {
     }
 
     fun createContacts(constraint: ContactConstraint): Contacts =
-        createContacts(constraint.index())
+        createContacts(constraint.index)
 
     fun createContacts(constraint: CompId): Contacts =
         createContacts(constraint.index)
@@ -112,7 +112,7 @@ object ContactSystem : ComponentSystem {
     }
 
     fun updateContacts(indexed: Indexed) {
-        updateContacts(indexed.index())
+        updateContacts(indexed.index)
     }
 
     fun updateContacts(entityName: String) {
@@ -132,20 +132,20 @@ object ContactSystem : ComponentSystem {
         val entity = EntitySystem[entityId]
         val contacts = entity[EContact]
         val contactConstraint = constraints[constraintName]
-        val constraint = contacts.contactScan.contacts.get(contactConstraint.index()) ?: return
+        val constraint = contacts.contactScan.contacts.get(contactConstraint.index) ?: return
 
         updateContacts(entity, constraint)
     }
 
     fun updateContacts(indexed: Indexed, constraintName: String) {
-        updateContacts(indexed.index(), constraintName)
+        updateContacts(indexed.index, constraintName)
     }
 
     fun updateContacts(entityName: String, constraintName: String) {
         val entity = EntitySystem[entityName]
         val contacts = entity[EContact]
         val contactConstraint = constraints[constraintName]
-        val constraint = contacts.contactScan.contacts.get(contactConstraint.index()) ?: return
+        val constraint = contacts.contactScan.contacts.get(contactConstraint.index) ?: return
 
         updateContacts(entity, constraint)
     }
@@ -159,7 +159,7 @@ object ContactSystem : ComponentSystem {
     }
 
     fun updateContacts(indexed: Indexed, constraint: Contacts) {
-        updateContacts(indexed.index(), constraint)
+        updateContacts(indexed.index, constraint)
     }
 
     fun updateContacts(entityName: String, constraint: Contacts) {
@@ -189,7 +189,7 @@ object ContactSystem : ComponentSystem {
                 collisionResolver[contacts.resolverRef].resolve(entity)
 
             if (contacts.contactScan.hasAnyContact()) {
-                ContactEvent.entity = entity.index()
+                ContactEvent.entity = entity.index
                 FFContext.notify(ContactEvent)
             }
 
@@ -233,7 +233,7 @@ object ContactSystem : ComponentSystem {
 
         while (iterator.hasNext()) {
             val otherEntityRef = iterator.next()
-            if (entity.index() == otherEntityRef)
+            if (entity.index == otherEntityRef)
                 continue
 
             val otherEntity = EntitySystem[otherEntityRef]
@@ -263,11 +263,11 @@ object ContactSystem : ComponentSystem {
             return
 
         val contact = ContactsPool.createContact(
-            otherEntity.index(),
+            otherEntity.index,
             otherContact.material,
             otherContact.contactType,
-            (Math.floor(x.toDouble()) + otherContact.bounds.x).toInt(),
-            (Math.floor(y.toDouble()) + otherContact.bounds.y).toInt(),
+            (Math.floor(x.toDouble()) + otherContact.bounds.pos.x).toInt(),
+            (Math.floor(y.toDouble()) + otherContact.bounds.pos.y).toInt(),
             otherContact.bounds.width,
             otherContact.bounds.height
         )
@@ -284,16 +284,16 @@ object ContactSystem : ComponentSystem {
         }
 
         // normalize the intersection to origin of coordinate system
-        contact.intersection.x -= c.worldBounds.x
-        contact.intersection.y -= c.worldBounds.y
+        contact.intersection.pos.x -= c.worldBounds.pos.x
+        contact.intersection.pos.y -= c.worldBounds.pos.y
 
         if (otherContact.mask.isEmpty) {
             addContact(c, contact)
             return
         }
 
-        checkPivot.x = c.worldBounds.x - contact.bounds.x
-        checkPivot.y = c.worldBounds.y - contact.bounds.y
+        checkPivot.pos.x = c.worldBounds.pos.x - contact.bounds.pos.x
+        checkPivot.pos.y = c.worldBounds.pos.y - contact.bounds.pos.y
         checkPivot.width = c.worldBounds.width
         checkPivot.height = c.worldBounds.height
 
@@ -312,13 +312,13 @@ object ContactSystem : ComponentSystem {
         if (!contact.mask.isEmpty)
             c.intersectionMask.or(contact.mask)
         else
-            c.intersectionMask.setRegion(contact.intersection, true)
+            c.intersectionMask.setRegionRelativeToOrigin(contact.intersection, true)
 
         if (contact.contact !== ContactSystem.UNDEFINED_CONTACT_TYPE)
-            c.contactTypes.set(contact.contact)
+            c.contactTypes + contact.contact
 
         if (contact.material != ContactSystem.UNDEFINED_MATERIAL)
-            c.materialTypes.set(contact.material)
+            c.materialTypes + contact.material
 
         c.contacts.add(contact)
     }
@@ -336,10 +336,10 @@ object ContactSystem : ComponentSystem {
         internal fun disposeContact(contact: Contact) {
             contact.entity = -1
             contact.intersectionMask.clearMask()
-            contact.worldBounds.clear()
+            contact.worldBounds(0, 0, 0, 0)
             contact.contact = ContactSystem.UNDEFINED_CONTACT_TYPE
             contact.material = ContactSystem.UNDEFINED_MATERIAL
-            contact.intersectionBounds.clear()
+            contact.intersectionBounds(0, 0, 0, 0)
 
             CONTACTS_POOL.add(contact)
         }
@@ -350,8 +350,8 @@ object ContactSystem : ComponentSystem {
             contact.entity = entityId
             contact.contact = contactType
             contact.material = materialType
-            contact.worldBounds.x = x
-            contact.worldBounds.y = y
+            contact.worldBounds.pos.x = x
+            contact.worldBounds.pos.y = y
             contact.worldBounds.width = width
             contact.worldBounds.height = height
 

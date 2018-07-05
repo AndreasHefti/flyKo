@@ -1,13 +1,18 @@
 package com.inari.firefly.component
 
-import com.inari.commons.lang.aspect.Aspect
-import com.inari.commons.lang.aspect.AspectGroup
-import com.inari.commons.lang.indexed.IIndexedTypeKey
+import com.inari.util.aspect.Aspect
+import com.inari.util.aspect.AspectGroup
+import com.inari.util.indexed.IIndexedTypeKey
+
 
 interface ComponentType<C : Component> : Aspect {
-    val typeKey: IIndexedTypeKey
-    fun type(): Class<C> = typeKey.type()
-    override fun index(): Int = typeKey.index()
-    override fun aspectGroup(): AspectGroup = typeKey.aspectGroup()
-    override fun name(): String = typeKey.name()
+
+    val indexedTypeKey: IIndexedTypeKey
+
+    override val index: Int
+        get() = indexedTypeKey.index
+    override val aspectGroup: AspectGroup
+        get() = indexedTypeKey.aspectGroup
+    override val name: String
+        get() = indexedTypeKey.name
 }

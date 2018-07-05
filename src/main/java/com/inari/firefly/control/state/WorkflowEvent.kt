@@ -4,9 +4,9 @@ import com.inari.firefly.FFContext
 import com.inari.firefly.NO_COMP_ID
 import com.inari.firefly.NO_NAME
 import com.inari.firefly.component.CompId
-import com.inari.firefly.system.FFEvent
+import com.inari.util.event.Event
 
-object WorkflowEvent : FFEvent<WorkflowEvent.Listener>(createTypeKey(WorkflowEvent::class.java)) {
+object WorkflowEvent : Event<WorkflowEvent.Listener>() {
 
     enum class Type {
         WORKFLOW_STARTED,

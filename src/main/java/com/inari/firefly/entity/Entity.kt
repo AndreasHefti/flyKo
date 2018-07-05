@@ -1,29 +1,30 @@
 package com.inari.firefly.entity
 
-import com.inari.commons.lang.aspect.Aspect
-import com.inari.commons.lang.aspect.IAspects
-import com.inari.commons.lang.indexed.IndexedTypeSet
 import com.inari.firefly.NO_NAME
 import com.inari.firefly.Receiver
 import com.inari.firefly.component.CompId
 import com.inari.firefly.component.ComponentType
+import com.inari.firefly.entity.EntityComponent.Companion.ENTITY_COMPONENT_ASPECTS
 import com.inari.firefly.entity.EntityComponent.EntityComponentType
 import com.inari.firefly.system.component.SingleType
 import com.inari.firefly.system.component.SystemComponent
+import com.inari.util.aspect.Aspect
+import com.inari.util.aspect.Aspects
+import com.inari.util.indexed.IndexedTypeSet
 
 class Entity internal constructor(): SystemComponent() {
 
 
     @JvmField internal val components: IndexedTypeSet =
-        IndexedTypeSet(EntityComponent.Companion.TypeKey::class.java)
+        IndexedTypeSet(EntityComponent.Companion.EntityTypeKey::class.java, ENTITY_COMPONENT_ASPECTS)
 
-    val aspects: IAspects
+    val aspects: Aspects
         get() = components.aspect
 
     override var name: String = NO_NAME
         get() {
-            if (components.contains(EMeta.typeKey.index())) {
-                return components.get<EMeta>(EMeta.typeKey.index()).name
+            if (components.contains(EMeta.indexedTypeKey.index)) {
+                return components.get<EMeta>(EMeta.indexedTypeKey.index).name
             }
 
             return NO_NAME
@@ -33,11 +34,11 @@ class Entity internal constructor(): SystemComponent() {
         aspects.contains(aspect)
 
     operator fun <C : EntityComponent> get(type: EntityComponentType<C>): C =
-            components.get(type.typeKey.index())
+        components[type.index]
 
     fun <C : EntityComponent> with(cBuilder: EntityComponentBuilder<C>, configure: (C.() -> Unit)): CompId =
             cBuilder.builder{ comp ->
-                components.set(comp)
+                components + comp
                 comp
             } (configure)
 
@@ -47,7 +48,7 @@ class Entity internal constructor(): SystemComponent() {
         }
 
         for (aspect in components.aspect) {
-            EntityProvider.dispose(components.get<EntityComponent>(aspect.index()))
+            EntityProvider.dispose(components.get<EntityComponent>(aspect.index))
         }
 
         components.clear()
@@ -60,13 +61,14 @@ class Entity internal constructor(): SystemComponent() {
     }
 
     override fun toString(): String =
-            "Entity(name=${name()} " +
+            "Entity(name=$name " +
             "components=$components)"
 
+    override fun componentType(): ComponentType<Entity> =
+        Entity.Companion
 
-    override fun indexedTypeKey() = typeKey
     companion object : SingleType<Entity>() {
-        override val typeKey = SystemComponent.createTypeKey(Entity::class.java)
+        override val indexedTypeKey by lazy { TypeKeyBuilder.create(Entity::class.java) }
         public override fun createEmpty() = EntityProvider.get()
     }
 

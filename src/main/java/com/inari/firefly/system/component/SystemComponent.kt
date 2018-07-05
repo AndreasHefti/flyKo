@@ -1,10 +1,11 @@
 package com.inari.firefly.system.component
 
-import com.inari.commons.lang.aspect.AspectGroup
-import com.inari.commons.lang.indexed.*
 import com.inari.firefly.component.CompId
 import com.inari.firefly.component.NamedComponent
 import com.inari.firefly.NO_NAME
+import com.inari.firefly.component.ComponentType
+import com.inari.util.aspect.AspectGroup
+import com.inari.util.indexed.*
 
 abstract class SystemComponent protected constructor() : BaseIndexedObject(), IndexedType, NamedComponent {
 
@@ -19,8 +20,11 @@ abstract class SystemComponent protected constructor() : BaseIndexedObject(), In
         }
         get() = name
 
-    final override val componentId: CompId = CompId(index, indexedTypeKey())
-    final override fun indexedObjectType(): Class<out IndexedObject> = indexedTypeKey().type<IndexedObject>()
+    final override val componentId: CompId
+        by lazy { CompId(index, indexedTypeKey) }
+    @Suppress("UNCHECKED_CAST")
+    final override val indexedType: Class<out SystemComponent>
+        get() = indexedTypeKey.subType as Class<out SystemComponent>
 
     var initialized:Boolean = false
         internal set
@@ -28,7 +32,7 @@ abstract class SystemComponent protected constructor() : BaseIndexedObject(), In
         init()
         initialized = true
     }
-    open protected fun init() {
+    protected open fun init() {
         initialized = true
     }
     override fun dispose() {
@@ -55,17 +59,25 @@ abstract class SystemComponent protected constructor() : BaseIndexedObject(), In
     private fun <T> alreadyInit(name: String): T =
         throw IllegalStateException("No set on already initialized property allowed for: $name")
 
+    override val indexedTypeKey: IIndexedTypeKey
+        get() = componentType().indexedTypeKey
+
+    abstract fun componentType(): ComponentType<out SystemComponent>
+
+
     companion object {
+        val ASPECT_GROUP = AspectGroup("SystemComponent")
+    }
 
-        val SYSTEM_COMPONENT_ASPECTS = AspectGroup("SystemComponent")
+    protected object TypeKeyBuilder {
 
-        fun <T: SystemComponent> createTypeKey(type: Class<T>): IndexedTypeKey = Indexer.createIndexedTypeKey(TypeKey::class.java, type)
+        private class TypeKey(subType: Class<out SystemComponent>) :
+            IndexedTypeKey(SystemComponent::class.java, subType, ASPECT_GROUP)
 
-        class TypeKey<out C : SystemComponent> private constructor(indexedType: Class<C>) : IndexedTypeKey(indexedType) {
-            override fun aspectGroup(): AspectGroup = SYSTEM_COMPONENT_ASPECTS
-            override fun baseType(): Class<SystemComponent> = SystemComponent::class.java
-            @Suppress("UNCHECKED_CAST") fun baseComponentType(): Class<out C> = indexedType as Class<out C>
-            override fun toString(): String = "SystemComponent:" + type<C>().simpleName
-        }
+        fun <T: SystemComponent> create(subType: Class<T>): IIndexedTypeKey =
+            Indexer.getOrCreateIndexedTypeKey(
+                TypeKey::class.java,
+                subType
+            ) { TypeKey(subType) }
     }
 }

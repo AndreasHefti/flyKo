@@ -1,11 +1,12 @@
 package com.inari.firefly.entity
 
-import com.inari.commons.lang.aspect.AspectGroup
-import com.inari.commons.lang.aspect.Aspects
 import com.inari.firefly.NO_NAME
 import com.inari.firefly.component.ComponentRefResolver
+import com.inari.firefly.component.ComponentType
 import com.inari.firefly.component.NamedComponent
 import com.inari.firefly.control.Controller
+import com.inari.util.aspect.AspectGroup
+import com.inari.util.aspect.Aspects
 
 class EMeta private constructor() : EntityComponent(), NamedComponent {
 
@@ -28,22 +29,22 @@ class EMeta private constructor() : EntityComponent(), NamedComponent {
         get() = aspects
         set(value) {
             aspects.clear()
-            aspects.set(value)
+            aspects + value
         }
 
-
-    override fun indexedTypeKey() = typeKey
     override fun reset() {
         name = NO_NAME
         controllerRef = -1
     }
 
-    override fun toString(): String {
-        return "EMeta(controllerRef=$controllerRef, name='$name')"
-    }
+    override fun toString(): String =
+        "EMeta(controllerRef=$controllerRef, name='$name')"
+
+    override fun componentType(): ComponentType<EMeta> =
+        EMeta.Companion
 
     companion object : EntityComponentType<EMeta>() {
-        override val typeKey = EntityComponent.createTypeKey(EMeta::class.java)
+        override val indexedTypeKey by lazy { EntityComponent.create(EMeta::class.java) }
         override fun createEmpty() = EMeta()
 
         val ENTITY_META_ASPECTS = AspectGroup("ENTITY_META_ASPECTS")

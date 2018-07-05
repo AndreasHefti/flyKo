@@ -1,7 +1,7 @@
 package com.inari.firefly.external
 
-import com.inari.commons.graphics.RGBColor
 import com.inari.firefly.graphics.BlendMode
+import com.inari.util.graphics.RGBColor
 
 class ShapeData constructor(
     @JvmField var type: ShapeType = ShapeType.POINT,

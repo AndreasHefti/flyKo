@@ -1,7 +1,5 @@
 package com.inari.firefly.graphics.rendering
 
-import com.inari.commons.geom.Rectangle
-import com.inari.commons.graphics.RGBColor
 import com.inari.firefly.FFContext
 import com.inari.firefly.entity.Entity
 import com.inari.firefly.entity.EntityComponent
@@ -10,8 +8,9 @@ import com.inari.firefly.graphics.BlendMode
 import com.inari.firefly.graphics.ETransform
 import com.inari.firefly.graphics.text.EText
 import com.inari.firefly.graphics.text.FontAsset
-import com.inari.firefly.setFrom
 import com.inari.firefly.system.component.SingletonComponent
+import com.inari.util.geom.Rectangle
+import com.inari.util.graphics.RGBColor
 
 
 class SimpleTextRenderer private constructor() : Renderer() {
@@ -34,9 +33,9 @@ class SimpleTextRenderer private constructor() : Renderer() {
             val chars = text.textBuffer
 
             textRenderable.shader = text.shaderRef
-            textRenderable.tint.setFrom(text.tint)
+            textRenderable.tint(text.tint)
             textRenderable.blend = text.blend
-            renderingTransform.set(transform.data)
+            renderingTransform(transform.data)
             val horizontalStep = (font.charWidth + font.charSpace) * transform.data.scale.dx
             val verticalStep = (font.charHeight + font.lineSpace) * transform.data.scale.dy
 
@@ -81,8 +80,8 @@ class SimpleTextRenderer private constructor() : Renderer() {
     }
 
     companion object : SingletonComponent<SimpleTextRenderer, Renderer>() {
-        override val typeKey = Renderer.typeKey
-        override fun subType() = SimpleTextRenderer::class.java
+        override val indexedTypeKey = Renderer.indexedTypeKey
+        override val subType = SimpleTextRenderer::class.java
         override fun create() = SimpleTextRenderer()
 
         private val MATCHING_ASPECTS = EntityComponent.ENTITY_COMPONENT_ASPECTS.createAspects(

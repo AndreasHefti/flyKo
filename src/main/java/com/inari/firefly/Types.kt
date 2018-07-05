@@ -1,7 +1,5 @@
 package com.inari.firefly
 
-import com.inari.commons.lang.aspect.Aspect
-
 typealias Expr<C> = (C) -> Unit
 
 typealias Predicate<C> = (C) -> Boolean

@@ -1,6 +1,5 @@
 package com.inari.firefly.graphics.rendering
 
-import com.inari.commons.geom.Rectangle
 import com.inari.firefly.FFContext
 import com.inari.firefly.entity.Entity
 import com.inari.firefly.entity.EntityComponent
@@ -9,6 +8,7 @@ import com.inari.firefly.graphics.ETransform
 import com.inari.firefly.graphics.tile.ETile
 import com.inari.firefly.graphics.tile.TileGridSystem
 import com.inari.firefly.system.component.SingletonComponent
+import com.inari.util.geom.Rectangle
 
 class FullTileGridRenderer private constructor() : Renderer() {
 
@@ -24,18 +24,17 @@ class FullTileGridRenderer private constructor() : Renderer() {
             while (iterator.hasNext()) {
                 val entity = EntitySystem.entities[iterator.next()]
 
-                transformCollector.set(entity[ETransform].data)
-                transformCollector.addOffset(iterator.worldXPos, iterator.worldYPos)
+                transformCollector(entity[ETransform].data)
+                transformCollector + iterator.worldPosition
                 graphics.renderSprite(entity[ETile], transformCollector.data)
             }
         }
     }
 
     companion object : SingletonComponent<FullTileGridRenderer, Renderer>() {
-        override val typeKey = Renderer.typeKey
-        override fun subType() = FullTileGridRenderer::class.java
+        override val indexedTypeKey = Renderer.indexedTypeKey
+        override val subType = FullTileGridRenderer::class.java
         override fun create() = FullTileGridRenderer()
-
         private val MATCHING_ASPECTS = EntityComponent.ENTITY_COMPONENT_ASPECTS.createAspects(
             ETransform, ETile
         )

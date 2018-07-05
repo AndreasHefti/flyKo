@@ -1,6 +1,5 @@
 package com.inari.firefly.graphics
 
-import com.inari.commons.lang.indexed.IndexedTypeKey
 import com.inari.firefly.FFContext
 import com.inari.firefly.asset.Asset
 import com.inari.firefly.external.ShaderData
@@ -46,8 +45,8 @@ class ShaderAsset private constructor() : Asset() {
     }
 
     companion object : SubType<ShaderAsset, Asset>() {
-        override val typeKey: IndexedTypeKey = Asset.typeKey
-        override fun subType() = ShaderAsset::class.java
+        override val indexedTypeKey = Asset.indexedTypeKey
+        override val subType = ShaderAsset::class.java
         override fun createEmpty() = ShaderAsset()
     }
 }

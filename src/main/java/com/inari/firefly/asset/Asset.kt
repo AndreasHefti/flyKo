@@ -21,8 +21,11 @@ abstract class Asset protected constructor(): SystemComponent() {
 
     fun loaded():Boolean = FFContext.isActive(componentId)
 
-    final override fun indexedTypeKey() = typeKey
+    override fun componentType(): ComponentType<Asset> =
+        Asset.Companion
+
     companion object : ComponentType<Asset> {
-        override val typeKey = SystemComponent.createTypeKey(Asset::class.java)
+        override val indexedTypeKey
+            by lazy { TypeKeyBuilder.create(Asset::class.java) }
     }
 }

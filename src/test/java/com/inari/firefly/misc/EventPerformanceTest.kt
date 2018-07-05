@@ -4,7 +4,7 @@ import com.inari.util.geom.Position
 import com.inari.firefly.FFContext
 import com.inari.firefly.TestApp
 import com.inari.firefly.measureTime
-import com.inari.firefly.system.FFEvent
+import com.inari.util.event.Event
 import org.junit.Before
 import org.junit.Test
 
@@ -20,7 +20,7 @@ interface TestListenerInterfaceObj {
     operator fun invoke(i1: Position, i2: Position, i3: Position)
 }
 
-object TestEvent1 : FFEvent<TestListenerType>(createTypeKey(TestEvent1::class.java)) {
+object TestEvent1 : Event<TestListenerType>() {
 
     private var i1: Int = -1
     private var i2: Int = -1
@@ -37,7 +37,7 @@ object TestEvent1 : FFEvent<TestListenerType>(createTypeKey(TestEvent1::class.ja
     }
 }
 
-object TestEvent2 : FFEvent<TestListenerInterface>(createTypeKey(TestEvent2::class.java)) {
+object TestEvent2 : Event<TestListenerInterface>() {
 
     private var i1: Int = -1
     private var i2: Int = -1
@@ -54,7 +54,7 @@ object TestEvent2 : FFEvent<TestListenerInterface>(createTypeKey(TestEvent2::cla
     }
 }
 
-object TestEvent3 : FFEvent<TestListenerTypeObj>(createTypeKey(TestEvent3::class.java)) {
+object TestEvent3 : Event<TestListenerTypeObj>() {
 
     private var i1: Position = Position()
     private var i2: Position = Position()
@@ -71,7 +71,7 @@ object TestEvent3 : FFEvent<TestListenerTypeObj>(createTypeKey(TestEvent3::class
     }
 }
 
-object TestEvent4 : FFEvent<TestListenerInterfaceObj>(createTypeKey(TestEvent4::class.java)) {
+object TestEvent4 : Event<TestListenerInterfaceObj>() {
 
     private var i1: Position = Position()
     private var i2: Position = Position()
@@ -109,7 +109,7 @@ class EventPerformanceTest {
         FFContext.registerListener(TestEvent1, testListenerType)
         FFContext.registerListener(TestEvent2, testListenerInterface)
 
-        measureTime("primitive type listener", 10000000) {
+        measureTime("primitive subType listener", 10000000) {
             TestEvent1.send(1, 2, 4)
         }
 
@@ -128,7 +128,7 @@ class EventPerformanceTest {
             }
         })
 
-        measureTime("primitive type listener with lambda", 10000000) {
+        measureTime("primitive subType listener with lambda", 10000000) {
             TestEvent1.send(1, 2, 4)
         }
 
@@ -150,7 +150,7 @@ class EventPerformanceTest {
         FFContext.registerListener(TestEvent3, testListenerType)
         FFContext.registerListener(TestEvent4, testListenerInterface)
 
-        measureTime("Obj type listener", 10000000) {
+        measureTime("Obj subType listener", 10000000) {
             TestEvent3.send(pos1, pos1, pos1)
         }
 
@@ -169,7 +169,7 @@ class EventPerformanceTest {
             }
         })
 
-        measureTime("Obj type listener with lambda", 10000000) {
+        measureTime("Obj subType listener with lambda", 10000000) {
             TestEvent3.send(pos1, pos1, pos1)
         }
 

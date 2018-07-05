@@ -20,7 +20,7 @@ class ViewLayerMapping<C : ViewLayerAware> internal constructor(
         view.index in mapping
 
     operator fun contains(view: View): Boolean =
-        view.index() in mapping
+        view.index in mapping
 
     operator fun contains(viewLayer: ViewLayerAware): Boolean =
         viewLayer.viewIndex in mapping &&
@@ -40,7 +40,7 @@ class ViewLayerMapping<C : ViewLayerAware> internal constructor(
         get(view.index)
 
     operator fun get(view: View): DynArrayRO<C> =
-        get(view.index())
+        get(view.index)
 
     operator fun get(view: Int, layer: Int): C =
         this[view][layer]
@@ -52,7 +52,7 @@ class ViewLayerMapping<C : ViewLayerAware> internal constructor(
         this[view][layer.index]
 
     operator fun get(view: View, layer: Layer): C =
-        this[view][layer.index()]
+        this[view][layer.index]
 
     fun add(c: C) {
         internalGet(c.viewIndex).set(c.layerIndex, c)

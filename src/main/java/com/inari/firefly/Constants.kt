@@ -1,14 +1,14 @@
 package com.inari.firefly
 
 import com.inari.util.geom.PositionF
-import com.inari.commons.lang.aspect.AspectGroup
-import com.inari.commons.lang.indexed.IIndexedTypeKey
-import com.inari.commons.lang.indexed.Indexed
 import com.inari.firefly.component.CompId
 import com.inari.firefly.entity.Entity
 import com.inari.firefly.entity.property.VirtualPropertyRef
 import com.inari.firefly.external.FFTimer
 import com.inari.firefly.graphics.view.camera.CameraPivot
+import com.inari.util.aspect.AspectGroup
+import com.inari.util.indexed.IIndexedTypeKey
+import com.inari.util.indexed.Indexed
 
 const val SYSTEM_FONT = "SYSTEM_FONT"
 
@@ -30,20 +30,21 @@ object GLBlendMode {
     const val GL_ONE_MINUS_CONSTANT_ALPHA = 0x8004
 }
 
+const val NO_NAME: String = "[[NO_NAME]]"
+const val NO_STATE: String = "[[NO_STATE]]"
+const val NO_PROGRAM: String = "[[NO_PROGRAM]]"
+const val BASE_VIEW: String = "[[BASE_VIEW]]"
 
-
-@JvmField val NO_NAME: String = "[[NO_NAME]]"
 @JvmField val NO_NAMED = object : Named { override val name = NO_NAME }
-@JvmField val NO_STATE: String = "[[NO_STATE]]"
-@JvmField val NO_PROGRAM: String = "[[NO_PROGRAM]]"
 @JvmField val NO_COMP_ID: CompId = CompId(-1, object : IIndexedTypeKey {
-    override fun index(): Int = throw IllegalAccessException()
-    override fun baseType(): Class<*> = throw IllegalAccessException()
-    override fun <T> type(): Class<T> = throw IllegalAccessException()
-    override fun aspectGroup(): AspectGroup = throw IllegalAccessException()
-    override fun name(): String = NO_NAME
+    override val index: Int get() = throw IllegalAccessException()
+    override val indexedType get() = throw IllegalAccessException()
+    override val subType get() = throw IllegalAccessException()
+    override val baseType get() = throw IllegalAccessException()
+    override val aspectGroup: AspectGroup get() = throw IllegalAccessException()
+    override val name: String get() = NO_NAME
 })
-@JvmField val NO_INDEXED = Indexed { -1 }
+@JvmField val NO_INDEXED = object : Indexed { override val index: Int = -1 }
 @JvmField val NO_PROPERTY_REF: VirtualPropertyRef = object : VirtualPropertyRef {
     override val propertyName: String = NO_NAME
     override val type: Class<*> get() = throw IllegalAccessException()
@@ -54,7 +55,7 @@ object GLBlendMode {
     override operator fun invoke(): PositionF = throw IllegalAccessException()
 }
 
-@JvmField val BASE_VIEW: String = "[[BASE_VIEW]]"
+
 @JvmField val NULL_INT_EXPR: IntExpr = object : IntExpr {
     override fun invoke(i: Int) { throw IllegalStateException("NULL_INT_EXPR called") }
 }

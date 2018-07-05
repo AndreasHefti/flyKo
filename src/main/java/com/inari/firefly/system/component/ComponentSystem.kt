@@ -1,17 +1,17 @@
 package com.inari.firefly.system.component
 
-import com.inari.commons.lang.aspect.IAspects
 import com.inari.commons.lang.list.DynArray
 import com.inari.commons.lang.list.DynArrayRO
 import com.inari.commons.lang.list.IntBagRO
 import com.inari.firefly.*
 import com.inari.firefly.component.*
 import com.inari.firefly.system.FFSystem
+import com.inari.util.aspect.Aspects
 import java.util.*
 
 interface ComponentSystem : FFSystem {
 
-    val supportedComponents: IAspects
+    val supportedComponents: Aspects
 
     companion object {
         fun <C : NamedComponent> createComponentMapping(
@@ -33,7 +33,7 @@ interface ComponentSystem : FFSystem {
     }
 
     private class ComponentMapImpl<C : NamedComponent>(
-        override val type: ComponentType<C>,
+        override val componentType: ComponentType<C>,
         size: Int,
         exp: Int,
         override val activationMapping: Boolean,
@@ -41,8 +41,9 @@ interface ComponentSystem : FFSystem {
         private val listener: (C, ComponentMap.MapAction) -> Unit
     ) : ComponentMap<C> {
 
-        override val typeIndex: Int = type.typeKey.index()
-        private val _map: DynArray<C> = DynArray.create(type.typeKey.type(), size, exp)
+        override val typeIndex: Int = componentType.indexedTypeKey.index
+        @Suppress("UNCHECKED_CAST")
+        private val _map: DynArray<C> = DynArray.create(componentType.indexedTypeKey.subType as Class<C>, size, exp)
         override val map: DynArrayRO<C> = _map
         private val active: BitSet = BitSet()
         private val nameMap: MutableMap<String, C>? = if (nameMapping) HashMap() else null
@@ -76,13 +77,13 @@ interface ComponentSystem : FFSystem {
         override fun <CC : C> getAs(index: Int): CC = get(index) as CC
         @Suppress("UNCHECKED_CAST")
         override fun <CC : C> getAs(name: String): CC = get(name) as CC
-        override fun contains(id: CompId): Boolean = contains(id.checkType(type.type()).index)
-        override fun activate(id: CompId) = activate(id.checkType(type.type()).index)
-        override fun deactivate(id: CompId) = deactivate(id.checkType(type.type()).index)
-        override fun isActive(id: CompId): Boolean = isActive(id.checkType(type.type()).index)
-        override fun get(id: CompId): C = get(id.checkType(type.type()).index)
-        override fun <CC : C> getAs(id: CompId): CC = getAs(id.checkType(type.type()).index)
-        override fun delete(id: CompId) = delete(id.checkType(type.type()).index)
+        override fun contains(id: CompId): Boolean = contains(id.checkType(componentType).index)
+        override fun activate(id: CompId) = activate(id.checkType(componentType).index)
+        override fun deactivate(id: CompId) = deactivate(id.checkType(componentType).index)
+        override fun isActive(id: CompId): Boolean = isActive(id.checkType(componentType).index)
+        override fun get(id: CompId): C = get(id.checkType(componentType).index)
+        override fun <CC : C> getAs(id: CompId): CC = getAs(id.checkType(componentType).index)
+        override fun delete(id: CompId) = delete(id.checkType(componentType).index)
         override fun delete(name: String) = delete(indexForName(name))
 
         override fun delete(index: Int) {
@@ -108,12 +109,12 @@ interface ComponentSystem : FFSystem {
 
         override fun deleteAll(predicate: Predicate<C>) =
             _map.filter(predicate)
-                .forEach { comp -> delete(comp.index()) }
+                .forEach { comp -> delete(comp.index) }
 
         override fun idForName(name: String): CompId {
             if (nameMapping) {
                 return nameMap?.get(name)?.componentId ?:
-                    throw RuntimeException("Component: ${type.typeKey} for name: $name not found")
+                    throw RuntimeException("Component: ${componentType.indexedTypeKey} for name: $name not found")
             }
 
             val id: Int = (0 until _map.capacity()).firstOrNull {
@@ -121,7 +122,7 @@ interface ComponentSystem : FFSystem {
             } ?: -1
 
             return when(id) {
-                -1 -> throw RuntimeException("Component: ${type.typeKey} for name: $name not found")
+                -1 -> throw RuntimeException("Component: ${componentType.indexedTypeKey} for name: $name not found")
                 else -> map.get(id).componentId
             }
         }
@@ -129,14 +130,14 @@ interface ComponentSystem : FFSystem {
         override fun indexForName(name: String): Int {
             val result = internalIndexForName(name)
             if (result < 0)
-                throw RuntimeException("Component: ${type.typeKey} for name: $name not found")
+                throw RuntimeException("Component: ${componentType.indexedTypeKey} for name: $name not found")
 
             return result
         }
 
         private fun internalIndexForName(name: String): Int {
             if (nameMapping)
-                return nameMap?.get(name)?.index() ?: -1
+                return nameMap?.get(name)?.index ?: -1
 
             return (0 until _map.capacity()).firstOrNull {
                 _map[it] != null && _map[it].name == name
@@ -189,27 +190,24 @@ interface ComponentSystem : FFSystem {
         }
 
         override fun clear() {
-            for (c in _map) {
-                delete(c.index())
-            }
+            for (c in _map)
+                delete(c.index)
+
             _map.clear()
-            if (nameMapping) {
+            if (nameMapping)
                 nameMap?.clear()
-            }
-            if (activationMapping) {
+            if (activationMapping)
                 active.clear()
-            }
         }
 
+
         private fun <CC : C> add(c: CC, alsoActivate: Boolean = false): CC {
-            _map.set(c.index(), c)
+            _map.set(c.index, c)
             listener(c, ComponentMap.MapAction.CREATED)
-            if (nameMapping && c.name !== NO_NAME) {
+            if (nameMapping && c.name !== NO_NAME)
                 nameMap?.put(c.name, c)
-            }
-            if (alsoActivate) {
-                activate(c.index())
-            }
+            if (alsoActivate)
+                activate(c.index)
             return c
         }
     }

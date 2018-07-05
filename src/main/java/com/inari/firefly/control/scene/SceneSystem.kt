@@ -1,6 +1,5 @@
 package com.inari.firefly.control.scene
 
-import com.inari.commons.lang.aspect.IAspects
 import com.inari.firefly.Call
 import com.inari.firefly.FFApp
 import com.inari.firefly.FFContext
@@ -8,11 +7,12 @@ import com.inari.firefly.component.ComponentMap
 import com.inari.firefly.component.ComponentMapRO
 import com.inari.firefly.system.component.ComponentSystem
 import com.inari.firefly.system.component.SystemComponent
+import com.inari.util.aspect.Aspects
 
 object SceneSystem : ComponentSystem {
 
-    override val supportedComponents: IAspects =
-        SystemComponent.SYSTEM_COMPONENT_ASPECTS.createAspects(Scene)
+    override val supportedComponents: Aspects =
+        SystemComponent.ASPECT_GROUP.createAspects(Scene)
 
     private val _scenes = ComponentSystem.createComponentMapping(
         Scene,
@@ -20,7 +20,7 @@ object SceneSystem : ComponentSystem {
         activationMapping = true,
         listener = { scene, action -> when (action) {
             //ComponentMap.MapAction.ACTIVATED       -> internalRun(scene.index())
-            ComponentMap.MapAction.DEACTIVATED     -> internalStop(scene.index())
+            ComponentMap.MapAction.DEACTIVATED     -> internalStop(scene.index)
             //ComponentMap.MapAction.DELETED         -> internalDelete(scene.index())
             else -> {}
         } }
@@ -82,7 +82,7 @@ object SceneSystem : ComponentSystem {
         val scene = _scenes[index]
         scene.callback()
         if (scene.removeAfterRun)
-            _scenes.delete(scene.index())
+            _scenes.delete(scene.index)
         else
             scene.sceneReset()
     }

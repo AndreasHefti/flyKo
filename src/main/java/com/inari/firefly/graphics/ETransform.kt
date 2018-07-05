@@ -1,9 +1,8 @@
 package com.inari.firefly.graphics
 
 import com.inari.util.geom.PositionF
-import com.inari.commons.geom.Vector2f
-import com.inari.commons.lang.indexed.IIndexedTypeKey
 import com.inari.firefly.component.ComponentRefResolver
+import com.inari.firefly.component.ComponentType
 import com.inari.firefly.entity.Entity
 import com.inari.firefly.entity.EntityComponent
 import com.inari.firefly.entity.property.FloatPropertyAccessor
@@ -12,7 +11,7 @@ import com.inari.firefly.external.TransformData
 import com.inari.firefly.graphics.view.Layer
 import com.inari.firefly.graphics.view.View
 import com.inari.firefly.graphics.view.ViewLayerAware
-import com.inari.firefly.setFrom
+import com.inari.util.geom.Vector2f
 
 class ETransform private constructor() : EntityComponent(), ViewLayerAware {
 
@@ -24,13 +23,13 @@ class ETransform private constructor() : EntityComponent(), ViewLayerAware {
     val ff_Layer = ComponentRefResolver(Layer) { index-> layerRef = index }
     var ff_Position: PositionF
         get() = data.position
-        set(value) = data.position.setFrom(value)
+        set(value) = data.position(value)
     var ff_Pivot: PositionF
         get() = data.pivot
-        set(value) = data.pivot.setFrom(value)
+        set(value) = data.pivot(value)
     var ff_Scale: Vector2f
         get() = data.scale
-        set(value) { data.scale.setFrom(value) }
+        set(value) { data.scale(value) }
     var ff_Rotation: Float
         get() = data.rotation
         set(value) { data.rotation = value }
@@ -130,9 +129,11 @@ class ETransform private constructor() : EntityComponent(), ViewLayerAware {
         }
     }
 
-    override fun indexedTypeKey(): IIndexedTypeKey = typeKey
+    override fun componentType(): ComponentType<ETransform> =
+        ETransform.Companion
+
     companion object : EntityComponentType<ETransform>() {
-        override val typeKey = EntityComponent.createTypeKey(ETransform::class.java)
+        override val indexedTypeKey by lazy { EntityComponent.create(ETransform::class.java) }
         override fun createEmpty() = ETransform()
     }
 }

@@ -2,9 +2,9 @@ package com.inari.firefly.asset
 
 import com.inari.firefly.component.CompId
 import com.inari.firefly.FFContext
-import com.inari.firefly.system.FFEvent
+import com.inari.util.event.Event
 
-object AssetEvent : FFEvent<AssetEvent.Listener>(createTypeKey(AssetEvent::class.java)) {
+object AssetEvent : Event<AssetEvent.Listener>() {
 
     enum class Type {
         ASSET_CREATED,

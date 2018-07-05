@@ -1,22 +1,22 @@
 package com.inari.firefly.graphics.view
 
-import com.inari.commons.geom.Rectangle
-import com.inari.commons.lang.aspect.IAspects
 import com.inari.commons.lang.list.DynArray
 import com.inari.commons.lang.list.IntBag
+import com.inari.firefly.BASE_VIEW
 import com.inari.firefly.FFContext
-import com.inari.firefly.NO_NAME
 import com.inari.firefly.component.ComponentMap
 import com.inari.firefly.component.ComponentMap.MapAction.*
 import com.inari.firefly.control.ControllerSystem
 import com.inari.firefly.external.ViewData
 import com.inari.firefly.system.component.ComponentSystem
-import com.inari.firefly.system.component.SystemComponent.Companion.SYSTEM_COMPONENT_ASPECTS
+import com.inari.firefly.system.component.SystemComponent
+import com.inari.util.aspect.Aspects
+import com.inari.util.geom.Rectangle
 
 object ViewSystem : ComponentSystem {
 
-    override val supportedComponents: IAspects =
-        SYSTEM_COMPONENT_ASPECTS.createAspects(View, Layer)
+    override val supportedComponents: Aspects =
+        SystemComponent.ASPECT_GROUP.createAspects(View, Layer)
 
     @JvmField val views = ComponentSystem.createComponentMapping(
         View,
@@ -47,8 +47,11 @@ object ViewSystem : ComponentSystem {
 
     init {
         baseView = View.buildAndGet {
-            ff_Name = NO_NAME
-            ff_Bounds = Rectangle(0, 0, FFContext.screenWidth, FFContext.screenHeight)
+            ff_Name = BASE_VIEW
+            ff_Bounds = Rectangle(
+                width = FFContext.screenWidth,
+                height = FFContext.screenHeight
+            )
             baseView = true
         }
 
@@ -56,7 +59,7 @@ object ViewSystem : ComponentSystem {
     }
 
     private fun created(view: View) {
-        val index = view.index()
+        val index = view.index
         if (index !in layersOfView)
             layersOfView.set(index, IntBag(10, -1, 5))
 
@@ -85,7 +88,7 @@ object ViewSystem : ComponentSystem {
 
         updateViewMapping()
 
-        val i = layersOfView.get(view.index()).iterator()
+        val i = layersOfView.get(view.index).iterator()
         while (i.hasNext())
             layers.deactivate(i.next())
 
@@ -101,7 +104,7 @@ object ViewSystem : ComponentSystem {
             throw IllegalStateException("Base View cannot be deactivated")
 
         // delete also all layers of this view
-        val index = view.index()
+        val index = view.index
         if (layersOfView.contains(index)) {
             val i = layersOfView.get(index).iterator()
             while (i.hasNext())
@@ -120,7 +123,7 @@ object ViewSystem : ComponentSystem {
 
         layersOfView
             .get(layer.viewRef)
-            .add(layer.index())
+            .add(layer.index)
     }
 
     private fun deleted(layer: Layer) {
@@ -147,7 +150,7 @@ object ViewSystem : ComponentSystem {
             if (view.baseView)
                 continue
 
-            views.delete(view.index())
+            views.delete(view.index)
         }
         layers.clear()
     }

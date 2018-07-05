@@ -1,9 +1,9 @@
 package com.inari.firefly.physics.contact
 
-import com.inari.commons.geom.BitMask
-import com.inari.commons.geom.Rectangle
-import com.inari.commons.GeomUtils
-import com.inari.commons.lang.aspect.Aspect
+import com.inari.util.aspect.Aspect
+import com.inari.util.geom.BitMask
+import com.inari.util.geom.GeomUtils
+import com.inari.util.geom.Rectangle
 
 
 class Contact internal constructor() {
@@ -11,7 +11,7 @@ class Contact internal constructor() {
     @JvmField internal var entity = -1
     @JvmField internal val bounds = Rectangle()
     @JvmField internal val intersection = Rectangle()
-    @JvmField internal val mask = BitMask(0, 0)
+    @JvmField internal val mask = BitMask(width = 0, height = 0)
     @JvmField internal var contact = ContactSystem.UNDEFINED_CONTACT_TYPE
     @JvmField internal var material = ContactSystem.UNDEFINED_MATERIAL
 
@@ -40,7 +40,7 @@ class Contact internal constructor() {
         if (GeomUtils.contains(intersection, x, y)) {
             if (!mask.isEmpty) {
                 val region = mask.region()
-                return mask.getBit(x - region.x, y - region.y)
+                return mask.getBit(x - region.pos.x, y - region.pos.y)
             }
             return true
         }

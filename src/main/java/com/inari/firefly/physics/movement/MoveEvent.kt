@@ -1,9 +1,9 @@
 package com.inari.firefly.physics.movement
 
-import com.inari.firefly.system.FFEvent
+import com.inari.util.event.Event
 import java.util.*
 
-object MoveEvent : FFEvent<MoveEvent.Listener>(createTypeKey(MoveEvent::class.java)) {
+object MoveEvent : Event<MoveEvent.Listener>() {
 
     @JvmField internal val entities: BitSet = BitSet(100)
 

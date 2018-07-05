@@ -1,9 +1,8 @@
 package com.inari.firefly.physics.contact
 
-import com.inari.commons.geom.Rectangle
-import com.inari.commons.lang.IntIterator
 import com.inari.firefly.entity.Entity
 import com.inari.firefly.system.component.SubType
+import com.inari.util.geom.Rectangle
 import java.util.*
 
 class SimpleContactMap : ContactMap() {
@@ -16,11 +15,11 @@ class SimpleContactMap : ContactMap() {
     }
 
     override fun add(entity: Entity) =
-        entities.set(entity.index())
+        entities.set(entity.index)
 
 
     override fun remove(entity: Entity) =
-        entities.set(entity.index(), false)
+        entities.set(entity.index, false)
 
 
     override fun update(entity: Entity) {
@@ -32,7 +31,7 @@ class SimpleContactMap : ContactMap() {
             pool.add(EntityIdIterator())
 
         val iterator = pool.pop()
-        iterator.reset(entity.index())
+        iterator.reset(entity.index)
         return iterator
     }
 
@@ -42,13 +41,13 @@ class SimpleContactMap : ContactMap() {
 
 
     companion object : SubType<SimpleContactMap, ContactMap>() {
-        override val typeKey= ContactMap.typeKey
-        override fun subType() = SimpleContactMap::class.java
+        override val indexedTypeKey= ContactMap.indexedTypeKey
+        override val subType = SimpleContactMap::class.java
         override fun createEmpty() = SimpleContactMap()
     }
 
 
-    private inner class EntityIdIterator : IntIterator {
+    private inner class EntityIdIterator : IntIterator() {
 
         private var index: Int = -1
         private var exclude: Int = -1
@@ -56,7 +55,7 @@ class SimpleContactMap : ContactMap() {
         override fun hasNext(): Boolean =
             index >= 0
 
-        override fun next(): Int {
+        override fun nextInt(): Int {
             val result = index
             findNext()
             return result

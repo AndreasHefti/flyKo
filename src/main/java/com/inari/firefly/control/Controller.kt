@@ -9,7 +9,6 @@ import com.inari.firefly.system.component.SystemComponent
 
 abstract class Controller protected constructor() : SystemComponent() {
 
-
     @JvmField internal var scheduler: FFTimer.Scheduler = INFINITE_SCHEDULER
 
     var ff_UpdateResolution: Float
@@ -24,9 +23,11 @@ abstract class Controller protected constructor() : SystemComponent() {
 
     abstract fun update()
 
-    override final fun indexedTypeKey() = Controller.typeKey
+    override fun componentType(): ComponentType<Controller> =
+        Controller.Companion
+
     companion object : ComponentType<Controller> {
-        override val typeKey = SystemComponent.createTypeKey(Controller::class.java)
+        override val indexedTypeKey by lazy { TypeKeyBuilder.create(Controller::class.java) }
     }
 
 }

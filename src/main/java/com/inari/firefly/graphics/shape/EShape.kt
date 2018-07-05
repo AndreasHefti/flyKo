@@ -1,8 +1,7 @@
 package com.inari.firefly.graphics.shape
 
-import com.inari.commons.graphics.RGBColor
-import com.inari.commons.lang.indexed.IIndexedTypeKey
 import com.inari.firefly.asset.AssetInstanceRefResolver
+import com.inari.firefly.component.ComponentType
 import com.inari.firefly.entity.Entity
 import com.inari.firefly.entity.EntityComponent
 import com.inari.firefly.entity.property.FloatPropertyAccessor
@@ -10,7 +9,7 @@ import com.inari.firefly.entity.property.VirtualPropertyRef
 import com.inari.firefly.external.ShapeData
 import com.inari.firefly.external.ShapeType
 import com.inari.firefly.graphics.BlendMode
-import com.inari.firefly.setFrom
+import com.inari.util.graphics.RGBColor
 import java.util.*
 
 class EShape private constructor(): EntityComponent() {
@@ -25,7 +24,7 @@ class EShape private constructor(): EntityComponent() {
         set(value) { data.vertices = value }
     var ff_Color: RGBColor
         get() = data.color1
-        set(value) = data.color1.setFrom(value)
+        set(value) = data.color1(value)
     var ff_GradientColor1: RGBColor
         get() = data.color2!!
         set(value) {data.color2 = value}
@@ -51,7 +50,7 @@ class EShape private constructor(): EntityComponent() {
     }
 
     override fun toString(): String {
-        return "EShape(type=$data.type, " +
+        return "EShape(subType=$data.subType, " +
             "vertices=${Arrays.toString(data.vertices)}, " +
             "color1=$data.color1, " +
             "color2=$data.color2, " +
@@ -107,9 +106,11 @@ class EShape private constructor(): EntityComponent() {
         }
     }
 
-    override fun indexedTypeKey(): IIndexedTypeKey = typeKey
+    override fun componentType(): ComponentType<EShape> =
+        EShape.Companion
+
     companion object : EntityComponentType<EShape>() {
-        override val typeKey = EntityComponent.createTypeKey(EShape::class.java)
+        override val indexedTypeKey by lazy { EntityComponent.create(EShape::class.java) }
         override fun createEmpty() = EShape()
     }
 }

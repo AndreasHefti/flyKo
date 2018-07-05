@@ -1,12 +1,12 @@
 package com.inari.firefly
 
-import com.inari.commons.event.IEventDispatcher
-import com.inari.commons.geom.Rectangle
 import com.inari.commons.lang.list.DynArray
 import com.inari.commons.lang.list.DynArrayRO
 import com.inari.firefly.external.*
 import com.inari.firefly.graphics.view.ViewSystem
-import com.inari.firefly.system.FFEvent
+import com.inari.util.event.Event
+import com.inari.util.event.IEventDispatcher
+import com.inari.util.geom.Rectangle
 
 abstract class FFApp protected constructor(
     eventDispatcher: () -> IEventDispatcher,
@@ -55,10 +55,12 @@ abstract class FFApp protected constructor(
     private fun render(view: ViewData) {
         RenderEvent.viewIndex = view.index
         RenderEvent.layerIndex = 0
-        RenderEvent.clip.x = Math.floor(view.worldPosition.x.toDouble()).toInt()
-        RenderEvent.clip.y = Math.floor(view.worldPosition.y.toDouble()).toInt()
-        RenderEvent.clip.width = view.bounds.width
-        RenderEvent.clip.height = view.bounds.height
+        RenderEvent.clip(
+            Math.floor(view.worldPosition.x.toDouble()).toInt(),
+            Math.floor(view.worldPosition.y.toDouble()).toInt(),
+            view.bounds.width,
+            view.bounds.height
+        )
 
         graphics.startRendering(view, true)
 
@@ -108,7 +110,7 @@ abstract class FFApp protected constructor(
     }
 
 
-    object UpdateEvent : FFEvent<UpdateEvent.Listener>(createTypeKey(UpdateEvent::class.java)) {
+    object UpdateEvent : Event<UpdateEvent.Listener>() {
 
         override fun notify(listener: UpdateEvent.Listener) =
             listener()
@@ -118,7 +120,7 @@ abstract class FFApp protected constructor(
         }
     }
 
-    object RenderEvent : FFEvent<RenderEvent.Listener>(createTypeKey(RenderEvent::class.java)) {
+    object RenderEvent : Event<RenderEvent.Listener>() {
 
         internal var viewIndex: Int = -1
         internal var layerIndex: Int = -1
@@ -132,7 +134,7 @@ abstract class FFApp protected constructor(
         }
     }
 
-    object PostRenderEvent : FFEvent<PostRenderEvent.Listener>(createTypeKey(PostRenderEvent::class.java)) {
+    object PostRenderEvent : Event<PostRenderEvent.Listener>() {
 
         override fun notify(listener: PostRenderEvent.Listener) =
             listener()

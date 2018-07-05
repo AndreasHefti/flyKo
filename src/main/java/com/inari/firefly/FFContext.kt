@@ -1,9 +1,5 @@
 package com.inari.firefly
 
-import com.inari.commons.event.AspectedEventListener
-import com.inari.commons.event.IEventDispatcher
-import com.inari.commons.lang.indexed.IIndexedTypeKey
-import com.inari.commons.lang.indexed.Indexed
 import com.inari.commons.lang.list.DynArray
 import com.inari.firefly.asset.AssetSystem
 import com.inari.firefly.component.*
@@ -14,12 +10,13 @@ import com.inari.firefly.external.FFAudio
 import com.inari.firefly.external.FFGraphics
 import com.inari.firefly.external.FFInput
 import com.inari.firefly.external.FFTimer
-import com.inari.firefly.system.FFAspectedEvent
-import com.inari.firefly.system.FFEvent
-import com.inari.firefly.system.component.ComponentSystem
-import com.inari.firefly.system.component.ISubType
-import com.inari.firefly.system.component.SingletonComponent
-import com.inari.firefly.system.component.SystemComponent
+import com.inari.firefly.system.component.*
+import com.inari.util.event.AspectedEvent
+import com.inari.util.event.AspectedEventListener
+import com.inari.util.event.Event
+import com.inari.util.event.IEventDispatcher
+import com.inari.util.indexed.IIndexedTypeKey
+import com.inari.util.indexed.Indexed
 
 
 object FFContext {
@@ -52,7 +49,7 @@ object FFContext {
 
     fun <S : ComponentSystem> loadSystem(system: S) {
         for (aspect in system.supportedComponents) {
-            systemTypeMapping.set(aspect.index(), system)
+            systemTypeMapping.set(aspect.index, system)
         }
     }
 
@@ -65,14 +62,14 @@ object FFContext {
         mapper(id.typeKey)
 
     fun <C : Component> mapper(type: ComponentType<C>): ComponentMap<C> =
-        mapper(type.typeKey)
+        mapper(type.indexedTypeKey)
 
 
     @Suppress("UNCHECKED_CAST")
     fun <C : Component> mapper(key: IIndexedTypeKey): ComponentMap<C> {
-        val index = key.index()
+        val index = key.index
         if (!componentMaps.contains(index)) {
-            throw RuntimeException("No Component Mapper registered for type: $key")
+            throw RuntimeException("No Component Mapper registered for subType: $key")
         }
         return componentMaps[index] as ComponentMap<C>
     }
@@ -87,7 +84,7 @@ object FFContext {
         mapper(cType)[index]
 
     operator fun <C : Component> get(cType: ComponentType<C>, indexed: Indexed): C =
-        mapper(cType)[indexed.index()]
+        mapper(cType)[indexed.index]
 
     operator fun <C : Component> get(cType: ComponentType<C>, name: String): C =
         mapper(cType)[name]
@@ -96,19 +93,19 @@ object FFContext {
         mapper(cType)[named.name]
 
     @Suppress("UNCHECKED_CAST")
-    operator fun <C : SystemComponent, CC : C> get(cType: ISubType<CC, C>, index: Int): CC =
+    operator fun <C : SystemComponent, CC : C> get(cType: SubType<CC, C>, index: Int): CC =
         mapper(cType)[index] as CC
 
     @Suppress("UNCHECKED_CAST")
-    operator fun <C : SystemComponent, CC : C> get(cType: ISubType<CC, C>, indexed: Indexed): CC =
-        mapper(cType)[indexed.index()] as CC
+    operator fun <C : SystemComponent, CC : C> get(cType: SubType<CC, C>, indexed: Indexed): CC =
+        mapper(cType)[indexed.index] as CC
 
     @Suppress("UNCHECKED_CAST")
-    operator fun <C : SystemComponent, CC : C> get(cType: ISubType<CC, C>, name: String): CC =
+    operator fun <C : SystemComponent, CC : C> get(cType: SubType<CC, C>, name: String): CC =
         mapper(cType)[name] as CC
 
     @Suppress("UNCHECKED_CAST")
-    operator fun <C : SystemComponent, CC : C> get(cType: ISubType<CC, C>, named: Named): CC =
+    operator fun <C : SystemComponent, CC : C> get(cType: SubType<CC, C>, named: Named): CC =
         mapper(cType)[named.name] as CC
 
     fun assetInstanceId(assetId: Int): Int =
@@ -136,10 +133,10 @@ object FFContext {
         isActive(component.componentId)
 
     fun isActive(cType: ComponentType<*>, index: Int): Boolean =
-        mapper<Component>(cType.typeKey).isActive(index)
+        mapper<Component>(cType.indexedTypeKey).isActive(index)
 
     fun isActive(cType: ComponentType<*>, indexed: Indexed): Boolean =
-        mapper<Component>(cType.typeKey).isActive(indexed.index())
+        mapper<Component>(cType.indexedTypeKey).isActive(indexed.index)
 
     fun isActive(id: CompId): Boolean =
             mapper<Component>(id).isActive(id.index)
@@ -148,13 +145,13 @@ object FFContext {
         mapper<Component>(id).isActive(id.name)
 
     fun isActive(cType: ComponentType<*>, name: String): Boolean =
-        mapper<Component>(cType.typeKey).isActive(name)
+        mapper<Component>(cType.indexedTypeKey).isActive(name)
 
     fun isActive(cType: ComponentType<*>, named: Named): Boolean =
-        mapper<Component>(cType.typeKey).isActive(named.name)
+        mapper<Component>(cType.indexedTypeKey).isActive(named.name)
 
     fun isActive(singleton: SingletonComponent<*, *>): Boolean =
-        mapper<Component>(singleton.typeKey).isActive(singleton.instance.index())
+        mapper<Component>(singleton.indexedTypeKey).isActive(singleton.instance.index)
 
     fun activate(component: Component): FFContext {
         activate(component.componentId)
@@ -162,12 +159,12 @@ object FFContext {
     }
 
     fun activate(cType: ComponentType<*>, index: Int): FFContext {
-        mapper<Component>(cType.typeKey).activate(index)
+        mapper<Component>(cType.indexedTypeKey).activate(index)
         return this
     }
 
     fun activate(cType: ComponentType<*>, indexed: Indexed): FFContext {
-        mapper<Component>(cType.typeKey).activate(indexed.index())
+        mapper<Component>(cType.indexedTypeKey).activate(indexed.index)
         return this
     }
 
@@ -182,17 +179,17 @@ object FFContext {
     }
 
     fun activate(cType: ComponentType<*>, name: String): FFContext {
-        mapper<Component>(cType.typeKey).activate(name)
+        mapper<Component>(cType.indexedTypeKey).activate(name)
         return this
     }
 
     fun activate(cType: ComponentType<*>, named: Named): FFContext {
-        mapper<Component>(cType.typeKey).activate(named.name)
+        mapper<Component>(cType.indexedTypeKey).activate(named.name)
         return this
     }
 
     fun activate(singleton: SingletonComponent<*,*>): FFContext {
-        mapper<Component>(singleton.typeKey).activate(singleton.instance.index())
+        mapper<Component>(singleton.indexedTypeKey).activate(singleton.instance.index)
         return this
     }
 
@@ -202,12 +199,12 @@ object FFContext {
     }
 
     fun deactivate(cType: ComponentType<*>, index: Int): FFContext {
-        mapper<Component>(cType.typeKey).deactivate(index)
+        mapper<Component>(cType.indexedTypeKey).deactivate(index)
         return this
     }
 
     fun deactivate(cType: ComponentType<*>, indexed: Indexed): FFContext {
-        mapper<Component>(cType.typeKey).deactivate(indexed.index())
+        mapper<Component>(cType.indexedTypeKey).deactivate(indexed.index)
         return this
     }
 
@@ -222,17 +219,17 @@ object FFContext {
     }
 
     fun deactivate(cType: ComponentType<*>, name: String): FFContext {
-        mapper<Component>(cType.typeKey).deactivate(name)
+        mapper<Component>(cType.indexedTypeKey).deactivate(name)
         return this
     }
 
     fun deactivate(cType: ComponentType<*>, named: Named): FFContext {
-        mapper<Component>(cType.typeKey).deactivate(named.name)
+        mapper<Component>(cType.indexedTypeKey).deactivate(named.name)
         return this
     }
 
     fun deactivate(singleton: SingletonComponent<*,*>): FFContext {
-        mapper<Component>(singleton.typeKey).deactivate(singleton.instance.index())
+        mapper<Component>(singleton.indexedTypeKey).deactivate(singleton.instance.index)
         return this
     }
 
@@ -242,12 +239,12 @@ object FFContext {
     }
 
     fun delete(cType: ComponentType<*>, index: Int): FFContext {
-        mapper<Component>(cType.typeKey).delete(index)
+        mapper<Component>(cType.indexedTypeKey).delete(index)
         return this
     }
 
     fun delete(cType: ComponentType<*>, indexed: Indexed): FFContext {
-        mapper<Component>(cType.typeKey).delete(indexed.index())
+        mapper<Component>(cType.indexedTypeKey).delete(indexed.index)
         return this
     }
 
@@ -262,12 +259,12 @@ object FFContext {
     }
 
     fun delete(cType: ComponentType<*>, name: String): FFContext {
-        mapper<Component>(cType.typeKey).delete(name)
+        mapper<Component>(cType.indexedTypeKey).delete(name)
         return this
     }
 
     fun delete(cType: ComponentType<*>, named: Named): FFContext {
-        mapper<Component>(cType.typeKey).delete(named.name)
+        mapper<Component>(cType.indexedTypeKey).delete(named.name)
         return this
     }
 
@@ -280,32 +277,32 @@ object FFContext {
 
 
 
-    fun <L> registerListener(eventType: FFEvent<*>, listener: L): FFContext {
-        eventDispatcher.register(eventType.typeKey, listener)
+    fun <L> registerListener(eventType: Event<*>, listener: L): FFContext {
+        eventDispatcher.register(eventType.indexedTypeKey, listener)
         return this
     }
 
-    fun <L> disposeListener(eventType: FFEvent<*>, listener: L): FFContext {
-        eventDispatcher.unregister(eventType.typeKey, listener)
+    fun <L> disposeListener(eventType: Event<*>, listener: L): FFContext {
+        eventDispatcher.unregister(eventType.indexedTypeKey, listener)
         return this
     }
 
-    fun <L> registerListener(eventType: FFAspectedEvent<*>, listener: L): FFContext {
-        eventDispatcher.register(eventType.typeKey, listener)
+    fun <L> registerListener(eventType: AspectedEvent<*>, listener: L): FFContext {
+        eventDispatcher.register(eventType.indexedTypeKey, listener)
         return this
     }
 
-    fun <L> disposeListener(eventType: FFAspectedEvent<*>, listener: L): FFContext {
-        eventDispatcher.unregister(eventType.typeKey, listener)
+    fun <L> disposeListener(eventType: AspectedEvent<*>, listener: L): FFContext {
+        eventDispatcher.unregister(eventType.indexedTypeKey, listener)
         return this
     }
 
-    fun <L> notify(event: FFEvent<L>): FFContext {
+    fun <L> notify(event: Event<L>): FFContext {
         eventDispatcher.notify(event)
         return this
     }
 
-    fun <L : AspectedEventListener> notify(event: FFAspectedEvent<L>): FFContext {
+    fun <L : AspectedEventListener> notify(event: AspectedEvent<L>): FFContext {
         eventDispatcher.notify(event)
         return this
     }

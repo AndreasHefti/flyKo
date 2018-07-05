@@ -1,6 +1,5 @@
 package com.inari.firefly.graphics.rendering
 
-import com.inari.commons.geom.Rectangle
 import com.inari.firefly.FFContext
 import com.inari.firefly.entity.EChild
 import com.inari.firefly.entity.Entity
@@ -9,6 +8,7 @@ import com.inari.firefly.entity.EntitySystem
 import com.inari.firefly.graphics.ETransform
 import com.inari.firefly.graphics.sprite.ESprite
 import com.inari.firefly.system.component.SingletonComponent
+import com.inari.util.geom.Rectangle
 
 
 class SpriteGroupRenderer private constructor() : Renderer(
@@ -30,7 +30,7 @@ class SpriteGroupRenderer private constructor() : Renderer(
             val transform = entity[ETransform]
             val group = entity[EChild]
 
-            transformCollector.set(transform.data)
+            transformCollector(transform.data)
             collectTransformData(group.parent, transformCollector)
             graphics.renderSprite(sprite, transformCollector.data)
         }
@@ -42,7 +42,7 @@ class SpriteGroupRenderer private constructor() : Renderer(
 
         val parent = EntitySystem[parentId]
         val parentTransform = parent[ETransform]
-        transformCollector.add(parentTransform.data)
+        transformCollector + parentTransform.data
         if (EChild in parent.aspects)
             collectTransformData(parent[EChild].parent, transformCollector)
     }
@@ -65,8 +65,8 @@ class SpriteGroupRenderer private constructor() : Renderer(
             }
         }
 
-        override val typeKey = Renderer.typeKey
-        override fun subType() = SpriteGroupRenderer::class.java
+        override val indexedTypeKey = Renderer.indexedTypeKey
+        override val subType = SpriteGroupRenderer::class.java
         override fun create() = SpriteGroupRenderer()
 
         private val MATCHING_ASPECTS = EntityComponent.ENTITY_COMPONENT_ASPECTS.createAspects(

@@ -1,6 +1,5 @@
 package com.inari.firefly.physics.animation
 
-import com.inari.commons.lang.aspect.IAspects
 import com.inari.firefly.Expr
 import com.inari.firefly.FFApp
 import com.inari.firefly.FFContext
@@ -11,10 +10,11 @@ import com.inari.firefly.entity.Entity
 import com.inari.firefly.entity.EntityActivationEvent
 import com.inari.firefly.system.component.ComponentSystem
 import com.inari.firefly.system.component.SystemComponent
+import com.inari.util.aspect.Aspects
 
 object AnimationSystem : ComponentSystem {
-    override val supportedComponents: IAspects =
-        SystemComponent.SYSTEM_COMPONENT_ASPECTS.createAspects(Animation)
+    override val supportedComponents: Aspects =
+        SystemComponent.ASPECT_GROUP.createAspects(Animation)
 
     @JvmField val animations = ComponentSystem.createComponentMapping(
         Animation,
@@ -35,7 +35,7 @@ object AnimationSystem : ComponentSystem {
                 activateForEntity(entity)
             override fun entityDeactivated(entity: Entity) =
                 deactivateForEntity(entity)
-            override fun match(aspects: IAspects): Boolean =
+            override fun match(aspects: Aspects): Boolean =
                 EAnimation in aspects
         })
 

@@ -1,23 +1,26 @@
 package com.inari.firefly.entity
 
-import com.inari.commons.event.AspectedEventListener
-import com.inari.commons.lang.aspect.IAspects
 import com.inari.firefly.FFContext
-import com.inari.firefly.system.FFAspectedEvent
 
-object EntityActivationEvent : FFAspectedEvent<EntityActivationEvent.Listener>(createTypeKey(EntityActivationEvent::class.java)) {
+import com.inari.util.aspect.Aspects
+import com.inari.util.event.AspectedEvent
+import com.inari.util.event.AspectedEventListener
+import com.inari.util.indexed.Indexer
+
+object EntityActivationEvent : AspectedEvent<EntityActivationEvent.Listener>() {
 
     enum class Type {
         ACTIVATED,
         DEACTIVATED
     }
 
+
+
     private lateinit var entity: Entity
     private lateinit var type: EntityActivationEvent.Type
 
-    override fun getAspects(): IAspects =
+    override val aspects: Aspects get() =
         entity.aspects
-
 
     override fun notify(listener: EntityActivationEvent.Listener) =
         when(type) {

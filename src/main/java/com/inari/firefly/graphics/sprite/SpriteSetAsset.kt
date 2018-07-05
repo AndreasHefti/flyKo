@@ -1,6 +1,5 @@
 package com.inari.firefly.graphics.sprite
 
-import com.inari.commons.lang.indexed.IndexedTypeKey
 import com.inari.commons.lang.list.DynArray
 import com.inari.firefly.FFContext
 import com.inari.firefly.NO_NAME
@@ -17,7 +16,7 @@ class SpriteSetAsset private constructor() : Asset() {
     private val spriteData = DynArray.create(Sprite::class.java, 30)
 
     val ff_SpriteData = ArrayAccessor<Sprite>(spriteData)
-    var ff_Texture = ComponentRefResolver(Asset, { index-> dependingRef = setIfNotInitialized(index, "ff_Texture") })
+    var ff_Texture = ComponentRefResolver(Asset) { index-> dependingRef = setIfNotInitialized(index, "ff_Texture") }
 
     override fun instanceId(index: Int): Int =
         if (index in spriteData) spriteData[index].instanceId
@@ -71,8 +70,8 @@ class SpriteSetAsset private constructor() : Asset() {
     }
 
     companion object : SubType<SpriteSetAsset, Asset>() {
-        override val typeKey: IndexedTypeKey = Asset.typeKey
-        override fun subType() = SpriteSetAsset::class.java
+        override val indexedTypeKey = Asset.indexedTypeKey
+        override val subType = SpriteSetAsset::class.java
         override fun createEmpty() = SpriteSetAsset()
     }
 }

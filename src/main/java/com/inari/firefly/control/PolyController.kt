@@ -1,6 +1,5 @@
 package com.inari.firefly.control
 
-import com.inari.commons.lang.indexed.IndexedTypeKey
 import com.inari.firefly.IntExpr
 import com.inari.firefly.NULL_INT_EXPR
 import com.inari.firefly.component.CompId
@@ -31,8 +30,8 @@ class PolyController private constructor() : Controller() {
     }
 
     companion object : SubType<PolyController, Controller>() {
-        override val typeKey: IndexedTypeKey = Controller.typeKey
-        override fun subType() = PolyController::class.java
+        override val indexedTypeKey get() = Controller.indexedTypeKey
+        override val subType = PolyController::class.java
         override fun createEmpty() = PolyController()
     }
 }

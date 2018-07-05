@@ -1,12 +1,12 @@
 package com.inari.firefly.control.trigger
 
-import com.inari.commons.lang.aspect.IAspects
 import com.inari.firefly.system.component.ComponentSystem
 import com.inari.firefly.system.component.SystemComponent
+import com.inari.util.aspect.Aspects
 
 object TriggerSystem : ComponentSystem {
-    override val supportedComponents: IAspects =
-        SystemComponent.SYSTEM_COMPONENT_ASPECTS.createAspects(Trigger)
+    override val supportedComponents: Aspects =
+        SystemComponent.ASPECT_GROUP.createAspects(Trigger)
 
     @JvmField val trigger = ComponentSystem.createComponentMapping(
         Trigger,

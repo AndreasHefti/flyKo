@@ -17,7 +17,7 @@ object EntityProvider {
     }
 
     fun createComponentForLaterUse(number: Int, builder: EntityComponentBuilder<*>) {
-        val cache = getOrCreate(builder.typeKey.index())
+        val cache = getOrCreate(builder.index)
         for (i in 0 until number) {
             cache.add(builder.create())
         }
@@ -25,7 +25,7 @@ object EntityProvider {
 
     @Suppress("UNCHECKED_CAST")
     fun <C : EntityComponent> getComponent(builder: EntityComponentBuilder<C>): C {
-        val cache = getOrCreate(builder.typeKey.index())
+        val cache = getOrCreate(builder.index)
         return if (cache.isEmpty()) {
             builder.create()
         } else {
@@ -42,7 +42,7 @@ object EntityProvider {
     }
 
     fun dispose(entity: Entity) {
-        val entityId = entity.index()
+        val entityId = entity.index
         if (EntitySystem.entities.isActive(entityId)) {
             throw IllegalStateException("Entity: $entityId is still active and cannot be disposed")
         }
@@ -53,7 +53,7 @@ object EntityProvider {
 
     fun dispose(entityComponent: EntityComponent) {
         entityComponent._reset()
-        getOrCreate(entityComponent.index()).add(entityComponent)
+        getOrCreate(entityComponent.index).add(entityComponent)
     }
 
     private fun getOrCreate(index: Int): ArrayDeque<EntityComponent> {

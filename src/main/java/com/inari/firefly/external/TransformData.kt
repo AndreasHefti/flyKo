@@ -1,7 +1,7 @@
 package com.inari.firefly.external
 
-import com.inari.commons.geom.Vector2f
 import com.inari.util.geom.PositionF
+import com.inari.util.geom.Vector2f
 
 class TransformData constructor(
     @JvmField val position: PositionF = PositionF(0.0f, 0.0f),
@@ -11,6 +11,14 @@ class TransformData constructor(
 ) {
     val hasRotation: Boolean get() = rotation != 0f
     val hasScale: Boolean get() = scale.dx != 1.0f || scale.dy != 1.0f
+
+    operator fun plus(td: TransformData): TransformData {
+        position + td.position
+        pivot + td.pivot
+        scale * td.scale
+        rotation += td.rotation
+        return this
+    }
 
     fun reset() {
         position.x = 0.0f

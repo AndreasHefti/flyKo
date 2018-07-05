@@ -1,8 +1,8 @@
 package com.inari.firefly.graphics.particle
 
-import com.inari.commons.graphics.RGBColor
 import com.inari.firefly.external.SpriteRenderable
 import com.inari.firefly.graphics.BlendMode
+import com.inari.util.graphics.RGBColor
 
 class SpriteParticle(
     @JvmField internal val spriteRef: Int,

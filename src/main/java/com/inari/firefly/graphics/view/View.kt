@@ -1,15 +1,15 @@
 package com.inari.firefly.graphics.view
 
 import com.inari.util.geom.PositionF
-import com.inari.commons.geom.Rectangle
-import com.inari.commons.graphics.RGBColor
 import com.inari.firefly.component.ComponentRefResolver
+import com.inari.firefly.component.ComponentType
 import com.inari.firefly.control.Controller
 import com.inari.firefly.graphics.BlendMode
 import com.inari.firefly.system.component.SingleType
 import com.inari.firefly.system.component.SystemComponent
 import com.inari.firefly.external.ViewData
-import com.inari.firefly.setFrom
+import com.inari.util.geom.Rectangle
+import com.inari.util.graphics.RGBColor
 
 class View private constructor (
     @JvmField internal var baseView: Boolean = false
@@ -18,23 +18,23 @@ class View private constructor (
     @JvmField internal var controllerRef = -1
     @JvmField internal val data = object : ViewData() {
         override val index: Int
-            get() = index()
+            get() = super@View.index
         override val isBase: Boolean
             get() = baseView
     }
 
     var ff_Bounds: Rectangle
         get() = data.bounds
-        set(value) { data.bounds.setFrom(value) }
+        set(value) { data.bounds(value) }
     var ff_WorldPosition: PositionF
         get() = data.worldPosition
-        set(value) { data.worldPosition.setFrom(value) }
+        set(value) { data.worldPosition(value) }
     var ff_ClearColor: RGBColor
         get() = data.clearColor
-        set(value) { data.clearColor.setFrom(value) }
+        set(value) { data.clearColor(value) }
     var ff_TintColor: RGBColor
         get() = data.tintColor
-        set(value) { data.tintColor.setFrom(value) }
+        set(value) { data.tintColor(value) }
     var ff_BlendMode: BlendMode
         get() = data.blendMode
         set(value) { data.blendMode = value }
@@ -45,9 +45,8 @@ class View private constructor (
         get() = data.fboScaler
         set(value) { data.fboScaler = value }
     var ff_Controller =
-        ComponentRefResolver(Controller, { index-> controllerRef = setIfNotInitialized(index, "ff_ControllerId") })
+        ComponentRefResolver(Controller) { index-> controllerRef = setIfNotInitialized(index, "ff_ControllerId") }
 
-    override fun indexedTypeKey() = typeKey
     override fun toString(): String {
         return "View(baseView=$baseView, " +
             "controllerRef=$controllerRef, " +
@@ -60,8 +59,11 @@ class View private constructor (
             "fboScaler=${data.fboScaler})"
     }
 
+    override fun componentType(): ComponentType<View> =
+        View.Companion
+
     companion object : SingleType<View>() {
-        override val typeKey = SystemComponent.createTypeKey(View::class.java)
+        override val indexedTypeKey by lazy { TypeKeyBuilder.create(View::class.java) }
         override fun createEmpty() = View()
     }
 }

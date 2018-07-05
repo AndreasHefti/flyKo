@@ -2,10 +2,10 @@ package com.inari.firefly.misc
 
 import com.inari.firefly.component.CompId
 import com.inari.firefly.FFContext
-import com.inari.firefly.system.FFEvent
+import com.inari.util.event.Event
 
 typealias TestEventListener = (CompId) -> Unit
-object StaticTestEvent : FFEvent<TestEventListener>(createTypeKey(StaticTestEvent::class.java)) {
+object StaticTestEvent : Event<TestEventListener>() {
 
     var id: CompId? = null
 

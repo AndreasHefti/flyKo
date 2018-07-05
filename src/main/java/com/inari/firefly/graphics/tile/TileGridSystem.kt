@@ -1,6 +1,5 @@
 package com.inari.firefly.graphics.tile
 
-import com.inari.commons.lang.aspect.IAspects
 import com.inari.firefly.FFContext
 import com.inari.firefly.component.CompId
 import com.inari.firefly.component.ComponentMap.MapAction.CREATED
@@ -14,13 +13,14 @@ import com.inari.firefly.graphics.view.ViewEvent
 import com.inari.firefly.graphics.view.ViewEvent.Type.VIEW_DELETED
 import com.inari.firefly.graphics.view.ViewLayerAware
 import com.inari.firefly.system.component.ComponentSystem
-import com.inari.firefly.system.component.SystemComponent.Companion.SYSTEM_COMPONENT_ASPECTS
+import com.inari.firefly.system.component.SystemComponent
+import com.inari.util.aspect.Aspects
 
 
 object TileGridSystem : ComponentSystem {
 
-    override val supportedComponents: IAspects =
-        SYSTEM_COMPONENT_ASPECTS.createAspects(TileGrid)
+    override val supportedComponents: Aspects =
+        SystemComponent.ASPECT_GROUP.createAspects(TileGrid)
 
     @JvmField val viewLayerMapping = ViewLayerMapping(TileGrid::class.java)
     @JvmField val grids = ComponentSystem.createComponentMapping(
@@ -39,7 +39,7 @@ object TileGridSystem : ComponentSystem {
                 override fun invoke(id: CompId, viewPort: ViewData, type: ViewEvent.Type) {
                     when(type) {
                         VIEW_DELETED -> viewLayerMapping[id.index]
-                            .forEach { grid -> grids.delete(grid.index()) }
+                            .forEach { grid -> grids.delete(grid.index) }
                         else -> {}
                     }
                 }
@@ -53,7 +53,7 @@ object TileGridSystem : ComponentSystem {
                     addEntity(entity)
                 override fun entityDeactivated(entity: Entity) =
                     removeEntity(entity)
-                override fun match(aspects: IAspects): Boolean =
+                override fun match(aspects: Aspects): Boolean =
                     aspects.contains(ETile)
             }
         )
@@ -80,7 +80,7 @@ object TileGridSystem : ComponentSystem {
     private fun addEntity(entity: Entity) {
         val tileGrid = this[entity[ETransform]] ?: return
         val positions = entity[ETile].positions
-        val entityId = entity.index()
+        val entityId = entity.index
 
         var i = 0
         while (i < positions.capacity()) {
@@ -92,7 +92,7 @@ object TileGridSystem : ComponentSystem {
     private fun removeEntity(entity: Entity) {
         val tileGrid = this[entity[ETransform]] ?: return
         val positions = entity[ETile].positions
-        val entityId = entity.index()
+        val entityId = entity.index
 
         var i = 0
         while (i < positions.capacity()) {

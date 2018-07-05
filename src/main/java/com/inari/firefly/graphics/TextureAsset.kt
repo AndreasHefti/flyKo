@@ -1,6 +1,5 @@
 package com.inari.firefly.graphics
 
-import com.inari.commons.lang.indexed.IndexedTypeKey
 import com.inari.firefly.FFContext
 import com.inari.firefly.IntFunction
 import com.inari.firefly.NO_NAME
@@ -75,8 +74,8 @@ class TextureAsset private constructor() : Asset(), TextureData {
     }
 
     companion object : SubType<TextureAsset, Asset>() {
-        override val typeKey: IndexedTypeKey = Asset.typeKey
-        override fun subType() = TextureAsset::class.java
+        override val indexedTypeKey = Asset.indexedTypeKey
+        override val subType = TextureAsset::class.java
         override fun createEmpty() = TextureAsset()
     }
 }

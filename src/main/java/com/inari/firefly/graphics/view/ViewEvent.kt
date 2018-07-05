@@ -2,10 +2,10 @@ package com.inari.firefly.graphics.view
 
 import com.inari.firefly.component.CompId
 import com.inari.firefly.FFContext
-import com.inari.firefly.system.FFEvent
 import com.inari.firefly.external.ViewData
+import com.inari.util.event.Event
 
-object ViewEvent : FFEvent<ViewEvent.Listener>(createTypeKey(ViewEvent::class.java)) {
+object ViewEvent : Event<ViewEvent.Listener>() {
 
     enum class Type {
         VIEW_CREATED,

@@ -1,6 +1,5 @@
 package com.inari.firefly.system
 
-import com.inari.commons.graphics.RGBColor
 import com.inari.commons.lang.list.DynArray
 import com.inari.firefly.FFApp
 import com.inari.firefly.FFContext
@@ -12,6 +11,7 @@ import com.inari.firefly.external.SpriteRenderable
 import com.inari.firefly.graphics.BlendMode
 import com.inari.firefly.graphics.text.FontAsset
 import com.inari.firefly.graphics.view.ViewSystem
+import com.inari.util.graphics.RGBColor
 
 
 object FFInfoSystem : FFSystem {

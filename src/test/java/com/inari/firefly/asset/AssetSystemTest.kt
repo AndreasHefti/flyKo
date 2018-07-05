@@ -26,7 +26,7 @@ class AssetSystemTest {
         val emptyAssetId = TestAsset.build {}
 
         assertEquals(
-            "CompId(index=0, typeKey=SystemComponent:Asset)",
+            "CompId(index=0, typeKey=[TypeKey:SystemComponent:Asset:0)",
             emptyAssetId.toString()
         )
 
@@ -43,7 +43,7 @@ class AssetSystemTest {
             AssetSystem.assets.get(NO_NAME)
             fail("Exception expected here")
         } catch (e: Exception) {
-            assertEquals("Component: SystemComponent:Asset for name: [[NO_NAME]] not found", e.message)
+            assertEquals("Component: [TypeKey:SystemComponent:Asset:0 for name: [[NO_NAME]] not found", e.message)
         }
 
         val assetId = TestAsset.build {
@@ -78,7 +78,7 @@ class AssetSystemTest {
         }
 
         assertEquals(
-            "CompId(index=0, typeKey=SystemComponent:Asset)",
+            "CompId(index=0, typeKey=[TypeKey:SystemComponent:Asset:0)",
             assetId.toString()
         )
         assertEquals(

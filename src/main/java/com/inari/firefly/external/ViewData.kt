@@ -1,13 +1,13 @@
 package com.inari.firefly.external
 
 import com.inari.util.geom.PositionF
-import com.inari.commons.geom.Rectangle
-import com.inari.commons.graphics.RGBColor
 import com.inari.firefly.graphics.BlendMode
+import com.inari.util.geom.Rectangle
+import com.inari.util.graphics.RGBColor
 
 abstract class ViewData constructor(
-    @JvmField var bounds: Rectangle = Rectangle(0, 0, 0, 0),
-    @JvmField var worldPosition: PositionF = PositionF(0, 0),
+    @JvmField var bounds: Rectangle = Rectangle(),
+    @JvmField var worldPosition: PositionF = PositionF(),
     @JvmField var clearColor: RGBColor = RGBColor( 0f, 0f, 0f, 1f ),
     @JvmField var tintColor: RGBColor = RGBColor( 1f, 1f, 1f, 1f ),
     @JvmField var blendMode: BlendMode = BlendMode.NONE,

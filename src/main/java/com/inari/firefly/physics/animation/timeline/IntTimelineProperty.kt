@@ -1,9 +1,7 @@
 package com.inari.firefly.physics.animation.timeline
 
-import com.inari.commons.lang.indexed.IIndexedTypeKey
 import com.inari.firefly.entity.Entity
 import com.inari.firefly.entity.property.IntPropertyAccessor
-import com.inari.firefly.physics.animation.Animation
 import com.inari.firefly.physics.animation.IntAnimation
 import com.inari.firefly.physics.animation.entity.EntityPropertyAnimation
 
@@ -43,7 +41,7 @@ class IntTimelineProperty private constructor() : EntityPropertyAnimation(), Int
     }
 
     companion object : PropertyAnimationSubtype<IntTimelineProperty>() {
-        override fun subType(): Class<IntTimelineProperty> = IntTimelineProperty::class.java
+        override val subType: Class<IntTimelineProperty> = IntTimelineProperty::class.java
         override fun createEmpty(): IntTimelineProperty =
             IntTimelineProperty()
     }

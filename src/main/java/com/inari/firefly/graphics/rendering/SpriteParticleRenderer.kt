@@ -1,6 +1,5 @@
 package com.inari.firefly.graphics.rendering
 
-import com.inari.commons.geom.Rectangle
 import com.inari.firefly.FFContext
 import com.inari.firefly.entity.Entity
 import com.inari.firefly.entity.EntityComponent
@@ -8,6 +7,7 @@ import com.inari.firefly.graphics.ETransform
 import com.inari.firefly.graphics.particle.EParticle
 import com.inari.firefly.graphics.particle.SpriteParticle
 import com.inari.firefly.system.component.SingletonComponent
+import com.inari.util.geom.Rectangle
 
 class SpriteParticleRenderer private constructor() : Renderer() {
 
@@ -28,16 +28,16 @@ class SpriteParticleRenderer private constructor() : Renderer() {
             var ii = 0
             while (ii < spriteParticle.capacity()) {
                 val particle = spriteParticle[ii++] ?: continue
-                transformCollector.set(transform.data)
-                transformCollector.add(particle.transformData)
+                transformCollector(transform.data)
+                transformCollector + particle.transformData
                 graphics.renderSprite(particle, transformCollector.data)
             }
         }
     }
 
     companion object : SingletonComponent<SpriteParticleRenderer, Renderer>() {
-        override val typeKey = Renderer.typeKey
-        override fun subType() = SpriteParticleRenderer::class.java
+        override val indexedTypeKey = Renderer.indexedTypeKey
+        override val subType = SpriteParticleRenderer::class.java
         override fun create() = SpriteParticleRenderer()
 
         private val MATCHING_ASPECTS = EntityComponent.ENTITY_COMPONENT_ASPECTS.createAspects(
