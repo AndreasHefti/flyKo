@@ -1,6 +1,7 @@
 package com.inari.util.indexed
 
 import com.inari.util.Disposable
+import com.inari.util.Loadable
 import com.inari.util.aspect.Aspect
 import com.inari.util.aspect.AspectGroup
 
@@ -47,10 +48,10 @@ abstract class BaseIndexedObject : IndexedObject, Disposable {
         }
     }
 
-    protected constructor(skipAutoInit: Boolean) {
-        if (skipAutoInit) iindex = -1
-        else setIndex(-1)
-    }
+//    protected constructor(skipAutoInit: Boolean) {
+//        if (skipAutoInit) iindex = -1
+//        else setIndex(-1)
+//    }
 
     final override val index: Int
         get() = iindex
@@ -130,12 +131,77 @@ abstract class IndexedTypeKey internal constructor(
 //-----------------------------------------------
 interface IIndexedObject {
     val objectIndex: Int
-    val indexedType: Class<*>
+    val indexedType: Class<out IIndexedObject>
 }
+
+interface NewIndexedTypeKey : IIndexedObject{
+    val baseType: Class<out IIndexedType>
+    val subType: Class<out IIndexedType>
+}
+
 interface IIndexedType {
     val typeIndex: Int
-    val indexed: IIndexedObject
-    val baseType: Class<*>
-    val subType: Class<*>
+    val typeKey: NewIndexedTypeKey
 }
+
+
+abstract class AbstractIndexedObject protected constructor(
+    final override val indexedType: Class<out IIndexedObject>,
+    protected var index: Int = -1
+) : IIndexedObject {
+
+    init {
+        if (objectIndex >= 0)
+            IndexProvider.disposeObjectIndex(indexedType, objectIndex)
+
+        index = if (index < 0)
+            IndexProvider.nextObjectIndex(indexedType)
+        else
+            IndexProvider.registerIndex(indexedType, index)
+
+    }
+
+    final override val objectIndex: Int
+        get() = index
+
+    internal open fun loadIndex() {
+        index = if (index < 0)
+            IndexProvider.nextObjectIndex(indexedType)
+        else index
+    }
+
+    internal open fun disposeIndex() {
+        IndexProvider.disposeObjectIndex(indexedType, objectIndex)
+        index = -1
+    }
+}
+
+abstract class AbstractIndexedTypeKey(
+    override val baseType: Class<out IIndexedType>,
+    override val subType: Class<out IIndexedType>,
+    indexedType: Class<out AbstractIndexedTypeKey>
+) : AbstractIndexedObject(indexedType), NewIndexedTypeKey {
+
+    init {
+        loadIndex()
+    }
+
+    final override fun loadIndex() {
+        super.loadIndex()
+        IndexProvider.register(this)
+    }
+
+    final override fun disposeIndex() {
+        IndexProvider.dispose(this)
+        super.disposeIndex()
+    }
+
+    override fun toString(): String {
+        return "TypeKey[${indexedType.simpleName}:${baseType.simpleName}:${subType.simpleName}:$objectIndex]"
+    }
+
+
+}
+
+
 
