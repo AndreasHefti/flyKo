@@ -11,7 +11,7 @@ class AssetInstanceRefResolver(
 ) {
 
     operator fun invoke(id: CompId) =
-        receiver( AssetSystem.assets[id.index].instanceId() )
+        receiver( AssetSystem.assets[id.instanceId].instanceId() )
     operator fun invoke(index: Int) =
         receiver(AssetSystem.assets[index].instanceId())
     operator fun invoke(indexed: Indexed) =

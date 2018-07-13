@@ -5,16 +5,15 @@ import com.inari.firefly.FFContext
 import com.inari.util.aspect.Aspects
 import com.inari.util.event.AspectedEvent
 import com.inari.util.event.AspectedEventListener
-import com.inari.util.indexed.Indexer
 
-object EntityActivationEvent : AspectedEvent<EntityActivationEvent.Listener>() {
+object EntityActivationEvent : AspectedEvent<EntityActivationEvent.Listener>(
+    EVENT_ASPECTS.createAspect("EntityActivationEvent")
+) {
 
     enum class Type {
         ACTIVATED,
         DEACTIVATED
     }
-
-
 
     private lateinit var entity: Entity
     private lateinit var type: EntityActivationEvent.Type

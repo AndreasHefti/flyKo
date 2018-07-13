@@ -1,20 +1,22 @@
 package com.inari.firefly.graphics.tile
 
-import com.inari.commons.lang.IntIterator
 import com.inari.firefly.component.ComponentRefResolver
-import com.inari.firefly.component.ComponentType
 import com.inari.firefly.graphics.rendering.Renderer
 import com.inari.firefly.graphics.view.Layer
 import com.inari.firefly.graphics.view.View
 import com.inari.firefly.graphics.view.ViewLayerAware
-import com.inari.firefly.system.component.SingleType
 import com.inari.firefly.system.component.SystemComponent
+import com.inari.firefly.system.component.SystemComponentSingleType
 import com.inari.util.geom.Direction.*
 import com.inari.util.geom.*
+import com.inari.util.indexed.Indexer
 import java.util.*
 
 
 class TileGrid private constructor() : SystemComponent(), ViewLayerAware {
+
+    override val indexer: Indexer =
+        Indexer(TileGrid::class.java.name)
 
     @JvmField internal var viewRef = -1
     @JvmField internal var layerRef = -1
@@ -145,16 +147,15 @@ class TileGrid private constructor() : SystemComponent(), ViewLayerAware {
     fun tileGridIterator(worldClip: Rectangle): TileGridIterator =
         TileGridIterator.getInstance(worldClip, this)
 
-    override fun componentType(): ComponentType<TileGrid> =
+    override fun componentType() =
         TileGrid.Companion
 
-    companion object : SingleType<TileGrid>() {
-        override val indexedTypeKey by lazy { TypeKeyBuilder.create(TileGrid::class.java) }
+    companion object : SystemComponentSingleType<TileGrid>(TileGrid::class.java) {
         override fun createEmpty() = TileGrid()
     }
 
 
-    class TileGridIterator private constructor() : IntIterator {
+    class TileGridIterator private constructor() : IntIterator() {
         private val NULL_TILE_GRID = TileGrid()
         @JvmField internal val tmpClip = Rectangle()
         @JvmField internal val worldPosition = PositionF()
@@ -169,7 +170,7 @@ class TileGrid private constructor() : SystemComponent(), ViewLayerAware {
         val worldYPos: Float get() = worldPosition.y
 
         override fun hasNext(): Boolean = hasNext
-        override fun next(): Int {
+        override fun nextInt(): Int {
             val result = tileGrid[clip]
             calcWorldPosition()
             clip.pos.x++

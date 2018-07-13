@@ -1,11 +1,11 @@
 package com.inari.firefly.component
 
-import com.inari.commons.lang.list.DynArrayRO
-import com.inari.commons.lang.list.IntBagRO
 import com.inari.firefly.Expr
 import com.inari.firefly.IntFunction
 import com.inari.firefly.Predicate
 import com.inari.firefly.Receiver
+import com.inari.util.collection.DynArrayRO
+import com.inari.util.collection.IntBagRO
 
 interface ComponentMap<C : Component> : ComponentMapRO<C> {
 

@@ -4,7 +4,7 @@ import com.inari.firefly.FFContext
 import com.inari.firefly.component.CompId
 import com.inari.util.event.Event
 
-object ViewChangeEvent : Event<ViewChangeEvent.Listener>() {
+object ViewChangeEvent : Event<ViewChangeEvent.Listener>(EVENT_ASPECTS.createAspect("ViewChangeEvent")) {
 
     enum class Type {
         POSITION,

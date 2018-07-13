@@ -1,7 +1,7 @@
 package com.inari.firefly.physics.contact
 
 import com.inari.firefly.entity.Entity
-import com.inari.firefly.system.component.SubType
+import com.inari.firefly.system.component.SystemComponentSubType
 import com.inari.util.geom.Rectangle
 import java.util.*
 
@@ -40,9 +40,7 @@ class SimpleContactMap : ContactMap() {
 
 
 
-    companion object : SubType<SimpleContactMap, ContactMap>() {
-        override val indexedTypeKey= ContactMap.indexedTypeKey
-        override val subType = SimpleContactMap::class.java
+    companion object : SystemComponentSubType<ContactMap, SimpleContactMap>(ContactMap, SimpleContactMap::class.java) {
         override fun createEmpty() = SimpleContactMap()
     }
 

@@ -4,7 +4,7 @@ import com.inari.firefly.FFContext
 import com.inari.firefly.asset.Asset
 import com.inari.firefly.component.ComponentRefResolver
 import com.inari.firefly.external.SpriteData
-import com.inari.firefly.system.component.SubType
+import com.inari.firefly.system.component.SystemComponentSubType
 import com.inari.util.geom.Rectangle
 
 class SpriteAsset private constructor() : Asset(), SpriteData {
@@ -49,9 +49,7 @@ class SpriteAsset private constructor() : Asset(), SpriteData {
         }
     }
 
-    companion object : SubType<SpriteAsset, Asset>() {
-        override val indexedTypeKey = Asset.indexedTypeKey
-        override val subType = SpriteAsset::class.java
+    companion object : SystemComponentSubType<Asset, SpriteAsset>(Asset, SpriteAsset::class.java) {
         override fun createEmpty() = SpriteAsset()
     }
 }

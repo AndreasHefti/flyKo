@@ -4,7 +4,7 @@ import com.inari.firefly.component.CompId
 import com.inari.firefly.FFContext
 import com.inari.util.event.Event
 
-object AssetEvent : Event<AssetEvent.Listener>() {
+object AssetEvent : Event<AssetEvent.Listener>(EVENT_ASPECTS.createAspect("AssetEvent")) {
 
     enum class Type {
         ASSET_CREATED,
@@ -28,4 +28,5 @@ object AssetEvent : Event<AssetEvent.Listener>() {
     interface Listener {
         operator fun invoke(viewId: CompId, type: Type)
     }
+
 }

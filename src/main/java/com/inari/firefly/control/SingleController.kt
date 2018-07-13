@@ -6,7 +6,7 @@ import com.inari.firefly.NO_COMP_ID
 import com.inari.firefly.NULL_EXPR
 import com.inari.firefly.component.CompId
 import com.inari.firefly.component.Component
-import com.inari.firefly.system.component.SubType
+import com.inari.firefly.system.component.SystemComponentSubType
 
 class SingleController private constructor() : Controller() {
 
@@ -29,9 +29,7 @@ class SingleController private constructor() : Controller() {
         controlExpr(FFContext[id])
     }
 
-    companion object : SubType<SingleController, Controller>() {
-        override val indexedTypeKey get() = Controller.indexedTypeKey
-        override val subType = SingleController::class.java
+    companion object : SystemComponentSubType<Controller, SingleController>(Controller, SingleController::class.java) {
         override fun createEmpty() = SingleController()
     }
 }

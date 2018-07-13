@@ -60,10 +60,10 @@ import com.inari.commons.lang.indexed.IndexedTypeSet
 //    this.height = height
 //}
 //
-//operator fun IndexedTypeSet.contains(aspect: Aspect): Boolean =
+//operator fun AspectTypeSet.contains(aspect: Aspect): Boolean =
 //    this.contains(aspect.index())
 //
-//fun IndexedTypeSet.exclude(aspects: Aspects): Boolean =
+//fun AspectTypeSet.exclude(aspects: Aspects): Boolean =
 //    this.aspect.exclude(aspects)
 
 

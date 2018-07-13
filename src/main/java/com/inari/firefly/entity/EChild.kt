@@ -24,8 +24,7 @@ class EChild private constructor () : EntityComponent() {
     override fun toString(): String =
         "EChild(parent=$parent, zpos=$zpos)"
 
-    companion object : EntityComponentType<EChild>() {
-        override val indexedTypeKey by lazy { EntityComponent.create(EChild::class.java) }
+    companion object : EntityComponentType<EChild>(EChild::class.java) {
         override fun createEmpty() = EChild()
     }
 }

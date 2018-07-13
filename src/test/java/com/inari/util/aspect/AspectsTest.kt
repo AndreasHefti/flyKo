@@ -13,12 +13,12 @@ class AspectsTest {
         val aspectGroup = AspectGroup("TestAspect1")
         aspectGroup.createAspect("TestAspect1")
 
-        val aspect1 = aspectGroup.createAspect("aspect1", 1)
-        val aspect2 = aspectGroup.createAspect("aspect2", 2)
-        val aspect3 = aspectGroup.createAspect("aspect3", 3)
-        val aspect5 = aspectGroup.createAspect("aspect5", 4)
-        val aspect10 = aspectGroup.createAspect("aspect10", 10)
-        val aspect50 = aspectGroup.createAspect("aspect50", 50)
+        val aspect1 = aspectGroup.createAspect("aspect1")
+        val aspect2 = aspectGroup.createAspect("aspect2")
+        val aspect3 = aspectGroup.createAspect("aspect3")
+        val aspect5 = aspectGroup.createAspect("aspect5")
+        val aspect10 = aspectGroup.createAspect("aspect10")
+        val aspect50 = aspectGroup.createAspect("aspect50")
 
         val aspects1 = aspectGroup.createAspects()
         val aspects2 = aspectGroup.createAspects()
@@ -119,7 +119,6 @@ class AspectsTest {
 
         assertFalse(aspect1.exclude(aspect3))
         assertTrue(aspect3.exclude(aspect2))
-
 
         assertFalse(aspect1.exclude(aspect1))
     }

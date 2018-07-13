@@ -17,8 +17,8 @@ class SimpleShapeRenderer private constructor() : Renderer() {
 
         val graphics = FFContext.graphics
         var i = 0
-        while (i < toRender.capacity()) {
-            val entity = toRender.get(i++) ?: continue
+        while (i < toRender.capacity) {
+            val entity = toRender[i++] ?: continue
             graphics.renderShape(
                 entity[EShape].data,
                 entity[ETransform].data
@@ -26,9 +26,7 @@ class SimpleShapeRenderer private constructor() : Renderer() {
         }
     }
 
-    companion object : SingletonComponent<SimpleShapeRenderer, Renderer>() {
-        override val indexedTypeKey = Renderer.indexedTypeKey
-        override val subType = SimpleShapeRenderer::class.java
+    companion object : SingletonComponent<Renderer, SimpleShapeRenderer>(Renderer, SimpleShapeRenderer::class.java) {
         override fun create() = SimpleShapeRenderer()
     }
 }

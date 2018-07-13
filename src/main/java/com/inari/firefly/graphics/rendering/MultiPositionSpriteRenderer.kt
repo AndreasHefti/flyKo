@@ -19,8 +19,8 @@ class MultiPositionSpriteRenderer private constructor() : Renderer() {
 
         val graphics = FFContext.graphics
         var i = 0
-        while (i < toRender.capacity()) {
-            val entity = toRender.get(i++) ?: continue
+        while (i < toRender.capacity) {
+            val entity = toRender[i++] ?: continue
             val sprite = entity[ESprite]
             val transform = entity[ETransform]
             val multiplier = entity[EMultiplier]
@@ -28,7 +28,7 @@ class MultiPositionSpriteRenderer private constructor() : Renderer() {
 
             var j = 0
             val positions = multiplier.positions
-            while (j < positions.capacity()) {
+            while (j < positions.capacity) {
                 val pos = positions[j++] ?: continue
                 transformCollector(pos)
                 graphics.renderSprite(sprite, transformCollector.data)
@@ -36,11 +36,8 @@ class MultiPositionSpriteRenderer private constructor() : Renderer() {
         }
     }
 
-    companion object : SingletonComponent<MultiPositionSpriteRenderer, Renderer>() {
-        override val indexedTypeKey = Renderer.indexedTypeKey
-        override val subType = MultiPositionSpriteRenderer::class.java
+    companion object : SingletonComponent<Renderer, MultiPositionSpriteRenderer>(Renderer, MultiPositionSpriteRenderer::class.java) {
         override fun create() = MultiPositionSpriteRenderer()
-
         private val MATCHING_ASPECTS = EntityComponent.ENTITY_COMPONENT_ASPECTS.createAspects(
             ETransform, ESprite, EMultiplier
         )

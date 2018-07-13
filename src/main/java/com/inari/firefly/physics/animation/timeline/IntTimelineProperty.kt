@@ -41,9 +41,7 @@ class IntTimelineProperty private constructor() : EntityPropertyAnimation(), Int
     }
 
     companion object : PropertyAnimationSubtype<IntTimelineProperty>() {
-        override val subType: Class<IntTimelineProperty> = IntTimelineProperty::class.java
-        override fun createEmpty(): IntTimelineProperty =
-            IntTimelineProperty()
+        override fun createEmpty() = IntTimelineProperty()
     }
 
 }

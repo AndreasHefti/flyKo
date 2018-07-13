@@ -24,12 +24,12 @@ class SimpleTextRenderer private constructor() : Renderer() {
 
         val graphics = FFContext.graphics
         var i = 0
-        while (i < toRender.capacity()) {
-            val entity = toRender.get(i++) ?: continue
+        while (i < toRender.capacity) {
+            val entity = toRender[i++] ?: continue
 
             val text = entity[EText]
             val transform = entity[ETransform]
-            val font = FFContext[FontAsset, text.fontRef]
+            val font = FFContext.get(FontAsset, text.fontRef)
             val chars = text.textBuffer
 
             textRenderable.shader = text.shaderRef
@@ -79,11 +79,8 @@ class SimpleTextRenderer private constructor() : Renderer() {
 
     }
 
-    companion object : SingletonComponent<SimpleTextRenderer, Renderer>() {
-        override val indexedTypeKey = Renderer.indexedTypeKey
-        override val subType = SimpleTextRenderer::class.java
+    companion object : SingletonComponent<Renderer, SimpleTextRenderer>(Renderer, SimpleTextRenderer::class.java) {
         override fun create() = SimpleTextRenderer()
-
         private val MATCHING_ASPECTS = EntityComponent.ENTITY_COMPONENT_ASPECTS.createAspects(
             ETransform, EText
         )

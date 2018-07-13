@@ -2,12 +2,13 @@ package com.inari.firefly
 
 import com.inari.util.geom.PositionF
 import com.inari.firefly.component.CompId
+import com.inari.firefly.component.Component
+import com.inari.firefly.component.ComponentType
 import com.inari.firefly.entity.Entity
 import com.inari.firefly.entity.property.VirtualPropertyRef
 import com.inari.firefly.external.FFTimer
 import com.inari.firefly.graphics.view.camera.CameraPivot
-import com.inari.util.aspect.AspectGroup
-import com.inari.util.indexed.IIndexedTypeKey
+import com.inari.util.aspect.AspectType
 import com.inari.util.indexed.Indexed
 
 const val SYSTEM_FONT = "SYSTEM_FONT"
@@ -36,15 +37,16 @@ const val NO_PROGRAM: String = "[[NO_PROGRAM]]"
 const val BASE_VIEW: String = "[[BASE_VIEW]]"
 
 @JvmField val NO_NAMED = object : Named { override val name = NO_NAME }
-@JvmField val NO_COMP_ID: CompId = CompId(-1, object : IIndexedTypeKey {
-    override val index: Int get() = throw IllegalAccessException()
-    override val indexedType get() = throw IllegalAccessException()
-    override val subType get() = throw IllegalAccessException()
-    override val baseType get() = throw IllegalAccessException()
-    override val aspectGroup: AspectGroup get() = throw IllegalAccessException()
-    override val name: String get() = NO_NAME
+@JvmField val NO_COMP_ID: CompId = CompId(-1, object : ComponentType<Component> {
+    override val aspectIndex: Int get() = throw IllegalAccessException()
+    override val aspectName: String get() = throw IllegalAccessException()
+    override val aspectType: AspectType get() = throw IllegalAccessException()
+    override val typeClass: Class<out Component> get() = throw IllegalAccessException()
 })
-@JvmField val NO_INDEXED = object : Indexed { override val index: Int = -1 }
+@JvmField val NO_INDEXED = object : Indexed {
+    override val index: Int = -1
+    override val indexedTypeName: String = NO_NAME
+}
 @JvmField val NO_PROPERTY_REF: VirtualPropertyRef = object : VirtualPropertyRef {
     override val propertyName: String = NO_NAME
     override val type: Class<*> get() = throw IllegalAccessException()

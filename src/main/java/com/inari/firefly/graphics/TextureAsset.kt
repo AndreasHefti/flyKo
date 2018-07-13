@@ -6,7 +6,7 @@ import com.inari.firefly.NO_NAME
 import com.inari.firefly.NULL_INT_FUNCTION
 import com.inari.firefly.asset.Asset
 import com.inari.firefly.external.TextureData
-import com.inari.firefly.system.component.SubType
+import com.inari.firefly.system.component.SystemComponentSubType
 
 class TextureAsset private constructor() : Asset(), TextureData {
 
@@ -73,9 +73,7 @@ class TextureAsset private constructor() : Asset(), TextureData {
         }
     }
 
-    companion object : SubType<TextureAsset, Asset>() {
-        override val indexedTypeKey = Asset.indexedTypeKey
-        override val subType = TextureAsset::class.java
+    companion object : SystemComponentSubType<Asset, TextureAsset>(Asset, TextureAsset::class.java) {
         override fun createEmpty() = TextureAsset()
     }
 }

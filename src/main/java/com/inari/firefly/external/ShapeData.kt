@@ -3,6 +3,19 @@ package com.inari.firefly.external
 import com.inari.firefly.graphics.BlendMode
 import com.inari.util.graphics.RGBColor
 
+enum class ShapeType {
+    POINT,
+    LINE,
+    POLY_LINE,
+    POLYGON,
+    RECTANGLE,
+    CIRCLE,
+    CONE,
+    ARC,
+    CURVE,
+    TRIANGLE
+}
+
 class ShapeData constructor(
     @JvmField var type: ShapeType = ShapeType.POINT,
     @JvmField var vertices: FloatArray = floatArrayOf(),
@@ -28,3 +41,5 @@ class ShapeData constructor(
         shaderRef = -1
     }
 }
+
+

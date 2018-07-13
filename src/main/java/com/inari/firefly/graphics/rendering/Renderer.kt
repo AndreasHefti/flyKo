@@ -1,7 +1,6 @@
 package com.inari.firefly.graphics.rendering
 
 import com.inari.util.geom.PositionF
-import com.inari.commons.lang.list.DynArray
 import com.inari.firefly.Expr
 import com.inari.firefly.Predicate
 import com.inari.firefly.TRUE_PREDICATE
@@ -11,27 +10,33 @@ import com.inari.firefly.external.TransformData
 import com.inari.firefly.graphics.ETransform
 import com.inari.firefly.graphics.view.ViewLayerAware
 import com.inari.firefly.system.component.SystemComponent
+import com.inari.firefly.system.component.SystemComponentType
+import com.inari.util.collection.DynArray
 import com.inari.util.geom.Rectangle
+import com.inari.util.indexed.Indexer
 
 abstract class Renderer protected constructor(
     private val acceptance: Predicate<Entity> = TRUE_PREDICATE(),
     private val sort: Expr<DynArray<Entity>>? = null
 ) : SystemComponent() {
 
+    override val indexer: Indexer =
+        Indexer(Renderer::class.java.name)
+
     @JvmField protected val transformCollector = ExactTransformDataCollector()
 
     private val entities: DynArray<DynArray<DynArray<Entity>>> =
-        DynArray.createTyped(DynArray::class.java)
+        DynArray.ofAny(DynArray::class.java)
 
     fun accept(entity: Entity): Boolean {
         return if (acceptance(entity)) {
-            val renderable = forceGet(entity[ETransform])
-            renderable.add(entity)
-            sort?.invoke(renderable)
+            forceGet(entity[ETransform])?.apply {
+                add(entity)
+                sort?.invoke(this)
+            }
             true
-        } else {
+        } else
             false
-        }
     }
 
     fun dispose(entity: Entity) {
@@ -46,26 +51,24 @@ abstract class Renderer protected constructor(
         entities[viewIndex]?.remove(layerIndex)
 
     protected operator fun get(viewLayer: ViewLayerAware): DynArray<Entity>? =
-        entities.get(viewLayer.viewIndex)?.get(viewLayer.layerIndex)
+        entities[viewLayer.viewIndex]?.get(viewLayer.layerIndex)
 
     protected fun getIfNotEmpty(viewIndex: Int, layerIndex: Int): DynArray<Entity>? {
-        val result = entities.get(viewIndex)?.get(layerIndex)
+        val result = entities[viewIndex]?.get(layerIndex)
         return if (result != null && !result.isEmpty) result
             else null
     }
 
-    private fun forceGet(viewLayer: ViewLayerAware): DynArray<Entity> =
+    private fun forceGet(viewLayer: ViewLayerAware): DynArray<Entity>? =
         forceGet(viewLayer.viewIndex, viewLayer.layerIndex)
 
-    private fun forceGet(viewId: Int, layerId: Int): DynArray<Entity> {
-        if (viewId !in entities) {
-            entities.set(viewId, DynArray.createTyped(DynArray::class.java))
-        }
-        if (layerId !in entities[viewId]) {
-            entities[viewId].set(layerId, DynArray.create(Entity::class.java))
-        }
+    private fun forceGet(viewId: Int, layerId: Int): DynArray<Entity>? {
+        if (viewId !in entities)
+            entities[viewId] = DynArray.ofAny(DynArray::class.java)
+        if (layerId !in entities[viewId]!!)
+            entities[viewId]?.set(layerId, DynArray.of(Entity::class.java))
 
-        return entities[viewId][layerId]
+        return entities[viewId]!![layerId]
     }
 
     abstract fun match(entity: Entity): Boolean
@@ -75,12 +78,7 @@ abstract class Renderer protected constructor(
     override fun componentType(): ComponentType<Renderer> =
         Renderer.Companion
 
-    companion object : ComponentType<Renderer> {
-        override val indexedTypeKey by lazy { TypeKeyBuilder.create(Renderer::class.java) }
-    }
-
-
-
+    companion object : SystemComponentType<Renderer>(Renderer::class.java)
 
     protected interface TransformDataCollector {
         val data : TransformData

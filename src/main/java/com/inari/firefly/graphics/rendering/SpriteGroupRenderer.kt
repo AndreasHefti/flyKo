@@ -23,8 +23,8 @@ class SpriteGroupRenderer private constructor() : Renderer(
 
         val graphics = FFContext.graphics
         var i = 0
-        while (i < toRender.capacity()) {
-            val entity = toRender.get(i++) ?: continue
+        while (i < toRender.capacity) {
+            val entity = toRender[i++] ?: continue
 
             val sprite = entity[ESprite]
             val transform = entity[ETransform]
@@ -47,7 +47,7 @@ class SpriteGroupRenderer private constructor() : Renderer(
             collectTransformData(parent[EChild].parent, transformCollector)
     }
 
-    companion object : SingletonComponent<SpriteGroupRenderer, Renderer>() {
+    companion object : SingletonComponent<Renderer, SpriteGroupRenderer>(Renderer, SpriteGroupRenderer::class.java) {
         private val COMPARATOR = Comparator<Entity> { e1, e2 ->
             if (e1 == null && e2 == null)
                 return@Comparator 0
@@ -65,8 +65,6 @@ class SpriteGroupRenderer private constructor() : Renderer(
             }
         }
 
-        override val indexedTypeKey = Renderer.indexedTypeKey
-        override val subType = SpriteGroupRenderer::class.java
         override fun create() = SpriteGroupRenderer()
 
         private val MATCHING_ASPECTS = EntityComponent.ENTITY_COMPONENT_ASPECTS.createAspects(

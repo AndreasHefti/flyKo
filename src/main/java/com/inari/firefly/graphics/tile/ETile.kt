@@ -1,17 +1,17 @@
 package com.inari.firefly.graphics.tile
 
 import com.inari.util.geom.Position
-import com.inari.commons.lang.list.DynArray
 import com.inari.firefly.asset.AssetInstanceRefResolver
 import com.inari.firefly.component.ArrayAccessor
-import com.inari.firefly.component.ComponentType
 import com.inari.firefly.entity.Entity
 import com.inari.firefly.entity.EntityComponent
+import com.inari.firefly.entity.EntityComponentType
 import com.inari.firefly.entity.property.FloatPropertyAccessor
 import com.inari.firefly.entity.property.IntPropertyAccessor
 import com.inari.firefly.entity.property.VirtualPropertyRef
 import com.inari.firefly.external.SpriteRenderable
 import com.inari.firefly.graphics.BlendMode
+import com.inari.util.collection.DynArray
 import com.inari.util.graphics.RGBColor
 
 class ETile private constructor (
@@ -22,7 +22,7 @@ class ETile private constructor (
     @JvmField internal var shaderRef = -1
     @JvmField internal var blend: BlendMode = BlendMode.NONE
     @JvmField internal var tint: RGBColor = RGBColor(1f, 1f, 1f, 1f)
-    @JvmField internal var positions: DynArray<Position> = DynArray.create(Position::class.java)
+    @JvmField internal var positions: DynArray<Position> = DynArray.of(Position::class.java)
 
     val ff_Sprite =
         AssetInstanceRefResolver({ index -> spriteRef = index })
@@ -108,11 +108,10 @@ class ETile private constructor (
         }
     }
 
-    override fun componentType(): ComponentType<ETile> =
+    override fun componentType() =
         ETile.Companion
 
-    companion object : EntityComponentType<ETile>() {
-        override val indexedTypeKey by lazy { EntityComponent.create(ETile::class.java) }
+    companion object : EntityComponentType<ETile>(ETile::class.java) {
         override fun createEmpty() = ETile()
     }
 }

@@ -1,10 +1,10 @@
 package com.inari.firefly.physics.contact
 
-import com.inari.commons.lang.list.DynArray
-import com.inari.commons.lang.list.DynArrayRO
 import com.inari.firefly.physics.contact.Contact.Companion.NO_CONTACT
 import com.inari.util.aspect.Aspect
 import com.inari.util.aspect.Aspects
+import com.inari.util.collection.DynArray
+import com.inari.util.collection.DynArrayRO
 import com.inari.util.geom.*
 
 
@@ -17,7 +17,7 @@ class Contacts internal constructor(
     @JvmField internal val contactTypes = ContactSystem.CONTACT_TYPE_ASPECT_GROUP.createAspects()
     @JvmField internal val materialTypes = ContactSystem.MATERIAL_ASPECT_GROUP.createAspects()
     @JvmField internal val intersectionMask = BitMask(width = 0, height = 0)
-    @JvmField internal val contacts = DynArray.create(Contact::class.java, 5, 5)
+    @JvmField internal val contacts = DynArray.of(Contact::class.java, 5, 5)
 
     internal fun update(contactBounds: Rectangle, position: PositionF, velocity: Vector2f) {
         clear()
@@ -74,9 +74,9 @@ class Contacts internal constructor(
             return false
 
         var i = 0
-        while (i < contacts.capacity()) {
-            val contact = contacts.get(i++) ?: continue
-            if (contact.contactType.index != contactType.index)
+        while (i < contacts.capacity) {
+            val contact = contacts[i++] ?: continue
+            if (contact.contactType.aspectIndex != contactType.aspectIndex)
                 continue
             if (contact.hasContact(x, y))
                 return true
@@ -93,9 +93,9 @@ class Contacts internal constructor(
             return false
 
         var i = 0
-        while (i < contacts.capacity()) {
-            val contact = contacts.get(i++) ?: continue
-            if (contact.contactType.index == contactType.index)
+        while (i < contacts.capacity) {
+            val contact = contacts[i++] ?: continue
+            if (contact.contactType.aspectIndex == contactType.aspectIndex)
                 continue
             if (contact.hasContact(x, y))
                 return true
@@ -112,9 +112,9 @@ class Contacts internal constructor(
             return false
 
         var i = 0
-        while (i < contacts.capacity()) {
-            val contact = contacts.get(i++) ?: continue
-            if (contact.materialType.index != material.index)
+        while (i < contacts.capacity) {
+            val contact = contacts[i++] ?: continue
+            if (contact.materialType.aspectIndex != material.aspectIndex)
                 continue
             if (contact.hasContact(x, y))
                 return true
@@ -131,9 +131,9 @@ class Contacts internal constructor(
             return false
 
         var i = 0
-        while (i < contacts.capacity()) {
-            val contact = contacts.get(i++) ?: continue
-            if (contact.materialType.index == material.index)
+        while (i < contacts.capacity) {
+            val contact = contacts[i++] ?: continue
+            if (contact.materialType.aspectIndex == material.aspectIndex)
                 continue
             if (contact.hasContact(x, y))
                 return true
@@ -144,8 +144,8 @@ class Contacts internal constructor(
 
     operator fun get(x: Int, y: Int): Contact {
         var i = 0
-        while (i < contacts.capacity()) {
-            val contact = contacts.get(i++) ?: continue
+        while (i < contacts.capacity) {
+            val contact = contacts[i++] ?: continue
             if (contact.intersects(x, y))
                 return contact
         }
@@ -155,8 +155,8 @@ class Contacts internal constructor(
 
     fun getFirstContactOfType(contactType: Aspect): Contact {
         var i = 0
-        while (i < contacts.capacity()) {
-            val contact = contacts.get(i++) ?: continue
+        while (i < contacts.capacity) {
+            val contact = contacts[i++] ?: continue
             if (contact.contactType === contactType)
                 return contact
         }
@@ -166,8 +166,8 @@ class Contacts internal constructor(
 
     fun getFirstContactOfMaterial(materialType: Aspect): Contact {
         var i = 0
-        while (i < contacts.capacity()) {
-            val contact = contacts.get(i++) ?: continue
+        while (i < contacts.capacity) {
+            val contact = contacts[i++] ?: continue
             if (contact.materialType === materialType)
                 return contact
         }
@@ -177,8 +177,8 @@ class Contacts internal constructor(
 
     fun clear() {
         var i = 0
-        while (i < contacts.capacity()) {
-            val contact = contacts.get(i++) ?: continue
+        while (i < contacts.capacity) {
+            val contact = contacts[i++] ?: continue
             ContactSystem.ContactsPool.disposeContact(contact)
         }
         contacts.clear()

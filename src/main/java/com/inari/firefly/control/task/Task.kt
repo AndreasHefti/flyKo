@@ -5,10 +5,13 @@ import com.inari.firefly.NULL_CALL
 import com.inari.firefly.component.ComponentType
 import com.inari.firefly.control.trigger.Trigger
 import com.inari.firefly.control.trigger.TriggeredSystemComponent
-import com.inari.firefly.system.component.SingleType
+import com.inari.firefly.system.component.SystemComponentSingleType
+import com.inari.util.indexed.Indexer
 
 class Task private constructor() : TriggeredSystemComponent() {
 
+    override val indexer: Indexer =
+        Indexer(Task::class.java.name)
 
     @JvmField internal var removeAfterRun = false
     @JvmField internal var task: Call = NULL_CALL
@@ -28,8 +31,7 @@ class Task private constructor() : TriggeredSystemComponent() {
     override fun componentType(): ComponentType<Task> =
         Task.Companion
 
-    companion object : SingleType<Task>() {
-        override val indexedTypeKey by lazy { TypeKeyBuilder.create(Task::class.java) }
+    companion object : SystemComponentSingleType<Task>(Task::class.java) {
         override fun createEmpty() = Task()
     }
 }

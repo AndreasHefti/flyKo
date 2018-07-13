@@ -2,10 +2,14 @@ package com.inari.firefly.graphics.view
 
 import com.inari.firefly.component.ComponentRefResolver
 import com.inari.firefly.component.ComponentType
-import com.inari.firefly.system.component.SingleType
 import com.inari.firefly.system.component.SystemComponent
+import com.inari.firefly.system.component.SystemComponentSingleType
+import com.inari.util.indexed.Indexer
 
 class Layer private constructor () : SystemComponent() {
+
+    override val indexer: Indexer =
+        Indexer(Layer::class.java.name)
 
     @JvmField internal var viewRef = -1
 
@@ -19,8 +23,7 @@ class Layer private constructor () : SystemComponent() {
     override fun componentType(): ComponentType<Layer> =
         Layer.Companion
 
-    companion object : SingleType<Layer>() {
-        override val indexedTypeKey by lazy { TypeKeyBuilder.create(Layer::class.java) }
+    companion object : SystemComponentSingleType<Layer>(Layer::class.java) {
         override fun createEmpty() = Layer()
     }
 }

@@ -1,7 +1,6 @@
 package com.inari.firefly.physics.contact
 
 import com.inari.firefly.component.ComponentRefResolver
-import com.inari.firefly.component.ComponentType
 import com.inari.firefly.entity.Entity
 import com.inari.firefly.entity.EntityComponent
 import com.inari.firefly.graphics.ETransform
@@ -10,10 +9,15 @@ import com.inari.firefly.graphics.view.Layer
 import com.inari.firefly.graphics.view.View
 import com.inari.firefly.graphics.view.ViewLayerAware
 import com.inari.firefly.system.component.SystemComponent
+import com.inari.firefly.system.component.SystemComponentType
 import com.inari.util.geom.Rectangle
+import com.inari.util.indexed.Indexer
 
 
 abstract class ContactMap protected constructor() : SystemComponent(), ViewLayerAware {
+
+    override val indexer: Indexer =
+        Indexer(ContactMap::class.java.name)
 
     @JvmField internal var viewRef = -1
     @JvmField internal var layerRef = -1
@@ -41,7 +45,7 @@ abstract class ContactMap protected constructor() : SystemComponent(), ViewLayer
      * @param entity the Entity to add / register
      */
     fun register(entity: Entity) {
-        if (!entity.components.include(MATCHER) || ETile in entity.components.aspect)
+        if (!entity.components.include(MATCHER) || ETile in entity.components)
             return
         val transform = entity[ETransform]
         if (viewRef != transform.viewRef || layerRef != transform.layerRef)
@@ -83,11 +87,10 @@ abstract class ContactMap protected constructor() : SystemComponent(), ViewLayer
     /** Use this to clear all entity id's form a specified pool instance  */
     abstract fun clear()
 
-    override fun componentType(): ComponentType<ContactMap> =
+    override fun componentType() =
         ContactMap.Companion
 
-    companion object : ComponentType<ContactMap> {
-        override val indexedTypeKey by lazy { TypeKeyBuilder.create(ContactMap::class.java) }
+    companion object : SystemComponentType<ContactMap>(ContactMap::class.java) {
 
         @JvmField internal val MATCHER =
             EntityComponent.ENTITY_COMPONENT_ASPECTS.createAspects(ETransform, EContact)

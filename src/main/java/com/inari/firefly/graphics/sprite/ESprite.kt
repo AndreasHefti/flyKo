@@ -1,9 +1,9 @@
 package com.inari.firefly.graphics.sprite
 
 import com.inari.firefly.asset.AssetInstanceRefResolver
-import com.inari.firefly.component.ComponentType
 import com.inari.firefly.entity.Entity
 import com.inari.firefly.entity.EntityComponent
+import com.inari.firefly.entity.EntityComponentType
 import com.inari.firefly.entity.property.FloatPropertyAccessor
 import com.inari.firefly.entity.property.IntPropertyAccessor
 import com.inari.firefly.entity.property.VirtualPropertyRef
@@ -106,11 +106,10 @@ class ESprite private constructor () : EntityComponent(), SpriteRenderable {
         }
     }
 
-    override fun componentType(): ComponentType<ESprite> =
+    override fun componentType() =
         ESprite.Companion
 
-    companion object : EntityComponentType<ESprite>() {
-        override val indexedTypeKey by lazy { EntityComponent.create(ESprite::class.java) }
+    companion object : EntityComponentType<ESprite>(ESprite::class.java) {
         override fun createEmpty() = ESprite()
     }
 }

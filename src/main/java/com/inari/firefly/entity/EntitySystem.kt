@@ -14,7 +14,7 @@ import com.inari.util.aspect.Aspects
 object EntitySystem : ComponentSystem {
 
     override val supportedComponents: Aspects =
-        SystemComponent.ASPECT_GROUP.createAspects(Entity.indexedTypeKey)
+        SystemComponent.SYSTEM_COMPONENT_ASPECTS.createAspects(Entity)
 
     @JvmField val entities: ComponentMap<Entity> = ComponentSystem.createComponentMapping(
         Entity,
@@ -31,7 +31,7 @@ object EntitySystem : ComponentSystem {
         FFContext.loadSystem(this)
     }
 
-    operator fun get(entityId: CompId) = entities[entityId.index]
+    operator fun get(entityId: CompId) = entities[entityId.instanceId]
     operator fun get(name: String) = entities[name]
     operator fun get(index: Int) = entities[index]
     operator fun contains(entityId: CompId) = entityId in entities
@@ -39,7 +39,7 @@ object EntitySystem : ComponentSystem {
     operator fun contains(index: Int) = index in entities
 
     private fun activated(entity: Entity) {
-        if (EMeta in entity.components.aspect ) {
+        if (EMeta in entity.components.aspects ) {
             val controllerRef = entity[EMeta].controllerRef
             if (controllerRef >= 0)
                 ControllerSystem.register(controllerRef, entity.componentId)
@@ -52,7 +52,7 @@ object EntitySystem : ComponentSystem {
     }
 
     private fun deactivated(entity: Entity) {
-        if (EMeta in entity.components.aspect ) {
+        if (EMeta in entity.components.aspects ) {
             val controllerRef = entity[EMeta].controllerRef
             if (controllerRef >= 0)
                 ControllerSystem.unregister(controllerRef, entity.componentId)

@@ -15,9 +15,9 @@
  */
 package com.inari.util.event
 
-import com.inari.commons.lang.list.DynArray
-import com.inari.commons.lang.list.StaticList
-import com.inari.util.indexed.Indexed
+import com.inari.util.aspect.Aspect
+import com.inari.util.collection.DynArray
+import com.inari.util.collection.StaticList
 
 /** A simple, synchronous and none thread save implementation of the [IEventDispatcher] interface.
  *
@@ -28,7 +28,7 @@ class EventDispatcher : IEventDispatcher {
 
     private val eventLog: IEventLog?
 
-    private val listeners = DynArray.createTyped<DynArray<StaticList<*>>>(StaticList::class.java, 10, 10)
+    private val listeners = DynArray.ofAny<DynArray<StaticList<*>>>(StaticList::class.java, 10, 10)
 
     constructor() {
         eventLog = null
@@ -38,52 +38,60 @@ class EventDispatcher : IEventDispatcher {
         this.eventLog = eventLog
     }
 
-    override fun <L> register(eventType: Event.EventTypeKey, listener: L) {
-        val listenersOfType = getListenersOfType<L>(eventType, true)
-        if (!listenersOfType!!.contains(listener))
+    override fun <L> register(eventTypeAspect: Aspect, listener: L) {
+        val listenersOfType = getListenersOfType<L>(eventTypeAspect, true)
+        if (!listenersOfType.contains(listener))
             listenersOfType.add(listener)
     }
 
-    override fun <L> unregister(eventType: Event.EventTypeKey, listener: L): Boolean {
-        val listenersOfType = getListenersOfType<L>(eventType, false)
-        return listenersOfType != null && listenersOfType.remove(listener) >= 0
+    override fun <L> unregister(eventTypeAspect: Aspect, listener: L): Boolean {
+        val listenersOfType = getListenersOfType<L>(eventTypeAspect, false)
+        return listenersOfType.remove(listener) >= 0
     }
 
     override fun <L> notify(event: Event<L>) {
         eventLog?.log(event)
-        val listenersOfType = this.getListenersOfType<L>(event, false)
-        if (listenersOfType != null)
-            for (i in 0 until listenersOfType.capacity()) {
-                val listener = listenersOfType.get(i) ?: continue
+        val listenersOfType = this.getListenersOfType<L>(event.eventAspect, false)
+        val size = listenersOfType.capacity()
+        var i = 0
+        while (i < size) {
+            val listener = listenersOfType[i]
+            if (listener != null )
                 event._notify(listener)
-            }
+            i++
+        }
 
         event._restore()
     }
 
     override fun <L : AspectedEventListener> notify(event: AspectedEvent<L>) {
         eventLog?.log(event)
-        val listenersOfType = this.getListenersOfType<L>(event.indexedTypeKey, false)
-        if (listenersOfType != null)
-            for (i in 0 until listenersOfType.capacity()) {
-                val listener = listenersOfType.get(i)
-                if (listener != null && listener.match(event.aspects))
-                    event._notify(listener)
-            }
-
+        val listenersOfType = this.getListenersOfType<L>(event.eventAspect, false)
+        val size = listenersOfType.capacity()
+        var i = 0
+        while (i < size) {
+            val listener = listenersOfType[i]
+            if (listener != null && listener.match(event.aspects))
+                event._notify(listener)
+            i++
+        }
         event._restore()
     }
 
     override fun <L : PredicatedEventListener> notify(event: PredicatedEvent<L>) {
         eventLog?.log(event)
-        val listenersOfType = this.getListenersOfType<L>(event, false)
-        if (listenersOfType != null)
-            for (i in 0 until listenersOfType.capacity()) {
-                val listener = listenersOfType.get(i) ?: continue
+        val listenersOfType = this.getListenersOfType<L>(event.eventAspect, false)
+        val size = listenersOfType.capacity()
+        var i = 0
+        while (i < size) {
+            val listener = listenersOfType[i]
+            if (listener != null) {
                 val matcher = listener.getMatcher<L>()
                 if (matcher(event))
                     event._notify(listener)
             }
+            i++
+        }
 
         event._restore()
     }
@@ -92,15 +100,14 @@ class EventDispatcher : IEventDispatcher {
         "EventDispatcher [listeners=$listeners]"
 
     @Suppress("UNCHECKED_CAST")
-    private fun <L> getListenersOfType(indexed: Indexed, create: Boolean): StaticList<L>? {
-        val eventIndex = indexed.index
-        var listenersOfType: StaticList<L>? = null
-        if (listeners.contains(eventIndex))
-            listenersOfType = listeners.get(eventIndex) as StaticList<L>
+    private fun <L> getListenersOfType(eventTypeAspect: Aspect, create: Boolean): StaticList<L> {
+        var listenersOfType: StaticList<L> = StaticList.emtpyList()
+        if (listeners.contains(eventTypeAspect.aspectIndex))
+            listenersOfType = listeners[eventTypeAspect.aspectIndex] as StaticList<L>
         else
             if (create) {
                 listenersOfType = StaticList(10, 10)
-                listeners.set(eventIndex, listenersOfType)
+                listeners[eventTypeAspect.aspectIndex] = listenersOfType
             }
 
         return listenersOfType

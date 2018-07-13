@@ -13,7 +13,7 @@ import com.inari.util.indexed.Indexed
 
 object StateSystem : ComponentSystem {
     override val supportedComponents: Aspects =
-        SystemComponent.ASPECT_GROUP.createAspects(Workflow)
+        SystemComponent.SYSTEM_COMPONENT_ASPECTS.createAspects(Workflow)
 
     @JvmField val workflows = ComponentSystem.createComponentMapping(
         Workflow,
@@ -60,10 +60,10 @@ object StateSystem : ComponentSystem {
 
     private fun update() {
         var j = 0
-        while (j < workflows.map.capacity()) {
+        while (j < workflows.map.capacity) {
             val workflow = workflows.map[j++] ?: continue
             var i = 0
-            while (i < workflow.currentStateChanges.capacity()) {
+            while (i < workflow.currentStateChanges.capacity) {
                 val st = workflow.currentStateChanges[i++] ?: continue
                 if (st.condition()) {
                     doStateChange(workflow, st)

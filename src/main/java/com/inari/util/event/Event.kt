@@ -1,9 +1,7 @@
 package com.inari.util.event
 
 import com.inari.firefly.Predicate
-import com.inari.util.aspect.AspectGroup
-import com.inari.util.aspect.Aspects
-import com.inari.util.indexed.*
+import com.inari.util.aspect.*
 
 /** Base implementation of an Event handled by the [IEventDispatcher].
  *
@@ -40,11 +38,9 @@ import com.inari.util.indexed.*
  *
  * @param <L> The type of EventListener the is interested in the specified Event.
 </L> */
-abstract class Event<L> protected constructor() : IndexedType, Indexed {
-
-    /** Use this to get the index/type id of the specified Event  */
-    override val index: Int
-        by lazy { indexedTypeKey.index }
+abstract class Event<L> protected constructor(
+    val eventAspect: Aspect
+) {
 
     /** Implements the notification of specified listener.
      * For an implementation example have a look at the class documentation example
@@ -61,18 +57,10 @@ abstract class Event<L> protected constructor() : IndexedType, Indexed {
     protected fun restore() {}
     internal fun _restore() = restore()
 
-    override val indexedTypeKey: EventTypeKey
-        by lazy { Indexer.getOrCreateIndexedTypeKey(
-            EventTypeKey::class.java,
-            this::class.java
-        ) { EventTypeKey(this::class.java) } }
-
     companion object {
-        private val ASPECT_GROUP = AspectGroup("EventTypeKey")
+        @JvmField val EVENT_ASPECTS = IndexedAspectType("EVENT_ASPECTS")
     }
 
-    class EventTypeKey(subType: Class<out Event<*>>) :
-        IndexedTypeKey(Event::class.java, subType, ASPECT_GROUP)
 }
 
 /** An [Event] with an [Aspect] to verify interested listeners.
@@ -84,7 +72,9 @@ abstract class Event<L> protected constructor() : IndexedType, Indexed {
  *
  * @param <L> The [AspectedEventListener] implementation type
 </L> */
-abstract class AspectedEvent<L : AspectedEventListener> protected constructor() : Event<L>() {
+abstract class AspectedEvent<L : AspectedEventListener> protected constructor(
+    eventAspect: Aspect
+) : Event<L>(eventAspect) {
 
     /** Get the [Aspects] for this event. Only [AspectedEventListener] that are listening to the specified [Event] and [Aspect] are
      * going to be notified on this event.
@@ -120,7 +110,9 @@ interface AspectedEventListener {
  *
  * @param <L> The type of [PredicatedEventListener] to which the [PredicatedEvent] type is bound to.
 </L> */
-abstract class PredicatedEvent<L : PredicatedEventListener> protected constructor() : Event<L>()
+abstract class PredicatedEvent<L : PredicatedEventListener> protected constructor(
+    eventAspect: Aspect
+) : Event<L>(eventAspect)
 
 /** An event listener which implements also a specified matcher for the [PredicatedEvent] that matches if
  * the listener is interested on specified [PredicatedEvent].

@@ -12,7 +12,7 @@ import com.inari.util.aspect.Aspects
 object SceneSystem : ComponentSystem {
 
     override val supportedComponents: Aspects =
-        SystemComponent.ASPECT_GROUP.createAspects(Scene)
+        SystemComponent.SYSTEM_COMPONENT_ASPECTS.createAspects(Scene)
 
     private val _scenes = ComponentSystem.createComponentMapping(
         Scene,

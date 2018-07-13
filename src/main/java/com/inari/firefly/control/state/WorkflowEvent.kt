@@ -6,7 +6,7 @@ import com.inari.firefly.NO_NAME
 import com.inari.firefly.component.CompId
 import com.inari.util.event.Event
 
-object WorkflowEvent : Event<WorkflowEvent.Listener>() {
+object WorkflowEvent : Event<WorkflowEvent.Listener>(EVENT_ASPECTS.createAspect("WorkflowEvent")) {
 
     enum class Type {
         WORKFLOW_STARTED,
@@ -57,7 +57,7 @@ object WorkflowEvent : Event<WorkflowEvent.Listener>() {
     interface Listener {
         operator fun invoke(
             type: WorkflowEvent.Type,
-            workflow: CompId,
+            workflowId: CompId,
             workflowName: String,
             stateChangeName: String,
             fromName: String,

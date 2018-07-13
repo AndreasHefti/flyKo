@@ -3,9 +3,9 @@ package com.inari.firefly.physics.movement
 import com.inari.firefly.FFContext
 import com.inari.firefly.INFINITE_SCHEDULER
 import com.inari.firefly.component.ComponentRefResolver
-import com.inari.firefly.component.ComponentType
 import com.inari.firefly.control.Controller
 import com.inari.firefly.entity.EntityComponent
+import com.inari.firefly.entity.EntityComponentType
 import com.inari.firefly.external.FFTimer
 import com.inari.util.geom.Vector2f
 
@@ -72,11 +72,10 @@ class EMovement private constructor() : EntityComponent() {
         scheduler = INFINITE_SCHEDULER
     }
 
-    override fun componentType(): ComponentType<EMovement> =
+    override fun componentType() =
         EMovement.Companion
 
-    companion object : EntityComponentType<EMovement>() {
-        override val indexedTypeKey by lazy { EntityComponent.create(EMovement::class.java) }
+    companion object : EntityComponentType<EMovement>(EMovement::class.java) {
         override fun createEmpty() = EMovement()
     }
 }

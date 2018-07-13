@@ -5,9 +5,14 @@ import com.inari.firefly.VOID_CALL
 import com.inari.firefly.component.ComponentType
 import com.inari.firefly.control.trigger.Trigger
 import com.inari.firefly.control.trigger.TriggeredSystemComponent
+import com.inari.firefly.system.component.SystemComponentType
+import com.inari.util.indexed.Indexer
 import java.util.*
 
 abstract class Scene protected constructor() : TriggeredSystemComponent() {
+
+    final override val indexer: Indexer =
+        Indexer(Scene::class.java.name)
 
     @JvmField internal var removeAfterRun = false
     @JvmField internal var callback: Call = VOID_CALL
@@ -43,7 +48,5 @@ abstract class Scene protected constructor() : TriggeredSystemComponent() {
     override fun componentType(): ComponentType<Scene> =
         Scene.Companion
 
-    companion object : ComponentType<Scene> {
-        override val indexedTypeKey by lazy { TypeKeyBuilder.create(Scene::class.java) }
-    }
+    companion object : SystemComponentType<Scene>(Scene::class.java)
 }

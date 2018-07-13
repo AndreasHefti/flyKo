@@ -1,7 +1,6 @@
 package com.inari.firefly.entity
 
 import com.inari.commons.lang.list.DynArray
-import com.inari.firefly.entity.Entity.EntityComponentBuilder
 import java.util.*
 
 
@@ -17,7 +16,7 @@ object EntityProvider {
     }
 
     fun createComponentForLaterUse(number: Int, builder: EntityComponentBuilder<*>) {
-        val cache = getOrCreate(builder.index)
+        val cache = getOrCreate(builder.aspectIndex)
         for (i in 0 until number) {
             cache.add(builder.create())
         }
@@ -25,7 +24,7 @@ object EntityProvider {
 
     @Suppress("UNCHECKED_CAST")
     fun <C : EntityComponent> getComponent(builder: EntityComponentBuilder<C>): C {
-        val cache = getOrCreate(builder.index)
+        val cache = getOrCreate(builder.aspectIndex)
         return if (cache.isEmpty()) {
             builder.create()
         } else {

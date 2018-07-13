@@ -3,7 +3,7 @@ package com.inari.firefly.control
 import com.inari.firefly.IntExpr
 import com.inari.firefly.NULL_INT_EXPR
 import com.inari.firefly.component.CompId
-import com.inari.firefly.system.component.SubType
+import com.inari.firefly.system.component.SystemComponentSubType
 import java.util.*
 
 // NOTE using IntExpr here is because of performance reasons to avoid boxing
@@ -18,10 +18,10 @@ class PolyController private constructor() : Controller() {
         set(value) {controlExpr = setIfNotInitialized(value, "ff_ControlExpr")}
 
     override fun register(id: CompId)  =
-        ids.set(id.index)
+        ids.set(id.instanceId)
 
     override fun unregister(id: CompId)  =
-        ids.set(id.index, false)
+        ids.set(id.instanceId, false)
 
     override fun update() {
         var i: Int = -1
@@ -29,9 +29,7 @@ class PolyController private constructor() : Controller() {
             controlExpr(i)
     }
 
-    companion object : SubType<PolyController, Controller>() {
-        override val indexedTypeKey get() = Controller.indexedTypeKey
-        override val subType = PolyController::class.java
+    companion object : SystemComponentSubType<Controller, PolyController>(Controller, PolyController::class.java) {
         override fun createEmpty() = PolyController()
     }
 }

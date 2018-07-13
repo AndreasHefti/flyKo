@@ -23,8 +23,8 @@ class StateChangeTrigger private constructor(): Trigger() {
     private var call: Call = NULL_CALL
     private val listener = object : WorkflowEvent.Listener {
 
-        override fun invoke(type: WorkflowEvent.Type, workflow: CompId, workflowName: String, stateChangeName: String, fromName: String, toName: String) {
-            if (workflow.index != workflowRef)
+        override fun invoke(type: WorkflowEvent.Type, workflowId: CompId, workflowName: String, stateChangeName: String, fromName: String, toName: String) {
+            if (workflowId.instanceId != workflowRef)
                 return
 
             when (triggerType) {

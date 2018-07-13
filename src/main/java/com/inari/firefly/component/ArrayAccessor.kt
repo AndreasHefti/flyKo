@@ -1,7 +1,7 @@
 package com.inari.firefly.component
 
-import com.inari.commons.lang.list.DynArray
-import com.inari.commons.lang.list.DynArrayRO
+import com.inari.util.collection.DynArray
+import com.inari.util.collection.DynArrayRO
 
 
 class ArrayAccessor<T>(

@@ -3,9 +3,9 @@ package com.inari.firefly.physics.animation.easing
 
 object EasingFunctions {
 
-    val pi = Math.PI
-    val halfPi = pi / 2.0
-    val tau = 2.0 * Math.PI
+    const val pi = Math.PI
+    const val halfPi = pi / 2.0
+    const val tau = 2.0 * Math.PI
 
     @JvmField val linear = object : EasingFunction {
         override fun calc(t: Float): Float = t

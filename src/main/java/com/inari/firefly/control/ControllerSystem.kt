@@ -10,7 +10,7 @@ import com.inari.util.aspect.Aspects
 object ControllerSystem : ComponentSystem {
 
     override val supportedComponents: Aspects =
-        SystemComponent.ASPECT_GROUP.createAspects(Controller)
+        SystemComponent.SYSTEM_COMPONENT_ASPECTS.createAspects(Controller)
 
     @JvmField val controller = ComponentSystem.createComponentMapping(
         Controller,
@@ -38,7 +38,7 @@ object ControllerSystem : ComponentSystem {
         register(controller.idForName(controllerName), id)
 
     fun register(controllerId: CompId, id: CompId) =
-        register(controllerId.index, id)
+        register(controllerId.instanceId, id)
 
     fun register(controllerId: Int, id: CompId) {
         if (controllerId in controller)
@@ -49,7 +49,7 @@ object ControllerSystem : ComponentSystem {
         unregister(controller.idForName(controllerName), id)
 
     fun unregister(controllerId: CompId, id: CompId) =
-        unregister(controllerId.index, id)
+        unregister(controllerId.instanceId, id)
 
     fun unregister(controllerId: Int, id: CompId) {
         if (controllerId in controller)

@@ -1,10 +1,14 @@
 package com.inari.firefly.asset
 
 import com.inari.firefly.FFContext
-import com.inari.firefly.component.ComponentType
 import com.inari.firefly.system.component.SystemComponent
+import com.inari.firefly.system.component.SystemComponentType
+import com.inari.util.indexed.Indexer
 
 abstract class Asset protected constructor(): SystemComponent() {
+
+    final override val indexer: Indexer =
+        Indexer(Asset::class.java.name)
 
     @JvmField protected var dependingRef: Int = -1
     fun dependingIndex(): Int = dependingRef
@@ -19,13 +23,11 @@ abstract class Asset protected constructor(): SystemComponent() {
     protected abstract fun load()
     protected abstract fun unload()
 
-    fun loaded():Boolean = FFContext.isActive(componentId)
+    fun loaded():Boolean =
+        FFContext.isActive(componentId)
 
-    override fun componentType(): ComponentType<Asset> =
+    override fun componentType() =
         Asset.Companion
 
-    companion object : ComponentType<Asset> {
-        override val indexedTypeKey
-            by lazy { TypeKeyBuilder.create(Asset::class.java) }
-    }
+    companion object : SystemComponentType<Asset>(Asset::class.java)
 }

@@ -30,11 +30,8 @@ class SimpleTileGridRenderer private constructor() : Renderer() {
         }
     }
 
-    companion object : SingletonComponent<SimpleTileGridRenderer, Renderer>() {
-        override val indexedTypeKey = Renderer.indexedTypeKey
-        override val subType = SimpleTileGridRenderer::class.java
+    companion object : SingletonComponent<Renderer, SimpleTileGridRenderer>(Renderer, SimpleTileGridRenderer::class.java) {
         override fun create() = SimpleTileGridRenderer()
-
         private val MATCHING_ASPECTS = EntityComponent.ENTITY_COMPONENT_ASPECTS.createAspects(
             ETransform, ETile
         )

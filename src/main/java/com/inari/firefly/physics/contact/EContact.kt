@@ -3,8 +3,8 @@ package com.inari.firefly.physics.contact
 import com.inari.firefly.Named
 import com.inari.firefly.component.CompId
 import com.inari.firefly.component.ComponentRefResolver
-import com.inari.firefly.component.ComponentType
 import com.inari.firefly.entity.EntityComponent
+import com.inari.firefly.entity.EntityComponentType
 import com.inari.util.aspect.Aspect
 import com.inari.util.geom.BitMask
 import com.inari.util.geom.Rectangle
@@ -51,7 +51,7 @@ class EContact private constructor() : EntityComponent() {
         contacts(constraint.index)
 
     fun contacts(constraint: CompId): Contacts =
-        contacts(constraint.index)
+        contacts(constraint.instanceId)
 
     fun contacts(constraint: Named): Contacts =
         contacts(constraint.name)
@@ -75,11 +75,10 @@ class EContact private constructor() : EntityComponent() {
         contactScan.clear()
     }
 
-    override fun componentType(): ComponentType<EContact> =
+    override fun componentType() =
         EContact.Companion
 
-    companion object : EntityComponentType<EContact>() {
-        override val indexedTypeKey by lazy { EntityComponent.create(EContact::class.java) }
+    companion object : EntityComponentType<EContact>(EContact::class.java) {
         override fun createEmpty() = EContact()
     }
 }

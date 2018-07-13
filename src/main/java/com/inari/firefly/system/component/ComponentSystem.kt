@@ -1,12 +1,12 @@
 package com.inari.firefly.system.component
 
-import com.inari.commons.lang.list.DynArray
-import com.inari.commons.lang.list.DynArrayRO
-import com.inari.commons.lang.list.IntBagRO
 import com.inari.firefly.*
 import com.inari.firefly.component.*
 import com.inari.firefly.system.FFSystem
 import com.inari.util.aspect.Aspects
+import com.inari.util.collection.DynArray
+import com.inari.util.collection.DynArrayRO
+import com.inari.util.collection.IntBagRO
 import java.util.*
 
 interface ComponentSystem : FFSystem {
@@ -41,9 +41,9 @@ interface ComponentSystem : FFSystem {
         private val listener: (C, ComponentMap.MapAction) -> Unit
     ) : ComponentMap<C> {
 
-        override val typeIndex: Int = componentType.indexedTypeKey.index
+        override val typeIndex: Int = componentType.aspectIndex
         @Suppress("UNCHECKED_CAST")
-        private val _map: DynArray<C> = DynArray.create(componentType.indexedTypeKey.subType as Class<C>, size, exp)
+        private val _map: DynArray<C> = DynArray.of(componentType.typeClass as Class<C>, size, exp)
         override val map: DynArrayRO<C> = _map
         private val active: BitSet = BitSet()
         private val nameMap: MutableMap<String, C>? = if (nameMapping) HashMap() else null
@@ -54,14 +54,14 @@ interface ComponentSystem : FFSystem {
         override fun activate(index: Int) {
             if (activationMapping && !isActive(index)) {
                 active.set(index)
-                listener(_map.get(index), ComponentMap.MapAction.ACTIVATED)
+                listener(_map[index], ComponentMap.MapAction.ACTIVATED)
             }
         }
 
         override fun deactivate(index: Int) {
             if (isActive(index)) {
                 active.set(index, false)
-                listener(_map.get(index),  ComponentMap.MapAction.DEACTIVATED)
+                listener(_map[index],  ComponentMap.MapAction.DEACTIVATED)
             }
         }
 
@@ -71,29 +71,28 @@ interface ComponentSystem : FFSystem {
         override fun activate(name: String) = activate(indexForName(name))
         override fun deactivate(name: String) = deactivate(indexForName(name))
         override fun isActive(name: String): Boolean = isActive(indexForName(name))
-        override operator fun get(index: Int): C = _map.get(index)
-        override operator fun get(name: String): C = get(indexForName(name))
+        override operator fun get(index: Int): C = _map[index]
+        override operator fun get(name: String): C = this[indexForName(name)]
         @Suppress("UNCHECKED_CAST")
-        override fun <CC : C> getAs(index: Int): CC = get(index) as CC
+        override fun <CC : C> getAs(index: Int): CC = this[index] as CC
         @Suppress("UNCHECKED_CAST")
-        override fun <CC : C> getAs(name: String): CC = get(name) as CC
-        override fun contains(id: CompId): Boolean = contains(id.checkType(componentType).index)
-        override fun activate(id: CompId) = activate(id.checkType(componentType).index)
-        override fun deactivate(id: CompId) = deactivate(id.checkType(componentType).index)
-        override fun isActive(id: CompId): Boolean = isActive(id.checkType(componentType).index)
-        override fun get(id: CompId): C = get(id.checkType(componentType).index)
-        override fun <CC : C> getAs(id: CompId): CC = getAs(id.checkType(componentType).index)
-        override fun delete(id: CompId) = delete(id.checkType(componentType).index)
+        override fun <CC : C> getAs(name: String): CC = this[name] as CC
+        override fun contains(id: CompId): Boolean = contains(id.checkType(componentType).instanceId)
+        override fun activate(id: CompId) = activate(id.checkType(componentType).instanceId)
+        override fun deactivate(id: CompId) = deactivate(id.checkType(componentType).instanceId)
+        override fun isActive(id: CompId): Boolean = isActive(id.checkType(componentType).instanceId)
+        override fun get(id: CompId): C = get(id.checkType(componentType).instanceId)
+        override fun <CC : C> getAs(id: CompId): CC = getAs(id.checkType(componentType).instanceId)
+        override fun delete(id: CompId) = delete(id.checkType(componentType).instanceId)
         override fun delete(name: String) = delete(indexForName(name))
 
         override fun delete(index: Int) {
             if (_map.contains(index)) {
 
                 // first remove from map
-                val c: C = _map.remove(index)
-                if (nameMapping) {
+                val c: C = _map.remove(index)!!
+                if (nameMapping)
                     nameMap?.remove(c.name)
-                }
 
                 // if still active, deactivate
                 if (activationMapping) {
@@ -114,23 +113,23 @@ interface ComponentSystem : FFSystem {
         override fun idForName(name: String): CompId {
             if (nameMapping) {
                 return nameMap?.get(name)?.componentId ?:
-                    throw RuntimeException("Component: ${componentType.indexedTypeKey} for name: $name not found")
+                    throw RuntimeException("Component: $componentType for name: $name not found")
             }
 
-            val id: Int = (0 until _map.capacity()).firstOrNull {
-                _map[it] != null && _map[it].name == name
+            val id: Int = (0 until _map.capacity).firstOrNull {
+                it in _map && _map[it].name == name
             } ?: -1
 
             return when(id) {
-                -1 -> throw RuntimeException("Component: ${componentType.indexedTypeKey} for name: $name not found")
-                else -> map.get(id).componentId
+                -1 -> throw RuntimeException("Component: $componentType for name: $name not found")
+                else -> map[id].componentId
             }
         }
 
         override fun indexForName(name: String): Int {
             val result = internalIndexForName(name)
             if (result < 0)
-                throw RuntimeException("Component: ${componentType.indexedTypeKey} for name: $name not found")
+                throw RuntimeException("Component: $componentType for name: $name not found")
 
             return result
         }
@@ -139,8 +138,8 @@ interface ComponentSystem : FFSystem {
             if (nameMapping)
                 return nameMap?.get(name)?.index ?: -1
 
-            return (0 until _map.capacity()).firstOrNull {
-                _map[it] != null && _map[it].name == name
+            return (0 until _map.capacity).firstOrNull {
+                it in _map && _map[it].name == name
             } ?: -1
         }
 
@@ -148,9 +147,9 @@ interface ComponentSystem : FFSystem {
             active.nextSetBit(from)
 
         fun nextIndex(predicate: Predicate<C>, currentIndex: Int): Int =
-            if (currentIndex >= map.capacity() )
+            if (currentIndex >= map.capacity)
                 -1
-            else if (map.contains(currentIndex) && predicate(map.get(currentIndex)))
+            else if (map.contains(currentIndex) && predicate(map[currentIndex]))
                 currentIndex
             else
                 nextIndex(predicate, currentIndex + 1)
@@ -169,23 +168,22 @@ interface ComponentSystem : FFSystem {
         override fun forEachActive(expr: (C) -> Unit) {
             var i = active.nextSetBit(0)
             while (i >= 0) {
-                expr(map.get(i))
+                expr(map[i])
                 i = active.nextSetBit(i+1)
             }
         }
 
         override fun forEachIn(bag: IntBagRO, expr: Expr<C>) {
             val i = bag.iterator()
-            while (i.hasNext()) {
-                expr(map.get(i.next()))
-            }
+            while (i.hasNext())
+                expr(map[i.next()])
         }
 
         override fun <CC : C> forEachSubtypeIn(bag: IntBagRO, expr: Expr<CC>) {
             val i = bag.iterator()
             while (i.hasNext()) {
                 @Suppress("UNCHECKED_CAST")
-                expr(map.get(i.next()) as CC)
+                expr(map[i.next()] as CC)
             }
         }
 
@@ -202,7 +200,7 @@ interface ComponentSystem : FFSystem {
 
 
         private fun <CC : C> add(c: CC, alsoActivate: Boolean = false): CC {
-            _map.set(c.index, c)
+            _map[c.index] = c
             listener(c, ComponentMap.MapAction.CREATED)
             if (nameMapping && c.name !== NO_NAME)
                 nameMap?.put(c.name, c)

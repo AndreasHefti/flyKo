@@ -11,7 +11,7 @@ class ComponentRefResolver<T : Component>(
     private val receiver: Expr<Int>
 ) {
 
-    operator fun invoke(id: CompId) = receiver(id.index)
+    operator fun invoke(id: CompId) = receiver(id.instanceId)
     operator fun invoke(index: Int) = receiver(index)
     operator fun invoke(indexed: Indexed) = receiver(indexed.index)
     operator fun invoke(name: String) = receiver(FFContext[type, name].index)

@@ -1,15 +1,16 @@
 package com.inari.firefly.graphics.sprite
 
 import com.inari.util.geom.PositionF
-import com.inari.commons.lang.list.DynArray
 import com.inari.firefly.component.ArrayAccessor
 import com.inari.firefly.component.ComponentType
 import com.inari.firefly.entity.EntityComponent
+import com.inari.firefly.entity.EntityComponentType
+import com.inari.util.collection.DynArray
 
 class EMultiplier private constructor () : EntityComponent() {
 
     @JvmField internal val positions: DynArray<PositionF> =
-        DynArray.create(PositionF::class.java)
+        DynArray.of(PositionF::class.java)
 
     val ff_Positions = ArrayAccessor(positions)
 
@@ -20,8 +21,7 @@ class EMultiplier private constructor () : EntityComponent() {
     override fun componentType(): ComponentType<EMultiplier> =
         EMultiplier.Companion
 
-    companion object : EntityComponentType<EMultiplier>() {
-        override val indexedTypeKey by lazy { EntityComponent.create(EMultiplier::class.java) }
+    companion object : EntityComponentType<EMultiplier>(EMultiplier::class.java) {
         override fun createEmpty() = EMultiplier()
     }
 }

@@ -3,11 +3,15 @@ package com.inari.firefly.control
 import com.inari.firefly.FFContext
 import com.inari.firefly.INFINITE_SCHEDULER
 import com.inari.firefly.component.CompId
-import com.inari.firefly.component.ComponentType
 import com.inari.firefly.external.FFTimer
 import com.inari.firefly.system.component.SystemComponent
+import com.inari.firefly.system.component.SystemComponentType
+import com.inari.util.indexed.Indexer
 
 abstract class Controller protected constructor() : SystemComponent() {
+
+    override val indexer: Indexer =
+        Indexer(Controller::class.java.name)
 
     @JvmField internal var scheduler: FFTimer.Scheduler = INFINITE_SCHEDULER
 
@@ -23,11 +27,9 @@ abstract class Controller protected constructor() : SystemComponent() {
 
     abstract fun update()
 
-    override fun componentType(): ComponentType<Controller> =
+    override fun componentType() =
         Controller.Companion
 
-    companion object : ComponentType<Controller> {
-        override val indexedTypeKey by lazy { TypeKeyBuilder.create(Controller::class.java) }
-    }
+    companion object : SystemComponentType<Controller>(Controller::class.java)
 
 }

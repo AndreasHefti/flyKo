@@ -1,17 +1,17 @@
 package com.inari.firefly.asset
 
-import com.inari.commons.lang.list.IntBag
 import com.inari.firefly.FFContext
 import com.inari.firefly.component.ComponentMap.MapAction
 import com.inari.firefly.system.component.ComponentSystem
 import com.inari.firefly.system.component.SystemComponent
 import com.inari.util.aspect.Aspects
+import com.inari.util.collection.IntBag
 
 
 object AssetSystem : ComponentSystem {
 
     override val supportedComponents: Aspects =
-        SystemComponent.ASPECT_GROUP.createAspects(Asset)
+        SystemComponent.SYSTEM_COMPONENT_ASPECTS.createAspects(Asset)
 
     @JvmField val assets = ComponentSystem.createComponentMapping(
         Asset,
@@ -55,9 +55,9 @@ object AssetSystem : ComponentSystem {
     private fun unload(asset: Asset) {
         findDependingAssets(asset.index)
         if (!dependingAssetIds.isEmpty) {
-            (0 until dependingAssetIds.length())
+            (0 until dependingAssetIds.length)
                 .filterNot { dependingAssetIds.isEmpty(it) }
-                .map { dependingAssetIds.get(it) }
+                .map { dependingAssetIds[it] }
                 .filter { assets.isActive(it) }
                 .forEach { assets.deactivate(it) }
         }
@@ -71,9 +71,9 @@ object AssetSystem : ComponentSystem {
 
     private fun deleted(asset: Asset) {
         if (dependingAssetIds.isEmpty) {
-            (0 until dependingAssetIds.length())
+            (0 until dependingAssetIds.length)
                 .filterNot { dependingAssetIds.isEmpty(it) }
-                .forEach { assets.delete(dependingAssetIds.get(it)) }
+                .forEach { assets.delete(dependingAssetIds[it]) }
         }
 
         AssetEvent.send(

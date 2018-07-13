@@ -4,9 +4,9 @@ import com.inari.firefly.asset.AssetInstanceRefResolver
 import com.inari.firefly.component.ComponentRefResolver
 import com.inari.firefly.component.ComponentType
 import com.inari.firefly.entity.EntityComponent
+import com.inari.firefly.entity.EntityComponentType
 import com.inari.firefly.graphics.BlendMode
 import com.inari.firefly.graphics.rendering.Renderer
-import com.inari.firefly.graphics.sprite.ESprite
 import com.inari.util.graphics.RGBColor
 
 class EText private constructor() : EntityComponent() {
@@ -43,8 +43,7 @@ class EText private constructor() : EntityComponent() {
     override fun componentType(): ComponentType<EText> =
         EText.Companion
 
-    companion object : EntityComponentType<EText>() {
-        override val indexedTypeKey by lazy { EntityComponent.create(EText::class.java) }
+    companion object : EntityComponentType<EText>(EText::class.java) {
         override fun createEmpty() = EText()
     }
 }

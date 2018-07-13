@@ -14,7 +14,7 @@ import com.inari.util.aspect.Aspects
 
 object AnimationSystem : ComponentSystem {
     override val supportedComponents: Aspects =
-        SystemComponent.ASPECT_GROUP.createAspects(Animation)
+        SystemComponent.SYSTEM_COMPONENT_ASPECTS.createAspects(Animation)
 
     @JvmField val animations = ComponentSystem.createComponentMapping(
         Animation,

@@ -9,7 +9,7 @@ import com.inari.util.aspect.Aspects
 object TaskSystem : ComponentSystem {
 
     override val supportedComponents: Aspects =
-        SystemComponent.ASPECT_GROUP.createAspects(Task)
+        SystemComponent.SYSTEM_COMPONENT_ASPECTS.createAspects(Task)
 
     @JvmField val tasks = ComponentSystem.createComponentMapping(
         Task, nameMapping = true
@@ -23,7 +23,7 @@ object TaskSystem : ComponentSystem {
         runTask(tasks.indexForName(name))
 
     fun runTask(taskId: CompId) =
-        runTask(taskId.checkType(Task::class.java).index)
+        runTask(taskId.checkType(Task).instanceId)
 
     fun runTask(taskIndex: Int) {
         if (taskIndex in tasks) {

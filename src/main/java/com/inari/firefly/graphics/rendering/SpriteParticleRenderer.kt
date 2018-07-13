@@ -20,13 +20,13 @@ class SpriteParticleRenderer private constructor() : Renderer() {
 
         val graphics = FFContext.graphics
         var i = 0
-        while (i < toRender.capacity()) {
+        while (i < toRender.capacity) {
             val entity = toRender[i++] ?: continue
             val spriteParticle = entity[EParticle].getParticle<SpriteParticle>()
             val transform = entity[ETransform]
 
             var ii = 0
-            while (ii < spriteParticle.capacity()) {
+            while (ii < spriteParticle.capacity) {
                 val particle = spriteParticle[ii++] ?: continue
                 transformCollector(transform.data)
                 transformCollector + particle.transformData
@@ -35,11 +35,8 @@ class SpriteParticleRenderer private constructor() : Renderer() {
         }
     }
 
-    companion object : SingletonComponent<SpriteParticleRenderer, Renderer>() {
-        override val indexedTypeKey = Renderer.indexedTypeKey
-        override val subType = SpriteParticleRenderer::class.java
+    companion object : SingletonComponent<Renderer, SpriteParticleRenderer>(Renderer, SpriteParticleRenderer::class.java) {
         override fun create() = SpriteParticleRenderer()
-
         private val MATCHING_ASPECTS = EntityComponent.ENTITY_COMPONENT_ASPECTS.createAspects(
             ETransform, EParticle
         )

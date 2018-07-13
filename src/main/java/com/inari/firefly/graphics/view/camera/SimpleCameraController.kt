@@ -7,7 +7,7 @@ import com.inari.firefly.control.Controller
 import com.inari.firefly.graphics.view.View
 import com.inari.firefly.graphics.view.ViewChangeEvent
 import com.inari.firefly.graphics.view.ViewSystem
-import com.inari.firefly.system.component.SubType
+import com.inari.firefly.system.component.SystemComponentSubType
 import com.inari.util.geom.Rectangle
 
 
@@ -89,9 +89,7 @@ class SimpleCameraController private constructor() : Controller() {
         return pos.x != 0f || pos.y != 0f
     }
 
-    companion object : SubType<SimpleCameraController, Controller>() {
-        override val indexedTypeKey = Controller.indexedTypeKey
-        override val subType = SimpleCameraController::class.java
+    companion object : SystemComponentSubType<Controller, SimpleCameraController>(Controller, SimpleCameraController::class.java) {
         override fun createEmpty() = SimpleCameraController()
     }
 }

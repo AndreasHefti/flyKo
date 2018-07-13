@@ -5,7 +5,7 @@ import com.inari.firefly.FFContext
 import com.inari.firefly.external.ViewData
 import com.inari.util.event.Event
 
-object ViewEvent : Event<ViewEvent.Listener>() {
+object ViewEvent : Event<ViewEvent.Listener>(EVENT_ASPECTS.createAspect("ViewEvent")) {
 
     enum class Type {
         VIEW_CREATED,

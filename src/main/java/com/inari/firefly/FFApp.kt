@@ -110,7 +110,7 @@ abstract class FFApp protected constructor(
     }
 
 
-    object UpdateEvent : Event<UpdateEvent.Listener>() {
+    object UpdateEvent : Event<UpdateEvent.Listener>(EVENT_ASPECTS.createAspect("UpdateEvent")) {
 
         override fun notify(listener: UpdateEvent.Listener) =
             listener()
@@ -120,7 +120,7 @@ abstract class FFApp protected constructor(
         }
     }
 
-    object RenderEvent : Event<RenderEvent.Listener>() {
+    object RenderEvent : Event<RenderEvent.Listener>(EVENT_ASPECTS.createAspect("RenderEvent")) {
 
         internal var viewIndex: Int = -1
         internal var layerIndex: Int = -1
@@ -134,7 +134,7 @@ abstract class FFApp protected constructor(
         }
     }
 
-    object PostRenderEvent : Event<PostRenderEvent.Listener>() {
+    object PostRenderEvent : Event<PostRenderEvent.Listener>(EVENT_ASPECTS.createAspect("PostRenderEvent")) {
 
         override fun notify(listener: PostRenderEvent.Listener) =
             listener()

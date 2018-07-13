@@ -3,11 +3,15 @@ package com.inari.firefly.system.component
 import com.inari.firefly.component.CompId
 import com.inari.firefly.component.NamedComponent
 import com.inari.firefly.NO_NAME
+import com.inari.firefly.component.Component
 import com.inari.firefly.component.ComponentType
-import com.inari.util.aspect.AspectGroup
-import com.inari.util.indexed.*
+import com.inari.firefly.system.component.SystemComponent.Companion.SYSTEM_COMPONENT_ASPECTS
+import com.inari.util.aspect.Aspect
+import com.inari.util.aspect.AspectType
+import com.inari.util.aspect.IndexedAspectType
+import com.inari.util.indexed.AbstractIndexed
 
-abstract class SystemComponent protected constructor() : BaseIndexedObject(), IndexedType, NamedComponent {
+abstract class SystemComponent protected constructor() : AbstractIndexed(), NamedComponent {
 
     override var name: String = NO_NAME
         protected set
@@ -21,10 +25,7 @@ abstract class SystemComponent protected constructor() : BaseIndexedObject(), In
         get() = name
 
     final override val componentId: CompId
-        by lazy { CompId(index, indexedTypeKey) }
-    @Suppress("UNCHECKED_CAST")
-    final override val indexedType: Class<out SystemComponent>
-        get() = indexedTypeKey.subType as Class<out SystemComponent>
+        by lazy { CompId(index, componentType()) }
 
     var initialized:Boolean = false
         internal set
@@ -37,7 +38,7 @@ abstract class SystemComponent protected constructor() : BaseIndexedObject(), In
     }
     override fun dispose() {
         initialized = false
-        super.dispose()
+        super.disposeIndex()
     }
 
     protected fun setIfNotInitialized(value: Int, name: String): Int =
@@ -59,25 +60,39 @@ abstract class SystemComponent protected constructor() : BaseIndexedObject(), In
     private fun <T> alreadyInit(name: String): T =
         throw IllegalStateException("No set on already initialized property allowed for: $name")
 
-    override val indexedTypeKey: IIndexedTypeKey
-        get() = componentType().indexedTypeKey
-
     abstract fun componentType(): ComponentType<out SystemComponent>
 
-
     companion object {
-        val ASPECT_GROUP = AspectGroup("SystemComponent")
+        val SYSTEM_COMPONENT_ASPECTS = IndexedAspectType("SYSTEM_COMPONENT_ASPECTS")
     }
 
-    protected object TypeKeyBuilder {
+}
 
-        private class TypeKey(subType: Class<out SystemComponent>) :
-            IndexedTypeKey(SystemComponent::class.java, subType, ASPECT_GROUP)
+abstract class SystemComponentType<C : SystemComponent>(
+    final override val typeClass: Class<C>
+) : ComponentType<C> {
+    val compAspect: Aspect = SYSTEM_COMPONENT_ASPECTS.createAspect(typeClass.simpleName)
+    final override val aspectIndex: Int = compAspect.aspectIndex
+    final override val aspectName: String = compAspect.aspectName
+    final override val aspectType: AspectType = compAspect.aspectType
+}
 
-        fun <T: SystemComponent> create(subType: Class<T>): IIndexedTypeKey =
-            Indexer.getOrCreateIndexedTypeKey(
-                TypeKey::class.java,
-                subType
-            ) { TypeKey(subType) }
-    }
+abstract class SystemComponentSingleType<C : SystemComponent>(
+    final override val typeClass: Class<C>
+) : SystemComponentBuilder<C>(), ComponentType<C> {
+    final override val compAspect: Aspect = SYSTEM_COMPONENT_ASPECTS.createAspect(typeClass.simpleName)
+    final override val aspectIndex: Int = compAspect.aspectIndex
+    final override val aspectName: String = compAspect.aspectName
+    final override val aspectType: AspectType = compAspect.aspectType
+}
+
+abstract class SystemComponentSubType<C : SystemComponent, CC : C>(
+    baseType: SystemComponentType<C>,
+    val subTypeClass: Class<CC>
+) : SystemComponentBuilder<CC>(), ComponentType<C> {
+    override val typeClass: Class<C> = baseType.typeClass
+    final override val compAspect: Aspect = baseType.compAspect
+    final override val aspectIndex: Int = baseType.aspectIndex
+    final override val aspectName: String = baseType.aspectName
+    final override val aspectType: AspectType = baseType.aspectType
 }

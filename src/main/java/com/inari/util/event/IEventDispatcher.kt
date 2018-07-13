@@ -1,5 +1,7 @@
 package com.inari.util.event
 
+import com.inari.util.aspect.Aspect
+
 
 /** An generic Event Dispatcher to register/unregister generic Listeners to listen to matching [Event].
  * A Listener interface can be created for specified needs to working with a [Event]<Listener> implementation.
@@ -51,18 +53,18 @@ interface IEventDispatcher {
 
     /** Register a Listener L to listen to specified type of [Event].
      *
-     * @param eventType The class type of the [Event] to listen at
+     * @param eventTypeAspect The class type of the [Event] to listen at
      * @param listener The listener to register and that gets informed by specified [Event]
      */
-    fun <L> register(eventType: Event.EventTypeKey, listener: L)
+    fun <L> register(eventTypeAspect: Aspect, listener: L)
 
     /** Unregister a specified Listener for a specified [Event] type.
      *
-     * @param eventType The [Event] (class) type
+     * @param eventTypeAspect The [Event] (class) type
      * @param listener the listener to unregister.
      * @return true if the specified listener was unregistered or false if there was no such listener registered
      */
-    fun <L> unregister(eventType: Event.EventTypeKey, listener: L): Boolean
+    fun <L> unregister(eventTypeAspect: Aspect, listener: L): Boolean
 
     /** Notifies all listeners that are interested on the specific type of Event within the specified [Event].
      *

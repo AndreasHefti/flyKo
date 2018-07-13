@@ -2,8 +2,13 @@ package com.inari.firefly.physics.animation
 
 import com.inari.firefly.component.ComponentType
 import com.inari.firefly.system.component.SystemComponent
+import com.inari.firefly.system.component.SystemComponentType
+import com.inari.util.indexed.Indexer
 
 abstract class Animation protected constructor() : SystemComponent() {
+
+    override val indexer: Indexer =
+        Indexer(Animation::class.java.name)
 
     @JvmField internal var looping: Boolean = false
 
@@ -17,9 +22,7 @@ abstract class Animation protected constructor() : SystemComponent() {
     override fun componentType(): ComponentType<Animation> =
         Animation.Companion
 
-    companion object : ComponentType<Animation> {
-        override val indexedTypeKey by lazy { TypeKeyBuilder.create(Animation::class.java) }
-    }
+    companion object : SystemComponentType<Animation>(Animation::class.java)
 }
 
 interface FloatAnimation {

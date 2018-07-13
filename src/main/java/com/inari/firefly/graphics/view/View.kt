@@ -2,18 +2,21 @@ package com.inari.firefly.graphics.view
 
 import com.inari.util.geom.PositionF
 import com.inari.firefly.component.ComponentRefResolver
-import com.inari.firefly.component.ComponentType
 import com.inari.firefly.control.Controller
 import com.inari.firefly.graphics.BlendMode
-import com.inari.firefly.system.component.SingleType
 import com.inari.firefly.system.component.SystemComponent
 import com.inari.firefly.external.ViewData
+import com.inari.firefly.system.component.SystemComponentSingleType
 import com.inari.util.geom.Rectangle
 import com.inari.util.graphics.RGBColor
+import com.inari.util.indexed.Indexer
 
 class View private constructor (
     @JvmField internal var baseView: Boolean = false
 ) : SystemComponent() {
+
+    override val indexer: Indexer
+        = Indexer(View::class.java.name)
 
     @JvmField internal var controllerRef = -1
     @JvmField internal val data = object : ViewData() {
@@ -59,11 +62,10 @@ class View private constructor (
             "fboScaler=${data.fboScaler})"
     }
 
-    override fun componentType(): ComponentType<View> =
+    override fun componentType() =
         View.Companion
 
-    companion object : SingleType<View>() {
-        override val indexedTypeKey by lazy { TypeKeyBuilder.create(View::class.java) }
+    companion object : SystemComponentSingleType<View>(View::class.java) {
         override fun createEmpty() = View()
     }
 }

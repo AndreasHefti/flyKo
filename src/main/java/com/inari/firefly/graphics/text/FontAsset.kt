@@ -5,7 +5,7 @@ import com.inari.firefly.*
 import com.inari.firefly.asset.Asset
 import com.inari.firefly.external.SpriteData
 import com.inari.firefly.external.TextureData
-import com.inari.firefly.system.component.SubType
+import com.inari.firefly.system.component.SystemComponentSubType
 import com.inari.util.geom.Rectangle
 
 
@@ -113,9 +113,7 @@ class FontAsset : Asset(), TextureData {
         texId = -1
     }
 
-    companion object : SubType<FontAsset, Asset>() {
-        override val indexedTypeKey = Asset.indexedTypeKey
-        override val subType = FontAsset::class.java
+    companion object : SystemComponentSubType<Asset, FontAsset>(Asset, FontAsset::class.java) {
         override fun createEmpty() = FontAsset()
     }
 

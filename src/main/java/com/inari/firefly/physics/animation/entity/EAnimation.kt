@@ -1,10 +1,10 @@
 package com.inari.firefly.physics.animation.entity
 
 import com.inari.firefly.component.ComponentRefResolver
-import com.inari.firefly.component.ComponentType
 import com.inari.firefly.control.Controller
 import com.inari.firefly.physics.animation.AnimationSystem
 import com.inari.firefly.entity.EntityComponent
+import com.inari.firefly.entity.EntityComponentType
 import java.util.*
 
 class EAnimation : EntityComponent() {
@@ -43,11 +43,10 @@ class EAnimation : EntityComponent() {
         clearAnimations()
     }
 
-    override fun componentType(): ComponentType<EAnimation> =
+    override fun componentType() =
         EAnimation.Companion
 
-    companion object : EntityComponentType<EAnimation>() {
-        override val indexedTypeKey by lazy { EntityComponent.create(EAnimation::class.java) }
+    companion object : EntityComponentType<EAnimation>(EAnimation::class.java) {
         override fun createEmpty() = EAnimation()
     }
 }

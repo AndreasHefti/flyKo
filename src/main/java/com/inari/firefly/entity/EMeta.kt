@@ -5,8 +5,8 @@ import com.inari.firefly.component.ComponentRefResolver
 import com.inari.firefly.component.ComponentType
 import com.inari.firefly.component.NamedComponent
 import com.inari.firefly.control.Controller
-import com.inari.util.aspect.AspectGroup
 import com.inari.util.aspect.Aspects
+import com.inari.util.aspect.IndexedAspectType
 
 class EMeta private constructor() : EntityComponent(), NamedComponent {
 
@@ -24,7 +24,7 @@ class EMeta private constructor() : EntityComponent(), NamedComponent {
             name = ff_Name
         }
         get() = name
-    val ff_Controller = ComponentRefResolver(Controller, { index-> controllerRef = index })
+    val ff_Controller = ComponentRefResolver(Controller) { index-> controllerRef = index }
     var ff_Aspects: Aspects
         get() = aspects
         set(value) {
@@ -43,10 +43,8 @@ class EMeta private constructor() : EntityComponent(), NamedComponent {
     override fun componentType(): ComponentType<EMeta> =
         EMeta.Companion
 
-    companion object : EntityComponentType<EMeta>() {
-        override val indexedTypeKey by lazy { EntityComponent.create(EMeta::class.java) }
+    companion object : EntityComponentType<EMeta>(EMeta::class.java) {
         override fun createEmpty() = EMeta()
-
-        val ENTITY_META_ASPECTS = AspectGroup("ENTITY_META_ASPECTS")
+        val ENTITY_META_ASPECTS = IndexedAspectType("ENTITY_META_ASPECTS")
     }
 }

@@ -4,6 +4,7 @@ import com.inari.firefly.asset.AssetInstanceRefResolver
 import com.inari.firefly.component.ComponentType
 import com.inari.firefly.entity.Entity
 import com.inari.firefly.entity.EntityComponent
+import com.inari.firefly.entity.EntityComponentType
 import com.inari.firefly.entity.property.FloatPropertyAccessor
 import com.inari.firefly.entity.property.VirtualPropertyRef
 import com.inari.firefly.external.ShapeData
@@ -109,8 +110,7 @@ class EShape private constructor(): EntityComponent() {
     override fun componentType(): ComponentType<EShape> =
         EShape.Companion
 
-    companion object : EntityComponentType<EShape>() {
-        override val indexedTypeKey by lazy { EntityComponent.create(EShape::class.java) }
+    companion object : EntityComponentType<EShape>(EShape::class.java) {
         override fun createEmpty() = EShape()
     }
 }

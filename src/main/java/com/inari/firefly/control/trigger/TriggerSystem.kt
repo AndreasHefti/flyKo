@@ -6,7 +6,7 @@ import com.inari.util.aspect.Aspects
 
 object TriggerSystem : ComponentSystem {
     override val supportedComponents: Aspects =
-        SystemComponent.ASPECT_GROUP.createAspects(Trigger)
+        SystemComponent.SYSTEM_COMPONENT_ASPECTS.createAspects(Trigger)
 
     @JvmField val trigger = ComponentSystem.createComponentMapping(
         Trigger,

@@ -2,9 +2,9 @@ package com.inari.firefly.graphics
 
 import com.inari.util.geom.PositionF
 import com.inari.firefly.component.ComponentRefResolver
-import com.inari.firefly.component.ComponentType
 import com.inari.firefly.entity.Entity
 import com.inari.firefly.entity.EntityComponent
+import com.inari.firefly.entity.EntityComponentType
 import com.inari.firefly.entity.property.FloatPropertyAccessor
 import com.inari.firefly.entity.property.VirtualPropertyRef
 import com.inari.firefly.external.TransformData
@@ -129,11 +129,10 @@ class ETransform private constructor() : EntityComponent(), ViewLayerAware {
         }
     }
 
-    override fun componentType(): ComponentType<ETransform> =
+    override fun componentType() =
         ETransform.Companion
 
-    companion object : EntityComponentType<ETransform>() {
-        override val indexedTypeKey by lazy { EntityComponent.create(ETransform::class.java) }
+    companion object : EntityComponentType<ETransform>(ETransform::class.java) {
         override fun createEmpty() = ETransform()
     }
 }

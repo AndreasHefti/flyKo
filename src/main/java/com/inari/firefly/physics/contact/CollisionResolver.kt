@@ -1,20 +1,22 @@
 package com.inari.firefly.physics.contact
 
-import com.inari.firefly.component.ComponentType
 import com.inari.firefly.entity.Entity
 import com.inari.firefly.system.component.SystemComponent
+import com.inari.firefly.system.component.SystemComponentType
+import com.inari.util.indexed.Indexer
 
 abstract class CollisionResolver protected constructor() : SystemComponent() {
+
+    override val indexer: Indexer =
+        Indexer(CollisionResolver::class.java.name)
 
     @JvmField internal var separateDirections = true
     @JvmField internal var yDirectionFirst = true
 
     abstract fun resolve(entity: Entity)
 
-    override fun componentType(): ComponentType<CollisionResolver> =
+    override fun componentType() =
         CollisionResolver.Companion
 
-    companion object : ComponentType<CollisionResolver> {
-        override val indexedTypeKey by lazy { TypeKeyBuilder.create(CollisionResolver::class.java) }
-    }
+    companion object : SystemComponentType<CollisionResolver>(CollisionResolver::class.java)
 }

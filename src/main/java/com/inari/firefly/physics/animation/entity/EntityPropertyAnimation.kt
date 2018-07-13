@@ -6,7 +6,7 @@ import com.inari.firefly.physics.animation.Animation
 import com.inari.firefly.physics.animation.AnimationSystem
 import com.inari.firefly.entity.Entity
 import com.inari.firefly.entity.property.VirtualPropertyRef
-import com.inari.firefly.system.component.SubType
+import com.inari.firefly.system.component.SystemComponentSubType
 
 abstract class EntityPropertyAnimation protected constructor() : Animation() {
 
@@ -21,14 +21,13 @@ abstract class EntityPropertyAnimation protected constructor() : Animation() {
 
     protected abstract fun init(entity: Entity)
 
-    abstract class PropertyAnimationSubtype<A : EntityPropertyAnimation> : SubType<A, Animation>() {
+    abstract class PropertyAnimationSubtype<A : EntityPropertyAnimation> : SystemComponentSubType<Animation, EntityPropertyAnimation>(Animation, EntityPropertyAnimation::class.java) {
         internal fun doBuild(configure: A.() -> Unit): A {
             val result = createEmpty()
             result.also(configure)
             AnimationSystem.animations.receiver()(result)
             return result
         }
-        override val indexedTypeKey = Animation.indexedTypeKey
         abstract override fun createEmpty(): A
     }
 }

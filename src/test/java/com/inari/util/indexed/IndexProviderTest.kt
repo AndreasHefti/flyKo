@@ -30,26 +30,26 @@ class IndexTest {
             "  SimpleIndexedObject : {0, 1, 2}\n" +
             " * Indexed Type Keys :\n" +
             "}", IndexProvider.dump())
-        assertTrue(o1.objectIndex == 0)
-        assertTrue(o2.objectIndex == 1)
-        assertTrue(o3.objectIndex == 2)
-        assertTrue(o1.indexedType == SimpleIndexedObject::class.java)
+        assertTrue(o1.index == 0)
+        assertTrue(o2.index == 1)
+        assertTrue(o3.index == 2)
+        assertTrue(o1.indexedTypeName == "SimpleIndexedObject")
 
-        o1.disposeIndex()
+        o1.dispose()
         assertEquals("IndexProvider : {\n" +
             " * Indexed Objects :\n" +
             "  SimpleIndexedObject : {1, 2}\n" +
             " * Indexed Type Keys :\n" +
             "}", IndexProvider.dump())
-        assertTrue(o1.objectIndex == -1)
+        assertTrue(o1.index == -1)
 
         val o4 = SimpleIndexedObject()
-        assertTrue(o4.objectIndex == 0)
+        assertTrue(o4.index == 0)
 
-        o1.loadIndex()
-        assertTrue(o1.objectIndex == 3)
-        o1.loadIndex()
-        assertTrue(o1.objectIndex == 3)
+        o1.applyNew()
+        assertTrue(o1.index == 3)
+        o1.applyNew()
+        assertTrue(o1.index == 3)
         assertEquals("IndexProvider : {\n" +
             " * Indexed Objects :\n" +
             "  SimpleIndexedObject : {0, 1, 2, 3}\n" +
@@ -71,9 +71,8 @@ class IndexTest {
             " * Indexed Type Keys :\n" +
             "    TypeKey[SimpleIndexedTypeKey:SimpleIndexedType:SITA:0]\n" +
             "}", IndexProvider.dump())
-        assertTrue(a1.typeIndex == 0)
-        assertTrue(a1.typeKey.baseType == SimpleIndexedType::class.java)
-        assertTrue(a1.typeKey.subType == SITA::class.java)
+        assertTrue(SITA.index == 0)
+        assertTrue(SITA.indexedTypeName == "IndexedType")
 
         val a2 = SITA()
         assertEquals("IndexProvider : {\n" +
@@ -82,9 +81,8 @@ class IndexTest {
             " * Indexed Type Keys :\n" +
             "    TypeKey[SimpleIndexedTypeKey:SimpleIndexedType:SITA:0]\n" +
             "}", IndexProvider.dump())
-        assertTrue(a2.typeIndex == 0)
-        assertTrue(a2.typeKey.baseType == SimpleIndexedType::class.java)
-        assertTrue(a2.typeKey.subType == SITA::class.java)
+        assertTrue(SITA.index == 0)
+
 
         val b1 = SITB()
         assertEquals("IndexProvider : {\n" +
@@ -115,7 +113,7 @@ class IndexTest {
             " * Indexed Type Keys :\n" +
             "    TypeKey[IndexedTypeKey:SimpleIndexedType:IOATA:0]\n" +
             "}", IndexProvider.dump())
-        assertTrue(a1.typeIndex == 0)
+        assertTrue(a1.index == 0)
         assertTrue(a1.objectIndex == 0)
         assertTrue(a1.typeKey.baseType == SimpleIndexedType::class.java)
         assertTrue(a1.typeKey.subType == IOATA::class.java)
@@ -169,86 +167,159 @@ class IndexTest {
 
 }
 
-class SimpleIndexedObject : AbstractIndexedObject(SimpleIndexedObject::class.java)
-
-abstract class SimpleIndexedType : IIndexedType {
-    override val typeIndex: Int
-        get() = typeKey.objectIndex
-
-    protected class SimpleIndexedTypeKey(
-        override val subType: Class<out IIndexedType>
-    ) : AbstractIndexedTypeKey(SimpleIndexedType::class.java, subType, SimpleIndexedTypeKey::class.java)
+class SimpleIndexedObject : AbstractIndexed() {
+    override val indexer: Indexer = Indexer("SimpleIndexedObject")
+    fun dispose() = disposeIndex()
+    fun applyNew() = applyNewIndex()
 }
 
+
+abstract class SimpleIndexedType {
+    abstract class TypeIndex : AbstractIndexed() {
+        override val indexer: Indexer = Indexer("IndexedType")
+        fun dispose() = disposeIndex()
+        fun applyNew() = applyNewIndex()
+    }
+}
 class SITA : SimpleIndexedType() {
-    override val typeKey: NewIndexedTypeKey =
-        SITA.typeKey
-
-    companion object {
-        val typeKey: NewIndexedTypeKey =
-            SimpleIndexedTypeKey(SITA::class.java)
-    }
+    companion object : TypeIndex()
 }
-
 class SITB : SimpleIndexedType() {
-    override val typeKey: NewIndexedTypeKey =
-        SITB.typeKey
-
-    companion object {
-        val typeKey: NewIndexedTypeKey =
-            SimpleIndexedTypeKey(SITB::class.java)
-    }
+    companion object : TypeIndex()
 }
-
 class SITC : SimpleIndexedType() {
-    override val typeKey: NewIndexedTypeKey =
-        SITC.typeKey
+    companion object : TypeIndex()
+}
 
-    companion object {
-        val typeKey: NewIndexedTypeKey =
-            SimpleIndexedTypeKey(SITC::class.java)
+abstract class IndexedObjectAndType : AbstractIndexed() {
+    fun dispose() = disposeIndex()
+    fun applyNew() = applyNewIndex()
+
+    abstract class TypeIndex : AbstractIndexed() {
+        override val indexer: Indexer = Indexer("IndexedType")
+        fun dispose() = disposeIndex()
+        fun applyNew() = applyNewIndex()
     }
 }
 
-
-
-abstract class IndexedObjectAndType(
-    indexedType: Class<out IIndexedObject>
-) : IIndexedType, AbstractIndexedObject(indexedType) {
-    override val typeIndex: Int
-        get() = typeKey.objectIndex
-
-    protected class IndexedTypeKey(
-        override val subType: Class<out IIndexedType>
-    ) : AbstractIndexedTypeKey(SimpleIndexedType::class.java, subType, IndexedTypeKey::class.java)
+class IOATA : IndexedObjectAndType() {
+    override val indexer: Indexer = Indexer("IOATA")
+    companion object : TypeIndex()
+}
+class IOATB : IndexedObjectAndType() {
+    override val indexer: Indexer = Indexer("IOATB")
+    companion object : TypeIndex()
+}
+class IOATC : IndexedObjectAndType() {
+    override val indexer: Indexer = Indexer("IOATC")
+    companion object : TypeIndex()
 }
 
-class IOATA : IndexedObjectAndType(IOATA::class.java) {
-    override val typeKey =
-        IOATA.typeKey
+//class SimpleIndexedObject : AbstractIndexedObject(SimpleIndexedObject::class.java)
+//
+//abstract class SimpleIndexedType(
+//    val typeKey: IndexedTypeKey
+//) : IndexedType {
+////    override val baseType: Class<out IndexedType>
+////        get() = SimpleIndexedType::class.java
+//    override val typeIndex: Int
+//        get() = typeKey.typeIndex
+//
+//    protected class SimpleIndexedTypeKey(
+//        override val subType: Class<out IndexedType>
+//    ) : AbstractIndexedTypeKey(SimpleIndexedType::class.java, subType, SimpleIndexedTypeKey::class.java)
+//}
+//
+//class SITA : SimpleIndexedType(typeKey) {
+//    companion object {
+//        val typeKey: IndexedTypeKey =
+//            SimpleIndexedTypeKey(SITA::class.java)
+//    }
+//}
+//
+//class SITB : SimpleIndexedType(typeKey) {
+//    companion object {
+//        val typeKey: IndexedTypeKey =
+//            SimpleIndexedTypeKey(SITB::class.java)
+//    }
+//}
+//
+//class SITC : SimpleIndexedType(typeKey) {
+//    companion object {
+//        val typeKey: IndexedTypeKey =
+//            SimpleIndexedTypeKey(SITC::class.java)
+//    }
+//}
+//
+//
+//
+//abstract class IndexedObjectAndType(
+//    indexedType: Class<out IndexedObject>,
+//    val typeKey: IndexedTypeKey
+//) : IndexedType, AbstractIndexedObject(indexedType) {
+////    override val baseType: Class<out IndexedType>
+////        get() = SimpleIndexedType::class.java
+//    override val typeIndex: Int
+//        get() = typeKey.typeIndex
+//
+//    protected class BIndexedTypeKey(
+//        override val subType: Class<out IndexedType>
+//    ) : AbstractIndexedTypeKey(IndexedObjectAndType::class.java, subType, BIndexedTypeKey::class.java)
+//}
+//
+//class IOATA : IndexedObjectAndType(IOATA::class.java, typeKey) {
+//    companion object {
+//        val typeKey: IndexedTypeKey =
+//            BIndexedTypeKey(IOATA::class.java)
+//    }
+//}
+//
+//class IOATB : IndexedObjectAndType(IOATB::class.java, typeKey) {
+//    companion object {
+//        val typeKey: IndexedTypeKey =
+//            BIndexedTypeKey(IOATB::class.java)
+//    }
+//}
+//
+//class IOATC : IndexedObjectAndType(IOATC::class.java, typeKey) {
+//    companion object {
+//        val typeKey: IndexedTypeKey =
+//            BIndexedTypeKey(IOATC::class.java)
+//    }
+//}
+//
+//
+//
+//abstract class AspectedTestObject(
+//    indexedType: Class<out IndexedObject>
+//) : IndexedType, AbstractIndexedObject(indexedType) {
+////    override val baseType: Class<out IndexedType> = AspectedTestObject::class.java
+//
+//
+//    companion object {
+//        private val aspectGroup = IndexedTypeAspectGroup(AspectedTestObject::class.java)
+//        val ASPECT_GROUP: AspectGroup = aspectGroup
+//    }
+//
+//    abstract class CType(
+//        subType: Class<out IndexedType>
+//    ) : Aspect, IndexedType {
+//        val typeKey: IndexedAspectTypeKey = aspectGroup.create(subType)
+////        override val baseType: Class<out IndexedType> = AspectedTestObject::class.java
+//        final override val typeIndex: Int = typeKey.objectIndex
+//        final override val aspectType: Class<out IndexedType> = typeKey.aspectType
+//        final override val name: String = typeKey.name
+//        final override val aspectIndex: Int = typeKey.aspectIndex
+//    }
+//}
+//
+//class AspectedCType : AspectedTestObject(AspectedCType::class.java) {
+//    override val typeIndex: Int
+//        get() = typeKey.typeIndex
+//
+//    companion object : CType(AspectedCType::class.java)
+//}
+//
 
-    companion object {
-        val typeKey: NewIndexedTypeKey =
-            IndexedTypeKey(IOATA::class.java)
-    }
-}
 
-class IOATB : IndexedObjectAndType(IOATB::class.java) {
-    override val typeKey =
-        IOATB.typeKey
 
-    companion object {
-        val typeKey: NewIndexedTypeKey =
-            IndexedTypeKey(IOATB::class.java)
-    }
-}
-
-class IOATC : IndexedObjectAndType(IOATC::class.java) {
-    override val typeKey =
-        IOATC.typeKey
-
-    companion object {
-        val typeKey: NewIndexedTypeKey =
-            IndexedTypeKey(IOATC::class.java)
-    }
-}

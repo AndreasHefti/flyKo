@@ -23,8 +23,8 @@ class SimpleSpriteRenderer private constructor() : Renderer() {
 
         val graphics = FFContext.graphics
         var i = 0
-        while (i < toRender.capacity()) {
-            val entity = toRender.get(i++) ?: continue
+        while (i < toRender.capacity) {
+            val entity = toRender[i++] ?: continue
             graphics.renderSprite(
                 entity[ESprite],
                 entity[ETransform].data
@@ -32,11 +32,8 @@ class SimpleSpriteRenderer private constructor() : Renderer() {
         }
     }
 
-    companion object : SingletonComponent<SimpleSpriteRenderer, Renderer>() {
-        override val indexedTypeKey = Renderer.indexedTypeKey
-        override val subType = SimpleSpriteRenderer::class.java
+    companion object : SingletonComponent<Renderer, SimpleSpriteRenderer>(Renderer, SimpleSpriteRenderer::class.java) {
         override fun create() = SimpleSpriteRenderer()
-
         private val MATCHING_ASPECTS = EntityComponent.ENTITY_COMPONENT_ASPECTS.createAspects(
             ETransform, ESprite
         )

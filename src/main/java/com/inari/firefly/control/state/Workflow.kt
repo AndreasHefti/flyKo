@@ -1,20 +1,24 @@
 package com.inari.firefly.control.state
 
-import com.inari.commons.lang.list.DynArray
 import com.inari.firefly.Condition
 import com.inari.firefly.FALSE_CONDITION
 import com.inari.firefly.NO_STATE
 import com.inari.firefly.component.ArrayAccessor
 import com.inari.firefly.component.ComponentType
-import com.inari.firefly.system.component.SingleType
 import com.inari.firefly.system.component.SystemComponent
+import com.inari.firefly.system.component.SystemComponentSingleType
+import com.inari.util.collection.DynArray
+import com.inari.util.indexed.Indexer
 
 
 class Workflow private constructor() : SystemComponent() {
 
+    override val indexer: Indexer =
+        Indexer(Workflow::class.java.name)
+
     @JvmField internal var startState: String = NO_STATE
-    @JvmField internal val states = DynArray.create(String::class.java)
-    @JvmField internal val stateChanges = DynArray.create(StateChange::class.java)
+    @JvmField internal val states = DynArray.of(String::class.java)
+    @JvmField internal val stateChanges = DynArray.of(StateChange::class.java)
 
     var ff_StartState
         get() = startState
@@ -33,7 +37,7 @@ class Workflow private constructor() : SystemComponent() {
         }
 
     internal val currentStateChanges: DynArray<StateChange> =
-        DynArray.create(StateChange::class.java)
+        DynArray.of(StateChange::class.java)
 
     fun findStateChangeForTargetState(targetStateName: String): StateChange? =
         stateChanges.firstOrNull {
@@ -53,8 +57,7 @@ class Workflow private constructor() : SystemComponent() {
     override fun componentType(): ComponentType<Workflow> =
         Workflow.Companion
 
-    companion object : SingleType<Workflow>() {
-        override val indexedTypeKey by lazy { TypeKeyBuilder.create(Workflow::class.java) }
+    companion object : SystemComponentSingleType<Workflow>(Workflow::class.java) {
         override fun createEmpty() = Workflow()
     }
 

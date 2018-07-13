@@ -1,26 +1,24 @@
 package com.inari.firefly.entity
 
+import com.inari.firefly.Receiver
 import com.inari.firefly.component.CompId
 import com.inari.firefly.component.Component
 import com.inari.firefly.component.ComponentType
-import com.inari.firefly.entity.Entity.EntityComponentBuilder
-import com.inari.util.aspect.AspectGroup
-import com.inari.util.indexed.IIndexedTypeKey
-import com.inari.util.indexed.IndexedType
-import com.inari.util.indexed.IndexedTypeKey
-import com.inari.util.indexed.Indexer
+import com.inari.firefly.entity.EntityComponent.Companion.ENTITY_COMPONENT_ASPECTS
+import com.inari.util.aspect.Aspect
+import com.inari.util.aspect.AspectType
+import com.inari.util.aspect.IndexedAspectType
 
-abstract class EntityComponent protected constructor() : Component, IndexedType {
+abstract class EntityComponent protected constructor() : Component {
     
     /** An EntityComponent instance has no object index (-1) only a subType index
      *  supported by the index subType key
      */
     final override val componentId: CompId
-     by lazy { CompId(-1, indexedTypeKey) }
-    /** For an EntityComponent always the subType index is given as the index */
-    final override val index: Int get() = componentId.typeKey.index
+        by lazy { CompId(-1, componentType()) }
 
-    final override fun dispose() = EntityProvider.dispose(this)
+    final override fun dispose() =
+        EntityProvider.dispose(this)
 
     var initialized: Boolean = false
         protected set
@@ -57,25 +55,37 @@ abstract class EntityComponent protected constructor() : Component, IndexedType 
 
     protected abstract fun reset()
 
-    override val indexedTypeKey: IIndexedTypeKey
-        get() = componentType().indexedTypeKey
-
     abstract fun componentType(): ComponentType<out EntityComponent>
 
+    override val index: Int
+        get() = componentType().aspectIndex
+    override val indexedTypeName: String
+        get() = ENTITY_COMPONENT_ASPECTS.name
+
     companion object {
-
-        val ENTITY_COMPONENT_ASPECTS = AspectGroup("EntityComponentTypeKey")
-
-        fun <T: EntityComponent> create(subType: Class<T>): IIndexedTypeKey =
-            Indexer.getOrCreateIndexedTypeKey(
-                EntityTypeKey::class.java,
-                subType
-            ) { EntityTypeKey(subType) }
-
-        internal class EntityTypeKey(subType: Class<out EntityComponent>) :
-            IndexedTypeKey(EntityComponent::class.java, subType, ENTITY_COMPONENT_ASPECTS)
+        val ENTITY_COMPONENT_ASPECTS = IndexedAspectType("ENTITY_COMPONENT_ASPECTS")
     }
+}
 
-    abstract class EntityComponentType<C : EntityComponent> : EntityComponentBuilder<C>()
+abstract class EntityComponentBuilder<C : EntityComponent> : ComponentType<C> {
+    private fun doBuild(comp: C, configure: C.() -> Unit, receiver: (C) -> C): CompId {
+        comp.also(configure)
+        comp._init()
+        receiver(comp)
+        return comp.componentId
+    }
+    internal fun builder(receiver: Receiver<C>): (C.() -> Unit) -> CompId = {
+        configure -> doBuild(EntityProvider.getComponent(this), configure, receiver)
+    }
+    internal fun create(): C = createEmpty()
+    protected abstract fun createEmpty(): C
+}
 
+abstract class EntityComponentType<C : EntityComponent>(
+    final override val typeClass: Class<out EntityComponent>
+) : EntityComponentBuilder<C>(), ComponentType<C> {
+    val compAspect: Aspect = ENTITY_COMPONENT_ASPECTS.createAspect(typeClass.simpleName)
+    final override val aspectIndex: Int = compAspect.aspectIndex
+    final override val aspectName: String = compAspect.aspectName
+    final override val aspectType: AspectType = compAspect.aspectType
 }

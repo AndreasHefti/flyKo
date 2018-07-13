@@ -4,7 +4,7 @@ import com.inari.firefly.FFContext
 import com.inari.firefly.component.CompId
 import com.inari.firefly.component.ComponentMap.MapAction.CREATED
 import com.inari.firefly.component.ComponentMap.MapAction.DELETED
-import com.inari.firefly.component.ViewLayerMapping
+import com.inari.firefly.graphics.view.ViewLayerMapping
 import com.inari.firefly.entity.Entity
 import com.inari.firefly.entity.EntityActivationEvent
 import com.inari.firefly.external.ViewData
@@ -20,7 +20,7 @@ import com.inari.util.aspect.Aspects
 object TileGridSystem : ComponentSystem {
 
     override val supportedComponents: Aspects =
-        SystemComponent.ASPECT_GROUP.createAspects(TileGrid)
+        SystemComponent.SYSTEM_COMPONENT_ASPECTS.createAspects(TileGrid)
 
     @JvmField val viewLayerMapping = ViewLayerMapping(TileGrid::class.java)
     @JvmField val grids = ComponentSystem.createComponentMapping(
@@ -38,7 +38,7 @@ object TileGridSystem : ComponentSystem {
             object : ViewEvent.Listener {
                 override fun invoke(id: CompId, viewPort: ViewData, type: ViewEvent.Type) {
                     when(type) {
-                        VIEW_DELETED -> viewLayerMapping[id.index]
+                        VIEW_DELETED -> viewLayerMapping[id.instanceId]
                             .forEach { grid -> grids.delete(grid.index) }
                         else -> {}
                     }
@@ -83,7 +83,7 @@ object TileGridSystem : ComponentSystem {
         val entityId = entity.index
 
         var i = 0
-        while (i < positions.capacity()) {
+        while (i < positions.capacity) {
             val pos = positions[i++] ?: continue
             tileGrid[pos] = entityId
         }
@@ -95,7 +95,7 @@ object TileGridSystem : ComponentSystem {
         val entityId = entity.index
 
         var i = 0
-        while (i < positions.capacity()) {
+        while (i < positions.capacity) {
             val pos = positions[i++] ?: continue
             tileGrid.resetIfMatch(entityId, pos)
         }

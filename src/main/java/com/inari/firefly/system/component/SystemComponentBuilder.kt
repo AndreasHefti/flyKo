@@ -3,14 +3,17 @@ package com.inari.firefly.system.component
 import com.inari.firefly.FFContext
 import com.inari.firefly.component.CompId
 import com.inari.firefly.component.ComponentBuilder
+import com.inari.util.aspect.Aspect
 
 abstract class SystemComponentBuilder<out C : SystemComponent> : ComponentBuilder<C>() {
+
+    abstract val compAspect: Aspect
 
     val build: (C.() -> Unit) -> CompId = { configure ->
         val comp: C = createEmpty()
         comp.also(configure)
         comp._init()
-        FFContext.mapper<C>(indexedTypeKey).receiver()(comp)
+        FFContext.mapper<C>(compAspect).receiver()(comp)
         comp.componentId
     }
 
@@ -18,7 +21,7 @@ abstract class SystemComponentBuilder<out C : SystemComponent> : ComponentBuilde
         val comp: C = createEmpty()
         comp.also(configure)
         comp._init()
-        FFContext.mapper<C>(indexedTypeKey).receiver()(comp)
+        FFContext.mapper<C>(compAspect).receiver()(comp)
         comp
     }
 
@@ -26,7 +29,7 @@ abstract class SystemComponentBuilder<out C : SystemComponent> : ComponentBuilde
         val comp: C = createEmpty()
         comp.also(configure)
         comp._init()
-        FFContext.mapper<C>(indexedTypeKey).receiver()(comp)
+        FFContext.mapper<C>(compAspect).receiver()(comp)
         FFContext.activate(comp.componentId)
         comp.componentId
     }
@@ -35,7 +38,7 @@ abstract class SystemComponentBuilder<out C : SystemComponent> : ComponentBuilde
         val comp: C = createEmpty()
         comp.also(configure)
         comp._init()
-        FFContext.mapper<C>(indexedTypeKey).receiver()(comp)
+        FFContext.mapper<C>(compAspect).receiver()(comp)
         FFContext.activate(comp.componentId)
         comp
     }

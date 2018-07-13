@@ -5,7 +5,7 @@ import com.inari.firefly.Named
 import com.inari.firefly.component.CompId
 import com.inari.firefly.component.ComponentMap.MapAction.CREATED
 import com.inari.firefly.component.ComponentMap.MapAction.DELETED
-import com.inari.firefly.component.ViewLayerMapping
+import com.inari.firefly.graphics.view.ViewLayerMapping
 import com.inari.firefly.entity.Entity
 import com.inari.firefly.entity.EntityActivationEvent
 import com.inari.firefly.entity.EntitySystem
@@ -19,8 +19,8 @@ import com.inari.firefly.physics.movement.MoveEvent
 import com.inari.firefly.system.component.ComponentSystem
 import com.inari.firefly.system.component.SystemComponent
 import com.inari.util.aspect.Aspect
-import com.inari.util.aspect.AspectGroup
 import com.inari.util.aspect.Aspects
+import com.inari.util.aspect.IndexedAspectType
 import com.inari.util.geom.BitMask
 import com.inari.util.geom.GeomUtils
 import com.inari.util.geom.Rectangle
@@ -30,13 +30,13 @@ import java.util.*
 
 object ContactSystem : ComponentSystem {
 
-    @JvmField val MATERIAL_ASPECT_GROUP = AspectGroup("MATERIAL_ASPECT_GROUP")
+    @JvmField val MATERIAL_ASPECT_GROUP = IndexedAspectType("MATERIAL_ASPECT_GROUP")
     @JvmField val UNDEFINED_MATERIAL: Aspect = MATERIAL_ASPECT_GROUP.createAspect("UNDEFINED_MATERIAL")
-    @JvmField val CONTACT_TYPE_ASPECT_GROUP = AspectGroup("CONTACT_TYPE_ASPECT_GROUP")
+    @JvmField val CONTACT_TYPE_ASPECT_GROUP = IndexedAspectType("CONTACT_TYPE_ASPECT_GROUP")
     @JvmField val UNDEFINED_CONTACT_TYPE: Aspect = CONTACT_TYPE_ASPECT_GROUP.createAspect("UNDEFINED_CONTACT_TYPE")
 
     override val supportedComponents: Aspects =
-        SystemComponent.ASPECT_GROUP.createAspects(ContactMap, ContactConstraint, CollisionResolver)
+        SystemComponent.SYSTEM_COMPONENT_ASPECTS.createAspects(ContactMap, ContactConstraint, CollisionResolver)
 
     @JvmField val contactMapViewLayer = ViewLayerMapping(ContactMap::class.java)
     @JvmField val contactMaps =
@@ -58,7 +58,7 @@ object ContactSystem : ComponentSystem {
         FFContext.registerListener(ViewEvent, object : ViewEvent.Listener{
             override fun invoke(id: CompId, viewPort: ViewData, type: ViewEvent.Type) {
                 when(type) {
-                    ViewEvent.Type.VIEW_DELETED -> contactMaps.deleteAll { map -> map.viewRef == id.index }
+                    ViewEvent.Type.VIEW_DELETED -> contactMaps.deleteAll { map -> map.viewRef == id.instanceId }
                     else -> {}
                 }
             }
@@ -68,13 +68,13 @@ object ContactSystem : ComponentSystem {
             override fun entityActivated(entity: Entity) {
                 val transform = entity[ETransform]
                 if (transform in contactMapViewLayer)
-                    contactMapViewLayer[transform].add(entity)
+                    contactMapViewLayer[transform]?.add(entity)
             }
 
             override fun entityDeactivated(entity: Entity) {
                 val transform = entity[ETransform]
                 if (transform in contactMapViewLayer)
-                    contactMapViewLayer[entity[ETransform]].remove(entity)
+                    contactMapViewLayer[entity[ETransform]]?.remove(entity)
             }
 
             override fun match(aspects: Aspects): Boolean =
@@ -93,7 +93,7 @@ object ContactSystem : ComponentSystem {
         createContacts(constraint.index)
 
     fun createContacts(constraint: CompId): Contacts =
-        createContacts(constraint.index)
+        createContacts(constraint.instanceId)
 
     fun createContacts(constraint: Int): Contacts =
         if (constraint in constraints)
@@ -132,7 +132,7 @@ object ContactSystem : ComponentSystem {
         val entity = EntitySystem[entityId]
         val contacts = entity[EContact]
         val contactConstraint = constraints[constraintName]
-        val constraint = contacts.contactScan.contacts.get(contactConstraint.index) ?: return
+        val constraint = contacts.contactScan.contacts[contactConstraint.index] ?: return
 
         updateContacts(entity, constraint)
     }
@@ -145,7 +145,7 @@ object ContactSystem : ComponentSystem {
         val entity = EntitySystem[entityName]
         val contacts = entity[EContact]
         val contactConstraint = constraints[constraintName]
-        val constraint = contacts.contactScan.contacts.get(contactConstraint.index) ?: return
+        val constraint = contacts.contactScan.contacts[contactConstraint.index] ?: return
 
         updateContacts(entity, constraint)
     }
@@ -193,13 +193,13 @@ object ContactSystem : ComponentSystem {
                 FFContext.notify(ContactEvent)
             }
 
-            contactMapViewLayer[transform].update(entity)
+            contactMapViewLayer[transform]?.update(entity)
         }
     }
 
     private fun scanContacts(entity: Entity, contacts: EContact) {
         var i = 0
-        while (i < contacts.contactScan.contacts.capacity()) {
+        while (i < contacts.contactScan.contacts.capacity) {
             val c = contacts.contactScan.contacts[i++] ?: continue
             updateContacts(entity, c)
         }
@@ -248,7 +248,7 @@ object ContactSystem : ComponentSystem {
         if (!contactMapViewLayer.contains(transform.viewRef, layerRef))
             return
 
-        val iterator = contactMapViewLayer[transform.viewRef, layerRef][c.worldBounds, entity]
+        val iterator = contactMapViewLayer[transform.viewRef, layerRef]!![c.worldBounds, entity]
         while (iterator.hasNext()) {
             scanContact(c, EntitySystem[iterator.next()], transform.data.position.x, transform.data.position.y)
         }

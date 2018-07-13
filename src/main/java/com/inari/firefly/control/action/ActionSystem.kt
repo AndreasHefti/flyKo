@@ -8,7 +8,7 @@ import com.inari.util.aspect.Aspects
 
 object ActionSystem : ComponentSystem {
     override val supportedComponents: Aspects =
-        SystemComponent.ASPECT_GROUP.createAspects(Action)
+        SystemComponent.SYSTEM_COMPONENT_ASPECTS.createAspects(Action)
 
     @JvmField val actions = ComponentSystem.createComponentMapping(
         Action, nameMapping = true
