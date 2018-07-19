@@ -7,12 +7,8 @@ import com.inari.firefly.system.component.SystemComponentSingleType
 import com.inari.util.aspect.Aspect
 import com.inari.util.aspect.Aspects
 import com.inari.util.geom.Rectangle
-import com.inari.util.indexed.Indexer
 
-class ContactConstraint private constructor() : SystemComponent() {
-
-    override val indexer: Indexer =
-        Indexer(ContactConstraint::class.java.name)
+class ContactConstraint private constructor() : SystemComponent(ContactConstraint::class.java.name) {
 
     @JvmField internal var layerRef = -1
     @JvmField internal val bounds = Rectangle()

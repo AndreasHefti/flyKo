@@ -5,7 +5,7 @@ import com.inari.firefly.FFContext
 import com.inari.util.event.Event
 
 typealias TestEventListener = (CompId) -> Unit
-object StaticTestEvent : Event<TestEventListener>() {
+object StaticTestEvent : Event<TestEventListener>(EVENT_ASPECTS.createAspect("TestEventListener")) {
 
     var id: CompId? = null
 

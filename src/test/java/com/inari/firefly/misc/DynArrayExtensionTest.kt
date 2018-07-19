@@ -1,7 +1,7 @@
 package com.inari.firefly.misc
 
-import com.inari.commons.lang.list.DynArray
 import com.inari.firefly.measureTime
+import com.inari.util.collection.DynArray
 import org.junit.Test
 
 class DynArrayExtensionTest {
@@ -9,13 +9,13 @@ class DynArrayExtensionTest {
     @Test
     fun testPerformance() {
 
-        val dynArray: DynArray<Integer> = DynArray.createTyped(Integer::class.java, 100000)
+        val dynArray: DynArray<Integer> = DynArray.of(Integer::class.java, 100000)
         for(i: Int in 1..100000)
             dynArray.add(i as Integer)
 
         var amount = 0
         measureTime("imperative loop", 10000) {
-            val size = dynArray.capacity()
+            val size = dynArray.capacity
             if (size > 0) {
                 var i = 0
                 while (i < size) {

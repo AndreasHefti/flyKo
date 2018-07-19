@@ -1,5 +1,10 @@
 package com.inari.util.geom
 
+import com.inari.util.StringUtils
+import java.util.StringTokenizer
+
+
+
 
 /** A simple position in a 2D Cartesian coordinate system with float precision.  */
 data class PositionF constructor(
@@ -13,9 +18,11 @@ data class PositionF constructor(
      * @param y The y axis value of the position
      */
     constructor(x: Int, y: Int) : this(x.toFloat(), y.toFloat())
-
     /** Use this as a copy constructor  */
     constructor(loc: PositionF) : this(loc.x, loc.y)
+    constructor(stringValue: String) : this() {
+        fromConfigString(stringValue)
+    }
 
     operator fun invoke(x: Float, y: Float) {
         this.x = x
@@ -72,6 +79,38 @@ data class PositionF constructor(
         this.x -= offset.dx
         this.y -= offset.dy
         return this
+    }
+
+    /** Use this to set  the x/y axis values from specified configuration String value with the
+     * format: [x],[y].
+     *
+     * @param stringValue the configuration String value
+     * @throws IllegalArgumentException If the String value as a invalid format
+     * @throws NumberFormatException if the x/y values from the String value aren't numbers
+     */
+    fun fromConfigString(stringValue: String) {
+        if (StringUtils.isBlank(stringValue)) {
+            x = 0f
+            y = 0f
+            return
+        }
+
+        if (!stringValue.contains(StringUtils.VALUE_SEPARATOR_STRING)) {
+            throw IllegalArgumentException("The stringValue as invalid format: $stringValue")
+        }
+
+        val st = StringTokenizer(stringValue, StringUtils.VALUE_SEPARATOR_STRING)
+        x = st.nextToken()?.toFloat() ?: 0f
+        y = st.nextToken()?.toFloat() ?: 0f
+    }
+
+    /** Use this to get a configuration String value that represents this Position
+     * and can be used to reset the attributes of a Position by using fromConfigString
+     * The format is: [x],[y].
+     * @return A configuration String value that represents this Position
+     */
+    fun toConfigString(): String {
+        return x.toString() + StringUtils.VALUE_SEPARATOR_STRING + y
     }
 
     override fun toString(): String {

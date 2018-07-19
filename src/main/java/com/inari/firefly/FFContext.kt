@@ -1,6 +1,5 @@
 package com.inari.firefly
 
-import com.inari.commons.lang.list.DynArray
 import com.inari.firefly.asset.AssetSystem
 import com.inari.firefly.component.*
 import com.inari.firefly.entity.EntityComponent
@@ -12,6 +11,7 @@ import com.inari.firefly.external.FFInput
 import com.inari.firefly.external.FFTimer
 import com.inari.firefly.system.component.*
 import com.inari.util.aspect.Aspect
+import com.inari.util.collection.DynArray
 import com.inari.util.event.AspectedEvent
 import com.inari.util.event.AspectedEventListener
 import com.inari.util.event.Event
@@ -22,9 +22,9 @@ import com.inari.util.indexed.Indexed
 object FFContext {
 
     @JvmField internal val componentMaps: DynArray<ComponentMap<*>> =
-            DynArray.create(ComponentMap::class.java)
+            DynArray.of(ComponentMap::class.java)
     @JvmField internal val systemTypeMapping: DynArray<ComponentSystem> =
-            DynArray.create(ComponentSystem::class.java)
+            DynArray.of(ComponentSystem::class.java)
 
     val eventDispatcher: IEventDispatcher
         get() = FFApp.eventDispatcher
@@ -65,6 +65,9 @@ object FFContext {
 
     fun <C : Component> mapper(id: CompNameId): ComponentMap<C> =
         mapper(id.componentType)
+
+    fun <C : SystemComponent> mapper(coType: SystemComponentType<C>): ComponentMap<C> =
+        mapper(coType.compAspect)
 
     @Suppress("UNCHECKED_CAST")
     fun <C : Component> mapper(coType: ComponentType<*>): ComponentMap<C> {

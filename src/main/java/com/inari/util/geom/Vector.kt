@@ -4,7 +4,7 @@ package com.inari.util.geom
  * @param d The vector value
  * */
 data class Vector1f constructor(
-    @JvmField var d: Float = 0.0f
+    @JvmField var d: Float = 1.0f
 ){
 
     operator fun invoke(d: Float) { this.d = d }
@@ -41,7 +41,7 @@ data class Vector1f constructor(
  * @param d The vector value
  * */
 data class Vector1i constructor(
-    @JvmField var d: Int = 0
+    @JvmField var d: Int = 1
 ) {
 
     operator fun invoke(d: Int) { this.d = d }
@@ -79,8 +79,8 @@ data class Vector1i constructor(
  * @param dy the vector value on y-axis
  * */
 data class Vector2f constructor(
-    @JvmField var dx: Float = 0.0f,
-    @JvmField var dy: Float = 0.0f
+    @JvmField var dx: Float = 1.0f,
+    @JvmField var dy: Float = 1.0f
 ) {
     operator fun invoke(dx: Float, dy: Float) {
         this.dx = dx
@@ -131,8 +131,8 @@ data class Vector2f constructor(
  * @param dy the vector value on y-axis
  * */
 data class Vector2i constructor(
-    @JvmField var dx: Int = 0,
-    @JvmField var dy: Int = 0
+    @JvmField var dx: Int = 1,
+    @JvmField var dy: Int = 1
 ){
 
     operator fun invoke(dx: Int, dy: Int) {

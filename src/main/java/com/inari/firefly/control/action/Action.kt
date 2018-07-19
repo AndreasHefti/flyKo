@@ -8,13 +8,9 @@ import com.inari.firefly.control.trigger.TriggeredSystemComponent
 import com.inari.firefly.entity.Entity
 import com.inari.firefly.entity.EntitySystem
 import com.inari.firefly.system.component.SystemComponentSingleType
-import com.inari.util.indexed.Indexer
 import java.util.*
 
-class Action private constructor() : TriggeredSystemComponent() {
-
-    override val indexer: Indexer =
-        Indexer(Action::class.java.name)
+class Action private constructor() : TriggeredSystemComponent(Action::class.java.name) {
 
     @JvmField internal var entityAction: Expr<Entity> = NULL_EXPR()
 

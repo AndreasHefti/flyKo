@@ -1,7 +1,7 @@
 package com.inari.firefly.asset
 
 import com.inari.firefly.component.ComponentRefResolver
-import com.inari.firefly.system.component.SubType
+import com.inari.firefly.system.component.SystemComponentSubType
 
 class TestAsset private constructor(
         var ff_Param1: String = "",
@@ -30,9 +30,7 @@ class TestAsset private constructor(
             " dependsOn=$dependingRef"
     }
 
-    companion object : SubType<TestAsset, Asset>() {
-        override val indexedTypeKey = Asset.indexedTypeKey
-        override val subType = TestAsset::class.java
+    companion object : SystemComponentSubType<Asset, TestAsset>(Asset, TestAsset::class.java) {
         override fun createEmpty(): TestAsset = TestAsset()
     }
 }

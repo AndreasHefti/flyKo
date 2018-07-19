@@ -9,12 +9,8 @@ import com.inari.util.aspect.Aspect
 import com.inari.util.aspect.AspectAware
 import com.inari.util.aspect.Aspects
 import com.inari.util.aspect.AspectTypeSet
-import com.inari.util.indexed.Indexer
 
-class Entity internal constructor(): SystemComponent(), AspectAware {
-
-    override val indexer: Indexer =
-        Indexer("Entity")
+class Entity internal constructor(): SystemComponent(Entity::class.java.name), AspectAware {
 
     @JvmField internal val components: AspectTypeSet =
         AspectTypeSet(ENTITY_COMPONENT_ASPECTS)

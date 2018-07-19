@@ -15,7 +15,7 @@
  */
 package com.inari.firefly.external
 
-import com.inari.commons.lang.list.DynArrayRO
+import com.inari.util.collection.DynArrayRO
 import com.inari.util.geom.Rectangle
 
 /** This defines the low level API interface for all graphical functions used by the firefly API.

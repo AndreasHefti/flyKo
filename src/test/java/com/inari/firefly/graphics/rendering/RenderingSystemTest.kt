@@ -9,9 +9,9 @@ import com.inari.firefly.entity.EntitySystem
 import com.inari.firefly.graphics.ETransform
 import com.inari.firefly.graphics.sprite.ESprite
 import com.inari.firefly.graphics.view.ViewSystem
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Test
-import kotlin.test.assertEquals
-import kotlin.test.assertTrue
 
 class RenderingSystemTest {
 

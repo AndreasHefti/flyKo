@@ -10,7 +10,7 @@ class AspectsTest {
 
     @Test
     fun testAspects() {
-        val aspectGroup = AspectGroup("TestAspect1")
+        val aspectGroup = IndexedAspectType("TestAspect1")
         aspectGroup.createAspect("TestAspect1")
 
         val aspect1 = aspectGroup.createAspect("aspect1")
@@ -24,9 +24,9 @@ class AspectsTest {
         val aspects2 = aspectGroup.createAspects()
         val aspects3 = aspectGroup.createAspects()
 
-        assertEquals("Aspects [aspectGroup=TestAspect1 {}]", aspects1.toString())
-        assertEquals("Aspects [aspectGroup=TestAspect1 {}]", aspects2.toString())
-        assertEquals("Aspects [aspectGroup=TestAspect1 {}]", aspects3.toString())
+        assertEquals("Aspects [aspectType=TestAspect1 {}]", aspects1.toString())
+        assertEquals("Aspects [aspectType=TestAspect1 {}]", aspects2.toString())
+        assertEquals("Aspects [aspectType=TestAspect1 {}]", aspects3.toString())
         assertEquals("64", aspects1.size.toString())
         assertEquals("64", aspects2.size.toString())
         assertEquals("64", aspects3.size.toString())
@@ -40,15 +40,15 @@ class AspectsTest {
 
         aspects3 + aspect50
 
-        assertEquals("Aspects [aspectGroup=TestAspect1 {aspect1, aspect3, aspect5}]", aspects1.toString())
-        assertEquals("Aspects [aspectGroup=TestAspect1 {aspect2, aspect10}]", aspects2.toString())
-        assertEquals("Aspects [aspectGroup=TestAspect1 {aspect50}]", aspects3.toString())
+        assertEquals("Aspects [aspectType=TestAspect1 {aspect1, aspect3, aspect5}]", aspects1.toString())
+        assertEquals("Aspects [aspectType=TestAspect1 {aspect2, aspect10}]", aspects2.toString())
+        assertEquals("Aspects [aspectType=TestAspect1 {aspect50}]", aspects3.toString())
     }
 
 
     @Test
     fun testInclude() {
-        val aspectGroup = AspectGroup("TestAspect2")
+        val aspectGroup = IndexedAspectType("TestAspect2")
 
         val aspect1 = aspectGroup.createAspects()
         val aspect2 = aspectGroup.createAspects()
@@ -88,7 +88,7 @@ class AspectsTest {
 
     @Test
     fun testExclude() {
-        val aspectGroup = AspectGroup("TestAspect3")
+        val aspectGroup = IndexedAspectType("TestAspect3")
 
         val aspect1 = aspectGroup.createAspects()
         val aspect2 = aspectGroup.createAspects()

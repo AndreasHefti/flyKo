@@ -312,7 +312,7 @@ object ContactSystem : ComponentSystem {
         if (!contact.mask.isEmpty)
             c.intersectionMask.or(contact.mask)
         else
-            c.intersectionMask.setRegionRelativeToOrigin(contact.intersection, true)
+            c.intersectionMask.setRegion(contact.intersection, true)
 
         if (contact.contact !== ContactSystem.UNDEFINED_CONTACT_TYPE)
             c.contactTypes + contact.contact

@@ -2,8 +2,8 @@ package com.inari.firefly.external
 
 import java.util.HashMap
 
-import com.inari.commons.lang.list.DynArray
 import com.inari.firefly.FFApp
+import com.inari.util.collection.DynArray
 
 abstract class FFTimer protected constructor() : FFApp.SystemTimer() {
 
@@ -19,14 +19,14 @@ abstract class FFTimer protected constructor() : FFApp.SystemTimer() {
 
     init {
         updateSchedulers = HashMap()
-        schedulers = DynArray.create(UpdateScheduler::class.java, 20)
+        schedulers = DynArray.of(UpdateScheduler::class.java, 20)
     }
 
     internal fun updateSchedulers() {
         var i = 0
-        val to = schedulers.capacity()
+        val to = schedulers.capacity
         while ( i < to) {
-            val updateScheduler = schedulers.get(i++) ?: continue
+            val updateScheduler = schedulers[i++] ?: continue
             updateScheduler.update()
         }
     }

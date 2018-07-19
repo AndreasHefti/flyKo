@@ -9,7 +9,7 @@ import com.inari.util.aspect.Aspects
 
 object TestComponentSystem : ComponentSystem {
 
-    override val supportedComponents: Aspects = SystemComponent.ASPECT_GROUP.createAspects(
+    override val supportedComponents: Aspects = SystemComponent.SYSTEM_COMPONENT_ASPECTS.createAspects(
         TestComponent,
         Test2Component
     )

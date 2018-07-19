@@ -3,7 +3,6 @@ package com.inari.firefly.system.component
 import com.inari.firefly.component.CompId
 import com.inari.firefly.component.NamedComponent
 import com.inari.firefly.NO_NAME
-import com.inari.firefly.component.Component
 import com.inari.firefly.component.ComponentType
 import com.inari.firefly.system.component.SystemComponent.Companion.SYSTEM_COMPONENT_ASPECTS
 import com.inari.util.aspect.Aspect
@@ -11,7 +10,9 @@ import com.inari.util.aspect.AspectType
 import com.inari.util.aspect.IndexedAspectType
 import com.inari.util.indexed.AbstractIndexed
 
-abstract class SystemComponent protected constructor() : AbstractIndexed(), NamedComponent {
+abstract class SystemComponent protected constructor(
+    objectIndexerName: String
+) : AbstractIndexed(objectIndexerName), NamedComponent {
 
     override var name: String = NO_NAME
         protected set
@@ -30,6 +31,7 @@ abstract class SystemComponent protected constructor() : AbstractIndexed(), Name
     var initialized:Boolean = false
         internal set
     internal  fun _init() {
+        super.applyNewIndex()
         init()
         initialized = true
     }
@@ -75,6 +77,11 @@ abstract class SystemComponentType<C : SystemComponent>(
     final override val aspectIndex: Int = compAspect.aspectIndex
     final override val aspectName: String = compAspect.aspectName
     final override val aspectType: AspectType = compAspect.aspectType
+    override fun toString(): String {
+        return "SystemComponentType:$aspectName:$aspectIndex"
+    }
+
+
 }
 
 abstract class SystemComponentSingleType<C : SystemComponent>(

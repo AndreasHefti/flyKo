@@ -8,13 +8,9 @@ import com.inari.firefly.component.ComponentType
 import com.inari.firefly.system.component.SystemComponent
 import com.inari.firefly.system.component.SystemComponentSingleType
 import com.inari.util.collection.DynArray
-import com.inari.util.indexed.Indexer
 
 
-class Workflow private constructor() : SystemComponent() {
-
-    override val indexer: Indexer =
-        Indexer(Workflow::class.java.name)
+class Workflow private constructor() : SystemComponent(Workflow::class.java.name) {
 
     @JvmField internal var startState: String = NO_STATE
     @JvmField internal val states = DynArray.of(String::class.java)

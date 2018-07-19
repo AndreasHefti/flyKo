@@ -27,6 +27,10 @@ class CompId (
         componentType.aspectType.typeCheck(typeAspect)
         return this
     }
+
+    override fun toString(): String {
+        return "CompId(instanceId=$instanceId, componentType=$componentType)"
+    }
 }
 
 interface CompNameId: Named {

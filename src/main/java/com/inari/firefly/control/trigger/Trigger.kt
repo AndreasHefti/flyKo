@@ -9,13 +9,9 @@ import com.inari.firefly.component.ComponentType
 import com.inari.firefly.system.component.SystemComponent
 import com.inari.firefly.system.component.SystemComponentType
 import com.inari.util.aspect.AspectType
-import com.inari.util.indexed.Indexer
 
 @ComponentDSL
-abstract class Trigger protected constructor() : SystemComponent() {
-
-    override val indexer: Indexer =
-        Indexer(Trigger::class.java.name)
+abstract class Trigger protected constructor() : SystemComponent(Trigger::class.java.name) {
 
     @JvmField protected var disposeAfter = false
     @JvmField protected var condition: Condition = TRUE_CONDITION

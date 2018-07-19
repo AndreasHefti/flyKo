@@ -6,13 +6,9 @@ import com.inari.firefly.component.ComponentType
 import com.inari.firefly.control.trigger.Trigger
 import com.inari.firefly.control.trigger.TriggeredSystemComponent
 import com.inari.firefly.system.component.SystemComponentType
-import com.inari.util.indexed.Indexer
 import java.util.*
 
-abstract class Scene protected constructor() : TriggeredSystemComponent() {
-
-    final override val indexer: Indexer =
-        Indexer(Scene::class.java.name)
+abstract class Scene protected constructor() : TriggeredSystemComponent(Scene::class.java.name) {
 
     @JvmField internal var removeAfterRun = false
     @JvmField internal var callback: Call = VOID_CALL

@@ -1,11 +1,11 @@
 package com.inari.firefly.graphics.text
 
-import com.inari.commons.lang.list.IntBag
 import com.inari.firefly.*
 import com.inari.firefly.asset.Asset
 import com.inari.firefly.external.SpriteData
 import com.inari.firefly.external.TextureData
 import com.inari.firefly.system.component.SystemComponentSubType
+import com.inari.util.collection.IntBag
 import com.inari.util.geom.Rectangle
 
 

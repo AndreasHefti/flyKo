@@ -6,7 +6,7 @@ import com.inari.firefly.system.component.SystemComponentSingleType
 class TestComponent private constructor (
     var ff_Param1: String,
     override var ff_Param2: Int
-) : SystemComponent(TestComponent::class.java), ITestComponent {
+) : SystemComponent(TestComponent::class.java.name), ITestComponent {
 
     private constructor() : this("Param1", 0)
 

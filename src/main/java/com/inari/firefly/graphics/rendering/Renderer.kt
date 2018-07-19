@@ -13,15 +13,11 @@ import com.inari.firefly.system.component.SystemComponent
 import com.inari.firefly.system.component.SystemComponentType
 import com.inari.util.collection.DynArray
 import com.inari.util.geom.Rectangle
-import com.inari.util.indexed.Indexer
 
 abstract class Renderer protected constructor(
     private val acceptance: Predicate<Entity> = TRUE_PREDICATE(),
     private val sort: Expr<DynArray<Entity>>? = null
-) : SystemComponent() {
-
-    override val indexer: Indexer =
-        Indexer(Renderer::class.java.name)
+) : SystemComponent(Renderer::class.java.name) {
 
     @JvmField protected val transformCollector = ExactTransformDataCollector()
 

@@ -4,7 +4,9 @@ import com.inari.firefly.Call
 import com.inari.firefly.system.component.SystemComponent
 import java.util.*
 
-abstract class TriggeredSystemComponent : SystemComponent() {
+abstract class TriggeredSystemComponent protected constructor(
+    objectIndexerName: String
+) : SystemComponent(objectIndexerName) {
 
     private val trigger = BitSet()
 

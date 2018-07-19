@@ -15,9 +15,6 @@
  */
 package com.inari.util.collection
 
-import com.inari.commons.lang.functional.Effect
-import com.inari.commons.lang.functional.Function
-
 import java.lang.reflect.Array.newInstance
 import java.util.Arrays
 import java.util.Comparator
@@ -113,7 +110,7 @@ class DynArray<T> private constructor(
      * @throws IndexOutOfBoundsException if index is out of bounds ( 0 - capacity )
      */
     override operator fun get(index: Int): T? =
-        array[index] ?: throw IllegalArgumentException("Null on requested index: $index")
+        array[index]
 
     /** Indicates if there is an object referenced by the specified id. If there is no object referenced
      * by the index, false is returned also in the case, the index is out of bounds.
@@ -240,24 +237,6 @@ class DynArray<T> private constructor(
                 array[index] = oldArray[i]
                 index++
             }
-            i++
-        }
-    }
-
-    fun forEach(m: Effect<T>) {
-        var i = 0
-        while (i < capacity) {
-            if (array[i] != null)
-                m.apply(array[i])
-            i++
-        }
-    }
-
-    fun forEach(f: Function<T, Void>) {
-        var i = 0
-        while (i < capacity) {
-            if (array[i] != null)
-                f.apply(array[i])
             i++
         }
     }

@@ -10,7 +10,7 @@ class BitMaskTest {
 
     @Test
     fun testInit() {
-        var bitMask = com.inari.commons.geom.BitMask(10, 10)
+        var bitMask = BitMask(width = 10, height = 10)
 
         assertEquals(
             "BitMask [region=[x=0,y=0,width=10,height=10], bits=\n" +
@@ -27,7 +27,7 @@ class BitMaskTest {
             bitMask.toString()
         )
 
-        bitMask = com.inari.commons.geom.BitMask(10, 10, 10, 10)
+        bitMask = BitMask(10, 10, 10, 10)
 
         assertEquals(
             "BitMask [region=[x=10,y=10,width=10,height=10], bits=\n" +
@@ -44,7 +44,7 @@ class BitMaskTest {
             bitMask.toString()
         )
 
-        bitMask = com.inari.commons.geom.BitMask(com.inari.commons.geom.Rectangle(10, 10, 10, 10))
+        bitMask = BitMask(Rectangle(10, 10, 10, 10))
 
         assertEquals(
             "BitMask [region=[x=10,y=10,width=10,height=10], bits=\n" +
@@ -66,7 +66,7 @@ class BitMaskTest {
 
     @Test
     fun testReset() {
-        val bitMask = com.inari.commons.geom.BitMask(0, 0, 10, 10)
+        val bitMask = BitMask(0, 0, 10, 10)
 
         assertEquals(
             "BitMask [region=[x=0,y=0,width=10,height=10], bits=\n"
@@ -94,7 +94,7 @@ class BitMaskTest {
             bitMask.toString()
         )
 
-        bitMask.reset(com.inari.commons.geom.Rectangle(5, 5, 5, 5))
+        bitMask.reset(Rectangle(5, 5, 5, 5))
         assertEquals(
             "BitMask [region=[x=5,y=5,width=5,height=5], bits=\n"
                 + "00000\n"
@@ -108,7 +108,7 @@ class BitMaskTest {
 
     @Test
     fun testSetRestBit() {
-        val bitMask = com.inari.commons.geom.BitMask(5, 5, 10, 10)
+        val bitMask = BitMask(5, 5, 10, 10)
 
         assertEquals(
             "BitMask [region=[x=5,y=5,width=10,height=10], bits=\n" +
@@ -208,7 +208,7 @@ class BitMaskTest {
 
     @Test
     fun testGetBit() {
-        val bitMask = com.inari.commons.geom.BitMask(5, 5, 10, 10)
+        val bitMask = BitMask(5, 5, 10, 10)
         bitMask.setBit(2, 2)
 
         assertEquals(
@@ -232,7 +232,7 @@ class BitMaskTest {
 
     @Test
     fun testMoveRegion() {
-        val bitMask = com.inari.commons.geom.BitMask(0, 0, 10, 10)
+        val bitMask = BitMask(0, 0, 10, 10)
         assertEquals(
             "BitMask [region=[x=0,y=0,width=10,height=10], bits=\n"
                 + "0000000000\n"
@@ -283,7 +283,7 @@ class BitMaskTest {
 
     @Test
     fun testSetResetRegion() {
-        val bitMask = com.inari.commons.geom.BitMask(5, 5, 10, 10)
+        val bitMask = BitMask(5, 5, 10, 10)
 
         assertEquals(
             "BitMask [region=[x=5,y=5,width=10,height=10], bits=\n" +
@@ -399,10 +399,10 @@ class BitMaskTest {
 
     @Test
     fun testHashIntersection() {
-        var bitMask = com.inari.commons.geom.BitMask(5, 5, 10, 10)
+        var bitMask = BitMask(5, 5, 10, 10)
 
         // no intersection with empty bitMask
-        assertFalse(bitMask.hasIntersection(com.inari.commons.geom.Rectangle(5, 5, 10, 10)))
+        assertFalse(bitMask.hasIntersection(Rectangle(5, 5, 10, 10)))
 
         bitMask.setBit(5, 5)
         assertEquals(
@@ -420,16 +420,16 @@ class BitMaskTest {
             bitMask.toString()
         )
 
-        assertTrue(bitMask.hasIntersection(com.inari.commons.geom.Rectangle(5, 5, 10, 10)))
-        assertTrue(bitMask.hasIntersection(com.inari.commons.geom.Rectangle(1, 1, 10, 10)))
-        assertFalse(bitMask.hasIntersection(com.inari.commons.geom.Rectangle(0, 1, 10, 10)))
-        assertFalse(bitMask.hasIntersection(com.inari.commons.geom.Rectangle(1, 0, 10, 10)))
+        assertTrue(bitMask.hasIntersection(Rectangle(5, 5, 10, 10)))
+        assertTrue(bitMask.hasIntersection(Rectangle(1, 1, 10, 10)))
+        assertFalse(bitMask.hasIntersection(Rectangle(0, 1, 10, 10)))
+        assertFalse(bitMask.hasIntersection(Rectangle(1, 0, 10, 10)))
 
-        assertTrue(bitMask.hasIntersection(com.inari.commons.geom.Rectangle(10, 10, 10, 10)))
-        assertFalse(bitMask.hasIntersection(com.inari.commons.geom.Rectangle(11, 10, 10, 10)))
-        assertFalse(bitMask.hasIntersection(com.inari.commons.geom.Rectangle(10, 11, 10, 10)))
+        assertTrue(bitMask.hasIntersection(Rectangle(10, 10, 10, 10)))
+        assertFalse(bitMask.hasIntersection(Rectangle(11, 10, 10, 10)))
+        assertFalse(bitMask.hasIntersection(Rectangle(10, 11, 10, 10)))
 
-        bitMask = com.inari.commons.geom.BitMask(5, 5, 2, 2)
+        bitMask = BitMask(5, 5, 2, 2)
         bitMask.fill()
         assertEquals(
             "BitMask [region=[x=5,y=5,width=2,height=2], bits=\n"
@@ -439,22 +439,22 @@ class BitMaskTest {
         )
 
         // boundaries x axis
-        assertFalse(bitMask.hasIntersection(com.inari.commons.geom.Rectangle(4, 6, 1, 1)))
-        assertTrue(bitMask.hasIntersection(com.inari.commons.geom.Rectangle(5, 6, 1, 1)))
-        assertTrue(bitMask.hasIntersection(com.inari.commons.geom.Rectangle(6, 6, 1, 1)))
-        assertFalse(bitMask.hasIntersection(com.inari.commons.geom.Rectangle(7, 6, 1, 1)))
+        assertFalse(bitMask.hasIntersection(Rectangle(4, 6, 1, 1)))
+        assertTrue(bitMask.hasIntersection(Rectangle(5, 6, 1, 1)))
+        assertTrue(bitMask.hasIntersection(Rectangle(6, 6, 1, 1)))
+        assertFalse(bitMask.hasIntersection(Rectangle(7, 6, 1, 1)))
 
         // boundaries y axis
-        assertFalse(bitMask.hasIntersection(com.inari.commons.geom.Rectangle(6, 4, 1, 1)))
-        assertTrue(bitMask.hasIntersection(com.inari.commons.geom.Rectangle(6, 5, 1, 1)))
-        assertTrue(bitMask.hasIntersection(com.inari.commons.geom.Rectangle(6, 6, 1, 1)))
-        assertFalse(bitMask.hasIntersection(com.inari.commons.geom.Rectangle(6, 7, 1, 1)))
+        assertFalse(bitMask.hasIntersection(Rectangle(6, 4, 1, 1)))
+        assertTrue(bitMask.hasIntersection(Rectangle(6, 5, 1, 1)))
+        assertTrue(bitMask.hasIntersection(Rectangle(6, 6, 1, 1)))
+        assertFalse(bitMask.hasIntersection(Rectangle(6, 7, 1, 1)))
     }
 
     @Test
     fun testAnd() {
-        val mask1 = com.inari.commons.geom.BitMask(0, 0, 10, 10)
-        val mask2 = com.inari.commons.geom.BitMask(5, 5, 10, 10)
+        val mask1 = BitMask(0, 0, 10, 10)
+        val mask2 = BitMask(5, 5, 10, 10)
         mask1.fill()
         mask2.fill()
 
@@ -494,8 +494,8 @@ class BitMaskTest {
 
     @Test
     fun testSetOr() {
-        val mask1 = com.inari.commons.geom.BitMask(1, 1, 25, 25)
-        val mask2 = com.inari.commons.geom.BitMask(10, 10, 10, 10)
+        val mask1 = BitMask(1, 1, 25, 25)
+        val mask2 = BitMask(10, 10, 10, 10)
         for (i in 0..9) {
             mask2.setBit(i, i)
         }
@@ -610,8 +610,8 @@ class BitMaskTest {
 
     @Test
     fun testOrCase123() {
-        val mask1 = com.inari.commons.geom.BitMask(1, 8, 6, 1)
-        val mask2 = com.inari.commons.geom.BitMask(1, 5, 5, 4)
+        val mask1 = BitMask(1, 8, 6, 1)
+        val mask2 = BitMask(1, 5, 5, 4)
 
         mask2.setBit(2, 0)
         mask2.setBit(4, 1)
@@ -643,8 +643,8 @@ class BitMaskTest {
 
     @Test
     fun testOrCase456() {
-        val mask1 = com.inari.commons.geom.BitMask(0, 0, 6, 8)
-        val mask2 = com.inari.commons.geom.BitMask(1, 6, 5, 3)
+        val mask1 = BitMask(0, 0, 6, 8)
+        val mask2 = BitMask(1, 6, 5, 3)
 
         mask2.setBit(4, 1)
         mask2.setBit(2, 2)
@@ -677,9 +677,9 @@ class BitMaskTest {
 
     @Test
     fun testCreateIntersectionMaskWithRegion() {
-        val intersection = com.inari.commons.geom.BitMask(0, 0)
-        val region = com.inari.commons.geom.Rectangle(0, 0, 8, 8)
-        val mask = com.inari.commons.geom.BitMask(0, 0, 8, 8)
+        val intersection = BitMask(0, 0)
+        val region = Rectangle(0, 0, 8, 8)
+        val mask = BitMask(0, 0, 8, 8)
         mask.fill()
 
         assertEquals(
@@ -695,7 +695,7 @@ class BitMaskTest {
             mask.toString()
         )
 
-        com.inari.commons.geom.BitMask.createIntersectionMask(mask, region, intersection)
+        BitMask.createIntersectionMask(mask, region, intersection)
         assertEquals(
             "BitMask [region=[x=0,y=0,width=8,height=8], bits=\n" +
                 "11111111\n" +
@@ -709,9 +709,9 @@ class BitMaskTest {
             intersection.toString()
         )
 
-        region.x = -4
-        region.y = -4
-        com.inari.commons.geom.BitMask.createIntersectionMask(mask, region, intersection)
+        region.pos.x = -4
+        region.pos.y = -4
+        BitMask.createIntersectionMask(mask, region, intersection)
         assertEquals(
             "BitMask [region=[x=0,y=0,width=4,height=4], bits=\n" +
                 "1111\n" +
@@ -721,9 +721,9 @@ class BitMaskTest {
             intersection.toString()
         )
 
-        region.x = 4
-        region.y = 4
-        com.inari.commons.geom.BitMask.createIntersectionMask(mask, region, intersection)
+        region.pos.x = 4
+        region.pos.y = 4
+        BitMask.createIntersectionMask(mask, region, intersection)
         assertEquals(
             "BitMask [region=[x=4,y=4,width=4,height=4], bits=\n" +
                 "1111\n" +
@@ -733,19 +733,19 @@ class BitMaskTest {
             intersection.toString()
         )
 
-        region.x = 4
-        region.y = 4
-        mask.region().x = -4
-        mask.region().y = -4
-        com.inari.commons.geom.BitMask.createIntersectionMask(mask, region, intersection)
+        region.pos.x = 4
+        region.pos.y = 4
+        mask.region().pos.x = -4
+        mask.region().pos.y = -4
+        BitMask.createIntersectionMask(mask, region, intersection)
         assertEquals(
             "BitMask [region=[x=4,y=4,width=0,height=0], bits=\n" + "]",
             intersection.toString()
         )
 
-        region.x = 0
-        region.y = 0
-        com.inari.commons.geom.BitMask.createIntersectionMask(mask, region, intersection)
+        region.pos.x = 0
+        region.pos.y = 0
+        BitMask.createIntersectionMask(mask, region, intersection)
         assertEquals(
             "BitMask [region=[x=0,y=0,width=4,height=4], bits=\n" +
                 "1111\n" +
@@ -755,11 +755,11 @@ class BitMaskTest {
             intersection.toString()
         )
 
-        region.x = 10
-        region.y = 10
-        mask.region().x = 10
-        mask.region().y = 10
-        com.inari.commons.geom.BitMask.createIntersectionMask(mask, region, intersection)
+        region.pos.x = 10
+        region.pos.y = 10
+        mask.region().pos.x = 10
+        mask.region().pos.y = 10
+        BitMask.createIntersectionMask(mask, region, intersection)
         assertEquals(
             "BitMask [region=[x=10,y=10,width=8,height=8], bits=\n" +
                 "11111111\n" +
@@ -776,9 +776,9 @@ class BitMaskTest {
 
     @Test
     fun testCreateIntersectionMaskWithRegionWithIntersectionAdjustOnMask() {
-        val intersection = com.inari.commons.geom.BitMask(0, 0)
-        val region = com.inari.commons.geom.Rectangle(0, 0, 8, 8)
-        val mask = com.inari.commons.geom.BitMask(0, 0, 8, 8)
+        val intersection = BitMask(0, 0)
+        val region = Rectangle(0, 0, 8, 8)
+        val mask = BitMask(0, 0, 8, 8)
         mask.fill()
 
         assertEquals(
@@ -794,7 +794,7 @@ class BitMaskTest {
             mask.toString()
         )
 
-        com.inari.commons.geom.BitMask.createIntersectionMask(mask, region, intersection, true)
+        BitMask.createIntersectionMask(mask, region, intersection, true)
         assertEquals(
             "BitMask [region=[x=0,y=0,width=8,height=8], bits=\n" +
                 "11111111\n" +
@@ -808,9 +808,9 @@ class BitMaskTest {
             intersection.toString()
         )
 
-        region.x = -4
-        region.y = -4
-        com.inari.commons.geom.BitMask.createIntersectionMask(mask, region, intersection, true)
+        region.pos.x = -4
+        region.pos.y = -4
+        BitMask.createIntersectionMask(mask, region, intersection, true)
         assertEquals(
             "BitMask [region=[x=0,y=0,width=4,height=4], bits=\n" +
                 "1111\n" +
@@ -820,9 +820,9 @@ class BitMaskTest {
             intersection.toString()
         )
 
-        region.x = 4
-        region.y = 4
-        com.inari.commons.geom.BitMask.createIntersectionMask(mask, region, intersection, true)
+        region.pos.x = 4
+        region.pos.y = 4
+        BitMask.createIntersectionMask(mask, region, intersection, true)
         assertEquals(
             "BitMask [region=[x=4,y=4,width=4,height=4], bits=\n" +
                 "1111\n" +
@@ -832,29 +832,29 @@ class BitMaskTest {
             intersection.toString()
         )
 
-        region.x = 4
-        region.y = 4
-        mask.region().x = -4
-        mask.region().y = -4
-        com.inari.commons.geom.BitMask.createIntersectionMask(mask, region, intersection, true)
+        region.pos.x = 4
+        region.pos.y = 4
+        mask.region().pos.x = -4
+        mask.region().pos.y = -4
+        BitMask.createIntersectionMask(mask, region, intersection, true)
         assertEquals(
             "BitMask [region=[x=8,y=8,width=0,height=0], bits=\n" + "]",
             intersection.toString()
         )
 
-        region.x = 8
-        region.y = 8
-        mask.region().x = -4
-        mask.region().y = -4
-        com.inari.commons.geom.BitMask.createIntersectionMask(mask, region, intersection, true)
+        region.pos.x = 8
+        region.pos.y = 8
+        mask.region().pos.x = -4
+        mask.region().pos.y = -4
+        BitMask.createIntersectionMask(mask, region, intersection, true)
         assertEquals(
             "BitMask [region=[x=12,y=12,width=0,height=0], bits=\n" + "]",
             intersection.toString()
         )
 
-        region.x = 0
-        region.y = 0
-        com.inari.commons.geom.BitMask.createIntersectionMask(mask, region, intersection, true)
+        region.pos.x = 0
+        region.pos.y = 0
+        BitMask.createIntersectionMask(mask, region, intersection, true)
         assertEquals(
             "BitMask [region=[x=4,y=4,width=4,height=4], bits=\n" +
                 "1111\n" +
@@ -864,11 +864,11 @@ class BitMaskTest {
             intersection.toString()
         )
 
-        region.x = 10
-        region.y = 10
-        mask.region().x = 10
-        mask.region().y = 10
-        com.inari.commons.geom.BitMask.createIntersectionMask(mask, region, intersection, true)
+        region.pos.x = 10
+        region.pos.y = 10
+        mask.region().pos.x = 10
+        mask.region().pos.y = 10
+        BitMask.createIntersectionMask(mask, region, intersection, true)
         assertEquals(
             "BitMask [region=[x=0,y=0,width=8,height=8], bits=\n" +
                 "11111111\n" +
@@ -882,11 +882,11 @@ class BitMaskTest {
             intersection.toString()
         )
 
-        region.x = -10
-        region.y = -10
-        mask.region().x = -10
-        mask.region().y = -10
-        com.inari.commons.geom.BitMask.createIntersectionMask(mask, region, intersection, true)
+        region.pos.x = -10
+        region.pos.y = -10
+        mask.region().pos.x = -10
+        mask.region().pos.y = -10
+        BitMask.createIntersectionMask(mask, region, intersection, true)
         assertEquals(
             "BitMask [region=[x=0,y=0,width=8,height=8], bits=\n" +
                 "11111111\n" +
@@ -903,9 +903,9 @@ class BitMaskTest {
 
     @Test
     fun testCreateIntersectionMaskWithRegionWithIntersectionAdjustOnRegion() {
-        val intersection = com.inari.commons.geom.BitMask(0, 0)
-        val region = com.inari.commons.geom.Rectangle(0, 0, 8, 8)
-        val mask = com.inari.commons.geom.BitMask(0, 0, 8, 8)
+        val intersection = BitMask(0, 0)
+        val region = Rectangle(0, 0, 8, 8)
+        val mask = BitMask(0, 0, 8, 8)
         mask.fill()
 
         assertEquals(
@@ -921,7 +921,7 @@ class BitMaskTest {
             mask.toString()
         )
 
-        com.inari.commons.geom.BitMask.createIntersectionMask(region, mask, intersection, true)
+        BitMask.createIntersectionMask(region, mask, intersection, true)
         assertEquals(
             "BitMask [region=[x=0,y=0,width=8,height=8], bits=\n" +
                 "11111111\n" +
@@ -935,9 +935,9 @@ class BitMaskTest {
             intersection.toString()
         )
 
-        region.x = -4
-        region.y = -4
-        com.inari.commons.geom.BitMask.createIntersectionMask(region, mask, intersection, true)
+        region.pos.x = -4
+        region.pos.y = -4
+        BitMask.createIntersectionMask(region, mask, intersection, true)
         assertEquals(
             "BitMask [region=[x=4,y=4,width=4,height=4], bits=\n" +
                 "1111\n" +
@@ -947,9 +947,9 @@ class BitMaskTest {
             intersection.toString()
         )
 
-        region.x = 4
-        region.y = 4
-        com.inari.commons.geom.BitMask.createIntersectionMask(region, mask, intersection, true)
+        region.pos.x = 4
+        region.pos.y = 4
+        BitMask.createIntersectionMask(region, mask, intersection, true)
         assertEquals(
             "BitMask [region=[x=0,y=0,width=4,height=4], bits=\n" +
                 "1111\n" +
@@ -959,29 +959,29 @@ class BitMaskTest {
             intersection.toString()
         )
 
-        region.x = 4
-        region.y = 4
-        mask.region().x = -4
-        mask.region().y = -4
-        com.inari.commons.geom.BitMask.createIntersectionMask(region, mask, intersection, true)
+        region.pos.x = 4
+        region.pos.y = 4
+        mask.region().pos.x = -4
+        mask.region().pos.y = -4
+        BitMask.createIntersectionMask(region, mask, intersection, true)
         assertEquals(
             "BitMask [region=[x=0,y=0,width=0,height=0], bits=\n" + "]",
             intersection.toString()
         )
 
-        region.x = 8
-        region.y = 8
-        mask.region().x = -4
-        mask.region().y = -4
-        com.inari.commons.geom.BitMask.createIntersectionMask(region, mask, intersection, true)
+        region.pos.x = 8
+        region.pos.y = 8
+        mask.region().pos.x = -4
+        mask.region().pos.y = -4
+        BitMask.createIntersectionMask(region, mask, intersection, true)
         assertEquals(
             "BitMask [region=[x=0,y=0,width=0,height=0], bits=\n" + "]",
             intersection.toString()
         )
 
-        region.x = 0
-        region.y = 0
-        com.inari.commons.geom.BitMask.createIntersectionMask(region, mask, intersection, true)
+        region.pos.x = 0
+        region.pos.y = 0
+        BitMask.createIntersectionMask(region, mask, intersection, true)
         assertEquals(
             "BitMask [region=[x=0,y=0,width=4,height=4], bits=\n" +
                 "1111\n" +
@@ -991,11 +991,11 @@ class BitMaskTest {
             intersection.toString()
         )
 
-        region.x = 10
-        region.y = 10
-        mask.region().x = 10
-        mask.region().y = 10
-        com.inari.commons.geom.BitMask.createIntersectionMask(region, mask, intersection, true)
+        region.pos.x = 10
+        region.pos.y = 10
+        mask.region().pos.x = 10
+        mask.region().pos.y = 10
+        BitMask.createIntersectionMask(region, mask, intersection, true)
         assertEquals(
             "BitMask [region=[x=0,y=0,width=8,height=8], bits=\n" +
                 "11111111\n" +
@@ -1009,11 +1009,11 @@ class BitMaskTest {
             intersection.toString()
         )
 
-        region.x = -10
-        region.y = -10
-        mask.region().x = -10
-        mask.region().y = -10
-        com.inari.commons.geom.BitMask.createIntersectionMask(region, mask, intersection, true)
+        region.pos.x = -10
+        region.pos.y = -10
+        mask.region().pos.x = -10
+        mask.region().pos.y = -10
+        BitMask.createIntersectionMask(region, mask, intersection, true)
         assertEquals(
             "BitMask [region=[x=0,y=0,width=8,height=8], bits=\n" +
                 "11111111\n" +
@@ -1031,9 +1031,9 @@ class BitMaskTest {
 
     @Test
     fun testCreateIntersectionMaskWithRegionWithOffsetOnRegion() {
-        val intersection = com.inari.commons.geom.BitMask(0, 0)
-        val region = com.inari.commons.geom.Rectangle(0, 0, 8, 8)
-        val mask = com.inari.commons.geom.BitMask(0, 0, 8, 8)
+        val intersection = BitMask(0, 0)
+        val region = Rectangle(0, 0, 8, 8)
+        val mask = BitMask(0, 0, 8, 8)
         mask.fill()
 
         assertEquals(
@@ -1049,7 +1049,7 @@ class BitMaskTest {
             mask.toString()
         )
 
-        com.inari.commons.geom.BitMask.createIntersectionMask(mask, region, intersection, 0, 0, false)
+        BitMask.createIntersectionMask(mask, region, intersection, 0, 0, false)
         assertEquals(
             "BitMask [region=[x=0,y=0,width=8,height=8], bits=\n" +
                 "11111111\n" +
@@ -1063,7 +1063,7 @@ class BitMaskTest {
             intersection.toString()
         )
 
-        com.inari.commons.geom.BitMask.createIntersectionMask(mask, region, intersection, -4, -4, false)
+        BitMask.createIntersectionMask(mask, region, intersection, -4, -4, false)
         assertEquals(
             "BitMask [region=[x=0,y=0,width=4,height=4], bits=\n" +
                 "1111\n" +
@@ -1073,7 +1073,7 @@ class BitMaskTest {
             intersection.toString()
         )
 
-        com.inari.commons.geom.BitMask.createIntersectionMask(mask, region, intersection, 4, 4, false)
+        BitMask.createIntersectionMask(mask, region, intersection, 4, 4, false)
         assertEquals(
             "BitMask [region=[x=4,y=4,width=4,height=4], bits=\n" +
                 "1111\n" +
@@ -1083,15 +1083,15 @@ class BitMaskTest {
             intersection.toString()
         )
 
-        mask.region().x = -4
-        mask.region().y = -4
-        com.inari.commons.geom.BitMask.createIntersectionMask(mask, region, intersection, 4, 4, false)
+        mask.region().pos.x = -4
+        mask.region().pos.y = -4
+        BitMask.createIntersectionMask(mask, region, intersection, 4, 4, false)
         assertEquals(
             "BitMask [region=[x=4,y=4,width=0,height=0], bits=\n" + "]",
             intersection.toString()
         )
 
-        com.inari.commons.geom.BitMask.createIntersectionMask(mask, region, intersection, 0, 0, false)
+        BitMask.createIntersectionMask(mask, region, intersection, 0, 0, false)
         assertEquals(
             "BitMask [region=[x=0,y=0,width=4,height=4], bits=\n" +
                 "1111\n" +
@@ -1101,11 +1101,11 @@ class BitMaskTest {
             intersection.toString()
         )
 
-        region.x = 10
-        region.y = 10
-        mask.region().x = 10
-        mask.region().y = 10
-        com.inari.commons.geom.BitMask.createIntersectionMask(mask, region, intersection, 0, 0, false)
+        region.pos.x = 10
+        region.pos.y = 10
+        mask.region().pos.x = 10
+        mask.region().pos.y = 10
+        BitMask.createIntersectionMask(mask, region, intersection, 0, 0, false)
         assertEquals(
             "BitMask [region=[x=10,y=10,width=8,height=8], bits=\n" +
                 "11111111\n" +
@@ -1119,11 +1119,11 @@ class BitMaskTest {
             intersection.toString()
         )
 
-        region.x = 0
-        region.y = 0
-        mask.region().x = 0
-        mask.region().y = 0
-        com.inari.commons.geom.BitMask.createIntersectionMask(mask, region, intersection, 0, 0, true)
+        region.pos.x = 0
+        region.pos.y = 0
+        mask.region().pos.x = 0
+        mask.region().pos.y = 0
+        BitMask.createIntersectionMask(mask, region, intersection, 0, 0, true)
         assertEquals(
             "BitMask [region=[x=0,y=0,width=8,height=8], bits=\n" +
                 "11111111\n" +
@@ -1137,7 +1137,7 @@ class BitMaskTest {
             intersection.toString()
         )
 
-        com.inari.commons.geom.BitMask.createIntersectionMask(mask, region, intersection, -4, -4, true)
+        BitMask.createIntersectionMask(mask, region, intersection, -4, -4, true)
         assertEquals(
             "BitMask [region=[x=0,y=0,width=4,height=4], bits=\n" +
                 "1111\n" +
@@ -1147,7 +1147,7 @@ class BitMaskTest {
             intersection.toString()
         )
 
-        com.inari.commons.geom.BitMask.createIntersectionMask(mask, region, intersection, 4, 4, true)
+        BitMask.createIntersectionMask(mask, region, intersection, 4, 4, true)
         assertEquals(
             "BitMask [region=[x=4,y=4,width=4,height=4], bits=\n" +
                 "1111\n" +
@@ -1157,15 +1157,15 @@ class BitMaskTest {
             intersection.toString()
         )
 
-        mask.region().x = -4
-        mask.region().y = -4
-        com.inari.commons.geom.BitMask.createIntersectionMask(mask, region, intersection, 4, 4, true)
+        mask.region().pos.x = -4
+        mask.region().pos.y = -4
+        BitMask.createIntersectionMask(mask, region, intersection, 4, 4, true)
         assertEquals(
             "BitMask [region=[x=8,y=8,width=0,height=0], bits=\n" + "]",
             intersection.toString()
         )
 
-        com.inari.commons.geom.BitMask.createIntersectionMask(mask, region, intersection, 0, 0, true)
+        BitMask.createIntersectionMask(mask, region, intersection, 0, 0, true)
         assertEquals(
             "BitMask [region=[x=4,y=4,width=4,height=4], bits=\n" +
                 "1111\n" +
@@ -1175,11 +1175,11 @@ class BitMaskTest {
             intersection.toString()
         )
 
-        region.x = 10
-        region.y = 10
-        mask.region().x = 10
-        mask.region().y = 10
-        com.inari.commons.geom.BitMask.createIntersectionMask(mask, region, intersection, 0, 0, true)
+        region.pos.x = 10
+        region.pos.y = 10
+        mask.region().pos.x = 10
+        mask.region().pos.y = 10
+        BitMask.createIntersectionMask(mask, region, intersection, 0, 0, true)
         assertEquals(
             "BitMask [region=[x=0,y=0,width=8,height=8], bits=\n" +
                 "11111111\n" +
@@ -1197,7 +1197,7 @@ class BitMaskTest {
 
     @Test
     fun testCreateIntersectionMaskWithRegionWithOffsetOnMask() {
-        val intersection = BitMask(width = 0, height = 0)
+        val intersection = BitMask(0, 0)
         val region = Rectangle(0, 0, 8, 8)
         val mask = BitMask(0, 0, 8, 8)
         mask.fill()
@@ -1356,7 +1356,7 @@ class BitMaskTest {
 
     @Test
     fun testCreateIntersectionMask() {
-        val intersection = BitMask(width = 0, height = 0)
+        val intersection = BitMask(0, 0)
         val mask1 = BitMask(0, 0, 8, 8)
         mask1.fill()
         val mask2 = BitMask(0, 0, 8, 8)

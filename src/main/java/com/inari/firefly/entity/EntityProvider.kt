@@ -1,13 +1,14 @@
 package com.inari.firefly.entity
 
-import com.inari.commons.lang.list.DynArray
+import com.inari.util.collection.DynArray
 import java.util.*
 
 
 object EntityProvider {
 
     private val disposedEntities: ArrayDeque<Entity> = ArrayDeque()
-    private val disposedComponents: DynArray<ArrayDeque<EntityComponent>> = DynArray.createTyped(ArrayDeque::class.java, 20, 10)
+    private val disposedComponents: DynArray<ArrayDeque<EntityComponent>> =
+        DynArray.ofAny(ArrayDeque::class.java, 20, 10)
 
     fun createEntityForLaterUse(number: Int) {
         for (i in 0 until number) {
@@ -57,9 +58,9 @@ object EntityProvider {
 
     private fun getOrCreate(index: Int): ArrayDeque<EntityComponent> {
         if (!disposedComponents.contains(index)) {
-            disposedComponents.set(index, ArrayDeque())
+            disposedComponents[index] = ArrayDeque()
         }
-        return disposedComponents.get(index)
+        return disposedComponents[index]!!
     }
 
 }

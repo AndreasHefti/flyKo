@@ -4,12 +4,8 @@ import com.inari.firefly.component.ComponentRefResolver
 import com.inari.firefly.component.ComponentType
 import com.inari.firefly.system.component.SystemComponent
 import com.inari.firefly.system.component.SystemComponentSingleType
-import com.inari.util.indexed.Indexer
 
-class Layer private constructor () : SystemComponent() {
-
-    override val indexer: Indexer =
-        Indexer(Layer::class.java.name)
+class Layer private constructor() : SystemComponent(Layer::class.java.name) {
 
     @JvmField internal var viewRef = -1
 

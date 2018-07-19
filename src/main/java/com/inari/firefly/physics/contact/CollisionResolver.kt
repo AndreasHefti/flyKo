@@ -3,12 +3,8 @@ package com.inari.firefly.physics.contact
 import com.inari.firefly.entity.Entity
 import com.inari.firefly.system.component.SystemComponent
 import com.inari.firefly.system.component.SystemComponentType
-import com.inari.util.indexed.Indexer
 
-abstract class CollisionResolver protected constructor() : SystemComponent() {
-
-    override val indexer: Indexer =
-        Indexer(CollisionResolver::class.java.name)
+abstract class CollisionResolver protected constructor() : SystemComponent(CollisionResolver::class.java.name) {
 
     @JvmField internal var separateDirections = true
     @JvmField internal var yDirectionFirst = true

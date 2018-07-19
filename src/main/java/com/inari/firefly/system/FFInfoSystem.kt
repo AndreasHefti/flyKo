@@ -1,6 +1,5 @@
 package com.inari.firefly.system
 
-import com.inari.commons.lang.list.DynArray
 import com.inari.firefly.FFApp
 import com.inari.firefly.FFContext
 import com.inari.firefly.SYSTEM_FONT
@@ -11,13 +10,14 @@ import com.inari.firefly.external.SpriteRenderable
 import com.inari.firefly.graphics.BlendMode
 import com.inari.firefly.graphics.text.FontAsset
 import com.inari.firefly.graphics.view.ViewSystem
+import com.inari.util.collection.DynArray
 import com.inari.util.graphics.RGBColor
 
 
 object FFInfoSystem : FFSystem {
 
     private var active = false
-    private val infos = DynArray.create(SysInfo::class.java)
+    private val infos = DynArray.of(SysInfo::class.java)
     private val buffer = StringBuffer()
 
     private var width = 0
@@ -81,7 +81,7 @@ object FFInfoSystem : FFSystem {
         update()
 
         infoDisplayBackground.rectVertices[2] = (width * hStep + hStep).toFloat()
-        infoDisplayBackground.rectVertices[3] = (infos.size() * vStep + vStep).toFloat()
+        infoDisplayBackground.rectVertices[3] = (infos.size * vStep + vStep).toFloat()
         graphics.renderShape(infoDisplayBackground.data)
 
         var xpos = 5f
@@ -104,8 +104,8 @@ object FFInfoSystem : FFSystem {
     fun update() {
         var startIndex = 0
         var i = 0
-        while (i < infos.capacity()) {
-            val info = infos.get(i++) ?: continue
+        while (i < infos.capacity) {
+            val info = infos[i++] ?: continue
 
             info.update(buffer, startIndex)
             startIndex += info.length + 1

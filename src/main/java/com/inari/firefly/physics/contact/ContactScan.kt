@@ -37,7 +37,7 @@ class ContactScan internal constructor() {
         get(constraint.instanceId)
 
     operator fun get(constraint: Int): Contacts =
-        contacts.get(constraint)
+        contacts.get(constraint)!!
 
     fun clearContacts() {
         var i = 0

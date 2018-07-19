@@ -5,46 +5,56 @@ package com.inari.util.geom
 import com.inari.util.StringUtils
 import java.util.BitSet
 
+
+
 class BitMask constructor(
     x: Int = 0,
     y: Int = 0,
-    width: Int,
-    height: Int
+    width: Int = 0,
+    height: Int = 0
 ){
 
     private val region = Rectangle()
-    private val bits: BitSet
+    private var bits: BitSet
 
     private val tmpRegion = Rectangle()
     private val intersection = Rectangle()
 
-    private val tmpBits: BitSet
+    private var tmpBits: BitSet
 
-    val isEmpty: Boolean
-        get() = bits.isEmpty
+    constructor(region: Rectangle) : this(region.pos.x, region.pos.y, region.width, region.height)
 
     init {
-        region(x, y, width, height)
+        region.pos.x = x
+        region.pos.y = y
+        region.width = width
+        region.height = height
         bits = BitSet(region.width + region.height)
         tmpBits = BitSet(region.width + region.height)
     }
 
-    constructor(region: Rectangle) :
-        this(region.pos.x, region.pos.y, region.width, region.height)
-
-    fun region(): Rectangle = region
+    fun region(): Rectangle =
+        region
+    val isEmpty: Boolean get() =
+        bits.isEmpty
 
     fun fill(): BitMask {
         clearMask()
-        bits.set(0, region.width * region.height, true)
+        for (i in 0 until region.width * region.height) {
+            bits.set(i)
+        }
         return this
     }
 
-    fun reset(region: Rectangle) =
+    fun reset(region: Rectangle) {
         reset(region.pos.x, region.pos.y, region.width, region.height)
+    }
 
     fun reset(x: Int, y: Int, width: Int, height: Int) {
-        region(x, y, width, height)
+        region.pos.x = x
+        region.pos.y = y
+        region.width = width
+        region.height = height
         bits.clear()
         tmpBits.clear()
     }
@@ -54,75 +64,116 @@ class BitMask constructor(
         tmpBits.clear()
     }
 
-    fun setBit(index: Int) =
+    fun setBit(index: Int) {
         bits.set(index)
-
-    operator fun set(index: Int, flag: Boolean) =
-        bits.set(index, flag)
-
-    fun setBitRelativeToOrigin(x: Int, y: Int, flag: Boolean) {
-        this[x - region.pos.x, y - region.pos.y] = flag
     }
 
-    operator fun set(x: Int, y: Int, flag: Boolean) {
+    fun setBit(x: Int, y: Int, relativeToOrigin: Boolean) {
+        if (relativeToOrigin) {
+            setBit(x - region.pos.x, y - region.pos.y)
+        } else {
+            setBit(x, y)
+        }
+    }
+
+    fun setBit(x: Int, y: Int) {
         if (x < 0 || x >= region.width || y < 0 || y >= region.height) {
             return
         }
 
-        bits.set(y * region.width + x, flag)
+        bits.set(y * region.width + x)
     }
 
-    fun getBit(x: Int, y: Int): Boolean =
-        bits.get(y * region.width + x)
-
-    operator fun invoke(x: Int, y: Int): Boolean =
-        bits.get(y * region.width + x)
-
-    operator fun plus(pos: Position)  =
-        region.pos + pos
-
-    operator fun set(reg: Rectangle, flag: Boolean) {
-        setIntersectionRegion(
-            reg.pos.x + region.pos.x,
-            reg.pos.y + region.pos.y,
-            reg.width, reg.height, flag
-        )
+    fun resetBit(index: Int) {
+        bits.set(index, false)
     }
 
-    fun setRegionRelativeToOrigin(reg: Rectangle, flag: Boolean) {
-        setIntersectionRegion(reg.pos.x, reg.pos.y, reg.width, reg.height, flag)
+    fun resetBit(x: Int, y: Int, relativeToOrigin: Boolean) {
+        if (relativeToOrigin) {
+            resetBit(x - region.pos.x, y - region.pos.y)
+        } else {
+            resetBit(x, y)
+        }
     }
 
-    private fun setIntersectionRegion(xOffset: Int, yOffset: Int, width: Int, height: Int, flag: Boolean) {
-        tmpRegion(xOffset, yOffset, width, height)
-        GeomUtils.intersection(region, tmpRegion, intersection)
-        if (intersection.area() <= 0)
+    fun resetBit(x: Int, y: Int) {
+        if (x < 0 || x >= region.width || y < 0 || y >= region.height) {
             return
+        }
+
+        bits.set(y * region.width + x, false)
+    }
+
+    fun getBit(x: Int, y: Int): Boolean {
+        return bits.get(y * region.width + x)
+    }
+
+    fun moveRegion(x: Int, y: Int) {
+        region.pos.x += x
+        region.pos.y += y
+    }
+
+    fun setRegion(region: Rectangle, relativeToOrigin: Boolean) {
+        setRegion(region.pos.x, region.pos.y, region.width, region.height, relativeToOrigin)
+    }
+
+    fun setRegion(x: Int, y: Int, width: Int, height: Int) {
+        setRegion(x, y, width, height, true)
+    }
+
+    fun setRegion(x: Int, y: Int, width: Int, height: Int, relativeToOrigin: Boolean) {
+        if (relativeToOrigin) {
+            setIntersectionRegion(x, y, width, height, true)
+        } else {
+            setIntersectionRegion(x + region.pos.x, y + region.pos.y, width, height, true)
+        }
+    }
+
+    fun resetRegion(region: Rectangle, relativeToOrigin: Boolean) {
+        resetRegion(region.pos.x, region.pos.y, region.width, region.height, relativeToOrigin)
+    }
+
+    fun resetRegion(x: Int, y: Int, width: Int, height: Int) {
+        resetRegion(x, y, width, height, true)
+    }
+
+    fun resetRegion(x: Int, y: Int, width: Int, height: Int, relativeToOrigin: Boolean) {
+        if (relativeToOrigin) {
+            setIntersectionRegion(x, y, width, height, false)
+        } else {
+            setIntersectionRegion(x + region.pos.x, y + region.pos.y, width, height, false)
+        }
+    }
+
+    private fun setIntersectionRegion(xoffset: Int, yoffset: Int, width: Int, height: Int, set: Boolean) {
+        tmpRegion.pos.x = xoffset
+        tmpRegion.pos.y = yoffset
+        tmpRegion.width = width
+        tmpRegion.height = height
+        GeomUtils.intersection(region, tmpRegion, intersection)
+        if (intersection.area() <= 0) {
+            return
+        }
 
         val x1 = intersection.pos.x - region.pos.x
         val y1 = intersection.pos.y - region.pos.y
         val width1 = x1 + intersection.width
         val height1 = y1 + intersection.height
 
-        var y = 0
-        while(y < height1) {
-            var x = 0
-            while(x < width1) {
-                bits.set(y * region.width + x, flag)
-                x++
+        for (y in y1 until height1) {
+            for (x in x1 until width1) {
+                bits.set(y * region.width + x, set)
             }
-            y++
         }
     }
 
-    fun and(other: BitMask): BitMask {
+    fun and(other: BitMask) {
         setTmpBits(other, 0, 0)
         bits.and(tmpBits)
-        return this
     }
 
-    fun and(other: BitMask, xOffset: Int, yOffset: Int) {
-        setTmpBits(other, xOffset, yOffset)
+    fun and(other: BitMask, xoffset: Int, yoffset: Int) {
+        setTmpBits(other, xoffset, yoffset)
         bits.and(tmpBits)
     }
 
@@ -131,18 +182,16 @@ class BitMask constructor(
         bits.or(tmpBits)
     }
 
-    fun or(other: BitMask, xOffset: Int, yOffset: Int) {
-        setTmpBits(other, xOffset, yOffset)
+    fun or(other: BitMask, xoffset: Int, yoffset: Int) {
+        setTmpBits(other, xoffset, yoffset)
         bits.or(tmpBits)
     }
 
-    private fun setTmpBits(other: BitMask, xOffset: Int, yOffset: Int) {
-        tmpRegion(
-            other.region.pos.x + xOffset,
-            other.region.pos.y + yOffset,
-            other.region.width,
-            other.region.height
-        )
+    private fun setTmpBits(other: BitMask, xoffset: Int, yoffset: Int) {
+        tmpRegion.pos.x = other.region.pos.x + xoffset
+        tmpRegion.pos.y = other.region.pos.y + yoffset
+        tmpRegion.width = other.region.width
+        tmpRegion.height = other.region.height
         GeomUtils.intersection(region, tmpRegion, intersection)
         if (intersection.area() <= 0) {
             return
@@ -153,22 +202,13 @@ class BitMask constructor(
         // adjust intersection to origin
         val x1 = intersection.pos.x - region.pos.x
         val y1 = intersection.pos.y - region.pos.y
-        val x2 = if (intersection.pos.x == 0) other.region.width - intersection.width
-            else intersection.pos.x - tmpRegion.pos.x
-        val y2 = if (intersection.pos.y == 0) other.region.height - intersection.height
-            else intersection.pos.y - tmpRegion.pos.y
+        val x2 = if (intersection.pos.x == 0) other.region.width - intersection.width else intersection.pos.x - tmpRegion.pos.x
+        val y2 = if (intersection.pos.y == 0) other.region.height - intersection.height else intersection.pos.y - tmpRegion.pos.y
 
-        var y = 0
-        while(y < intersection.height) {
-            var x = 0
-            while(x < intersection.width) {
-                tmpBits.set(
-                    (y + y1) * region.width + (x + x1),
-                    other.bits.get((y + y2) * other.region.width + (x + x2))
-                )
-                x++
+        for (y in 0 until intersection.height) {
+            for (x in 0 until intersection.width) {
+                tmpBits.set((y + y1) * region.width + (x + x1), other.bits.get((y + y2) * other.region.width + (x + x2)))
             }
-            y++
         }
     }
 
@@ -183,16 +223,12 @@ class BitMask constructor(
         val width1 = x1 + intersection.width
         val height1 = y1 + intersection.height
 
-        var y = 0
-        while (y < height1) {
-            var x = 0
-            while (x < width1) {
+        for (y in y1 until height1) {
+            for (x in x1 until width1) {
                 if (bits.get(y * this.region.width + x)) {
                     return true
                 }
-                x++
             }
-            y++
         }
 
         return false
@@ -276,17 +312,13 @@ class BitMask constructor(
             val x1 = result.region.pos.x - bitmask.region.pos.x
             val y1 = result.region.pos.y - bitmask.region.pos.y
 
-            var y = 0
-            while (y < result.region.height) {
-                var x = 0
-                while (x < result.region.width) {
+            for (y in 0 until result.region.height) {
+                for (x in 0 until result.region.width) {
                     result.bits.set(
                         y * result.region.width + x,
                         bitmask.bits.get((y + y1) * bitmask.region.width + (x + x1))
                     )
-                    x++
                 }
-                y++
             }
 
             return !result.bits.isEmpty
@@ -346,19 +378,13 @@ class BitMask constructor(
             val x2 = result.region.pos.x - bitmask2.region.pos.x
             val y2 = result.region.pos.y - bitmask2.region.pos.y
 
-            var y = 0
-            while (y < result.region.height) {
-                var x = 0
-                while (x < result.region.width) {
+            for (y in 0 until result.region.height) {
+                for (x in 0 until result.region.width) {
                     result.bits.set(
                         y * result.region.width + x,
-                        bitmask1.bits.get(
-                            (y + y1) * bitmask1.region.width + (x + x1)) &&
-                            bitmask2.bits.get((y + y2) * bitmask2.region.width + (x + x2))
+                        bitmask1.bits.get((y + y1) * bitmask1.region.width + (x + x1)) && bitmask2.bits.get((y + y2) * bitmask2.region.width + (x + x2))
                     )
-                    x++
                 }
-                y++
             }
 
             return !result.bits.isEmpty

@@ -1,16 +1,16 @@
 package com.inari.firefly
 
-import com.inari.commons.lang.list.DynArray
-import com.inari.commons.lang.list.DynArrayRO
 import com.inari.firefly.component.CompId
 import com.inari.firefly.external.*
 import com.inari.firefly.graphics.view.ViewEvent
+import com.inari.util.collection.DynArray
+import com.inari.util.collection.DynArrayRO
 import com.inari.util.geom.Rectangle
 import java.util.*
 
 object GraphicsMock : FFGraphics {
 
-    val loadedAssets = DynArray.create(String::class.java, 20, 10)
+    val loadedAssets = DynArray.of(String::class.java, 20, 10)
     val views = ArrayList<CompId>()
 
     val log = ArrayList<String>()
@@ -131,7 +131,7 @@ object GraphicsMock : FFGraphics {
             builder.append(assetName).append(",")
         }
 
-        if (loadedAssets.size() > 0) {
+        if (loadedAssets.size > 0) {
             builder.deleteCharAt(builder.length - 1)
         }
 

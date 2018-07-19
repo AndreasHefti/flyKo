@@ -20,7 +20,7 @@ interface TestListenerInterfaceObj {
     operator fun invoke(i1: Position, i2: Position, i3: Position)
 }
 
-object TestEvent1 : Event<TestListenerType>() {
+object TestEvent1 : Event<TestListenerType>(EVENT_ASPECTS.createAspect("TestEvent1")) {
 
     private var i1: Int = -1
     private var i2: Int = -1
@@ -37,7 +37,7 @@ object TestEvent1 : Event<TestListenerType>() {
     }
 }
 
-object TestEvent2 : Event<TestListenerInterface>() {
+object TestEvent2 : Event<TestListenerInterface>(EVENT_ASPECTS.createAspect("TestEvent2")) {
 
     private var i1: Int = -1
     private var i2: Int = -1
@@ -54,7 +54,7 @@ object TestEvent2 : Event<TestListenerInterface>() {
     }
 }
 
-object TestEvent3 : Event<TestListenerTypeObj>() {
+object TestEvent3 : Event<TestListenerTypeObj>(EVENT_ASPECTS.createAspect("TestEvent3")) {
 
     private var i1: Position = Position()
     private var i2: Position = Position()
@@ -71,7 +71,7 @@ object TestEvent3 : Event<TestListenerTypeObj>() {
     }
 }
 
-object TestEvent4 : Event<TestListenerInterfaceObj>() {
+object TestEvent4 : Event<TestListenerInterfaceObj>(EVENT_ASPECTS.createAspect("TestEvent4")) {
 
     private var i1: Position = Position()
     private var i2: Position = Position()

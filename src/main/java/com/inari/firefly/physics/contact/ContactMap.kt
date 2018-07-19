@@ -11,13 +11,9 @@ import com.inari.firefly.graphics.view.ViewLayerAware
 import com.inari.firefly.system.component.SystemComponent
 import com.inari.firefly.system.component.SystemComponentType
 import com.inari.util.geom.Rectangle
-import com.inari.util.indexed.Indexer
 
 
-abstract class ContactMap protected constructor() : SystemComponent(), ViewLayerAware {
-
-    override val indexer: Indexer =
-        Indexer(ContactMap::class.java.name)
+abstract class ContactMap protected constructor() : SystemComponent(ContactMap::class.java.name), ViewLayerAware {
 
     @JvmField internal var viewRef = -1
     @JvmField internal var layerRef = -1

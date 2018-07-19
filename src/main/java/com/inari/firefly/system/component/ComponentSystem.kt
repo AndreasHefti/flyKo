@@ -54,14 +54,14 @@ interface ComponentSystem : FFSystem {
         override fun activate(index: Int) {
             if (activationMapping && !isActive(index)) {
                 active.set(index)
-                listener(_map[index], ComponentMap.MapAction.ACTIVATED)
+                listener(_map[index]!!, ComponentMap.MapAction.ACTIVATED)
             }
         }
 
         override fun deactivate(index: Int) {
             if (isActive(index)) {
                 active.set(index, false)
-                listener(_map[index],  ComponentMap.MapAction.DEACTIVATED)
+                listener(_map[index]!!,  ComponentMap.MapAction.DEACTIVATED)
             }
         }
 
@@ -71,7 +71,7 @@ interface ComponentSystem : FFSystem {
         override fun activate(name: String) = activate(indexForName(name))
         override fun deactivate(name: String) = deactivate(indexForName(name))
         override fun isActive(name: String): Boolean = isActive(indexForName(name))
-        override operator fun get(index: Int): C = _map[index]
+        override operator fun get(index: Int): C = _map[index]!!
         override operator fun get(name: String): C = this[indexForName(name)]
         @Suppress("UNCHECKED_CAST")
         override fun <CC : C> getAs(index: Int): CC = this[index] as CC
@@ -117,12 +117,12 @@ interface ComponentSystem : FFSystem {
             }
 
             val id: Int = (0 until _map.capacity).firstOrNull {
-                it in _map && _map[it].name == name
+                it in _map && _map[it]?.name == name
             } ?: -1
 
             return when(id) {
                 -1 -> throw RuntimeException("Component: $componentType for name: $name not found")
-                else -> map[id].componentId
+                else -> map[id]?.componentId ?: NO_COMP_ID
             }
         }
 
@@ -139,7 +139,7 @@ interface ComponentSystem : FFSystem {
                 return nameMap?.get(name)?.index ?: -1
 
             return (0 until _map.capacity).firstOrNull {
-                it in _map && _map[it].name == name
+                it in _map && _map[it]?.name == name
             } ?: -1
         }
 
@@ -149,7 +149,7 @@ interface ComponentSystem : FFSystem {
         fun nextIndex(predicate: Predicate<C>, currentIndex: Int): Int =
             if (currentIndex >= map.capacity)
                 -1
-            else if (map.contains(currentIndex) && predicate(map[currentIndex]))
+            else if (map.contains(currentIndex) && predicate(map[currentIndex]!!))
                 currentIndex
             else
                 nextIndex(predicate, currentIndex + 1)
@@ -168,7 +168,7 @@ interface ComponentSystem : FFSystem {
         override fun forEachActive(expr: (C) -> Unit) {
             var i = active.nextSetBit(0)
             while (i >= 0) {
-                expr(map[i])
+                expr(map[i]!!)
                 i = active.nextSetBit(i+1)
             }
         }
@@ -176,7 +176,7 @@ interface ComponentSystem : FFSystem {
         override fun forEachIn(bag: IntBagRO, expr: Expr<C>) {
             val i = bag.iterator()
             while (i.hasNext())
-                expr(map[i.next()])
+                expr(map[i.next()]!!)
         }
 
         override fun <CC : C> forEachSubtypeIn(bag: IntBagRO, expr: Expr<CC>) {

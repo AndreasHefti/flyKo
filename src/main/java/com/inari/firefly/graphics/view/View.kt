@@ -9,14 +9,10 @@ import com.inari.firefly.external.ViewData
 import com.inari.firefly.system.component.SystemComponentSingleType
 import com.inari.util.geom.Rectangle
 import com.inari.util.graphics.RGBColor
-import com.inari.util.indexed.Indexer
 
 class View private constructor (
     @JvmField internal var baseView: Boolean = false
-) : SystemComponent() {
-
-    override val indexer: Indexer
-        = Indexer(View::class.java.name)
+) : SystemComponent(View::class.java.name) {
 
     @JvmField internal var controllerRef = -1
     @JvmField internal val data = object : ViewData() {

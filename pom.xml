@@ -87,11 +87,6 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>com.github.Inari-Soft</groupId>
-            <artifactId>inari-commons</artifactId>
-            <version>-SNAPSHOT</version>
-        </dependency>
-        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.12</version>

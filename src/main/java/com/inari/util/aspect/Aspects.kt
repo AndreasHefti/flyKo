@@ -1,6 +1,7 @@
 package com.inari.util.aspect
 
-import com.inari.commons.lang.list.IntBag
+import com.inari.util.collection.IntBag
+import com.inari.util.indexed.Indexed
 
 import java.util.*
 
@@ -39,9 +40,9 @@ class Aspects internal constructor(
         return this
     }
 
-    operator fun minus(aspect: Aspect): Aspects {
-        checkType(aspect)
-        bitSet.set(aspect.aspectIndex, false)
+    operator fun plus(indexed: Indexed): Aspects {
+        checkType(indexed)
+        bitSet.set(indexed.index)
         return this
     }
 
@@ -51,6 +52,14 @@ class Aspects internal constructor(
         bitSet.or(aspects.bitSet)
         return this
     }
+
+    operator fun minus(aspect: Aspect): Aspects {
+        checkType(aspect)
+        bitSet.set(aspect.aspectIndex, false)
+        return this
+    }
+
+
 
     operator fun minus(aspects: Aspects): Aspects {
         checkType(aspects)
@@ -111,6 +120,11 @@ class Aspects internal constructor(
     private fun checkType(aspect: Aspect) {
         if (aspect.aspectType !== type)
             throw IllegalArgumentException("Aspect subType mismatch: " + aspect.aspectType + " " + type)
+    }
+
+    private fun checkType(indexed: Indexed) {
+        if (indexed.indexedTypeName !== type.name)
+            throw IllegalArgumentException("Aspect subType mismatch: " + indexed.indexedTypeName + " " + type.name)
     }
 
     override fun toString(): String {

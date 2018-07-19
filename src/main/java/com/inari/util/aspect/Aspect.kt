@@ -1,8 +1,7 @@
 package com.inari.util.aspect
 
-import com.inari.commons.lang.list.DynArray
+import com.inari.util.collection.DynArray
 import com.inari.util.indexed.AbstractIndexed
-import com.inari.util.indexed.Indexer
 
 interface Aspect {
     val aspectName: String
@@ -27,8 +26,7 @@ class IndexedAspectType(
     override val name: String
 ) : AspectType {
 
-    private val aspects = DynArray.create(Aspect::class.java, 10, 10)
-    private val indexer = Indexer(name)
+    private val aspects = DynArray.of(Aspect::class.java, 10, 10)
 
     override fun createAspects(): Aspects =
         Aspects(this)
@@ -40,14 +38,14 @@ class IndexedAspectType(
         return result
     }
 
-    override fun get(name: String): Aspect? {
+    override operator fun get(name: String): Aspect? {
         for (aspect in aspects)
             if (name == aspect.aspectName)
                 return aspect
         return null
     }
 
-    override fun get(index: Int): Aspect =
+    override operator fun get(index: Int): Aspect? =
         aspects[index]
 
     override fun typeCheck(aspect: Aspect) =
@@ -64,14 +62,16 @@ class IndexedAspectType(
         return newAspect
     }
 
-    class IndexedAspect(
+    class IndexedAspect constructor(
         override val aspectName: String,
         override val aspectType: IndexedAspectType
-    ) : AbstractIndexed(), Aspect {
+    ) : AbstractIndexed(aspectType.name), Aspect {
         override val aspectIndex: Int
             get() = index
-        override val indexer: Indexer
-            get() = aspectType.indexer
     }
+
+    override fun toString() =
+        name
+
 }
 

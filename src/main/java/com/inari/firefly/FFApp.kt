@@ -1,9 +1,9 @@
 package com.inari.firefly
 
-import com.inari.commons.lang.list.DynArray
-import com.inari.commons.lang.list.DynArrayRO
 import com.inari.firefly.external.*
 import com.inari.firefly.graphics.view.ViewSystem
+import com.inari.util.collection.DynArray
+import com.inari.util.collection.DynArrayRO
 import com.inari.util.event.Event
 import com.inari.util.event.IEventDispatcher
 import com.inari.util.geom.Rectangle
@@ -35,12 +35,13 @@ abstract class FFApp protected constructor(
     }
 
     fun render() {
-        val size = ViewSystem.activeViewPorts.size()
+        val size = ViewSystem.activeViewPorts.size
         if (size > 0) {
             var i = 0
             while (i < size) {
-                val view = ViewSystem.activeViewPorts.get(i++)
-                render(view)
+                ViewSystem.activeViewPorts[i++]?.apply {
+                    render(this)
+                }
             }
 
             graphics.flush(ViewSystem.activeViewPorts)
@@ -64,17 +65,18 @@ abstract class FFApp protected constructor(
 
         graphics.startRendering(view, true)
 
-        val layersOfView = ViewSystem.layersOfView.get(view.index)
-        if (layersOfView.isEmpty) {
-            FFContext.notify(RenderEvent)
-        } else {
-            val layerIterator = layersOfView.iterator()
-            while (layerIterator.hasNext()) {
-                val layerId = layersOfView.get(layerIterator.next())
-                if (!ViewSystem.layers.isActive(layerId))
-                    continue
-                RenderEvent.layerIndex = layerId
+        ViewSystem.layersOfView[view.index]?.apply {
+            if (isEmpty) {
                 FFContext.notify(RenderEvent)
+            } else {
+                val layerIterator = iterator()
+                while (layerIterator.hasNext()) {
+                    val layerId = get(layerIterator.next())
+                    if (!ViewSystem.layers.isActive(layerId))
+                        continue
+                    RenderEvent.layerIndex = layerId
+                    FFContext.notify(RenderEvent)
+                }
             }
         }
 
@@ -97,7 +99,7 @@ abstract class FFApp protected constructor(
             private set
 
         @JvmField internal val NO_VIRTUAL_VIEW_PORTS: DynArrayRO<ViewData> =
-            DynArray.create(ViewData::class.java)
+            DynArray.of(ViewData::class.java)
     }
 
     abstract class SystemTimer {

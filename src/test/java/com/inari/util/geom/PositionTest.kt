@@ -5,35 +5,34 @@ import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Assert.fail
 
-import com.inari.commons.geom.Position
 import org.junit.Test
 
 class PositionTest {
 
     @Test
     fun testPoint() {
-        var p1 = com.inari.commons.geom.Position()
+        var p1 = Position()
 
         assertTrue(p1.x == 0)
         assertTrue(p1.y == 0)
 
-        p1 = com.inari.commons.geom.Position(10, 4)
+        p1 = Position(10, 4)
 
         assertTrue(p1.x == 10)
         assertTrue(p1.y == 4)
 
-        val p2 = com.inari.commons.geom.Position(p1)
+        val p2 = Position(p1)
 
         assertTrue(p2.x == 10)
         assertTrue(p2.y == 4)
 
-        var p3 = com.inari.commons.geom.Position("40,100")
+        var p3 = Position("40,100")
 
         assertTrue(p3.x == 40)
         assertTrue(p3.y == 100)
 
         try {
-            p3 = com.inari.commons.geom.Position("40.5,100")
+            p3 = Position("40.5,100")
             fail("this should not work and throw an exception!")
         } catch (nfe: NumberFormatException) {
             assertEquals("For input string: \"40.5\"", nfe.message)
@@ -43,7 +42,7 @@ class PositionTest {
 
     @Test
     fun testFrom() {
-        val p1 = com.inari.commons.geom.Position()
+        val p1 = Position()
 
         assertTrue(p1.x == 0)
         assertTrue(p1.y == 0)
@@ -60,9 +59,9 @@ class PositionTest {
             assertEquals("The stringValue as invalid format: hey", iae.message)
         }
 
-        val p2 = com.inari.commons.geom.Position(1, 1)
+        val p2 = Position(1, 1)
 
-        p1.setFrom(p2)
+        p1(p2)
 
         assertTrue(p1.x == 1)
         assertTrue(p1.y == 1)
@@ -70,7 +69,7 @@ class PositionTest {
 
     @Test
     fun testToString() {
-        val p1 = com.inari.commons.geom.Position(30, 40)
+        val p1 = Position(30, 40)
 
         assertTrue(p1.x == 30)
         assertTrue(p1.y == 40)
@@ -80,8 +79,8 @@ class PositionTest {
 
     @Test
     fun testEquality() {
-        val p1 = com.inari.commons.geom.Position(30, 40)
-        val p2 = com.inari.commons.geom.Position(30, 40)
+        val p1 = Position(30, 40)
+        val p2 = Position(30, 40)
 
         assertEquals(p1, p1)
         assertEquals(p1, p2)

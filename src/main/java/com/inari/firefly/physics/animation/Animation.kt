@@ -3,12 +3,8 @@ package com.inari.firefly.physics.animation
 import com.inari.firefly.component.ComponentType
 import com.inari.firefly.system.component.SystemComponent
 import com.inari.firefly.system.component.SystemComponentType
-import com.inari.util.indexed.Indexer
 
-abstract class Animation protected constructor() : SystemComponent() {
-
-    override val indexer: Indexer =
-        Indexer(Animation::class.java.name)
+abstract class Animation protected constructor() : SystemComponent(Animation::class.java.name) {
 
     @JvmField internal var looping: Boolean = false
 

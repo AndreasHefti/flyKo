@@ -1,7 +1,6 @@
 package com.inari.firefly.misc
 
-import com.inari.commons.lang.IntIterator
-import com.inari.commons.lang.list.DynArray
+import com.inari.util.collection.DynArray
 import org.junit.Test
 import java.util.*
 
@@ -10,14 +9,14 @@ class SpecialIterationTest {
 
     @Test
     fun testDynArrayIterationWithNull() {
-        val array: DynArray<String> = DynArray.create(String::class.java)
+        val array: DynArray<String> = DynArray.of(String::class.java)
         array.set(0, "zero")
         array.set(3, "three")
         array.set(5, "fife")
         array.set(10, "then")
 
         var i = 0
-        while (i < array.capacity()) {
+        while (i < array.capacity) {
             val s = array[i++] ?: continue
             println(s)
         }
@@ -49,11 +48,11 @@ class SpecialIterationTest {
 
     }
 
-    private class BitSetIterator(val set: BitSet) : IntIterator {
+    private class BitSetIterator(val set: BitSet) : IntIterator() {
 
         private var index = set.nextSetBit(0)
 
-        override fun next(): Int {
+        override fun nextInt(): Int {
             val result = index
             index = set.nextSetBit(index + 1)
             return result

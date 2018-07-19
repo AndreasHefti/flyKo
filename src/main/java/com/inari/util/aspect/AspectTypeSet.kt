@@ -15,9 +15,9 @@ class AspectTypeSet constructor(
         private set
 
     fun include(aspects: Aspects): Boolean =
-        aspects.include(aspects)
+        this.aspects.include(aspects)
     fun exclude(aspects: Aspects): Boolean =
-        aspects.exclude(aspects)
+        this.aspects.exclude(aspects)
     val length: Int get() =
         aspects.size
 
@@ -65,7 +65,7 @@ class AspectTypeSet constructor(
 
     @Suppress("UNCHECKED_CAST")
     operator fun <I : Indexed> get(aspect: Aspect): I =
-        array[aspect.aspectIndex] as I
+        array[aspect.aspectIndex] as I ?: throw IllegalArgumentException()
 
 //    operator fun <I : IndexedType> get(type: Class<I>): I? {
 //        val typeIndex = IndexProvider.getIndexedTypeKey(indexedBaseType, type).typeIndex

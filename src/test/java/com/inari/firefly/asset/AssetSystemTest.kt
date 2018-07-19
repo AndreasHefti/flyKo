@@ -4,9 +4,10 @@ import com.inari.firefly.NO_NAME
 import com.inari.firefly.FFContext
 import com.inari.firefly.TestApp
 import com.inari.firefly.component.CompId
+import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
-import kotlin.test.*
+
 
 class AssetSystemTest {
 
@@ -20,17 +21,17 @@ class AssetSystemTest {
     @Test
     fun assetCreation() {
 
-        assertTrue { AssetSystem.assets.map.isEmpty }
-        assertTrue { AssetSystem.assets == FFContext.mapper(Asset) }
+        assertTrue(AssetSystem.assets.map.isEmpty)
+        assertTrue(AssetSystem.assets == FFContext.mapper(Asset))
 
         val emptyAssetId = TestAsset.build {}
 
         assertEquals(
-            "CompId(index=0, typeKey=[TypeKey:SystemComponent:Asset:0)",
+            "CompId(instanceId=0, componentType=SystemComponentType:Asset:0)",
             emptyAssetId.toString()
         )
 
-        assertFalse { AssetSystem.assets.map.isEmpty }
+        assertFalse(AssetSystem.assets.map.isEmpty)
 
         val emptyAsset = FFContext.get<Asset>(emptyAssetId)
         assertNotNull(emptyAsset)
@@ -43,7 +44,7 @@ class AssetSystemTest {
             AssetSystem.assets.get(NO_NAME)
             fail("Exception expected here")
         } catch (e: Exception) {
-            assertEquals("Component: [TypeKey:SystemComponent:Asset:0 for name: [[NO_NAME]] not found", e.message)
+            assertEquals("Component: SystemComponentType:Asset:0 for name: [[NO_NAME]] not found", e.message)
         }
 
         val assetId = TestAsset.build {
@@ -78,7 +79,7 @@ class AssetSystemTest {
         }
 
         assertEquals(
-            "CompId(index=0, typeKey=[TypeKey:SystemComponent:Asset:0)",
+            "CompId(instanceId=0, componentType=SystemComponentType:Asset:0)",
             assetId.toString()
         )
         assertEquals(
@@ -115,7 +116,7 @@ class AssetSystemTest {
             AssetEvent,
             object : AssetEvent.Listener{
                 override fun invoke(viewId: CompId, type: AssetEvent.Type) {
-                    testEvents.append("|id=").append(viewId.index).append(":").append(type.toString())
+                    testEvents.append("|id=").append(viewId.instanceId).append(":").append(type.toString())
                 }
             }
         )

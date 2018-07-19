@@ -1,5 +1,11 @@
 package com.inari.util.geom
 
+import com.inari.util.StringUtils
+import javax.swing.Spring.height
+import java.util.StringTokenizer
+
+
+
 /** A simple Rectangle with integer precision
  *  @param width The width of the Rectangle
  *  @param height The height of the Rectangle
@@ -18,7 +24,10 @@ data class Rectangle constructor(
      * @param height the height of the new Rectangle
      */
     constructor(x: Int, y: Int, width: Int, height: Int) : this(Position(x, y), width, height)
-
+    constructor(other: Rectangle) : this(other.pos, other.width, other.height)
+    constructor(stringValue: String) : this() {
+        fromConfigString(stringValue)
+    }
 
     /** Use this to get the area value (width * height) form this Rectangle.
      * @return the area value (width * height) form this Rectangle.
@@ -50,6 +59,35 @@ data class Rectangle constructor(
         pos(x, y)
         width = other.width
         height = other.height
+    }
+
+    /** Use this to set  the Rectangle attributes from specified configuration String value with the
+     * format: [x],[y],[width],[height].
+     *
+     * @param stringValue the configuration String value
+     * @throws IllegalArgumentException If the String value as a invalid format
+     * @throws NumberFormatException if the x/y/width/height values from the String value aren't numbers
+     */
+    fun fromConfigString(stringValue: String) {
+        if (!StringUtils.isBlank(stringValue)) {
+            val st = StringTokenizer(stringValue, StringUtils.VALUE_SEPARATOR_STRING)
+            pos.x = Integer.valueOf(st.nextToken())!!.toInt()
+            pos.y = Integer.valueOf(st.nextToken())!!.toInt()
+            width = Integer.valueOf(st.nextToken())!!.toInt()
+            height = Integer.valueOf(st.nextToken())!!.toInt()
+        }
+    }
+
+    /** Use this to get a configuration String value that represents this Rectangle
+     * and can be used to reset the attributes of a Rectangle by using fromConfigString
+     * The format is: [x],[y],[width],[height].
+     * @return A configuration String value that represents this Rectangle
+     */
+    fun toConfigString(): String {
+        val sb = StringBuilder()
+        sb.append(pos.x).append(StringUtils.VALUE_SEPARATOR).append(pos.y).append(StringUtils.VALUE_SEPARATOR)
+        sb.append(width).append(StringUtils.VALUE_SEPARATOR).append(height)
+        return sb.toString()
     }
 
     override fun toString(): String =

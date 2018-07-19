@@ -62,7 +62,7 @@ object RenderingSystem : FFSystem {
         setDefaultRenderingChain()
     }
 
-    operator fun get(rendererKey: SingletonComponent<out Renderer, Renderer>): Renderer =
+    operator fun get(rendererKey: SingletonComponent<Renderer, out Renderer>): Renderer =
         renderer[rendererKey.instance.index]
 
     fun setDefaultRenderingChain() {
@@ -76,7 +76,7 @@ object RenderingSystem : FFSystem {
         )
     }
 
-    fun setRenderingChain(vararg renderingChain: SingletonComponent<out Renderer, Renderer>) {
+    fun setRenderingChain(vararg renderingChain: SingletonComponent<Renderer, out Renderer>) {
         renderer.clear()
         this.renderingChain = Array(renderingChain.size) {
             val r: Renderer = renderingChain[it].instance

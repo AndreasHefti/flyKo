@@ -9,14 +9,11 @@ import com.inari.firefly.system.component.SystemComponent
 import com.inari.firefly.system.component.SystemComponentSingleType
 import com.inari.util.geom.Direction.*
 import com.inari.util.geom.*
-import com.inari.util.indexed.Indexer
 import java.util.*
 
 
-class TileGrid private constructor() : SystemComponent(), ViewLayerAware {
+class TileGrid private constructor() : SystemComponent(TileGrid::class.java.name), ViewLayerAware {
 
-    override val indexer: Indexer =
-        Indexer(TileGrid::class.java.name)
 
     @JvmField internal var viewRef = -1
     @JvmField internal var layerRef = -1

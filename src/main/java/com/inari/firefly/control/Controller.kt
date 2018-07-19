@@ -6,12 +6,9 @@ import com.inari.firefly.component.CompId
 import com.inari.firefly.external.FFTimer
 import com.inari.firefly.system.component.SystemComponent
 import com.inari.firefly.system.component.SystemComponentType
-import com.inari.util.indexed.Indexer
 
-abstract class Controller protected constructor() : SystemComponent() {
+abstract class Controller protected constructor() : SystemComponent(Controller::class.java.name) {
 
-    override val indexer: Indexer =
-        Indexer(Controller::class.java.name)
 
     @JvmField internal var scheduler: FFTimer.Scheduler = INFINITE_SCHEDULER
 
