@@ -77,11 +77,7 @@ abstract class SystemComponentType<C : SystemComponent>(
     final override val aspectIndex: Int = compAspect.aspectIndex
     final override val aspectName: String = compAspect.aspectName
     final override val aspectType: AspectType = compAspect.aspectType
-    override fun toString(): String {
-        return "SystemComponentType:$aspectName:$aspectIndex"
-    }
-
-
+    override fun toString() = "SystemComponentType:$aspectName"
 }
 
 abstract class SystemComponentSingleType<C : SystemComponent>(

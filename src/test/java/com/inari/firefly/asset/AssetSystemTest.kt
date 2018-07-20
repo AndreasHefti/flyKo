@@ -27,7 +27,7 @@ class AssetSystemTest {
         val emptyAssetId = TestAsset.build {}
 
         assertEquals(
-            "CompId(instanceId=0, componentType=SystemComponentType:Asset:0)",
+            "CompId(instanceId=0, componentType=SystemComponentType:Asset)",
             emptyAssetId.toString()
         )
 
@@ -44,7 +44,7 @@ class AssetSystemTest {
             AssetSystem.assets.get(NO_NAME)
             fail("Exception expected here")
         } catch (e: Exception) {
-            assertEquals("Component: SystemComponentType:Asset:0 for name: [[NO_NAME]] not found", e.message)
+            assertEquals("Component: SystemComponentType:Asset for name: [[NO_NAME]] not found", e.message)
         }
 
         val assetId = TestAsset.build {
@@ -61,12 +61,6 @@ class AssetSystemTest {
 
     @Test
     fun simpleLifeCycle() {
-        AssetSystem.clearSystem()
-        assertEquals(
-            "com.inari.firefly.asset.Asset : {\n" +
-                "}",
-            Indexer.dump(Asset::class.java.name))
-
         val testEvents = StringBuilder()
         FFContext.registerListener(
             AssetEvent,
@@ -85,7 +79,7 @@ class AssetSystemTest {
         }
 
         assertEquals(
-            "CompId(instanceId=0, componentType=SystemComponentType:Asset:0)",
+            "CompId(instanceId=0, componentType=SystemComponentType:Asset)",
             assetId.toString()
         )
         assertEquals(
