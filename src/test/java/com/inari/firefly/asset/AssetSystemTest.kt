@@ -4,6 +4,7 @@ import com.inari.firefly.NO_NAME
 import com.inari.firefly.FFContext
 import com.inari.firefly.TestApp
 import com.inari.firefly.component.CompId
+import com.inari.util.indexed.Indexer
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -60,8 +61,14 @@ class AssetSystemTest {
 
     @Test
     fun simpleLifeCycle() {
+        AssetSystem.clearSystem()
+        assertEquals(
+            "com.inari.firefly.asset.Asset : {\n" +
+                "}",
+            Indexer.dump(Asset::class.java.name))
+
         val testEvents = StringBuilder()
-        FFContext.registerListener<AssetEvent.Listener>(
+        FFContext.registerListener(
             AssetEvent,
             object : AssetEvent.Listener{
                 override fun invoke(viewId: CompId, type: AssetEvent.Type) {
