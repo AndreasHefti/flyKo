@@ -29,7 +29,7 @@ class SimpleTextRenderer private constructor() : Renderer() {
 
             val text = entity[EText]
             val transform = entity[ETransform]
-            val font = FFContext.get(FontAsset, text.fontRef)
+            val font = FFContext[FontAsset, text.fontAssetRef]
             val chars = text.textBuffer
 
             textRenderable.shader = text.shaderRef

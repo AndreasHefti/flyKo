@@ -87,7 +87,7 @@ class FontAsset : Asset(), TextureData {
                 tmpSpriteData.rect.pos.y = y * charHeight
 
                 val charSpriteId = graphics.createSprite(tmpSpriteData)
-                charSpriteMap.set(charMap[y][x].toInt(), charSpriteId)
+                charSpriteMap[charMap[y][x].toInt()] = charSpriteId
             }
         }
     }
