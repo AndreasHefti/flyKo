@@ -5,12 +5,13 @@ import com.inari.firefly.entity.Entity
 import com.inari.firefly.entity.property.FloatPropertyAccessor
 import com.inari.firefly.physics.animation.FloatAnimation
 import com.inari.firefly.physics.animation.entity.EntityPropertyAnimation
+import com.inari.util.geom.Easing
 
 class EasedProperty : EntityPropertyAnimation(), FloatAnimation {
 
     private var control = EasingControl(this)
 
-    var ff_Easing: EasingFunctions.EasingFunction
+    var ff_Easing: Easing.EasingFunctions.EasingFunction
         get() = control.easing
         set(value) { control.easing = value }
     var ff_StartValue: Float

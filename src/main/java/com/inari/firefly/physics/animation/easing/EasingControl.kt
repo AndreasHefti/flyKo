@@ -4,6 +4,7 @@ import com.inari.firefly.FFContext
 import com.inari.firefly.entity.property.FloatPropertyAccessor
 import com.inari.firefly.physics.animation.Animation
 import com.inari.firefly.physics.animation.AnimationSystem
+import com.inari.util.geom.Easing
 
 internal class EasingControl(
     val animation: Animation
@@ -11,7 +12,7 @@ internal class EasingControl(
 
     @JvmField  var propertyAccessor: FloatPropertyAccessor? = null
 
-    @JvmField var easing: EasingFunctions.EasingFunction = EasingFunctions.linear
+    @JvmField var easing: Easing.EasingFunctions.EasingFunction = Easing.Type.LINEAR
     @JvmField var startValue = 0f
     @JvmField var endValue = 0f
     @JvmField var duration: Long = 0
@@ -50,7 +51,7 @@ internal class EasingControl(
         }
 
         val t: Float = runningTime.toFloat() / duration
-        var value = changeInValue * easing.calc(t)
+        var value = changeInValue * easing(t)
         if (inverse) {
             value *= -1
         }

@@ -3,6 +3,7 @@ package com.inari.firefly.physics.animation.easing
 import com.inari.firefly.entity.property.FloatPropertyAccessor
 import com.inari.firefly.physics.animation.Animation
 import com.inari.firefly.physics.animation.FloatAnimation
+import com.inari.util.geom.Easing
 
 class EasedValue : Animation(), FloatAnimation {
 
@@ -16,7 +17,7 @@ class EasedValue : Animation(), FloatAnimation {
         }
     }
 
-    var ff_Easing: EasingFunctions.EasingFunction
+    var ff_Easing: Easing.EasingFunctions.EasingFunction
         get() = control.easing
         set(value) { control.easing = value }
     var ff_StartValue: Float
