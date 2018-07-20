@@ -11,7 +11,6 @@ import org.junit.Test
 
 class AssetSystemTest {
 
-
     @Before
     fun init() {
         TestApp

@@ -98,6 +98,8 @@ class Indexer private constructor(
 
 
     companion object {
+        private val indexer: LinkedHashMap<String, Indexer> = LinkedHashMap()
+
         fun dump(): String {
             val builder = StringBuilder()
             builder.append("Indexer : {")
@@ -107,12 +109,22 @@ class Indexer private constructor(
             builder.append("\n}")
             return builder.toString()
         }
+        fun dump(indexerName: String): String {
+            val builder = StringBuilder()
+            builder.append("$indexerName : {")
+            if (indexerName in indexer) {
+                builder.append(indexer[indexerName]!!.toDumpString())
+            }
+            builder.append("\n}")
+            return builder.toString()
+        }
+
         fun clearAll() {
             for(ind in indexer.values)
                 ind.clear()
             indexer.clear()
         }
-        private val indexer: LinkedHashMap<String, Indexer> = LinkedHashMap()
+
 
         fun of(name: String, override: Boolean = false): Indexer =
             if (name in indexer)
