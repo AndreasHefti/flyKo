@@ -1,7 +1,6 @@
 package com.inari.firefly
 
 import com.inari.firefly.external.FFAudio
-import com.inari.firefly.external.SoundData
 import java.util.*
 
 object AudioMock : FFAudio {
@@ -40,12 +39,12 @@ object AudioMock : FFAudio {
         log.add("stopMusic")
     }
 
-    override fun createSound(data: SoundData): Int {
-        loaded.add(data.resourceName)
-        return data.instance
+    override fun createSound(resourceName: String, streaming: Boolean): Int {
+        loaded.add(resourceName)
+        return loaded.indexOf(resourceName)
     }
 
-    override fun disposeSound(data: SoundData) {
-        loaded.remove(data.resourceName)
+    override fun disposeSound(soundId: Int) {
+        loaded.remove(loaded[soundId])
     }
 }

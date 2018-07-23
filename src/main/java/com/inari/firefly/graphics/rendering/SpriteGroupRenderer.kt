@@ -32,7 +32,7 @@ class SpriteGroupRenderer private constructor() : Renderer(
 
             transformCollector(transform.data)
             collectTransformData(group.parent, transformCollector)
-            graphics.renderSprite(sprite, transformCollector.data)
+            graphics.renderSprite(sprite.spriteRenderable, transformCollector.data)
         }
     }
 

@@ -1,16 +1,26 @@
 package com.inari.firefly.external
 
 import com.inari.firefly.IntFunction
+import com.inari.firefly.NO_NAME
 
-interface TextureData {
+class TextureData(
+    @JvmField var resourceName: String = NO_NAME,
+    @JvmField var isMipmap: Boolean = false,
+    @JvmField var wrapS: Int = 0,
+    @JvmField var wrapT: Int = 0,
+    @JvmField var minFilter: Int = 0,
+    @JvmField var magFilter: Int = 0,
+    @JvmField var colorConverter: IntFunction = IntFunction.identity()
+) {
 
-    val resourceName: String
-    val isMipmap: Boolean
+    fun reset() {
+        resourceName = NO_NAME
+        isMipmap = false
+        wrapS = 0
+        wrapT = 0
+        minFilter = 0
+        magFilter = 0
+        colorConverter = IntFunction.identity()
+    }
 
-    val wrapS: Int
-    val wrapT: Int
-    val minFilter: Int
-    val magFilter: Int
-
-    val colorConverter: IntFunction
 }

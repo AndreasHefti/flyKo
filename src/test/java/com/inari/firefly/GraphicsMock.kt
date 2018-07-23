@@ -52,7 +52,7 @@ object GraphicsMock : FFGraphics {
     }
 
     override fun createSprite(data: SpriteData): Int {
-        return loadedAssets.add("sprite: ${data.textureId} : ${data.x} ${data.y} ${data.width} ${data.height}")
+        return loadedAssets.add("sprite: ${data.textureId} : ${data.region}")
     }
 
     override fun disposeSprite(spriteId: Int) {

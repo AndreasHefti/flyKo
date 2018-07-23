@@ -18,7 +18,9 @@ class SpriteParticle(
     xVelocity: Float = 0f,
     yVelocity: Float = 0f,
     mass: Float = 1f
-) : Particle(xVelocity, yVelocity, mass), SpriteRenderable {
+) : Particle(xVelocity, yVelocity, mass) {
+
+    @JvmField internal val spriteRenderable = SpriteRenderable()
 
     init {
         super.transformData.position.x = x
@@ -28,10 +30,8 @@ class SpriteParticle(
         super.transformData.pivot.x = xPivot
         super.transformData.pivot.y = yPivot
         super.transformData.rotation = rot
+        spriteRenderable.spriteId = spriteRef
+        spriteRenderable.tintColor = tint
+        spriteRenderable.blendMode = blend
     }
-
-    override val spriteId: Int = spriteRef
-    override val tintColor: RGBColor = tint
-    override val blendMode: BlendMode = blend
-    override val shaderId: Int = -1
 }

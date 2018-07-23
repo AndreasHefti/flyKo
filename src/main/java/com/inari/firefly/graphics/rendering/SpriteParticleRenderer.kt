@@ -30,7 +30,7 @@ class SpriteParticleRenderer private constructor() : Renderer() {
                 val particle = spriteParticle[ii++] ?: continue
                 transformCollector(transform.data)
                 transformCollector + particle.transformData
-                graphics.renderSprite(particle, transformCollector.data)
+                graphics.renderSprite(particle.spriteRenderable, transformCollector.data)
             }
         }
     }

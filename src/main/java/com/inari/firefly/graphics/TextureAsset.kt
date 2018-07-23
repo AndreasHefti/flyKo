@@ -1,14 +1,11 @@
 package com.inari.firefly.graphics
 
 import com.inari.firefly.FFContext
-import com.inari.firefly.IntFunction
-import com.inari.firefly.NO_NAME
-import com.inari.firefly.NULL_INT_FUNCTION
 import com.inari.firefly.asset.Asset
 import com.inari.firefly.external.TextureData
 import com.inari.firefly.system.component.SystemComponentSubType
 
-class TextureAsset private constructor() : Asset(), TextureData {
+class TextureAsset private constructor() : Asset() {
 
     @JvmField internal var id: Int = -1
     override fun instanceId(index: Int): Int = id
@@ -18,46 +15,33 @@ class TextureAsset private constructor() : Asset(), TextureData {
     var height: Int = -1
         private set
 
-    override var resourceName: String = NO_NAME
-        private set
-    override var isMipmap: Boolean = false
-        private set
-    override var wrapS: Int = -1
-        private set
-    override var wrapT: Int = -1
-        private set
-    override var minFilter: Int = -1
-        private set
-    override var magFilter: Int = -1
-        private set
-    override var colorConverter: IntFunction = NULL_INT_FUNCTION
-        private set
+    @JvmField internal val textureData = TextureData()
 
     var ff_ResourceName: String
-        get() = resourceName
-        set(value) {resourceName = setIfNotInitialized(value, "ff_ResourceName")}
+        get() = textureData.resourceName
+        set(value) {textureData.resourceName = setIfNotInitialized(value, "ff_ResourceName")}
     var ff_MipMap
-        get() = isMipmap
-        set(value) {isMipmap = setIfNotInitialized(value, "ff_MipMap")}
+        get() = textureData.isMipmap
+        set(value) {textureData.isMipmap = setIfNotInitialized(value, "ff_MipMap")}
     var ff_WrapS
-        get() = wrapS
-        set(value) {wrapS = setIfNotInitialized(value, "ff_WrapS")}
+        get() = textureData.wrapS
+        set(value) {textureData.wrapS = setIfNotInitialized(value, "ff_WrapS")}
     var ff_WrapT
-        get() = wrapT
-        set(value) {wrapT = setIfNotInitialized(value, "ff_WrapT")}
+        get() = textureData.wrapT
+        set(value) {textureData.wrapT = setIfNotInitialized(value, "ff_WrapT")}
     var ff_MinFilter
-        get() = minFilter
-        set(value) {minFilter = setIfNotInitialized(value, "ff_MinFilter")}
+        get() = textureData.minFilter
+        set(value) {textureData.minFilter = setIfNotInitialized(value, "ff_MinFilter")}
     var ff_MagFilter
-        get() = magFilter
-        set(value) {magFilter = setIfNotInitialized(value, "ff_MagFilter")}
+        get() = textureData.magFilter
+        set(value) {textureData.magFilter = setIfNotInitialized(value, "ff_MagFilter")}
     var ff_ColorConverter
-        get() = colorConverter
-        set(value) {colorConverter = setIfNotInitialized(value, "ff_ColorConverter")}
+        get() = textureData.colorConverter
+        set(value) {textureData.colorConverter = setIfNotInitialized(value, "ff_ColorConverter")}
 
     override fun load() {
         if (id < 0) {
-            val textData = FFContext.graphics.createTexture(this)
+            val textData = FFContext.graphics.createTexture(textureData)
             id = textData.first
             width = textData.second
             height = textData.third

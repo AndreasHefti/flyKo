@@ -9,22 +9,9 @@ import com.inari.util.collection.IntBag
 import com.inari.util.geom.Rectangle
 
 
-class FontAsset : Asset(), TextureData {
+class FontAsset : Asset() {
 
-    override var resourceName: String = NO_NAME
-        private set
-    override var isMipmap: Boolean = false
-        private set
-    override var wrapS: Int = -1
-        private set
-    override var wrapT: Int = -1
-        private set
-    override var minFilter: Int = -1
-        private set
-    override var magFilter: Int = -1
-        private set
-    override val colorConverter: IntFunction = NULL_INT_FUNCTION
-
+    @JvmField internal val textureData = TextureData()
     @JvmField internal var charMap: Array<CharArray> = emptyArray()
     @JvmField internal var charWidth = 0
     @JvmField internal var charHeight = 0
@@ -36,23 +23,23 @@ class FontAsset : Asset(), TextureData {
     private var texId = -1
 
     var ff_ResourceName: String
-        get() = resourceName
-        set(value) {resourceName = setIfNotInitialized(value, "ff_ResourceName")}
+        get() = textureData.resourceName
+        set(value) {textureData.resourceName = setIfNotInitialized(value, "ff_ResourceName")}
     var ff_MipMap
-        get() = isMipmap
-        set(value) {isMipmap = setIfNotInitialized(value, "ff_MipMap")}
+        get() = textureData.isMipmap
+        set(value) {textureData.isMipmap = setIfNotInitialized(value, "ff_MipMap")}
     var ff_WrapS
-        get() = wrapS
-        set(value) {wrapS = setIfNotInitialized(value, "ff_WrapS")}
+        get() = textureData.wrapS
+        set(value) {textureData.wrapS = setIfNotInitialized(value, "ff_WrapS")}
     var ff_WrapT
-        get() = wrapT
-        set(value) {wrapT = setIfNotInitialized(value, "ff_WrapT")}
+        get() = textureData.wrapT
+        set(value) {textureData.wrapT = setIfNotInitialized(value, "ff_WrapT")}
     var ff_MinFilter
-        get() = minFilter
-        set(value) {minFilter = setIfNotInitialized(value, "ff_MinFilter")}
+        get() = textureData.minFilter
+        set(value) {textureData.minFilter = setIfNotInitialized(value, "ff_MinFilter")}
     var ff_MagFilter
-        get() = magFilter
-        set(value) {magFilter = setIfNotInitialized(value, "ff_MagFilter")}
+        get() = textureData.magFilter
+        set(value) {textureData.magFilter = setIfNotInitialized(value, "ff_MagFilter")}
     var ff_CharMap
         get() = charMap
         set(value) {charMap = setIfNotInitialized(value, "ff_CharMap")}
@@ -79,14 +66,14 @@ class FontAsset : Asset(), TextureData {
     override fun load() {
         val graphics = FFContext.graphics
 
-        texId = graphics.createTexture(this).first
+        texId = graphics.createTexture(textureData).first
         tmpSpriteData.rect(0, 0, charWidth, charHeight)
         for (y in 0 until charMap.size) {
             for (x in 0 until charMap[y].size) {
                 tmpSpriteData.rect.pos.x = x * charWidth
                 tmpSpriteData.rect.pos.y = y * charHeight
 
-                val charSpriteId = graphics.createSprite(tmpSpriteData)
+                val charSpriteId = graphics.createSprite(tmpSpriteData.spriteData)
                 charSpriteMap[charMap[y][x].toInt()] = charSpriteId
             }
         }
@@ -117,15 +104,8 @@ class FontAsset : Asset(), TextureData {
         override fun createEmpty() = FontAsset()
     }
 
-    private val tmpSpriteData = object : SpriteData {
+    private val tmpSpriteData = object : Any() {
         var rect = Rectangle()
-
-        override val textureId get() = texId
-        override val x get() = rect.pos.x
-        override val y get() = rect.pos.y
-        override val width get() = rect.width
-        override val height get() = rect.height
-        override val isHorizontalFlip = false
-        override val isVerticalFlip = false
+        val spriteData = SpriteData()
     }
 }

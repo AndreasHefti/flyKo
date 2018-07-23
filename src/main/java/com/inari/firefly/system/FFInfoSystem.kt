@@ -95,7 +95,7 @@ object FFInfoSystem : FFSystem {
                 continue
             }
 
-            textRenderable.sprId = font[character]
+            textRenderable.spriteId = font[character]
             graphics.renderSprite(textRenderable, xpos, ypos)
             xpos += hStep
         }
@@ -122,17 +122,7 @@ object FFInfoSystem : FFSystem {
         fun update(buffer: StringBuffer, bufferStartPointer: Int)
     }
 
-    private val textRenderable = object : SpriteRenderable {
-
-        @JvmField var sprId = -1
-        @JvmField val tint = RGBColor(1f, 1f, 1f, 1f)
-
-        override val spriteId: Int get() = sprId
-        override val tintColor: RGBColor = tint
-        override val blendMode: BlendMode =  BlendMode.NORMAL_ALPHA
-        override val shaderId: Int = -1
-    }
-
+    private val textRenderable = SpriteRenderable(blendMode = BlendMode.NORMAL_ALPHA)
     private val infoDisplayBackground = object {
 
         @JvmField val color = RGBColor(0.8f, 0.8f, 0.8f, 0.5f)

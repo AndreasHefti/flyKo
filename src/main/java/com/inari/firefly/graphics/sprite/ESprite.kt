@@ -12,67 +12,49 @@ import com.inari.firefly.graphics.BlendMode
 import com.inari.util.graphics.RGBColor
 
 
-class ESprite private constructor () : EntityComponent(), SpriteRenderable {
+class ESprite private constructor () : EntityComponent() {
 
-    @JvmField internal var spriteRef = -1
-    @JvmField internal var shaderRef = -1
-    @JvmField internal var blend = BlendMode.NONE
-    @JvmField internal val tint = RGBColor(1f, 1f, 1f, 1f)
+    @JvmField internal val spriteRenderable = SpriteRenderable()
 
-    val ff_Sprite = AssetInstanceRefResolver({ index -> spriteRef = index })
-    val ff_Shader = AssetInstanceRefResolver({ index -> shaderRef = index })
+    val ff_Sprite = AssetInstanceRefResolver({ index -> spriteRenderable.spriteId = index })
+    val ff_Shader = AssetInstanceRefResolver({ index -> spriteRenderable.shaderId = index })
     var ff_Blend: BlendMode
-        get() = blend
-        set(value) { blend = value }
+        get() = spriteRenderable.blendMode
+        set(value) { spriteRenderable.blendMode = value }
     var ff_Tint: RGBColor
-        get() = tint
-        set(value) { tint(value) }
-
-    override val spriteId: Int
-        get() = spriteRef
-    override val tintColor: RGBColor
-        get() = tint
-    override val blendMode: BlendMode
-        get() = blend
-    override val shaderId: Int
-        get() = shaderRef
+        get() = spriteRenderable.tintColor
+        set(value) { spriteRenderable.tintColor(value) }
 
     override fun reset() {
-        ff_Tint.r = 1f
-        ff_Tint.g = 1f
-        ff_Tint.b = 1f
-        ff_Tint.a = 1f
-        ff_Blend = BlendMode.NONE
-        spriteRef = -1
-        shaderRef = -1
+        spriteRenderable.reset()
     }
 
     override fun toString(): String {
-        return "ESprite(spriteRef=$spriteRef, " +
-            "shaderRef=$shaderRef, " +
-            "blend=$blend, " +
-            "tint=$tint, " 
+        return "ESprite(spriteRef=${spriteRenderable.spriteId}, " +
+            "shaderRef=${spriteRenderable.shaderId}, " +
+            "blend=${spriteRenderable.blendMode}, " +
+            "tint=${spriteRenderable.tintColor}, "
     }
 
     private val accessorSpriteRef: IntPropertyAccessor = object : IntPropertyAccessor {
-        override fun set(value: Int) {spriteRef = value}
-        override fun get(): Int = spriteRef
+        override fun set(value: Int) {spriteRenderable.spriteId = value}
+        override fun get(): Int = spriteRenderable.spriteId
     }
     private val accessorTintRed: FloatPropertyAccessor = object : FloatPropertyAccessor {
-        override fun set(value: Float) {tint.r = value}
-        override fun get(): Float = tint.r
+        override fun set(value: Float) {spriteRenderable.tintColor.r = value}
+        override fun get(): Float = spriteRenderable.tintColor.r
     }
     private val accessorTintGreen: FloatPropertyAccessor = object : FloatPropertyAccessor {
-        override fun set(value: Float) {tint.g = value}
-        override fun get(): Float = tint.g
+        override fun set(value: Float) {spriteRenderable.tintColor.g = value}
+        override fun get(): Float = spriteRenderable.tintColor.g
     }
     private val accessorTintBlue: FloatPropertyAccessor = object : FloatPropertyAccessor {
-        override fun set(value: Float) {tint.b = value}
-        override fun get(): Float = tint.b
+        override fun set(value: Float) {spriteRenderable.tintColor.b = value}
+        override fun get(): Float = spriteRenderable.tintColor.b
     }
     private val accessorTintAlpha: FloatPropertyAccessor = object : FloatPropertyAccessor {
-        override fun set(value: Float) {tint.a = value}
-        override fun get(): Float = tint.a
+        override fun set(value: Float) {spriteRenderable.tintColor.a = value}
+        override fun get(): Float = spriteRenderable.tintColor.a
     }
 
     enum class Property(

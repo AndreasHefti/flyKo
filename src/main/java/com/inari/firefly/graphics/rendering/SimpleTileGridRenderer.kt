@@ -22,7 +22,7 @@ class SimpleTileGridRenderer private constructor() : Renderer() {
             val iterator = tileGrid.tileGridIterator(clip)
             while (iterator.hasNext()) {
                 graphics.renderSprite(
-                    EntitySystem.entities[iterator.next()][ETile],
+                    EntitySystem.entities[iterator.next()][ETile].spriteRenderable,
                     iterator.worldXPos,
                     iterator.worldYPos
                 )

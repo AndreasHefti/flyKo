@@ -4,13 +4,11 @@ import com.inari.firefly.FFContext
 import com.inari.firefly.entity.Entity
 import com.inari.firefly.entity.EntityComponent
 import com.inari.firefly.external.SpriteRenderable
-import com.inari.firefly.graphics.BlendMode
 import com.inari.firefly.graphics.ETransform
 import com.inari.firefly.graphics.text.EText
 import com.inari.firefly.graphics.text.FontAsset
 import com.inari.firefly.system.component.SingletonComponent
 import com.inari.util.geom.Rectangle
-import com.inari.util.graphics.RGBColor
 
 
 class SimpleTextRenderer private constructor() : Renderer() {
@@ -32,9 +30,9 @@ class SimpleTextRenderer private constructor() : Renderer() {
             val font = FFContext[FontAsset, text.fontAssetRef]
             val chars = text.textBuffer
 
-            textRenderable.shader = text.shaderRef
-            textRenderable.tint(text.tint)
-            textRenderable.blend = text.blend
+            textRenderable.shaderId = text.shaderRef
+            textRenderable.tintColor(text.tint)
+            textRenderable.blendMode = text.blend
             renderingTransform(transform.data)
             val horizontalStep = (font.charWidth + font.charSpace) * transform.data.scale.dx
             val verticalStep = (font.charHeight + font.lineSpace) * transform.data.scale.dy
@@ -53,7 +51,7 @@ class SimpleTextRenderer private constructor() : Renderer() {
                     continue
                 }
 
-                textRenderable.sprite = font.charSpriteMap[char.toInt()]
+                textRenderable.spriteId = font.charSpriteMap[char.toInt()]
                 graphics.renderSprite(textRenderable, renderingTransform.data)
                 renderingTransform.data.position.x += horizontalStep
             }
@@ -61,23 +59,7 @@ class SimpleTextRenderer private constructor() : Renderer() {
     }
 
     private val renderingTransform = ExactTransformDataCollector()
-    private val textRenderable = object : SpriteRenderable {
-
-        var sprite = -1
-        var shader = -1
-        val tint = RGBColor()
-        var blend = BlendMode.NONE
-
-        override val tintColor: RGBColor
-            get() = tint
-        override val blendMode: BlendMode
-            get() = blend
-        override val shaderId: Int
-            get() = shader
-        override val spriteId: Int
-            get() = sprite
-
-    }
+    private val textRenderable = SpriteRenderable()
 
     companion object : SingletonComponent<Renderer, SimpleTextRenderer>(Renderer, SimpleTextRenderer::class.java) {
         override fun create() = SimpleTextRenderer()

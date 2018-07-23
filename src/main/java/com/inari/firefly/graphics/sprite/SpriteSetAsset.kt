@@ -38,7 +38,7 @@ class SpriteSetAsset private constructor() : Asset() {
         for (i in 0 until spriteData.capacity) {
             val sprite = spriteData[i] ?: continue
             spriteDataContainer.sprite = sprite
-            sprite.instId = graphics.createSprite(spriteDataContainer)
+            sprite.instId = graphics.createSprite(spriteDataContainer.spriteData)
         }
     }
 
@@ -54,18 +54,10 @@ class SpriteSetAsset private constructor() : Asset() {
         spriteDataContainer.sprite = NULL_SPRITE
     }
 
-    private val spriteDataContainer = object : SpriteData {
-
+    private val spriteDataContainer = object : Any() {
         @JvmField var texId = -1
         @JvmField var sprite: Sprite = NULL_SPRITE
-
-        override val textureId: Int get() = texId
-        override val x: Int get() = sprite.x
-        override val y: Int get() = sprite.y
-        override val width: Int get() = sprite.width
-        override val height: Int get() = sprite.height
-        override val isHorizontalFlip: Boolean get() = sprite.flipH
-        override val isVerticalFlip: Boolean get() = sprite.flipV
+        @JvmField val spriteData = SpriteData()
     }
 
     companion object : SystemComponentSubType<Asset, SpriteSetAsset>(Asset, SpriteSetAsset::class.java) {

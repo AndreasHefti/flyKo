@@ -7,39 +7,31 @@ import com.inari.firefly.external.SpriteData
 import com.inari.firefly.system.component.SystemComponentSubType
 import com.inari.util.geom.Rectangle
 
-class SpriteAsset private constructor() : Asset(), SpriteData {
+class SpriteAsset private constructor() : Asset() {
 
     @JvmField internal var spriteId: Int = -1
-
-    @JvmField internal var region = Rectangle()
-    @JvmField internal var horizontalFlip: Boolean = false
-    @JvmField internal var verticalFlip: Boolean = false
+    @JvmField internal val spriteData = SpriteData()
 
     var ff_Texture =
-        ComponentRefResolver(Asset) { index-> dependingRef = setIfNotInitialized(index, "ff_Texture") }
+        ComponentRefResolver(Asset) { index-> run {
+            dependingRef = setIfNotInitialized(index, "ff_Texture")
+            spriteData.textureId = index
+        } }
     var ff_TextureRegion: Rectangle
-        get() = region
-        set(value) { region(value) }
+        get() = spriteData.region
+        set(value) { spriteData.region(value) }
     var ff_HorizontalFlip: Boolean
-        get() = horizontalFlip
-        set(value) { horizontalFlip = value }
+        get() = spriteData.isHorizontalFlip
+        set(value) { spriteData.isHorizontalFlip = value }
     var ff_VerticalFlip: Boolean
-        get() = verticalFlip
-        set(value) { verticalFlip = value }
-
-    override val textureId: Int get() = dependingRef
-    override val x: Int get() = region.pos.x
-    override val y: Int get() = region.pos.y
-    override val width: Int get() = region.width
-    override val height: Int get() = region.height
-    override val isHorizontalFlip: Boolean get() = horizontalFlip
-    override val isVerticalFlip: Boolean get() = verticalFlip
+        get() = spriteData.isVerticalFlip
+        set(value) { spriteData.isVerticalFlip = value }
 
     override fun instanceId(index: Int): Int = spriteId
 
     override fun load() {
         if (spriteId < 0)
-            spriteId = FFContext.graphics.createSprite(this)
+            spriteId = FFContext.graphics.createSprite(spriteData)
     }
 
     override fun unload() {

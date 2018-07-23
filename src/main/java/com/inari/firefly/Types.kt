@@ -27,10 +27,23 @@ interface IntSupplier {
 
 interface IntFunction {
     operator fun invoke(i: Int): Int
+    companion object {
+        fun identity() = object : IntFunction {
+            override fun invoke(i: Int) = i
+        }
+    }
 }
 
 interface Condition {
     operator fun invoke(): Boolean
+    companion object {
+        fun trueCondition() = object : Condition {
+            override fun invoke() = true
+        }
+        fun falseCondition() = object : Condition {
+            override fun invoke() = false
+        }
+    }
 }
 
 interface IntConsumer {

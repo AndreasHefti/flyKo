@@ -26,7 +26,7 @@ class FullTileGridRenderer private constructor() : Renderer() {
 
                 transformCollector(entity[ETransform].data)
                 transformCollector + iterator.worldPosition
-                graphics.renderSprite(entity[ETile], transformCollector.data)
+                graphics.renderSprite(entity[ETile].spriteRenderable, transformCollector.data)
             }
         }
     }
