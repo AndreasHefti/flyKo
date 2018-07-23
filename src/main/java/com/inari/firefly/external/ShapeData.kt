@@ -16,18 +16,19 @@ enum class ShapeType {
     TRIANGLE
 }
 
-class ShapeData constructor(
-    @JvmField var type: ShapeType = ShapeType.POINT,
-    @JvmField var vertices: FloatArray = floatArrayOf(),
-    @JvmField var segments: Int = -1,
-    @JvmField var color1: RGBColor = RGBColor(1f, 1f, 1f, 1f),
-    @JvmField var color2: RGBColor? = null,
-    @JvmField var color3: RGBColor? = null,
-    @JvmField var color4: RGBColor? = null,
-    @JvmField var blend: BlendMode = BlendMode.NONE,
-    @JvmField var fill: Boolean = false,
+class ShapeData {
+
+    @JvmField var type: ShapeType = ShapeType.POINT
+    @JvmField var vertices: FloatArray = floatArrayOf()
+    @JvmField var segments: Int = -1
+    @JvmField var color1: RGBColor = RGBColor(1f, 1f, 1f, 1f)
+    @JvmField var color2: RGBColor? = null
+    @JvmField var color3: RGBColor? = null
+    @JvmField var color4: RGBColor? = null
+    @JvmField var blend: BlendMode = BlendMode.NONE
+    @JvmField var fill: Boolean = false
     @JvmField var shaderRef: Int = -1
-) {
+
     fun reset() {
         type = ShapeType.POINT
         vertices = floatArrayOf()

@@ -2,9 +2,9 @@ package com.inari.firefly.external
 
 interface FFAudio {
 
-    fun createSound(data: SoundData): Int
+    fun createSound(resourceName: String, streaming: Boolean): Int
 
-    fun disposeSound(data: SoundData)
+    fun disposeSound(soundId: Int)
 
     fun playSound(soundId: Int, channel: Int, looping: Boolean, volume: Float, pitch: Float, pan: Float): Long
 

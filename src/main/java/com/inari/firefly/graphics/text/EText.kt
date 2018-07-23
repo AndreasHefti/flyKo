@@ -8,11 +8,12 @@ import com.inari.firefly.entity.EntityComponent
 import com.inari.firefly.entity.EntityComponentType
 import com.inari.firefly.graphics.BlendMode
 import com.inari.firefly.graphics.rendering.Renderer
+import com.inari.firefly.graphics.rendering.SimpleTextRenderer
 import com.inari.util.graphics.RGBColor
 
 class EText private constructor() : EntityComponent() {
 
-    @JvmField internal var rendererRef = -1
+    @JvmField internal var rendererRef = SimpleTextRenderer.aspectIndex
     @JvmField internal var fontAssetRef = -1
     @JvmField internal var shaderRef = -1
     @JvmField internal val textBuffer = StringBuffer()
