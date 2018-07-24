@@ -20,7 +20,6 @@ class FontAsset : Asset() {
     @JvmField internal var defaultChar = -1
 
     internal val charSpriteMap = IntBag(256, -1)
-    private var texId = -1
 
     var ff_ResourceName: String
         get() = textureData.resourceName
@@ -66,7 +65,7 @@ class FontAsset : Asset() {
     override fun load() {
         val graphics = FFContext.graphics
 
-        texId = graphics.createTexture(textureData).first
+        tmpSpriteData.spriteData.textureId = graphics.createTexture(textureData).first
         tmpSpriteData.rect(0, 0, charWidth, charHeight)
         for (y in 0 until charMap.size) {
             for (x in 0 until charMap[y].size) {
@@ -96,8 +95,8 @@ class FontAsset : Asset() {
         }
         charSpriteMap.clear()
 
-        graphics.disposeTexture(texId)
-        texId = -1
+        graphics.disposeTexture(tmpSpriteData.spriteData.textureId)
+        tmpSpriteData.spriteData.textureId = -1
     }
 
     companion object : SystemComponentSubType<Asset, FontAsset>(Asset, FontAsset::class.java) {
