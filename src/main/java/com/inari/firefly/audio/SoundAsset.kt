@@ -29,7 +29,7 @@ class SoundAsset private constructor() : Asset() {
 
     override fun unload() {
         if (id >= 0)
-            FFContext.audio.disposeSound(id)
+            FFContext.audio.disposeSound(id, streaming)
         id = -1
     }
 

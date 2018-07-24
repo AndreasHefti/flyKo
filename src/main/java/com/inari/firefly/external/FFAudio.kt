@@ -4,7 +4,7 @@ interface FFAudio {
 
     fun createSound(resourceName: String, streaming: Boolean): Int
 
-    fun disposeSound(soundId: Int)
+    fun disposeSound(soundId: Int, streaming: Boolean)
 
     fun playSound(soundId: Int, channel: Int, looping: Boolean, volume: Float, pitch: Float, pan: Float): Long
 
