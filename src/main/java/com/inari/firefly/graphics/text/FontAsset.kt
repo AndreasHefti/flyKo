@@ -6,7 +6,6 @@ import com.inari.firefly.external.SpriteData
 import com.inari.firefly.external.TextureData
 import com.inari.firefly.system.component.SystemComponentSubType
 import com.inari.util.collection.IntBag
-import com.inari.util.geom.Rectangle
 
 
 class FontAsset : Asset() {
@@ -20,6 +19,7 @@ class FontAsset : Asset() {
     @JvmField internal var defaultChar = -1
 
     internal val charSpriteMap = IntBag(256, -1)
+    private val tmpSpriteData = SpriteData()
 
     var ff_ResourceName: String
         get() = textureData.resourceName
@@ -65,14 +65,14 @@ class FontAsset : Asset() {
     override fun load() {
         val graphics = FFContext.graphics
 
-        tmpSpriteData.spriteData.textureId = graphics.createTexture(textureData).first
-        tmpSpriteData.rect(0, 0, charWidth, charHeight)
+        tmpSpriteData.textureId = graphics.createTexture(textureData).first
+        tmpSpriteData.region(0, 0, charWidth, charHeight)
         for (y in 0 until charMap.size) {
             for (x in 0 until charMap[y].size) {
-                tmpSpriteData.rect.pos.x = x * charWidth
-                tmpSpriteData.rect.pos.y = y * charHeight
+                tmpSpriteData.region.pos.x = x * charWidth
+                tmpSpriteData.region.pos.y = y * charHeight
 
-                val charSpriteId = graphics.createSprite(tmpSpriteData.spriteData)
+                val charSpriteId = graphics.createSprite(tmpSpriteData)
                 charSpriteMap[charMap[y][x].toInt()] = charSpriteId
             }
         }
@@ -95,16 +95,13 @@ class FontAsset : Asset() {
         }
         charSpriteMap.clear()
 
-        graphics.disposeTexture(tmpSpriteData.spriteData.textureId)
-        tmpSpriteData.spriteData.textureId = -1
+        graphics.disposeTexture(tmpSpriteData.textureId)
+        tmpSpriteData.textureId = -1
     }
 
     companion object : SystemComponentSubType<Asset, FontAsset>(Asset, FontAsset::class.java) {
         override fun createEmpty() = FontAsset()
     }
 
-    private val tmpSpriteData = object : Any() {
-        var rect = Rectangle()
-        val spriteData = SpriteData()
-    }
+
 }
