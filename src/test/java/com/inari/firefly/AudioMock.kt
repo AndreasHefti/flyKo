@@ -44,7 +44,7 @@ object AudioMock : FFAudio {
         return loaded.indexOf(resourceName)
     }
 
-    override fun disposeSound(soundId: Int) {
+    override fun disposeSound(soundId: Int, streaming: Boolean) {
         loaded.remove(loaded[soundId])
     }
 }
