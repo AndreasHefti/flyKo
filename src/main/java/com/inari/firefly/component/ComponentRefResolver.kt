@@ -4,6 +4,7 @@ import com.inari.firefly.Expr
 import com.inari.firefly.FFContext
 import com.inari.firefly.Named
 import com.inari.firefly.system.component.SingletonComponent
+import com.inari.firefly.system.component.SystemComponent
 import com.inari.util.indexed.Indexed
 
 class ComponentRefResolver<T : Component>(
@@ -17,6 +18,7 @@ class ComponentRefResolver<T : Component>(
     operator fun invoke(name: String) = receiver(FFContext[type, name].index)
     operator fun invoke(named: Named) = receiver(FFContext[type, named.name].index)
     operator fun invoke(component: Component) = receiver(component.index)
+    operator fun invoke(component: SystemComponent) = receiver(component.index)
     operator fun invoke(singleton: SingletonComponent<*, *>) = receiver(singleton.instance.index)
 
 }
