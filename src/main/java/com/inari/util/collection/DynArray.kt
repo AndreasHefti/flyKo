@@ -241,14 +241,14 @@ class DynArray<T> private constructor(
         }
     }
 
-    fun getArray(): Array<T?> {
+    fun toArray(): Array<T> {
         @Suppress("UNCHECKED_CAST")
-        val result = newInstance(typeClass, size) as Array<T?>
+        val result = newInstance(typeClass, size) as Array<T>
         var index = 0
         var i = 0
         while (i < capacity) {
             if (array[i] != null) {
-                result[index] = array[i]
+                result[index] = array[i]!!
                 index++
             }
             i++
