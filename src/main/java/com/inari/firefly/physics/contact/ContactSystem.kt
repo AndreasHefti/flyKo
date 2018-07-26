@@ -278,7 +278,7 @@ object ContactSystem : ComponentSystem {
             contact.intersection
         )
 
-        if (contact.intersection.area() <= 0) {
+        if (contact.intersection.area <= 0) {
             ContactsPool.disposeContact(contact)
             return
         }

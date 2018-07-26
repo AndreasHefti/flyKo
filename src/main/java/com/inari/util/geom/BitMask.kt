@@ -151,7 +151,7 @@ class BitMask constructor(
         tmpRegion.width = width
         tmpRegion.height = height
         GeomUtils.intersection(region, tmpRegion, intersection)
-        if (intersection.area() <= 0) {
+        if (intersection.area <= 0) {
             return
         }
 
@@ -193,7 +193,7 @@ class BitMask constructor(
         tmpRegion.width = other.region.width
         tmpRegion.height = other.region.height
         GeomUtils.intersection(region, tmpRegion, intersection)
-        if (intersection.area() <= 0) {
+        if (intersection.area <= 0) {
             return
         }
 
@@ -214,7 +214,7 @@ class BitMask constructor(
 
     fun hasIntersection(region: Rectangle): Boolean {
         GeomUtils.intersection(this.region, region, intersection)
-        if (intersection.area() <= 0) {
+        if (intersection.area <= 0) {
             return false
         }
 
@@ -305,7 +305,7 @@ class BitMask constructor(
             result.clearMask()
 
             GeomUtils.intersection(bitmask.region, region, result.region)
-            if (result.region.area() <= 0) {
+            if (result.region.area <= 0) {
                 return false
             }
 
@@ -369,7 +369,7 @@ class BitMask constructor(
 
 
             GeomUtils.intersection(bitmask1.region, bitmask2.region, result.region)
-            if (result.region.area() <= 0) {
+            if (result.region.area <= 0) {
                 return false
             }
 

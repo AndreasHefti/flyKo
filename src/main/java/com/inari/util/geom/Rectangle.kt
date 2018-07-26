@@ -32,13 +32,15 @@ data class Rectangle constructor(
     /** Use this to get the area value (width * height) form this Rectangle.
      * @return the area value (width * height) form this Rectangle.
      */
-    fun area(): Int {
-        return width * height
+    val area: Int get() = width * height
+
+    fun resize(width: Int, height: Int) {
+        this.width = width
+        this.height = height
     }
 
-    operator fun invoke(x: Int, y: Int) {
+    operator fun invoke(x: Int, y: Int) =
         pos(x, y)
-    }
 
     operator fun invoke(x: Int, y: Int, w: Int, h: Int) {
         pos(x, y)
@@ -59,6 +61,13 @@ data class Rectangle constructor(
         pos(x, y)
         width = other.width
         height = other.height
+    }
+
+    fun clear() {
+        pos.x = 0
+        pos.y = 0
+        width = 0
+        height = 0
     }
 
     /** Use this to set  the Rectangle attributes from specified configuration String value with the
