@@ -11,8 +11,8 @@ class SpriteData(
 
     fun reset() {
         textureId = -1
-        region.pos.x = 0
-        region.pos.y = 0
+        region.x = 0
+        region.y = 0
         region.width = 0
         region.height = 0
         isHorizontalFlip = false

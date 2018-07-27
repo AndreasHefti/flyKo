@@ -69,8 +69,8 @@ class FontAsset : Asset() {
         tmpSpriteData.region(0, 0, charWidth, charHeight)
         for (y in 0 until charMap.size) {
             for (x in 0 until charMap[y].size) {
-                tmpSpriteData.region.pos.x = x * charWidth
-                tmpSpriteData.region.pos.y = y * charHeight
+                tmpSpriteData.region.x = x * charWidth
+                tmpSpriteData.region.y = y * charHeight
 
                 val charSpriteId = graphics.createSprite(tmpSpriteData)
                 charSpriteMap[charMap[y][x].toInt()] = charSpriteId

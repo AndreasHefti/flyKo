@@ -76,10 +76,10 @@ class SimpleCameraController private constructor() : Controller() {
         pos.x = following.x + oneDivZoom - viewHorizontalHalf
         pos.y = following.y + oneDivZoom - viewVerticalHalf
 
-        if (pos.x < snapToBounds.pos.x)
-            pos.x = snapToBounds.pos.x.toFloat()
-        if (pos.y < snapToBounds.pos.y)
-            pos.y = snapToBounds.pos.y.toFloat()
+        if (pos.x < snapToBounds.x)
+            pos.x = snapToBounds.x.toFloat()
+        if (pos.y < snapToBounds.y)
+            pos.y = snapToBounds.y.toFloat()
 
         pos.x = Math.min(pos.x, xMax)
         pos.y = Math.min(pos.y, yMax)

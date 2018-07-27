@@ -29,9 +29,9 @@ class ContactConstraint private constructor() : SystemComponent(ContactConstrain
     val height: Int
         get() = bounds.height
     val pivotX: Int
-        get() = bounds.pos.x
+        get() = bounds.x
     val pivotY: Int
-        get() = bounds.pos.y
+        get() = bounds.y
     val isFiltering: Boolean
         get() = !materialFilter.isEmpty
 

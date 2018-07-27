@@ -29,6 +29,14 @@ data class Rectangle constructor(
         fromConfigString(stringValue)
     }
 
+    var x: Int
+        set(value) {pos.x = value}
+        get() = pos.x
+
+    var y: Int
+        set(value) {pos.y = value}
+        get() = pos.y
+
     /** Use this to get the area value (width * height) form this Rectangle.
      * @return the area value (width * height) form this Rectangle.
      */

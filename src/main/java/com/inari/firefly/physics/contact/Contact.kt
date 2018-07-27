@@ -40,7 +40,7 @@ class Contact internal constructor() {
         if (GeomUtils.contains(intersection, x, y)) {
             if (!mask.isEmpty) {
                 val region = mask.region()
-                return mask.getBit(x - region.pos.x, y - region.pos.y)
+                return mask.getBit(x - region.x, y - region.y)
             }
             return true
         }

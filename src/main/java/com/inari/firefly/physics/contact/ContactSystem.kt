@@ -266,8 +266,8 @@ object ContactSystem : ComponentSystem {
             otherEntity.index,
             otherContact.material,
             otherContact.contactType,
-            (Math.floor(x.toDouble()) + otherContact.bounds.pos.x).toInt(),
-            (Math.floor(y.toDouble()) + otherContact.bounds.pos.y).toInt(),
+            (Math.floor(x.toDouble()) + otherContact.bounds.x).toInt(),
+            (Math.floor(y.toDouble()) + otherContact.bounds.y).toInt(),
             otherContact.bounds.width,
             otherContact.bounds.height
         )
@@ -284,16 +284,16 @@ object ContactSystem : ComponentSystem {
         }
 
         // normalize the intersection to origin of coordinate system
-        contact.intersection.pos.x -= c.worldBounds.pos.x
-        contact.intersection.pos.y -= c.worldBounds.pos.y
+        contact.intersection.x -= c.worldBounds.x
+        contact.intersection.y -= c.worldBounds.y
 
         if (otherContact.mask.isEmpty) {
             addContact(c, contact)
             return
         }
 
-        checkPivot.pos.x = c.worldBounds.pos.x - contact.bounds.pos.x
-        checkPivot.pos.y = c.worldBounds.pos.y - contact.bounds.pos.y
+        checkPivot.x = c.worldBounds.x - contact.bounds.x
+        checkPivot.y = c.worldBounds.y - contact.bounds.y
         checkPivot.width = c.worldBounds.width
         checkPivot.height = c.worldBounds.height
 
@@ -350,8 +350,8 @@ object ContactSystem : ComponentSystem {
             contact.entity = entityId
             contact.contact = contactType
             contact.material = materialType
-            contact.worldBounds.pos.x = x
-            contact.worldBounds.pos.y = y
+            contact.worldBounds.x = x
+            contact.worldBounds.y = y
             contact.worldBounds.width = width
             contact.worldBounds.height = height
 

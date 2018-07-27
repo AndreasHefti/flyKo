@@ -170,7 +170,7 @@ class TileGrid private constructor() : SystemComponent(TileGrid::class.java.name
         override fun nextInt(): Int {
             val result = tileGrid[clip]
             calcWorldPosition()
-            clip.pos.x++
+            clip.x++
             findNext()
             return result
         }
@@ -186,9 +186,9 @@ class TileGrid private constructor() : SystemComponent(TileGrid::class.java.name
         }
 
         private fun init(tileGrid: TileGrid) {
-            xorig = clip.pos.x
-            xsize = clip.pos.x + clip.width
-            ysize = clip.pos.y + clip.height
+            xorig = clip.x
+            xsize = clip.x + clip.width
+            ysize = clip.y + clip.height
 
             this.tileGrid = tileGrid
 
@@ -197,28 +197,28 @@ class TileGrid private constructor() : SystemComponent(TileGrid::class.java.name
 
         private fun mapWorldClipToTileGridClip(worldClip: Rectangle, tileGrid: TileGrid, result: Rectangle) {
             tmpClip(
-                Math.floor((worldClip.pos.x.toDouble() - tileGrid.position.x) / tileGrid.cellDim.dx).toInt(),
-                Math.floor((worldClip.pos.y.toDouble() - tileGrid.position.y) / tileGrid.cellDim.dy).toInt()
+                Math.floor((worldClip.x.toDouble() - tileGrid.position.x) / tileGrid.cellDim.dx).toInt(),
+                Math.floor((worldClip.y.toDouble() - tileGrid.position.y) / tileGrid.cellDim.dy).toInt()
             )
-            val x2 = Math.ceil((worldClip.pos.x.toDouble() - tileGrid.position.x + worldClip.width) / tileGrid.cellDim.dx).toInt()
-            val y2 = Math.ceil((worldClip.pos.y.toDouble() - tileGrid.position.y + worldClip.height) / tileGrid.cellDim.dy).toInt()
-            tmpClip.width = x2 - tmpClip.pos.x
-            tmpClip.height = y2 - tmpClip.pos.y
+            val x2 = Math.ceil((worldClip.x.toDouble() - tileGrid.position.x + worldClip.width) / tileGrid.cellDim.dx).toInt()
+            val y2 = Math.ceil((worldClip.y.toDouble() - tileGrid.position.y + worldClip.height) / tileGrid.cellDim.dy).toInt()
+            tmpClip.width = x2 - tmpClip.x
+            tmpClip.height = y2 - tmpClip.y
             GeomUtils.intersection(tmpClip, tileGrid.normalisedWorldBounds, result)
         }
 
         @Suppress("NOTHING_TO_INLINE")
         private inline fun findNext() {
-            while (clip.pos.y < ysize) {
-                while (clip.pos.x < xsize) {
+            while (clip.y < ysize) {
+                while (clip.x < xsize) {
                     if (tileGrid[clip] != -1) {
                         hasNext = true
                         return
                     }
-                    clip.pos.x++
+                    clip.x++
                 }
-                clip.pos.x = xorig
-                clip.pos.y++
+                clip.x = xorig
+                clip.y++
             }
             dispose()
         }
@@ -235,8 +235,8 @@ class TileGrid private constructor() : SystemComponent(TileGrid::class.java.name
         @Suppress("NOTHING_TO_INLINE")
         private inline fun calcWorldPosition() {
             worldPosition(
-                tileGrid.position.x + clip.pos.x * tileGrid.cellDim.dx,
-                tileGrid.position.y + clip.pos.y * tileGrid.cellDim.dy
+                tileGrid.position.x + clip.x * tileGrid.cellDim.dx,
+                tileGrid.position.y + clip.y * tileGrid.cellDim.dy
             )
         }
 

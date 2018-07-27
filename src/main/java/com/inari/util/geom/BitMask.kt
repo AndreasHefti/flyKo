@@ -22,11 +22,11 @@ class BitMask constructor(
 
     private var tmpBits: BitSet
 
-    constructor(region: Rectangle) : this(region.pos.x, region.pos.y, region.width, region.height)
+    constructor(region: Rectangle) : this(region.x, region.y, region.width, region.height)
 
     init {
-        region.pos.x = x
-        region.pos.y = y
+        region.x = x
+        region.y = y
         region.width = width
         region.height = height
         bits = BitSet(region.width + region.height)
@@ -47,12 +47,12 @@ class BitMask constructor(
     }
 
     fun reset(region: Rectangle) {
-        reset(region.pos.x, region.pos.y, region.width, region.height)
+        reset(region.x, region.y, region.width, region.height)
     }
 
     fun reset(x: Int, y: Int, width: Int, height: Int) {
-        region.pos.x = x
-        region.pos.y = y
+        region.x = x
+        region.y = y
         region.width = width
         region.height = height
         bits.clear()
@@ -70,7 +70,7 @@ class BitMask constructor(
 
     fun setBit(x: Int, y: Int, relativeToOrigin: Boolean) {
         if (relativeToOrigin) {
-            setBit(x - region.pos.x, y - region.pos.y)
+            setBit(x - region.x, y - region.y)
         } else {
             setBit(x, y)
         }
@@ -90,7 +90,7 @@ class BitMask constructor(
 
     fun resetBit(x: Int, y: Int, relativeToOrigin: Boolean) {
         if (relativeToOrigin) {
-            resetBit(x - region.pos.x, y - region.pos.y)
+            resetBit(x - region.x, y - region.y)
         } else {
             resetBit(x, y)
         }
@@ -109,12 +109,12 @@ class BitMask constructor(
     }
 
     fun moveRegion(x: Int, y: Int) {
-        region.pos.x += x
-        region.pos.y += y
+        region.x += x
+        region.y += y
     }
 
     fun setRegion(region: Rectangle, relativeToOrigin: Boolean) {
-        setRegion(region.pos.x, region.pos.y, region.width, region.height, relativeToOrigin)
+        setRegion(region.x, region.y, region.width, region.height, relativeToOrigin)
     }
 
     fun setRegion(x: Int, y: Int, width: Int, height: Int) {
@@ -125,12 +125,12 @@ class BitMask constructor(
         if (relativeToOrigin) {
             setIntersectionRegion(x, y, width, height, true)
         } else {
-            setIntersectionRegion(x + region.pos.x, y + region.pos.y, width, height, true)
+            setIntersectionRegion(x + region.x, y + region.y, width, height, true)
         }
     }
 
     fun resetRegion(region: Rectangle, relativeToOrigin: Boolean) {
-        resetRegion(region.pos.x, region.pos.y, region.width, region.height, relativeToOrigin)
+        resetRegion(region.x, region.y, region.width, region.height, relativeToOrigin)
     }
 
     fun resetRegion(x: Int, y: Int, width: Int, height: Int) {
@@ -141,13 +141,13 @@ class BitMask constructor(
         if (relativeToOrigin) {
             setIntersectionRegion(x, y, width, height, false)
         } else {
-            setIntersectionRegion(x + region.pos.x, y + region.pos.y, width, height, false)
+            setIntersectionRegion(x + region.x, y + region.y, width, height, false)
         }
     }
 
     private fun setIntersectionRegion(xoffset: Int, yoffset: Int, width: Int, height: Int, set: Boolean) {
-        tmpRegion.pos.x = xoffset
-        tmpRegion.pos.y = yoffset
+        tmpRegion.x = xoffset
+        tmpRegion.y = yoffset
         tmpRegion.width = width
         tmpRegion.height = height
         GeomUtils.intersection(region, tmpRegion, intersection)
@@ -155,8 +155,8 @@ class BitMask constructor(
             return
         }
 
-        val x1 = intersection.pos.x - region.pos.x
-        val y1 = intersection.pos.y - region.pos.y
+        val x1 = intersection.x - region.x
+        val y1 = intersection.y - region.y
         val width1 = x1 + intersection.width
         val height1 = y1 + intersection.height
 
@@ -188,8 +188,8 @@ class BitMask constructor(
     }
 
     private fun setTmpBits(other: BitMask, xoffset: Int, yoffset: Int) {
-        tmpRegion.pos.x = other.region.pos.x + xoffset
-        tmpRegion.pos.y = other.region.pos.y + yoffset
+        tmpRegion.x = other.region.x + xoffset
+        tmpRegion.y = other.region.y + yoffset
         tmpRegion.width = other.region.width
         tmpRegion.height = other.region.height
         GeomUtils.intersection(region, tmpRegion, intersection)
@@ -200,10 +200,10 @@ class BitMask constructor(
         tmpBits.clear()
 
         // adjust intersection to origin
-        val x1 = intersection.pos.x - region.pos.x
-        val y1 = intersection.pos.y - region.pos.y
-        val x2 = if (intersection.pos.x == 0) other.region.width - intersection.width else intersection.pos.x - tmpRegion.pos.x
-        val y2 = if (intersection.pos.y == 0) other.region.height - intersection.height else intersection.pos.y - tmpRegion.pos.y
+        val x1 = intersection.x - region.x
+        val y1 = intersection.y - region.y
+        val x2 = if (intersection.x == 0) other.region.width - intersection.width else intersection.x - tmpRegion.x
+        val y2 = if (intersection.y == 0) other.region.height - intersection.height else intersection.y - tmpRegion.y
 
         for (y in 0 until intersection.height) {
             for (x in 0 until intersection.width) {
@@ -218,8 +218,8 @@ class BitMask constructor(
             return false
         }
 
-        val x1 = intersection.pos.x - this.region.pos.x
-        val y1 = intersection.pos.y - this.region.pos.y
+        val x1 = intersection.x - this.region.x
+        val y1 = intersection.y - this.region.y
         val width1 = x1 + intersection.width
         val height1 = y1 + intersection.height
 
@@ -247,33 +247,33 @@ class BitMask constructor(
     companion object {
 
         fun createIntersectionMask(region: Rectangle, bitmask: BitMask, result: BitMask, xoffset: Int, yoffset: Int, adjustResult: Boolean): Boolean {
-            bitmask.region.pos.x += xoffset
-            bitmask.region.pos.y += yoffset
+            bitmask.region.x += xoffset
+            bitmask.region.y += yoffset
 
             val intersection = createIntersectionMask(bitmask, region, result)
 
-            bitmask.region.pos.x -= xoffset
-            bitmask.region.pos.y -= yoffset
+            bitmask.region.x -= xoffset
+            bitmask.region.y -= yoffset
 
             if (adjustResult) {
-                result.region.pos.x -= region.pos.x
-                result.region.pos.y -= region.pos.y
+                result.region.x -= region.x
+                result.region.y -= region.y
             }
 
             return intersection
         }
 
         fun createIntersectionMask(bitmask: BitMask, region: Rectangle, result: BitMask, xoffset: Int, yoffset: Int, adjustResult: Boolean): Boolean {
-            result.tmpRegion.pos.x = region.pos.x + xoffset
-            result.tmpRegion.pos.y = region.pos.y + yoffset
+            result.tmpRegion.x = region.x + xoffset
+            result.tmpRegion.y = region.y + yoffset
             result.tmpRegion.width = region.width
             result.tmpRegion.height = region.height
 
             val intersection = createIntersectionMask(bitmask, result.tmpRegion, result)
 
             if (adjustResult) {
-                result.region.pos.x -= bitmask.region.pos.x
-                result.region.pos.y -= bitmask.region.pos.y
+                result.region.x -= bitmask.region.x
+                result.region.y -= bitmask.region.y
             }
 
             return intersection
@@ -283,8 +283,8 @@ class BitMask constructor(
             val intersection = createIntersectionMask(bitmask, region, result)
 
             if (adjustResult) {
-                result.region.pos.x -= bitmask.region.pos.x
-                result.region.pos.y -= bitmask.region.pos.y
+                result.region.x -= bitmask.region.x
+                result.region.y -= bitmask.region.y
             }
 
             return intersection
@@ -294,8 +294,8 @@ class BitMask constructor(
             val intersection = createIntersectionMask(bitmask, region, result)
 
             if (adjustResult) {
-                result.region.pos.x -= region.pos.x
-                result.region.pos.y -= region.pos.y
+                result.region.x -= region.x
+                result.region.y -= region.y
             }
 
             return intersection
@@ -309,8 +309,8 @@ class BitMask constructor(
                 return false
             }
 
-            val x1 = result.region.pos.x - bitmask.region.pos.x
-            val y1 = result.region.pos.y - bitmask.region.pos.y
+            val x1 = result.region.x - bitmask.region.x
+            val y1 = result.region.y - bitmask.region.y
 
             for (y in 0 until result.region.height) {
                 for (x in 0 until result.region.width) {
@@ -325,17 +325,17 @@ class BitMask constructor(
         }
 
         fun createIntersectionMask(bitmask1: BitMask, bitmask2: BitMask, result: BitMask, xoffset: Int, yoffset: Int, adjustResult: Boolean): Boolean {
-            bitmask2.region.pos.x += xoffset
-            bitmask2.region.pos.y += yoffset
+            bitmask2.region.x += xoffset
+            bitmask2.region.y += yoffset
 
             val intersection = createIntersectionMask(bitmask1, bitmask2, result)
 
-            bitmask2.region.pos.x -= xoffset
-            bitmask2.region.pos.y -= yoffset
+            bitmask2.region.x -= xoffset
+            bitmask2.region.y -= yoffset
 
             if (adjustResult) {
-                result.region.pos.x -= bitmask1.region.pos.x
-                result.region.pos.y -= bitmask1.region.pos.y
+                result.region.x -= bitmask1.region.x
+                result.region.y -= bitmask1.region.y
             }
 
             return intersection
@@ -345,21 +345,21 @@ class BitMask constructor(
             val intersection = createIntersectionMask(bitmask1, bitmask2, result)
 
             if (adjustResult) {
-                result.region.pos.x -= bitmask1.region.pos.x
-                result.region.pos.y -= bitmask1.region.pos.y
+                result.region.x -= bitmask1.region.x
+                result.region.y -= bitmask1.region.y
             }
 
             return intersection
         }
 
         fun createIntersectionMask(bitmask1: BitMask, bitmask2: BitMask, result: BitMask, xoffset: Int, yoffset: Int): Boolean {
-            bitmask2.region.pos.x += xoffset
-            bitmask2.region.pos.y += yoffset
+            bitmask2.region.x += xoffset
+            bitmask2.region.y += yoffset
 
             val intersection = createIntersectionMask(bitmask1, bitmask2, result)
 
-            bitmask2.region.pos.x -= xoffset
-            bitmask2.region.pos.y -= yoffset
+            bitmask2.region.x -= xoffset
+            bitmask2.region.y -= yoffset
 
             return intersection
         }
@@ -373,10 +373,10 @@ class BitMask constructor(
                 return false
             }
 
-            val x1 = result.region.pos.x - bitmask1.region.pos.x
-            val y1 = result.region.pos.y - bitmask1.region.pos.y
-            val x2 = result.region.pos.x - bitmask2.region.pos.x
-            val y2 = result.region.pos.y - bitmask2.region.pos.y
+            val x1 = result.region.x - bitmask1.region.x
+            val y1 = result.region.y - bitmask1.region.y
+            val x2 = result.region.x - bitmask2.region.x
+            val y2 = result.region.y - bitmask2.region.y
 
             for (y in 0 until result.region.height) {
                 for (x in 0 until result.region.width) {

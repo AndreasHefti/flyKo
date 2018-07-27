@@ -39,27 +39,27 @@ object GeomUtils {
     }
 
     fun intersect(r1: Rectangle, r2: Rectangle): Boolean {
-        val r1Right = r1.pos.x + r1.width
-        val r1Bottom = r1.pos.y + r1.height
-        val r2Right = r2.pos.x + r2.width
-        val r2Bottom = r2.pos.y + r2.height
+        val r1Right = r1.x + r1.width
+        val r1Bottom = r1.y + r1.height
+        val r2Right = r2.x + r2.width
+        val r2Bottom = r2.y + r2.height
 
-        return !(r2.pos.x >= r1Right ||
-            r2Right <= r1.pos.x ||
-            r2.pos.y >= r1Bottom ||
-            r2Bottom <= r1.pos.y)
+        return !(r2.x >= r1Right ||
+            r2Right <= r1.x ||
+            r2.y >= r1Bottom ||
+            r2Bottom <= r1.y)
     }
 
     fun getIntersectionCode(r: Rectangle, r1: Rectangle): Int {
-        val ax1 = r.pos.x
-        val ay1 = r.pos.y
-        val ax2 = r.pos.x + r.width - 1
-        val ay2 = r.pos.y + r.height - 1
+        val ax1 = r.x
+        val ay1 = r.y
+        val ax2 = r.x + r.width - 1
+        val ay2 = r.y + r.height - 1
 
-        val bx1 = r1.pos.x
-        val by1 = r1.pos.y
-        val bx2 = r1.pos.x + r1.width - 1
-        val by2 = r1.pos.y + r1.height - 1
+        val bx1 = r1.x
+        val by1 = r1.y
+        val bx2 = r1.x + r1.width - 1
+        val by2 = r1.y + r1.height - 1
 
         var code = 0
 
@@ -84,10 +84,10 @@ object GeomUtils {
     }
 
     fun intersection(r: Rectangle, r1: Rectangle): Rectangle {
-        val x1 = Math.max(r.pos.x, r1.pos.x)
-        val y1 = Math.max(r.pos.y, r1.pos.y)
-        val x2 = Math.min(r.pos.x + r.width - 1, r1.pos.x + r1.width - 1)
-        val y2 = Math.min(r.pos.y + r.height - 1, r1.pos.y + r1.height - 1)
+        val x1 = Math.max(r.x, r1.x)
+        val y1 = Math.max(r.y, r1.y)
+        val x2 = Math.min(r.x + r.width - 1, r1.x + r1.width - 1)
+        val y2 = Math.min(r.y + r.height - 1, r1.y + r1.height - 1)
         return Rectangle(x1, y1, Math.max(0, x2 - x1 + 1), Math.max(0, y2 - y1 + 1))
     }
 
@@ -96,56 +96,56 @@ object GeomUtils {
     }
 
     fun intersection(r: Rectangle, r1: Rectangle, result: Rectangle): Rectangle {
-        result.pos.x = Math.max(r.pos.x, r1.pos.x)
-        result.pos.y = Math.max(r.pos.y, r1.pos.y)
-        result.width = Math.max(0, Math.min(r.pos.x + r.width - 1, r1.pos.x + r1.width - 1) - result.pos.x + 1)
-        result.height = Math.max(0, Math.min(r.pos.y + r.height - 1, r1.pos.y + r1.height - 1) - result.pos.y + 1)
+        result.x = Math.max(r.x, r1.x)
+        result.y = Math.max(r.y, r1.y)
+        result.width = Math.max(0, Math.min(r.x + r.width - 1, r1.x + r1.width - 1) - result.x + 1)
+        result.height = Math.max(0, Math.min(r.y + r.height - 1, r1.y + r1.height - 1) - result.y + 1)
         return result
     }
 
     fun union(r: Rectangle, r1: Rectangle): Rectangle {
-        val x1 = Math.min(r.pos.x, r1.pos.x)
-        val y1 = Math.min(r.pos.y, r1.pos.y)
-        val x2 = Math.max(r.pos.x + r.width - 1, r1.pos.x + r1.width - 1)
-        val y2 = Math.max(r.pos.y + r.height - 1, r1.pos.y + r1.height - 1)
+        val x1 = Math.min(r.x, r1.x)
+        val y1 = Math.min(r.y, r1.y)
+        val x2 = Math.max(r.x + r.width - 1, r1.x + r1.width - 1)
+        val y2 = Math.max(r.y + r.height - 1, r1.y + r1.height - 1)
         return Rectangle(x1, y1, x2 - x1 + 1, y2 - y1 + 1)
     }
 
     fun unionAdd(r: Rectangle, r1: Rectangle) {
-        val x1 = Math.min(r.pos.x, r1.pos.x)
-        val y1 = Math.min(r.pos.y, r1.pos.y)
-        val x2 = Math.max(r.pos.x + r.width - 1, r1.pos.x + r1.width - 1)
-        val y2 = Math.max(r.pos.y + r.height - 1, r1.pos.y + r1.height - 1)
-        r.pos.x = x1
-        r.pos.y = y1
+        val x1 = Math.min(r.x, r1.x)
+        val y1 = Math.min(r.y, r1.y)
+        val x2 = Math.max(r.x + r.width - 1, r1.x + r1.width - 1)
+        val y2 = Math.max(r.y + r.height - 1, r1.y + r1.height - 1)
+        r.x = x1
+        r.y = y1
         r.width = x2 - x1 + 1
         r.height = y2 - y1 + 1
     }
 
     fun getBoundary(r: Rectangle, side: Int): Int =
         when (side) {
-            LEFT_SIDE -> r.pos.x
-            TOP_SIDE -> r.pos.y
-            RIGHT_SIDE -> r.pos.x + r.width - 1
-            BOTTOM_SIDE -> r.pos.y + r.height - 1
-            else -> r.pos.x
+            LEFT_SIDE -> r.x
+            TOP_SIDE -> r.y
+            RIGHT_SIDE -> r.x + r.width - 1
+            BOTTOM_SIDE -> r.y + r.height - 1
+            else -> r.x
         }
 
     fun contains(r: Rectangle, x: Int, y: Int): Boolean {
-        return x >= r.pos.x &&
-            y >= r.pos.y &&
-            x < r.pos.x + r.width &&
-            y < r.pos.y + r.height
+        return x >= r.x &&
+            y >= r.y &&
+            x < r.x + r.width &&
+            y < r.y + r.height
     }
 
     fun contains(r: Rectangle, p: Position): Boolean =
         contains(r, p.x, p.y)
 
     fun contains(r: Rectangle, r1: Rectangle): Boolean =
-        r1.pos.x >= r.pos.x &&
-        r1.pos.y >= r.pos.y &&
-        r1.pos.x + r1.width <= r.pos.x + r.width &&
-        r1.pos.y + r1.height <= r.pos.y + r.height
+        r1.x >= r.x &&
+        r1.y >= r.y &&
+        r1.x + r1.width <= r.x + r.width &&
+        r1.y + r1.height <= r.y + r.height
 
     fun getOppositeSide(side: Int): Int =
         when (side) {
@@ -159,21 +159,21 @@ object GeomUtils {
     fun setOutsideBoundary(r: Rectangle, side: Int, boundary: Int): Rectangle =
         when (side) {
             LEFT_SIDE -> {
-                r.width += r.pos.x - boundary
-                r.pos.x = boundary
+                r.width += r.x - boundary
+                r.x = boundary
                 r
             }
             TOP_SIDE -> {
-                r.height += r.pos.y - boundary
-                r.pos.y = boundary
+                r.height += r.y - boundary
+                r.y = boundary
                 r
             }
             RIGHT_SIDE -> {
-                r.width = boundary - r.pos.x
+                r.width = boundary - r.x
                 r
             }
             BOTTOM_SIDE -> {
-                r.height = boundary - r.pos.y
+                r.height = boundary - r.y
                 r
             }
             else -> {r}
@@ -276,7 +276,7 @@ object GeomUtils {
             while (x < intersectionRect.width) {
                 result.set(
                     getFlatArrayIndex(x, y, intersectionRect.width),
-                    source.get((intersectionRect.pos.y + y) * sourceRect.width + intersectionRect.pos.x + x)
+                    source.get((intersectionRect.y + y) * sourceRect.width + intersectionRect.x + x)
                 )
                 x++
             }
