@@ -71,7 +71,7 @@ abstract class FFApp protected constructor(
             } else {
                 val layerIterator = iterator()
                 while (layerIterator.hasNext()) {
-                    val layerId = get(layerIterator.next())
+                    val layerId = layerIterator.next()
                     if (!ViewSystem.layers.isActive(layerId))
                         continue
                     RenderEvent.layerIndex = layerId
