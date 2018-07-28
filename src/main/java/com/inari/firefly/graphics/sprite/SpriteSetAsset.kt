@@ -16,7 +16,7 @@ class SpriteSetAsset private constructor() : Asset() {
     private val spriteData = DynArray.of(Sprite::class.java, 30)
 
     val ff_SpriteData = ArrayAccessor(spriteData)
-    var ff_Texture = ComponentRefResolver(Asset) { index-> dependingRef = setIfNotInitialized(index, "ff_Texture") }
+    var ff_Texture = ComponentRefResolver(Asset) { index -> dependingRef = setIfNotInitialized(index, "ff_Texture") }
 
     override fun instanceId(index: Int): Int =
         spriteData[index]?.instanceId ?: -1
@@ -34,7 +34,7 @@ class SpriteSetAsset private constructor() : Asset() {
 
     override fun load() {
         val graphics = FFContext.graphics
-        spriteDataContainer.texId = FFContext.assetInstanceId(dependingRef)
+        spriteDataContainer.spriteData.textureId = FFContext.assetInstanceId(dependingRef)
         for (i in 0 until spriteData.capacity) {
             val sprite = spriteData[i] ?: continue
             spriteDataContainer.sprite = sprite
@@ -50,14 +50,14 @@ class SpriteSetAsset private constructor() : Asset() {
             sprite.instId = -1
         }
 
-        spriteDataContainer.texId = -1
+        spriteDataContainer.spriteData.textureId = -1
         spriteDataContainer.sprite = NULL_SPRITE
     }
 
     private val spriteDataContainer = object : Any() {
-        @JvmField var texId = -1
-        @JvmField var sprite: Sprite = NULL_SPRITE
         @JvmField val spriteData = SpriteData()
+        @JvmField var sprite: Sprite = NULL_SPRITE
+
     }
 
     companion object : SystemComponentSubType<Asset, SpriteSetAsset>(Asset, SpriteSetAsset::class.java) {
