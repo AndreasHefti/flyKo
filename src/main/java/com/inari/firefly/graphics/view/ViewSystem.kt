@@ -61,7 +61,7 @@ object ViewSystem : ComponentSystem {
     private fun created(view: View) {
         val index = view.index
         if (index !in layersOfView)
-            layersOfView.set(index, IntBag(10, -1, 5))
+            layersOfView[index] = IntBag(10, -1, 5)
 
         if (!view.baseView)
             orderedView.add(index)

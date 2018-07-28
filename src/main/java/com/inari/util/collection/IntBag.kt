@@ -25,7 +25,7 @@ class IntBag(
     override val expand: Int = 10
 ) : IntBagRO {
 
-    private var array: IntArray = IntArray(initSize)
+    private var array: IntArray = IntArray(initSize) { nullValue }
     override var size = 0
         private set
     override val isEmpty: Boolean
