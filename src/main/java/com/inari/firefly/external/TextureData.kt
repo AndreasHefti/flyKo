@@ -6,10 +6,10 @@ import com.inari.firefly.NO_NAME
 class TextureData(
     @JvmField var resourceName: String = NO_NAME,
     @JvmField var isMipmap: Boolean = false,
-    @JvmField var wrapS: Int = 0,
-    @JvmField var wrapT: Int = 0,
-    @JvmField var minFilter: Int = 0,
-    @JvmField var magFilter: Int = 0,
+    @JvmField var wrapS: Int = -1,
+    @JvmField var wrapT: Int = -1,
+    @JvmField var minFilter: Int = -1,
+    @JvmField var magFilter: Int = -1,
     @JvmField var colorConverter: IntFunction = IntFunction.identity()
 ) {
 
