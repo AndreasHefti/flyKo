@@ -6,7 +6,6 @@ import com.inari.firefly.asset.Asset
 import com.inari.firefly.component.ArrayAccessor
 import com.inari.firefly.component.ComponentRefResolver
 import com.inari.firefly.external.SpriteData
-import com.inari.firefly.graphics.sprite.Sprite.Companion.NULL_SPRITE
 import com.inari.firefly.system.component.SystemComponentSubType
 import com.inari.util.collection.DynArray
 
@@ -14,6 +13,7 @@ import com.inari.util.collection.DynArray
 class SpriteSetAsset private constructor() : Asset() {
 
     private val spriteData = DynArray.of(Sprite::class.java, 30)
+    private val tmpSpriteData = SpriteData()
 
     val ff_SpriteData = ArrayAccessor(spriteData)
     var ff_Texture = ComponentRefResolver(Asset) { index -> dependingRef = setIfNotInitialized(index, "ff_Texture") }
@@ -34,12 +34,15 @@ class SpriteSetAsset private constructor() : Asset() {
 
     override fun load() {
         val graphics = FFContext.graphics
-        spriteDataContainer.spriteData.textureId = FFContext.assetInstanceId(dependingRef)
+        tmpSpriteData.textureId = FFContext.assetInstanceId(dependingRef)
         for (i in 0 until spriteData.capacity) {
             val sprite = spriteData[i] ?: continue
-            spriteDataContainer.sprite = sprite
-            sprite.instId = graphics.createSprite(spriteDataContainer.spriteData)
+            tmpSpriteData.region(sprite.x, sprite.y, sprite.width, sprite.height)
+            tmpSpriteData.isHorizontalFlip = sprite.flipH
+            tmpSpriteData.isVerticalFlip = sprite.flipV
+            sprite.instId = graphics.createSprite(tmpSpriteData)
         }
+        tmpSpriteData.reset()
     }
 
     override fun unload() {
@@ -49,15 +52,6 @@ class SpriteSetAsset private constructor() : Asset() {
             graphics.disposeSprite(sprite.instanceId)
             sprite.instId = -1
         }
-
-        spriteDataContainer.spriteData.textureId = -1
-        spriteDataContainer.sprite = NULL_SPRITE
-    }
-
-    private val spriteDataContainer = object : Any() {
-        @JvmField val spriteData = SpriteData()
-        @JvmField var sprite: Sprite = NULL_SPRITE
-
     }
 
     companion object : SystemComponentSubType<Asset, SpriteSetAsset>(Asset, SpriteSetAsset::class.java) {
