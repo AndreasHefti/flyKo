@@ -44,7 +44,7 @@ class RenderingSystemTest {
                 ff_Pivot.y = 2f
             }
             with(ESprite) {
-                ff_SpriteAsset( assetId)
+                ff_Sprite( assetId)
             }
         }
 
