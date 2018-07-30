@@ -21,10 +21,8 @@ class ETile private constructor (
     @JvmField internal val spriteRenderable = SpriteRenderable()
     @JvmField internal var positions: DynArray<Position> = DynArray.of(Position::class.java)
 
-    val ff_Sprite =
-        AssetInstanceRefResolver({ index -> spriteRenderable.spriteId = index })
-    val ff_Shader =
-        AssetInstanceRefResolver({ index -> spriteRenderable.shaderId = index })
+    val ff_Sprite = AssetInstanceRefResolver { index -> spriteRenderable.spriteId = index }
+    val ff_Shader = AssetInstanceRefResolver { index -> spriteRenderable.shaderId = index }
     var ff_Blend: BlendMode
         get() = spriteRenderable.blendMode
         set(value) { spriteRenderable.blendMode = value }
