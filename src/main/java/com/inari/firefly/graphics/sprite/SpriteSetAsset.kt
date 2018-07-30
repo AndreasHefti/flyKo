@@ -16,7 +16,7 @@ class SpriteSetAsset private constructor() : Asset() {
     private val tmpSpriteData = SpriteData()
 
     val ff_SpriteData = ArrayAccessor(spriteData)
-    var ff_TextureAsset = ComponentRefResolver(Asset) { index -> dependingRef = setIfNotInitialized(index, "ff_TextureAsset") }
+    var ff_Texture = ComponentRefResolver(Asset) { index -> dependingRef = setIfNotInitialized(index, "ff_TextureAsset") }
 
     override fun instanceId(index: Int): Int =
         spriteData[index]?.instanceId ?: -1
