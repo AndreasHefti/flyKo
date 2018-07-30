@@ -14,7 +14,7 @@ class SpriteAsset private constructor() : Asset() {
 
     var ff_Texture =
         ComponentRefResolver(Asset) { index-> run {
-            dependingRef = setIfNotInitialized(index, "ff_Texture")
+            dependingRef = setIfNotInitialized(index, "ff_TextureAsset")
             spriteData.textureId = index
         } }
     var ff_TextureRegion: Rectangle

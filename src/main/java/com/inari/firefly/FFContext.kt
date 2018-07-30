@@ -108,13 +108,13 @@ object FFContext {
         mapper<CC>(cType)[named.name]
 
     fun assetInstanceId(assetId: Int): Int =
-            AssetSystem.assets[assetId].instanceId()
+            AssetSystem.assets[assetId].instanceId
 
     fun assetInstanceId(assetName: String): Int =
-            AssetSystem.assets[assetName].instanceId()
+            AssetSystem.assets[assetName].instanceId
 
     fun assetInstanceId(assetName: Named): Int =
-        AssetSystem.assets[assetName.name].instanceId()
+        AssetSystem.assets[assetName.name].instanceId
 
     operator fun <E : EntityComponent> get(entityId: Int, ecType: EntityComponentType<E>): E =
         EntitySystem.entities[entityId][ecType]

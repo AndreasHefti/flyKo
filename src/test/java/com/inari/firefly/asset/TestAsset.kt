@@ -11,7 +11,7 @@ class TestAsset private constructor(
     var ff_DependsOn =
         ComponentRefResolver(Asset) { index-> dependingRef = setIfNotInitialized(index, "ff_DependsOn") }
 
-    private var instanceId: Int = -1
+    override var instanceId: Int = -1
     override fun instanceId(index: Int): Int = instanceId
 
     override fun load() {

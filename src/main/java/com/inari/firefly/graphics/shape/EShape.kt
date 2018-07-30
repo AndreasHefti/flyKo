@@ -61,7 +61,7 @@ class EShape private constructor(): EntityComponent() {
             "fill=$data.fill, " +
             "blend=$data.blend, " +
             "shaderRef=$data.shaderRef, " +
-            "ff_Shader=$ff_Shader)"
+            "ff_ShaderAsset=$ff_Shader)"
     }
 
     private val accessorColorRed: FloatPropertyAccessor = object : FloatPropertyAccessor {
