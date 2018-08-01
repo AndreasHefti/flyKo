@@ -30,7 +30,7 @@ abstract class SystemComponent protected constructor(
 
     var initialized:Boolean = false
         internal set
-    internal  fun _init() {
+    internal fun _init() {
         super.applyNewIndex()
         init()
         initialized = true

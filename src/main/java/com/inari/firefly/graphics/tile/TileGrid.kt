@@ -70,7 +70,7 @@ class TileGrid private constructor() : SystemComponent(TileGrid::class.java.name
         else
             grid[pos.y][pos.x]
 
-    operator fun get(ypos: Int, xpos: Int): Int =
+    operator fun get(xpos: Int, ypos: Int): Int =
         if (ff_Spherical)
             grid[ypos % ff_GridHeight][xpos % ff_GridWidth]
          else
