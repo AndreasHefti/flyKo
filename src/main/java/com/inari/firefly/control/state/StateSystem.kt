@@ -26,8 +26,12 @@ object StateSystem : ComponentSystem {
         } }
     )
 
-    private val scheduler: FFTimer.UpdateScheduler =
+    private var scheduler: FFTimer.UpdateScheduler =
         FFContext.timer.createUpdateScheduler(10f)
+
+    var updateResolution: Float
+        set(value) { scheduler = FFContext.timer.createUpdateScheduler(value) }
+        get() { throw UnsupportedOperationException() }
 
     init {
         FFContext.registerListener(

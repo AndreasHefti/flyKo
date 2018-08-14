@@ -22,7 +22,9 @@ class EText private constructor() : EntityComponent() {
 
     var ff_Renderer = ComponentRefResolver(Renderer) { index-> rendererRef = index }
     var ff_FontAsset = ComponentRefResolver(Asset) { index -> fontAssetRef = index }
-    val ff_Shader = AssetInstanceRefResolver({ index -> shaderRef = index })
+    val ff_Shader = AssetInstanceRefResolver(
+        { index -> shaderRef = index },
+        { shaderRef })
 
     val ff_TextBuffer: StringBuffer
         get() = textBuffer

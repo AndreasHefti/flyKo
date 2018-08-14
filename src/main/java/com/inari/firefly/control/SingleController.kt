@@ -1,6 +1,6 @@
 package com.inari.firefly.control
 
-import com.inari.firefly.Expr
+import com.inari.firefly.Consumer
 import com.inari.firefly.FFContext
 import com.inari.firefly.NO_COMP_ID
 import com.inari.firefly.NULL_EXPR
@@ -11,9 +11,9 @@ import com.inari.firefly.system.component.SystemComponentSubType
 class SingleController private constructor() : Controller() {
 
     @JvmField internal var id: CompId = NO_COMP_ID
-    @JvmField internal var controlExpr: Expr<Component> = NULL_EXPR()
+    @JvmField internal var controlExpr: Consumer<Component> = NULL_EXPR()
 
-    var ff_ControlExpr: Expr<Component>
+    var ff_ControlExpr: Consumer<Component>
         get() = throw UnsupportedOperationException()
         set(value) {controlExpr = setIfNotInitialized(value, "ff_ControlExpr")}
 

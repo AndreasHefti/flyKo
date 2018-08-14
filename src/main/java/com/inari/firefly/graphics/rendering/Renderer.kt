@@ -1,7 +1,7 @@
 package com.inari.firefly.graphics.rendering
 
 import com.inari.util.geom.PositionF
-import com.inari.firefly.Expr
+import com.inari.firefly.Consumer
 import com.inari.firefly.Predicate
 import com.inari.firefly.TRUE_PREDICATE
 import com.inari.firefly.component.ComponentType
@@ -16,7 +16,7 @@ import com.inari.util.geom.Rectangle
 
 abstract class Renderer protected constructor(
     private val acceptance: Predicate<Entity> = TRUE_PREDICATE(),
-    private val sort: Expr<DynArray<Entity>>? = null
+    private val sort: Consumer<DynArray<Entity>>? = null
 ) : SystemComponent(Renderer::class.java.name) {
 
     @JvmField protected val transformCollector = ExactTransformDataCollector()

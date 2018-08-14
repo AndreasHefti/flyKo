@@ -86,8 +86,8 @@ const val BASE_VIEW: String = "[[BASE_VIEW]]"
     override fun needsUpdate(): Boolean = true
 }
 
-fun <T> NULL_EXPR(): Expr<T> = { throw IllegalStateException("NULL_EXPR called") }
-fun <T> VOID_EXPR(): Expr<T> = {}
+fun <T> NULL_EXPR(): Consumer<T> = { throw IllegalStateException("NULL_EXPR called") }
+fun <T> VOID_EXPR(): Consumer<T> = {}
 fun <T> TRUE_PREDICATE(): Predicate<T> = {true}
 fun <T> FALSE_PREDICATE(): Predicate<T> = {false}
 

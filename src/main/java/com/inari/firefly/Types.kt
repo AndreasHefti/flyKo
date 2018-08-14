@@ -1,6 +1,6 @@
 package com.inari.firefly
 
-typealias Expr<C> = (C) -> Unit
+typealias Consumer<C> = (C) -> Unit
 
 typealias Predicate<C> = (C) -> Boolean
 
@@ -10,7 +10,7 @@ typealias Supplier<C> = () -> C
 
 typealias Receiver<C> = (C) -> C
 
-/** An Expression expecting an int. This is used instead of Expr<Init> that is
+/** An Expression expecting an int. This is used instead of Consumer<Init> that is
  *  in fact a function (Int) -> Init to avoid auto boxing
  */
 interface IntExpr {

@@ -162,7 +162,7 @@ interface ComponentSystem : FFSystem {
 
         override fun receiver(): Receiver<C> = { c -> add(c) }
 
-        override  fun forEach(expr: Expr<C>) =
+        override  fun forEach(expr: Consumer<C>) =
             map.forEach{ c -> expr(c) }
 
         override fun forEachActive(expr: (C) -> Unit) {
@@ -173,13 +173,13 @@ interface ComponentSystem : FFSystem {
             }
         }
 
-        override fun forEachIn(bag: IntBagRO, expr: Expr<C>) {
+        override fun forEachIn(bag: IntBagRO, expr: Consumer<C>) {
             val i = bag.iterator()
             while (i.hasNext())
                 expr(map[i.next()]!!)
         }
 
-        override fun <CC : C> forEachSubtypeIn(bag: IntBagRO, expr: Expr<CC>) {
+        override fun <CC : C> forEachSubtypeIn(bag: IntBagRO, expr: Consumer<CC>) {
             val i = bag.iterator()
             while (i.hasNext()) {
                 @Suppress("UNCHECKED_CAST")

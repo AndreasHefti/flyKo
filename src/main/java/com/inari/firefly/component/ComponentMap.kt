@@ -1,6 +1,6 @@
 package com.inari.firefly.component
 
-import com.inari.firefly.Expr
+import com.inari.firefly.Consumer
 import com.inari.firefly.IntFunction
 import com.inari.firefly.Predicate
 import com.inari.firefly.Receiver
@@ -32,13 +32,13 @@ interface ComponentMap<C : Component> : ComponentMapRO<C> {
     fun indexIterator(predicate: Predicate<C>): IntFunction
     fun nextActive(from: Int): Int
     fun receiver(): Receiver<C>
-    fun forEach(expr: Expr<C>)
-    fun forEachActive(expr: Expr<C>)
-    fun forEachIn(bag: IntBagRO, expr: Expr<C>)
-    fun <CC : C> forEachSubtypeIn(bag: IntBagRO, expr: Expr<CC>)
+    fun forEach(expr: Consumer<C>)
+    fun forEachActive(expr: Consumer<C>)
+    fun forEachIn(bag: IntBagRO, expr: Consumer<C>)
+    fun <CC : C> forEachSubtypeIn(bag: IntBagRO, expr: Consumer<CC>)
 //    TODO
-//    fun forEachIn(set: BitSet, expr: Expr<C>)
-//    fun <CC : C> forEachSubtypeIn(set: BitSet, expr: Expr<CC>)
+//    fun forEachIn(set: BitSet, expr: Consumer<C>)
+//    fun <CC : C> forEachSubtypeIn(set: BitSet, expr: Consumer<CC>)
 
     fun clear()
 }

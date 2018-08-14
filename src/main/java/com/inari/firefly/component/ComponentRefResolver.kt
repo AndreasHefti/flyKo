@@ -1,6 +1,6 @@
 package com.inari.firefly.component
 
-import com.inari.firefly.Expr
+import com.inari.firefly.Consumer
 import com.inari.firefly.FFContext
 import com.inari.firefly.Named
 import com.inari.firefly.system.component.SingletonComponent
@@ -9,7 +9,7 @@ import com.inari.util.indexed.Indexed
 
 class ComponentRefResolver<T : Component>(
     private val type: ComponentType<T>,
-    private val receiver: Expr<Int>
+    private val receiver: Consumer<Int>
 ) {
 
     operator fun invoke(id: CompId) = receiver(id.instanceId)

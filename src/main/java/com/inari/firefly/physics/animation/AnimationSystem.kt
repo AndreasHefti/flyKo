@@ -1,6 +1,6 @@
 package com.inari.firefly.physics.animation
 
-import com.inari.firefly.Expr
+import com.inari.firefly.Consumer
 import com.inari.firefly.FFApp
 import com.inari.firefly.FFContext
 import com.inari.firefly.control.ControllerSystem
@@ -23,7 +23,7 @@ object AnimationSystem : ComponentSystem {
     )
 
     init {
-        val update: Expr<Animation> = { animation -> animation.update() }
+        val update: Consumer<Animation> = { animation -> animation.update() }
 
         FFContext.registerListener(FFApp.UpdateEvent, object : FFApp.UpdateEvent.Listener {
             override fun invoke() =

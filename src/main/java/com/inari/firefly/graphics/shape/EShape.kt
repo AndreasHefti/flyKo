@@ -44,7 +44,9 @@ class EShape private constructor(): EntityComponent() {
     var ff_Blend: BlendMode
         get() = data.blend
         set(value) { data.blend = value }
-    val ff_Shader = AssetInstanceRefResolver({ index -> data.shaderRef = index })
+    val ff_Shader = AssetInstanceRefResolver(
+        { index -> data.shaderRef = index },
+        { data.shaderRef })
 
     override fun reset() {
         data.reset()
