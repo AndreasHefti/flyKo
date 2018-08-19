@@ -49,7 +49,7 @@ object FFContext {
 
     fun <S : ComponentSystem> loadSystem(system: S) {
         for (aspect in system.supportedComponents)
-            systemTypeMapping.set(aspect.aspectIndex, system)
+            systemTypeMapping[aspect.aspectIndex] = system
     }
 
     fun <C : Component> mapper(compAspect: Aspect): ComponentMap<C>  =
@@ -61,16 +61,16 @@ object FFContext {
 
 
     fun <C : Component> mapper(id: CompId): ComponentMap<C> =
-        mapper(id.componentType)
+        mapper<C>(id.componentType)
 
     fun <C : Component> mapper(id: CompNameId): ComponentMap<C> =
-        mapper(id.componentType)
+        mapper<C>(id.componentType)
 
     fun <C : SystemComponent> mapper(coType: SystemComponentType<C>): ComponentMap<C> =
         mapper(coType.compAspect)
 
     @Suppress("UNCHECKED_CAST")
-    fun <C : Component> mapper(coType: ComponentType<*>): ComponentMap<C> {
+    fun <C : Component> mapper(coType: ComponentType<C>): ComponentMap<C> {
         val index = coType.aspectIndex
         if (!componentMaps.contains(index))
             throw RuntimeException("No Component Mapper registered for subType: $coType")

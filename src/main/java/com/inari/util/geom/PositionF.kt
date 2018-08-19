@@ -29,6 +29,11 @@ data class PositionF constructor(
         this.y = y
     }
 
+    operator fun invoke(x: Int, y: Int) {
+        this.x = x.toFloat()
+        this.y = y.toFloat()
+    }
+
     /** Use this to set the x/y axis values from specified Position p
      * @param p the Position to get/take the attributes from
      */
