@@ -13,7 +13,7 @@ class SpriteParticleRenderer private constructor() : Renderer() {
 
     override fun match(entity: Entity): Boolean =
         entity.components.include(MATCHING_ASPECTS) &&
-            entity[EParticle].rendererRef == index
+            entity[EParticle].rendererRef == aspectIndex
 
     override fun render(viewIndex: Int, layerIndex: Int, clip: Rectangle) {
         val toRender = getIfNotEmpty(viewIndex, layerIndex) ?: return
