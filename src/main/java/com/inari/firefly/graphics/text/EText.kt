@@ -13,7 +13,7 @@ import com.inari.util.graphics.RGBColor
 
 class EText private constructor() : EntityComponent() {
 
-    @JvmField internal var rendererRef = SimpleTextRenderer.aspectIndex
+    @JvmField internal var rendererRef = SimpleTextRenderer.instance.index
     @JvmField internal var fontAssetRef = -1
     @JvmField internal var shaderRef = -1
     @JvmField internal val textBuffer = StringBuffer()

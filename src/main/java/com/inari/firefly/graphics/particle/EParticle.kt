@@ -10,7 +10,7 @@ import com.inari.util.collection.DynArray
 
 class EParticle private constructor() : EntityComponent() {
 
-    @JvmField internal var rendererRef = SpriteParticleRenderer.aspectIndex
+    @JvmField internal var rendererRef = SpriteParticleRenderer.instance.index
     private val particle: DynArray<Particle> = DynArray.of(Particle::class.java)
 
     var ff_Renderer = ComponentRefResolver(Renderer) { index-> rendererRef = index }

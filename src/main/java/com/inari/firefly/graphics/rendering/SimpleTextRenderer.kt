@@ -15,7 +15,7 @@ class SimpleTextRenderer private constructor() : Renderer() {
 
     override fun match(entity: Entity): Boolean =
         entity.components.include(MATCHING_ASPECTS) &&
-            entity[EText].rendererRef == aspectIndex
+            entity[EText].rendererRef == index
 
     override fun render(viewIndex: Int, layerIndex: Int, clip: Rectangle) {
         val toRender = getIfNotEmpty(viewIndex, layerIndex) ?: return
