@@ -87,11 +87,6 @@ object ViewSystem : ComponentSystem {
             throw IllegalStateException("Base View cannot be deactivated")
 
         updateViewMapping()
-
-        val i = layersOfView[view.index]!!.iterator()
-        while (i.hasNext())
-            layers.deactivate(i.next())
-
         if (view.controllerRef >= 0)
             ControllerSystem.controller[view.controllerRef]
                 .unregister(view.componentId)
