@@ -11,7 +11,7 @@ import com.inari.firefly.graphics.rendering.Renderer
 import com.inari.firefly.graphics.rendering.SimpleTextRenderer
 import com.inari.util.graphics.RGBColor
 
-class EText private constructor() : EntityComponent() {
+class EText private constructor() : EntityComponent(EText::class.java.name) {
 
     @JvmField internal var rendererRef = SimpleTextRenderer.instance.index
     @JvmField internal var fontAssetRef = -1

@@ -1,29 +1,25 @@
-/*******************************************************************************
- * Copyright (c) 2015 - 2016 - 2016, Andreas Hefti, inarisoft@yahoo.de
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package com.inari.util.collection
 
+import java.util.*
 
-import java.util.Arrays
-import java.util.BitSet
+interface DynIntArrayRO {
+    val nullValue: Int
+    val expand: Int
+    val isEmpty: Boolean
+    val size: Int
+    val length: Int
+    fun isEmpty(index: Int): Boolean
+    operator fun contains(value: Int): Boolean
+    operator fun get(index: Int): Int
+    fun indexOf(value: Int): Int
+    operator fun iterator(): IntIterator
+}
 
-class IntBag(
+class DynIntArray(
     initSize: Int = 10,
     override val nullValue: Int = Integer.MIN_VALUE,
     override val expand: Int = 10
-) : IntBagRO {
+) : DynIntArrayRO {
 
     private var array: IntArray = IntArray(initSize) { nullValue }
     override var size = 0
@@ -77,7 +73,7 @@ class IntBag(
         return oldLength
     }
 
-    fun addAll(toAdd: IntBagRO) {
+    fun addAll(toAdd: DynIntArrayRO) {
         for (i in 0 until toAdd.length) {
             if (toAdd.isEmpty(i))
                 continue
@@ -137,7 +133,7 @@ class IntBag(
         array[index]
 
     override fun iterator(): IntIterator =
-        IntBagIterator()
+        DynIntArrayIterator()
 
     private fun firstEmptyIndex(): Int =
         indexOf(nullValue)
@@ -205,7 +201,7 @@ class IntBag(
         System.arraycopy(temp, 0, array, 0, temp.size)
     }
 
-    private inner class IntBagIterator internal constructor() : IntIterator() {
+    private inner class DynIntArrayIterator internal constructor() : IntIterator() {
 
         private var currentIndex = 0
 
@@ -226,5 +222,4 @@ class IntBag(
                 currentIndex++
         }
     }
-
 }

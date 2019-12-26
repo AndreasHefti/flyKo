@@ -8,7 +8,7 @@ import com.inari.firefly.graphics.rendering.Renderer
 import com.inari.firefly.graphics.rendering.SpriteParticleRenderer
 import com.inari.util.collection.DynArray
 
-class EParticle private constructor() : EntityComponent() {
+class EParticle private constructor() : EntityComponent(EParticle::class.java.name) {
 
     @JvmField internal var rendererRef = SpriteParticleRenderer.instance.index
     private val particle: DynArray<Particle> = DynArray.of(Particle::class.java)

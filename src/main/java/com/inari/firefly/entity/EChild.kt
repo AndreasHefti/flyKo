@@ -3,7 +3,7 @@ package com.inari.firefly.entity
 import com.inari.firefly.component.ComponentRefResolver
 import com.inari.firefly.component.ComponentType
 
-class EChild private constructor () : EntityComponent() {
+class EChild private constructor () : EntityComponent(EChild::class.java.name) {
 
     @JvmField internal var parent: Int = -1
     @JvmField internal var zpos: Int = -1

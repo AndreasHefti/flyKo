@@ -8,8 +8,11 @@ import com.inari.firefly.entity.EntityComponent.Companion.ENTITY_COMPONENT_ASPEC
 import com.inari.util.aspect.Aspect
 import com.inari.util.aspect.AspectType
 import com.inari.util.aspect.IndexedAspectType
+import com.inari.util.indexed.AbstractIndexed
 
-abstract class EntityComponent protected constructor() : Component {
+abstract class EntityComponent protected constructor(
+    objectIndexerName: String
+) : AbstractIndexed(objectIndexerName), Component {
     
     /** An EntityComponent instance has no object index (-1) only a subType index
      *  supported by the index subType key
@@ -57,11 +60,6 @@ abstract class EntityComponent protected constructor() : Component {
 
     abstract fun componentType(): ComponentType<out EntityComponent>
 
-    override val index: Int
-        get() = componentType().aspectIndex
-    override val indexedTypeName: String
-        get() = ENTITY_COMPONENT_ASPECTS.name
-
     companion object {
         val ENTITY_COMPONENT_ASPECTS = IndexedAspectType("ENTITY_COMPONENT_ASPECTS")
     }
@@ -82,7 +80,7 @@ abstract class EntityComponentBuilder<C : EntityComponent> : ComponentType<C> {
 }
 
 abstract class EntityComponentType<C : EntityComponent>(
-    final override val typeClass: Class<out EntityComponent>
+    final override val typeClass: Class<out C>
 ) : EntityComponentBuilder<C>(), ComponentType<C> {
     val compAspect: Aspect = ENTITY_COMPONENT_ASPECTS.createAspect(typeClass.simpleName)
     final override val aspectIndex: Int = compAspect.aspectIndex

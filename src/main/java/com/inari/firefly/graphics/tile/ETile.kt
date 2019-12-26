@@ -14,9 +14,7 @@ import com.inari.firefly.graphics.BlendMode
 import com.inari.util.collection.DynArray
 import com.inari.util.graphics.RGBColor
 
-class ETile private constructor (
-
-) : EntityComponent() {
+class ETile private constructor () : EntityComponent(ETile::class.java.name) {
 
     @JvmField internal val spriteRenderable = SpriteRenderable()
     @JvmField internal var positions: DynArray<Position> = DynArray.of(Position::class.java)

@@ -1,6 +1,6 @@
 package com.inari.util.aspect
 
-import com.inari.util.collection.IntBag
+import com.inari.util.collection.DynIntArray
 import com.inari.util.indexed.Indexed
 
 import java.util.*
@@ -19,9 +19,9 @@ class Aspects internal constructor(
     val copy: Aspects
         get() = Aspects(this)
 
-    val values: IntBag
+    val values: DynIntArray
         get() {
-            val result = IntBag(bitSet.cardinality())
+            val result = DynIntArray(bitSet.cardinality())
             var i = bitSet.nextSetBit(0)
             while (i >= 0) {
                 result.add(i)
@@ -58,8 +58,6 @@ class Aspects internal constructor(
         bitSet.set(aspect.aspectIndex, false)
         return this
     }
-
-
 
     operator fun minus(aspects: Aspects): Aspects {
         checkType(aspects)
@@ -114,7 +112,7 @@ class Aspects internal constructor(
 
     private fun checkType(aspects: Aspects) {
         if (aspects.type !== type)
-            throw IllegalArgumentException("Aspect aspectGroup mismatch: " + aspects.type + " " + type)
+            throw IllegalArgumentException("Aspect aspectGroup mismatch: ${aspects.type} $type")
     }
 
     private fun checkType(aspect: Aspect) {

@@ -6,7 +6,7 @@ import com.inari.firefly.system.FFSystem
 import com.inari.util.aspect.Aspects
 import com.inari.util.collection.DynArray
 import com.inari.util.collection.DynArrayRO
-import com.inari.util.collection.IntBagRO
+import com.inari.util.collection.DynIntArrayRO
 import java.util.*
 
 interface ComponentSystem : FFSystem {
@@ -27,7 +27,7 @@ interface ComponentSystem : FFSystem {
                 type, size, exp, activationMapping, nameMapping, listener
             )
             if (mapToContext)
-                FFContext.componentMaps.set(mapper.typeIndex, mapper)
+                FFContext.componentMaps[mapper.typeIndex] = mapper
             return mapper
         }
     }
@@ -162,7 +162,7 @@ interface ComponentSystem : FFSystem {
 
         override fun receiver(): Receiver<C> = { c -> add(c) }
 
-        override  fun forEach(expr: Consumer<C>) =
+        override fun forEach(expr: Consumer<C>) =
             map.forEach{ c -> expr(c) }
 
         override fun forEachActive(expr: (C) -> Unit) {
@@ -173,13 +173,13 @@ interface ComponentSystem : FFSystem {
             }
         }
 
-        override fun forEachIn(bag: IntBagRO, expr: Consumer<C>) {
+        override fun forEachIn(bag: DynIntArrayRO, expr: Consumer<C>) {
             val i = bag.iterator()
             while (i.hasNext())
                 expr(map[i.next()]!!)
         }
 
-        override fun <CC : C> forEachSubtypeIn(bag: IntBagRO, expr: Consumer<CC>) {
+        override fun <CC : C> forEachSubtypeIn(bag: DynIntArrayRO, expr: Consumer<CC>) {
             val i = bag.iterator()
             while (i.hasNext()) {
                 @Suppress("UNCHECKED_CAST")

@@ -8,7 +8,7 @@ import com.inari.firefly.control.Controller
 import com.inari.util.aspect.Aspects
 import com.inari.util.aspect.IndexedAspectType
 
-class EMeta private constructor() : EntityComponent(), NamedComponent {
+class EMeta private constructor() : EntityComponent(EMeta::class.java.name), NamedComponent {
 
     @JvmField internal var controllerRef = -1
     override var name: String = NO_NAME
@@ -18,8 +18,8 @@ class EMeta private constructor() : EntityComponent(), NamedComponent {
 
     var ff_Name: String
         set(ff_Name) {
-            if (name !== com.inari.firefly.NO_NAME) {
-                throw IllegalStateException("Illegal reassignment of name: $ff_Name to: $ff_Name" )
+            check(!(name !== NO_NAME)) {
+                "Illegal reassignment of name: $ff_Name to: $ff_Name"
             }
             name = ff_Name
         }

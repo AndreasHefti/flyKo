@@ -13,7 +13,7 @@ import com.inari.firefly.graphics.view.View
 import com.inari.firefly.graphics.view.ViewLayerAware
 import com.inari.util.geom.Vector2f
 
-class ETransform private constructor() : EntityComponent(), ViewLayerAware {
+class ETransform private constructor() : EntityComponent(ETransform::class.java.name), ViewLayerAware {
 
     @JvmField internal var viewRef = 0
     @JvmField internal var layerRef = 0

@@ -7,7 +7,7 @@ import com.inari.firefly.entity.EntityComponent
 import com.inari.firefly.entity.EntityComponentType
 import com.inari.util.collection.DynArray
 
-class EMultiplier private constructor () : EntityComponent() {
+class EMultiplier private constructor () : EntityComponent(EMultiplier::class.java.name) {
 
     @JvmField internal val positions: DynArray<PositionF> =
         DynArray.of(PositionF::class.java)

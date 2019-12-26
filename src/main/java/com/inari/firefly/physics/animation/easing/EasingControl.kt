@@ -28,9 +28,9 @@ internal class EasingControl(
         if (changeInValue < 0) {
             inverse = true
             changeInValue = Math.abs(changeInValue)
-        } else {
+        } else
             inverse = false
-        }
+
         propertyAccessor?.set(startValue)
     }
 
@@ -44,17 +44,15 @@ internal class EasingControl(
                     endValue = tmp
                 }
                 reset()
-            } else {
+            } else
                 AnimationSystem.animations.deactivate(animation.index)
-            }
             return
         }
 
         val t: Float = runningTime.toFloat() / duration
         var value = changeInValue * easing(t)
-        if (inverse) {
+        if (inverse)
             value *= -1
-        }
 
         propertyAccessor?.set(startValue + value)
     }

@@ -13,7 +13,7 @@ import com.inari.firefly.graphics.BlendMode
 import com.inari.util.graphics.RGBColor
 import java.util.*
 
-class EShape private constructor(): EntityComponent() {
+class EShape private constructor(): EntityComponent(EShape::class.java.name) {
 
     @JvmField val data = ShapeData()
 

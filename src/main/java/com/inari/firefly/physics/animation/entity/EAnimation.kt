@@ -7,7 +7,7 @@ import com.inari.firefly.entity.EntityComponent
 import com.inari.firefly.entity.EntityComponentType
 import java.util.*
 
-class EAnimation : EntityComponent() {
+class EAnimation : EntityComponent(EAnimation::class.java.name) {
 
     @JvmField internal var controllerRef = -1
     @JvmField internal val animations: BitSet = BitSet()

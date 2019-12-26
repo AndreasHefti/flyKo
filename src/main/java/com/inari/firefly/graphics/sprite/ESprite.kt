@@ -12,7 +12,7 @@ import com.inari.firefly.graphics.BlendMode
 import com.inari.util.graphics.RGBColor
 
 
-class ESprite private constructor () : EntityComponent() {
+class ESprite private constructor () : EntityComponent(ESprite::class.java.name) {
 
     @JvmField internal val spriteRenderable = SpriteRenderable()
 

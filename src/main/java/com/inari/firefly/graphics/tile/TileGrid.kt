@@ -127,13 +127,13 @@ class TileGrid private constructor() : SystemComponent(TileGrid::class.java.name
     fun getNeighbour(xpos: Int, ypos: Int, direction: Direction, xDistance: Int, yDistance: Int): Int =
         get(
             when (direction.horizontal) {
-                WEST ->  xpos - xDistance
-                EAST ->  xpos + xDistance
+                Orientation.WEST ->  xpos - xDistance
+                Orientation.EAST ->  xpos + xDistance
                 else -> xpos
             },
             when (direction.vertical) {
-                NORTH -> ypos + yDistance
-                SOUTH -> ypos + yDistance
+                Orientation.NORTH -> ypos + yDistance
+                Orientation.SOUTH -> ypos + yDistance
                 else -> ypos
             }
         )
@@ -263,7 +263,7 @@ class TileGrid private constructor() : SystemComponent(TileGrid::class.java.name
                     return if (POOL.isEmpty())
                         TileGridIterator()
                      else
-                        POOL.pollLast()
+                        POOL.pollLast()!!
                 }
         }
     }

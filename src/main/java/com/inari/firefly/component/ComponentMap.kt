@@ -5,7 +5,7 @@ import com.inari.firefly.IntFunction
 import com.inari.firefly.Predicate
 import com.inari.firefly.Receiver
 import com.inari.util.collection.DynArrayRO
-import com.inari.util.collection.IntBagRO
+import com.inari.util.collection.DynIntArrayRO
 
 interface ComponentMap<C : Component> : ComponentMapRO<C> {
 
@@ -34,8 +34,8 @@ interface ComponentMap<C : Component> : ComponentMapRO<C> {
     fun receiver(): Receiver<C>
     fun forEach(expr: Consumer<C>)
     fun forEachActive(expr: Consumer<C>)
-    fun forEachIn(bag: IntBagRO, expr: Consumer<C>)
-    fun <CC : C> forEachSubtypeIn(bag: IntBagRO, expr: Consumer<CC>)
+    fun forEachIn(bag: DynIntArrayRO, expr: Consumer<C>)
+    fun <CC : C> forEachSubtypeIn(bag: DynIntArrayRO, expr: Consumer<CC>)
 //    TODO
 //    fun forEachIn(set: BitSet, expr: Consumer<C>)
 //    fun <CC : C> forEachSubtypeIn(set: BitSet, expr: Consumer<CC>)

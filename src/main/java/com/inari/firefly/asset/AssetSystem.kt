@@ -5,7 +5,7 @@ import com.inari.firefly.component.ComponentMap.MapAction
 import com.inari.firefly.system.component.ComponentSystem
 import com.inari.firefly.system.component.SystemComponent
 import com.inari.util.aspect.Aspects
-import com.inari.util.collection.IntBag
+import com.inari.util.collection.DynIntArray
 
 
 object AssetSystem : ComponentSystem {
@@ -25,7 +25,7 @@ object AssetSystem : ComponentSystem {
         } }
     )
 
-    private val dependingAssetIds: IntBag = IntBag(1, -1)
+    private val dependingAssetIds: DynIntArray = DynIntArray(1, -1)
 
     init {
         FFContext.loadSystem(this)

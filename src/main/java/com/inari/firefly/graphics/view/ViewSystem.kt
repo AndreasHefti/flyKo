@@ -10,7 +10,7 @@ import com.inari.firefly.system.component.ComponentSystem
 import com.inari.firefly.system.component.SystemComponent
 import com.inari.util.aspect.Aspects
 import com.inari.util.collection.DynArray
-import com.inari.util.collection.IntBag
+import com.inari.util.collection.DynIntArray
 import com.inari.util.geom.Rectangle
 
 object ViewSystem : ComponentSystem {
@@ -41,9 +41,9 @@ object ViewSystem : ComponentSystem {
 
     @JvmField val baseView: View
     @JvmField internal val activeViewPorts: DynArray<ViewData> = DynArray.of(ViewData::class.java)
-    @JvmField internal val layersOfView: DynArray<IntBag> = DynArray.of(IntBag::class.java)
+    @JvmField internal val layersOfView: DynArray<DynIntArray> = DynArray.of(DynIntArray::class.java)
 
-    private val orderedView: IntBag = IntBag(10, -1, 5)
+    private val orderedView: DynIntArray = DynIntArray(10, -1, 5)
 
     init {
         baseView = View.buildAndGet {
@@ -61,7 +61,7 @@ object ViewSystem : ComponentSystem {
     private fun created(view: View) {
         val index = view.index
         if (index !in layersOfView)
-            layersOfView[index] = IntBag(10, -1, 5)
+            layersOfView[index] = DynIntArray(10, -1, 5)
 
         if (!view.baseView)
             orderedView.add(index)

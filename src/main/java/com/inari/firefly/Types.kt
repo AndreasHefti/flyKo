@@ -10,6 +10,14 @@ typealias Supplier<C> = () -> C
 
 typealias Receiver<C> = (C) -> C
 
+interface FloatGetter {
+    operator fun invoke(): Float
+}
+
+interface FloatSetter {
+    operator fun invoke(f: Float)
+}
+
 /** An Expression expecting an int. This is used instead of Consumer<Init> that is
  *  in fact a function (Int) -> Init to avoid auto boxing
  */

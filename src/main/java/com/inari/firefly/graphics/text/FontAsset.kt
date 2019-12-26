@@ -5,7 +5,7 @@ import com.inari.firefly.asset.Asset
 import com.inari.firefly.external.SpriteData
 import com.inari.firefly.external.TextureData
 import com.inari.firefly.system.component.SystemComponentSubType
-import com.inari.util.collection.IntBag
+import com.inari.util.collection.DynIntArray
 
 
 class FontAsset : Asset() {
@@ -18,7 +18,7 @@ class FontAsset : Asset() {
     @JvmField internal var lineSpace = 0
     @JvmField internal var defaultChar = -1
 
-    internal val charSpriteMap = IntBag(256, -1)
+    internal val charSpriteMap = DynIntArray(256, -1)
     private val tmpSpriteData = SpriteData()
 
     var ff_ResourceName: String

@@ -10,7 +10,7 @@ import com.inari.util.geom.BitMask
 import com.inari.util.geom.Rectangle
 import com.inari.util.indexed.Indexed
 
-class EContact private constructor() : EntityComponent() {
+class EContact private constructor() : EntityComponent(EContact::class.java.name) {
 
     @JvmField internal var resolverRef = -1
     @JvmField internal val bounds = Rectangle()

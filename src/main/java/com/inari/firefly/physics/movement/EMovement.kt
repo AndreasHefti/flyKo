@@ -9,7 +9,7 @@ import com.inari.firefly.entity.EntityComponentType
 import com.inari.firefly.external.FFTimer
 import com.inari.util.geom.Vector2f
 
-class EMovement private constructor() : EntityComponent() {
+class EMovement private constructor() : EntityComponent(EMovement::class.java.name) {
 
     @JvmField internal var controllerRef = -1
     @JvmField internal var active = false
