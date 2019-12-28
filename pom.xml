@@ -74,6 +74,11 @@
                 </executions>
             </plugin>
         </plugins>
+        <resources>
+            <resource>
+            <directory>assets</directory>
+            </resource>
+        </resources>
     </build>
 
     <dependencies>
