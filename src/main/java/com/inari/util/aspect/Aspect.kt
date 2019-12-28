@@ -75,3 +75,5 @@ class IndexedAspectType(
 
 }
 
+class AspectTypeMismatchException(val msg: String) : RuntimeException(msg)
+

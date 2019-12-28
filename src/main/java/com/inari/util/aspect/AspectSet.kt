@@ -23,15 +23,13 @@ class AspectSet<T> constructor(
     val length: Int get() =
         aspects.size
 
-    fun set(aspect: Aspect, value: T): T? {
+    fun set(aspect: Aspect, value: T) {
         if (aspectType.typeCheck(aspect)) {
             aspects + aspect
-            val oldValue: T? = values[aspect.aspectIndex]
             values[aspect.aspectIndex] = value
-            return oldValue
+        } else {
+            throw AspectTypeMismatchException("this-aspect-type: ${this.aspectType} other-aspect-type: ${aspect.aspectType}")
         }
-
-        return value
     }
 
     fun get(aspect: Aspect): T? {

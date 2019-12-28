@@ -22,5 +22,5 @@ class C1Impl : C1  {
 @Test
 fun test1() {
     val c1 = C1Impl()
-    System.out.print(c1.foo())
+    print(c1.foo())
 }
