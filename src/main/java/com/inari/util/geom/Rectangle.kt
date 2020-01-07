@@ -50,7 +50,7 @@ data class Rectangle constructor(
     operator fun invoke(x: Int, y: Int) =
         pos(x, y)
 
-    operator fun invoke(x: Int, y: Int, w: Int, h: Int) {
+    operator fun invoke(x: Int = 0, y: Int = 0, w: Int, h: Int) {
         pos(x, y)
         width = w
         height = h
