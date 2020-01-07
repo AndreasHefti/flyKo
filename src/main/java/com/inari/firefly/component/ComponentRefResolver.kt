@@ -21,6 +21,4 @@ class ComponentRefResolver<T : Component>(
     operator fun invoke(component: SystemComponent) = receiver(component.index)
     operator fun invoke(singleton: SingletonComponent<*, *>) = receiver(singleton.instance.index)
 
-
-
 }

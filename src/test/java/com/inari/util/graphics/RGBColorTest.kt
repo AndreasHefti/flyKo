@@ -11,9 +11,9 @@ class RGBColorTest {
     fun testCreation() {
         var color = RGBColor()
         assertEquals("[r=0.0,g=0.0,b=0.0,a=1.0]", color.toString())
-        assertTrue(color.hasAlpha)
+        assertFalse(color.hasAlpha)
         color = RGBColor(.5f, .3f, .4f)
-        assertEquals("[r=0.5,g=0.3,b=0.4,a=-1.0]", color.toString())
+        assertEquals("[r=0.5,g=0.3,b=0.4,a=1.0]", color.toString())
         assertFalse(color.hasAlpha)
         color = RGBColor(.5f, .3f, .4f, .6f)
         assertEquals("[r=0.5,g=0.3,b=0.4,a=0.6]", color.toString())
@@ -22,7 +22,7 @@ class RGBColorTest {
         assertEquals("[r=1.0,g=0.0,b=0.4,a=0.6]", color.toString())
 
         color = RGBColor.of(100, 100, 200)
-        assertEquals("[r=0.39215687,g=0.39215687,b=0.78431374,a=-1.0]", color.toString())
+        assertEquals("[r=0.39215687,g=0.39215687,b=0.78431374,a=1.0]", color.toString())
         // out of range --> range correction
         color = RGBColor.of(100, -100, 500, 20)
         assertEquals("[r=0.39215687,g=0.0,b=1.0,a=0.078431375]", color.toString())
@@ -42,11 +42,11 @@ class RGBColorTest {
 
     @Test
     fun testConstants() {
-        assertEquals("[r=0.0,g=0.0,b=0.0,a=1.0]", RGBColor.black.toString())
-        assertEquals("[r=0.0,g=0.0,b=1.0,a=1.0]", RGBColor.blu.toString())
-        assertEquals("[r=0.0,g=1.0,b=0.0,a=1.0]", RGBColor.green.toString())
-        assertEquals("[r=1.0,g=0.0,b=0.0,a=1.0]", RGBColor.red.toString())
-        assertEquals("[r=1.0,g=1.0,b=1.0,a=1.0]", RGBColor.white.toString())
+        assertEquals("[r=0.0,g=0.0,b=0.0,a=1.0]", RGBColor.BLACK.toString())
+        assertEquals("[r=0.0,g=0.0,b=1.0,a=1.0]", RGBColor.BLU.toString())
+        assertEquals("[r=0.0,g=1.0,b=0.0,a=1.0]", RGBColor.GREEN.toString())
+        assertEquals("[r=1.0,g=0.0,b=0.0,a=1.0]", RGBColor.RED.toString())
+        assertEquals("[r=1.0,g=1.0,b=1.0,a=1.0]", RGBColor.WHITE.toString())
     }
 
 }

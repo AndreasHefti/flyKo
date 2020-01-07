@@ -13,6 +13,11 @@ class ArrayAccessor<T>(
         array.add(t)
         if (trim) array.trim()
     }
+    fun addAll(a: Collection<T>) {
+        for (value in a)
+            array.add(value)
+        if (trim) array.trim()
+    }
     fun addAll(a: DynArray<T>) {
         a.addAll(array)
         if (trim) array.trim()
@@ -22,7 +27,7 @@ class ArrayAccessor<T>(
         if (trim) array.trim()
     }
     fun set(t: T, index: Int) {
-        array.set(index, t)
+        array[index] = t
         if (trim) array.trim()
     }
     fun delete(t: T) {

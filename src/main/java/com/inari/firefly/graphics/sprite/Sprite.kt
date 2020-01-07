@@ -11,6 +11,7 @@ class Sprite(
     @JvmField val flipV: Boolean = false,
     @JvmField val name: String = NO_NAME
 ) {
+
     @JvmField internal var instId = -1
     val instanceId: Int get() = instId
 

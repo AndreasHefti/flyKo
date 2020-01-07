@@ -10,43 +10,35 @@ package com.inari.util.graphics
 class RGBColor {
 
     /** The red ratio value of the color  */
-    var r: Float = 0f
+    var r: Float
         set(value) {field = adjustValue(value)}
     /** The green ratio value of the color  */
-    var g: Float = 0f
+    var g: Float
         set(value) {field = adjustValue(value)}
     /** The blue ratio value of the color  */
-    var b: Float = 0f
+    var b: Float
         set(value) {field = adjustValue(value)}
     /** The alpha ratio value of the color  */
-    var a: Float = -1f
+    var a: Float
         set(value) {field = adjustValue(value)}
 
-    constructor() {
-        a = 1f
-    }
-    constructor(r: Float, g: Float, b: Float) {
-        this.r = r
-        this.g = g
-        this.b = b
-    }
-    constructor(r: Float, g: Float, b: Float, a: Float) {
+    private val immutable: Boolean
+
+    constructor(r: Float = 0f, g: Float = 0f, b: Float = 0f, a: Float = 1f, immutable: Boolean = false) {
         this.r = r
         this.g = g
         this.b = b
         this.a = a
+        this.immutable = immutable
     }
 
     /** Copy constructor  */
     constructor(source: RGBColor) : this(source.r, source.g, source.b, source.a)
 
-    operator fun invoke(r: Float, g: Float, b: Float) {
-        this.r = r
-        this.g = g
-        this.b = b
-    }
+    operator fun invoke(r: Float = 0f, g: Float = 0f, b: Float = 0f, a: Float = 1f) {
+        if (this.immutable)
+            throw IllegalAccessException("Immutable")
 
-    operator fun invoke(r: Float, g: Float, b: Float, a: Float) {
         this.r = r
         this.g = g
         this.b = b
@@ -54,6 +46,9 @@ class RGBColor {
     }
 
     operator fun invoke(color: RGBColor) {
+        if (this.immutable)
+            throw IllegalAccessException("Immutable")
+
         this.r = color.r
         this.g = color.g
         this.b = color.b
@@ -75,14 +70,19 @@ class RGBColor {
 
 
     /** Indicates if this RGBColor has an alpha ratio value (a >= 0)*/
-    val hasAlpha: Boolean get() = a >= 0
+    val hasAlpha: Boolean get() = a < 1f
 
-    private fun adjustValue(value: Float): Float =
-        when {
+    private fun adjustValue(value: Float): Float {
+        if (this.immutable)
+            throw IllegalAccessException("Immutable")
+
+        return when {
             value > 1.0f -> 1.0f
             value < 0.0f -> 0.0f
             else -> value
         }
+    }
+
 
     override fun toString(): String =
         "[r=$r,g=$g,b=$b,a=$a]"
@@ -113,11 +113,11 @@ class RGBColor {
 
     companion object {
 
-        val black: RGBColor get() = RGBColor(0f, 0f, 0f, 1f)
-        val white: RGBColor get() = RGBColor(1f, 1f, 1f, 1f)
-        val red:  RGBColor get() = RGBColor(1f, 0f, 0f, 1f)
-        val green:  RGBColor get() = RGBColor(0f, 1f, 0f, 1f)
-        val blu:  RGBColor get() = RGBColor(0f, 0f, 1f, 1f)
+        @JvmField val BLACK: RGBColor = RGBColor(0f, 0f, 0f, 1f, true)
+        @JvmField val WHITE: RGBColor = RGBColor(1f, 1f, 1f, 1f, true)
+        @JvmField val RED:  RGBColor = RGBColor(1f, 0f, 0f, 1f, true)
+        @JvmField val GREEN:  RGBColor = RGBColor(0f, 1f, 0f, 1f, true)
+        @JvmField val BLU:  RGBColor = RGBColor(0f, 0f, 1f, 1f, true)
 
         /** Create new RGBColor with specified r/g/b ratio values and no alpha (-1.0f)
          * @param r The red ratio value of the color: 0 - 255

@@ -48,6 +48,9 @@ interface ComponentSystem : FFSystem {
         private val active: BitSet = BitSet()
         private val nameMap: MutableMap<String, C>? = if (nameMapping) HashMap() else null
 
+        override val size: Int
+            get() = map.size
+
         override operator fun contains(index: Int): Boolean = map.contains(index)
         override operator fun contains(name: String): Boolean = internalIndexForName(name) >= 0
 

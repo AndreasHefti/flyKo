@@ -23,10 +23,6 @@ abstract class Asset protected constructor():
     fun loaded():Boolean =
         FFContext.isActive(componentId)
 
-    override fun componentType() =
-        Asset.Companion
-
+    override fun componentType() = Companion
     companion object : SystemComponentType<Asset>(Asset::class.java)
-
-
 }

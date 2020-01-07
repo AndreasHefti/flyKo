@@ -16,8 +16,7 @@
 package com.inari.util.collection
 
 import java.lang.reflect.Array.newInstance
-import java.util.Arrays
-import java.util.Comparator
+import java.util.*
 
 interface DynArrayRO<T> : Iterable<T> {
 
@@ -208,9 +207,9 @@ class DynArray<T> private constructor(
     }
 
     /** This removes all given equal instances to a given value instance from the DynArray.
-     * Uses equals to check equality and sets a null value on specified index where a equal instance was found
+     * Use equals to check equality and sets a null value on specified index where an equal instance is found
      *
-     * @param value The value to for that all given equal value instances are removed from the DynArray
+     * @param value The value for that all given equal value instances are removed from the DynArray
      * @return the number of removed instances.
      */
     fun removeAll(value: T?): Int {
@@ -310,7 +309,7 @@ class DynArray<T> private constructor(
     override fun toString(): String {
         val builder = StringBuilder()
         builder.append("DynArray [list=")
-        builder.append(Arrays.toString(array))
+        builder.append(array.contentToString())
         builder.append(", size=")
         builder.append(size)
         builder.append(", capacity=")
@@ -320,14 +319,18 @@ class DynArray<T> private constructor(
     }
 
     private fun ensureCapacity(index: Int) {
-        if (index < array.size) {
+        if (this === DynArray.EMPTY_ARRAY)
+            throw IllegalAccessException("EMPTY_ARRAY is immutable")
+
+        if (index < array.size)
             return
-        }
+
         val size = array.size
         var newSize = size
-        while (index >= newSize) {
+
+        while (index >= newSize)
             newSize += grow
-        }
+
         val oldArray = array
         @Suppress("UNCHECKED_CAST")
         array = newInstance(typeClass, newSize) as Array<T?>
@@ -335,8 +338,12 @@ class DynArray<T> private constructor(
     }
 
     private fun createList(initialCapacity: Int) {
-        @Suppress("UNCHECKED_CAST")
-        array = newInstance(typeClass, initialCapacity) as Array<T?>
+        if (initialCapacity > 0)
+            @Suppress("UNCHECKED_CAST")
+            array = newInstance(typeClass, initialCapacity) as Array<T?>
+        else
+            @Suppress("UNCHECKED_CAST")
+            array = newInstance(typeClass, 0) as Array<T?>
     }
 
     private inner class DynArrayIterator : Iterator<T> {
@@ -366,6 +373,11 @@ class DynArray<T> private constructor(
     }
 
     companion object {
+
+        @JvmField val EMPTY_ARRAY: DynArray<Any> = of(Any::class.java, -1, -1)
+
+        fun <T> empty(type: Class<T>): DynArray<T> =
+            EMPTY_ARRAY as DynArray<T>
 
         fun <T> of(type: Class<T>): DynArray<T> {
             return DynArray(type, 50, 20)

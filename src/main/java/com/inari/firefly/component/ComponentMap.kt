@@ -18,6 +18,7 @@ interface ComponentMap<C : Component> : ComponentMapRO<C> {
     val map: DynArrayRO<C>
     val activationMapping: Boolean
     val nameMapping: Boolean
+    val size: Int
 
     fun activate(index: Int)
     fun deactivate(index: Int)

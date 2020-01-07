@@ -68,6 +68,9 @@ class IndexedAspectType(
     ) : AbstractIndexed(aspectType.name), Aspect {
         override val aspectIndex: Int
             get() = index
+
+        override fun toString(): String =
+                "$aspectName:$aspectType"
     }
 
     override fun toString() =

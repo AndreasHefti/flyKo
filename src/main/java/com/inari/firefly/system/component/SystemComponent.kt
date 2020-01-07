@@ -30,6 +30,7 @@ abstract class SystemComponent protected constructor(
 
     var initialized:Boolean = false
         internal set
+
     internal fun _init() {
         super.applyNewIndex()
         init()
@@ -60,7 +61,7 @@ abstract class SystemComponent protected constructor(
         else value
 
     private fun <T> alreadyInit(name: String): T =
-        throw IllegalStateException("No set on already initialized property allowed for: $name")
+        throw IllegalStateException("Invalid modification on an immutable property of an already initialized component for: $name")
 
     abstract fun componentType(): ComponentType<out SystemComponent>
 
