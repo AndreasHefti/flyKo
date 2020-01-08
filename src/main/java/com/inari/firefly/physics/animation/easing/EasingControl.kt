@@ -5,6 +5,7 @@ import com.inari.firefly.entity.property.FloatPropertyAccessor
 import com.inari.firefly.physics.animation.Animation
 import com.inari.firefly.physics.animation.AnimationSystem
 import com.inari.util.geom.Easing
+import kotlin.math.abs
 
 internal class EasingControl(
     val animation: Animation
@@ -27,7 +28,7 @@ internal class EasingControl(
         changeInValue  = endValue - startValue
         if (changeInValue < 0) {
             inverse = true
-            changeInValue = Math.abs(changeInValue)
+            changeInValue = abs(changeInValue)
         } else
             inverse = false
 

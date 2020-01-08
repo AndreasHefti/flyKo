@@ -65,7 +65,6 @@ object TileSetSystem {
                 return next
             }
 
-
             return this
         }
 

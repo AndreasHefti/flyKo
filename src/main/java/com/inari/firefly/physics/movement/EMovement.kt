@@ -72,9 +72,7 @@ class EMovement private constructor() : EntityComponent(EMovement::class.java.na
         scheduler = INFINITE_SCHEDULER
     }
 
-    override fun componentType() =
-        EMovement.Companion
-
+    override fun componentType() = Companion
     companion object : EntityComponentType<EMovement>(EMovement::class.java) {
         override fun createEmpty() = EMovement()
     }

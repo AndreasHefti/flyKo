@@ -23,9 +23,7 @@ class Action private constructor() : TriggeredSystemComponent(Action::class.java
     fun <A : Trigger> withTrigger(cBuilder: Trigger.Subtype<A>, entityId: CompId, configure: (A.() -> Unit)): A =
         super.with(cBuilder, { entityAction(EntitySystem[entityId])}, configure)
 
-    override fun componentType() =
-        Action.Companion
-
+    override fun componentType() = Companion
     companion object : SystemComponentSingleType<Action>(Action::class.java) {
         override fun createEmpty() = Action()
     }

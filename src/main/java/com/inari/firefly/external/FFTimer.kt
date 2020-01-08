@@ -34,7 +34,7 @@ abstract class FFTimer protected constructor() : FFApp.SystemTimer() {
     fun createUpdateScheduler(resolution: Float): UpdateScheduler {
         return if (!updateSchedulers.containsKey(resolution)) {
             val updateScheduler = UpdateScheduler(resolution)
-            updateSchedulers.put(resolution, updateScheduler)
+            updateSchedulers[resolution] = updateScheduler
             schedulers.add(updateScheduler)
             updateScheduler
         } else {

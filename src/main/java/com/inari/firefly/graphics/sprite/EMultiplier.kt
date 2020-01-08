@@ -18,9 +18,7 @@ class EMultiplier private constructor () : EntityComponent(EMultiplier::class.ja
         positions.clear()
     }
 
-    override fun componentType(): ComponentType<EMultiplier> =
-        EMultiplier.Companion
-
+    override fun componentType(): ComponentType<EMultiplier> = Companion
     companion object : EntityComponentType<EMultiplier>(EMultiplier::class.java) {
         override fun createEmpty() = EMultiplier()
     }

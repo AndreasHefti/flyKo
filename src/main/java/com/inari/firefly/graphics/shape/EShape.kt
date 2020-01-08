@@ -11,7 +11,6 @@ import com.inari.firefly.external.ShapeData
 import com.inari.firefly.external.ShapeType
 import com.inari.firefly.graphics.BlendMode
 import com.inari.util.graphics.RGBColor
-import java.util.*
 
 class EShape private constructor(): EntityComponent(EShape::class.java.name) {
 
@@ -54,7 +53,7 @@ class EShape private constructor(): EntityComponent(EShape::class.java.name) {
 
     override fun toString(): String {
         return "EShape(subType=$data.subType, " +
-            "vertices=${Arrays.toString(data.vertices)}, " +
+            "vertices=${data.vertices.contentToString()}, " +
             "color1=$data.color1, " +
             "color2=$data.color2, " +
             "color3=$data.color3, " +
@@ -109,9 +108,7 @@ class EShape private constructor(): EntityComponent(EShape::class.java.name) {
         }
     }
 
-    override fun componentType(): ComponentType<EShape> =
-        EShape.Companion
-
+    override fun componentType(): ComponentType<EShape> = Companion
     companion object : EntityComponentType<EShape>(EShape::class.java) {
         override fun createEmpty() = EShape()
     }

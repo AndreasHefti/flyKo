@@ -18,16 +18,15 @@ package com.inari.firefly.external
 import com.inari.util.collection.DynArrayRO
 import com.inari.util.geom.Rectangle
 
-/** This defines the low level API interface for all graphical functions used by the firefly API.
- * The [ViewEventListener] implementation has to deal with [View](s) on lower level API.
+/** This defines the low level API-Interface for all graphical functions used by the firefly API.
  *
- * There are two kind of Views; The BaseView that always is the Window-View. No matter if there are more Views available, the BaseView is always existing.
- * And any number of VirtualViews. A VirtualView is a rectangular region within the BaseView that defines its own 2D space (camera/view).
+ * There are two kinds of Views; The BaseView that always is the Window-View. No matter if there are more Views available, the BaseView is always existing.
+ * Any number of VirtualViews. A VirtualView is a rectangular region within the BaseView that defines its own 2D space (camera/view).
  * Usually a VirtualView can be implemented within Viewports or FBO's within rendering to textures on GPU level.
- * For more Information about Views see [ViewSystem]
+ * For more Information about Views see ViewSystem
  *
  */
-interface FFGraphics /*ViewEventListener */ {
+interface FFGraphics {
 
     /** Use this to get the actual screen width
      * @return the actual screen width
@@ -64,7 +63,7 @@ interface FFGraphics /*ViewEventListener */ {
     /** This is called from the firefly API when a sprite is disposed
      * and must release and delete the sprite on lower level
      *
-     * @param the sprite identifier of the texture to dispose.
+     * @param spriteId the sprite identifier of the texture to dispose.
      */
     fun disposeSprite(spriteId: Int)
 

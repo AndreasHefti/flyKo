@@ -7,6 +7,7 @@ import com.inari.util.collection.DynArrayRO
 import com.inari.util.event.Event
 import com.inari.util.event.IEventDispatcher
 import com.inari.util.geom.Rectangle
+import kotlin.math.floor
 
 abstract class FFApp protected constructor(
     eventDispatcher: () -> IEventDispatcher,
@@ -29,9 +30,9 @@ abstract class FFApp protected constructor(
     }
 
     fun update() {
-        FFApp.timer.tick()
+        timer.tick()
         FFContext.notify(UpdateEvent)
-        FFApp.timer.updateSchedulers()
+        timer.updateSchedulers()
     }
 
     fun render() {
@@ -57,8 +58,8 @@ abstract class FFApp protected constructor(
         RenderEvent.viewIndex = view.index
         RenderEvent.layerIndex = 0
         RenderEvent.clip(
-            Math.floor(view.worldPosition.x.toDouble()).toInt(),
-            Math.floor(view.worldPosition.y.toDouble()).toInt(),
+            floor(view.worldPosition.x.toDouble()).toInt(),
+            floor(view.worldPosition.y.toDouble()).toInt(),
             view.bounds.width,
             view.bounds.height
         )
@@ -114,7 +115,7 @@ abstract class FFApp protected constructor(
 
     object UpdateEvent : Event<UpdateEvent.Listener>(EVENT_ASPECTS.createAspect("UpdateEvent")) {
 
-        override fun notify(listener: UpdateEvent.Listener) =
+        override fun notify(listener: Listener) =
             listener()
 
         interface Listener {
@@ -128,7 +129,7 @@ abstract class FFApp protected constructor(
         internal var layerIndex: Int = -1
         internal val clip: Rectangle = Rectangle(0, 0, 0, 0)
 
-        override fun notify(listener: RenderEvent.Listener) =
+        override fun notify(listener: Listener) =
             listener(viewIndex, layerIndex, clip)
 
         interface Listener {
@@ -138,7 +139,7 @@ abstract class FFApp protected constructor(
 
     object PostRenderEvent : Event<PostRenderEvent.Listener>(EVENT_ASPECTS.createAspect("PostRenderEvent")) {
 
-        override fun notify(listener: PostRenderEvent.Listener) =
+        override fun notify(listener: Listener) =
             listener()
 
         interface Listener {

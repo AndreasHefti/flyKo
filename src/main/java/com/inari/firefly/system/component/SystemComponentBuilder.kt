@@ -12,7 +12,7 @@ abstract class SystemComponentBuilder<out C : SystemComponent> : ComponentBuilde
     val build: (C.() -> Unit) -> CompId = { configure ->
         val comp: C = createEmpty()
         comp.also(configure)
-        comp._init()
+        comp.internalInit()
         FFContext.mapper<C>(compAspect).receiver()(comp)
         comp.componentId
     }
@@ -20,7 +20,7 @@ abstract class SystemComponentBuilder<out C : SystemComponent> : ComponentBuilde
     val buildAndGet: (C.() -> Unit) -> C = { configure ->
         val comp: C = createEmpty()
         comp.also(configure)
-        comp._init()
+        comp.internalInit()
         FFContext.mapper<C>(compAspect).receiver()(comp)
         comp
     }
@@ -28,7 +28,7 @@ abstract class SystemComponentBuilder<out C : SystemComponent> : ComponentBuilde
     val buildAndActivate: (C.() -> Unit) -> CompId = { configure ->
         val comp: C = createEmpty()
         comp.also(configure)
-        comp._init()
+        comp.internalInit()
         FFContext.mapper<C>(compAspect).receiver()(comp)
         FFContext.activate(comp.componentId)
         comp.componentId
@@ -37,7 +37,7 @@ abstract class SystemComponentBuilder<out C : SystemComponent> : ComponentBuilde
     val buildActivateAndGet: (C.() -> Unit) -> C = { configure ->
         val comp: C = createEmpty()
         comp.also(configure)
-        comp._init()
+        comp.internalInit()
         FFContext.mapper<C>(compAspect).receiver()(comp)
         FFContext.activate(comp.componentId)
         comp

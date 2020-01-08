@@ -9,6 +9,8 @@ import com.inari.firefly.graphics.view.ViewChangeEvent
 import com.inari.firefly.graphics.view.ViewSystem
 import com.inari.firefly.system.component.SystemComponentSubType
 import com.inari.util.geom.Rectangle
+import kotlin.math.ceil
+import kotlin.math.floor
 
 
 class SimpleCameraController private constructor() : Controller() {
@@ -43,8 +45,8 @@ class SimpleCameraController private constructor() : Controller() {
         val view = this.view ?: return
 
         if (getPos(view.data.zoom, view.data.bounds, view.data.worldPosition)) {
-            view.data.worldPosition.x = Math.floor(view.data.worldPosition.x.toDouble() + pos.x).toFloat()
-            view.data.worldPosition.y = Math.floor(view.data.worldPosition.y.toDouble() + pos.y).toFloat()
+            view.data.worldPosition.x = floor(view.data.worldPosition.x.toDouble() + pos.x).toFloat()
+            view.data.worldPosition.y = floor(view.data.worldPosition.y.toDouble() + pos.y).toFloat()
             ViewChangeEvent.send(view.componentId, ViewChangeEvent.Type.ORIENTATION)
         }
     }
@@ -81,10 +83,10 @@ class SimpleCameraController private constructor() : Controller() {
         if (pos.y < snapToBounds.y)
             pos.y = snapToBounds.y.toFloat()
 
-        pos.x = Math.min(pos.x, xMax)
-        pos.y = Math.min(pos.y, yMax)
-        pos.x = Math.ceil(pos.x.toDouble() - worldPosition.x).toFloat()
-        pos.y = Math.floor(pos.y.toDouble() - worldPosition.y).toFloat()
+        pos.x = pos.x.coerceAtMost(xMax)
+        pos.y = pos.y.coerceAtMost(yMax)
+        pos.x = ceil(pos.x.toDouble() - worldPosition.x).toFloat()
+        pos.y = floor(pos.y.toDouble() - worldPosition.y).toFloat()
 
         return pos.x != 0f || pos.y != 0f
     }

@@ -44,9 +44,7 @@ class EText private constructor() : EntityComponent(EText::class.java.name) {
         blend = BlendMode.NONE
     }
 
-    override fun componentType(): ComponentType<EText> =
-        EText.Companion
-
+    override fun componentType(): ComponentType<EText> = Companion
     companion object : EntityComponentType<EText>(EText::class.java) {
         override fun createEmpty() = EText()
     }

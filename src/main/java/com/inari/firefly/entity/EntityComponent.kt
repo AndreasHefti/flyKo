@@ -25,14 +25,14 @@ abstract class EntityComponent protected constructor(
 
     var initialized: Boolean = false
         protected set
-    internal fun _init() {
+    internal fun internalInit() {
         init()
         initialized = true
     }
     protected fun init() {
         initialized = true
     }
-    internal fun _reset() {
+    internal fun internalReset() {
         reset()
         initialized = false
     }
@@ -68,7 +68,7 @@ abstract class EntityComponent protected constructor(
 abstract class EntityComponentBuilder<C : EntityComponent> : ComponentType<C> {
     private fun doBuild(comp: C, configure: C.() -> Unit, receiver: (C) -> C): CompId {
         comp.also(configure)
-        comp._init()
+        comp.internalInit()
         receiver(comp)
         return comp.componentId
     }

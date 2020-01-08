@@ -24,9 +24,7 @@ class Task private constructor() : TriggeredSystemComponent(Task::class.java.nam
     fun <A : Trigger> withTrigger(cBuilder: Trigger.Subtype<A>, configure: (A.() -> Unit)): A =
         super.with(cBuilder, triggerCall, configure)
 
-    override fun componentType(): ComponentType<Task> =
-        Task.Companion
-
+    override fun componentType(): ComponentType<Task> = Companion
     companion object : SystemComponentSingleType<Task>(Task::class.java) {
         override fun createEmpty() = Task()
     }

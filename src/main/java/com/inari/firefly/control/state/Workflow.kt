@@ -50,9 +50,7 @@ class Workflow private constructor() : SystemComponent(Workflow::class.java.name
         currentState = ff_StartState
     }
 
-    override fun componentType(): ComponentType<Workflow> =
-        Workflow.Companion
-
+    override fun componentType(): ComponentType<Workflow> = Companion
     companion object : SystemComponentSingleType<Workflow>(Workflow::class.java) {
         override fun createEmpty() = Workflow()
     }

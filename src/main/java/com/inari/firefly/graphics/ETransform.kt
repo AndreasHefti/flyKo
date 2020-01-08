@@ -129,9 +129,7 @@ class ETransform private constructor() : EntityComponent(ETransform::class.java.
         }
     }
 
-    override fun componentType() =
-        ETransform.Companion
-
+    override fun componentType() = Companion
     companion object : EntityComponentType<ETransform>(ETransform::class.java) {
         override fun createEmpty() = ETransform()
     }

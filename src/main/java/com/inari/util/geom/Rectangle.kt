@@ -88,10 +88,10 @@ data class Rectangle constructor(
     fun fromConfigString(stringValue: String) {
         if (!StringUtils.isBlank(stringValue)) {
             val st = StringTokenizer(stringValue, StringUtils.VALUE_SEPARATOR_STRING)
-            pos.x = Integer.valueOf(st.nextToken())!!.toInt()
-            pos.y = Integer.valueOf(st.nextToken())!!.toInt()
-            width = Integer.valueOf(st.nextToken())!!.toInt()
-            height = Integer.valueOf(st.nextToken())!!.toInt()
+            pos.x = Integer.valueOf(st.nextToken()).toInt()
+            pos.y = Integer.valueOf(st.nextToken()).toInt()
+            width = Integer.valueOf(st.nextToken()).toInt()
+            height = Integer.valueOf(st.nextToken()).toInt()
         }
     }
 

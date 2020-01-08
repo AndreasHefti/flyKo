@@ -24,9 +24,7 @@ abstract class Controller protected constructor() : SystemComponent(Controller::
 
     abstract fun update()
 
-    override fun componentType() =
-        Controller.Companion
-
+    override fun componentType() = Companion
     companion object : SystemComponentType<Controller>(Controller::class.java)
 
 }

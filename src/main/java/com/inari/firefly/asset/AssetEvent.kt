@@ -16,7 +16,7 @@ object AssetEvent : Event<AssetEvent.Listener>(EVENT_ASPECTS.createAspect("Asset
     private lateinit var assetId: CompId
     private lateinit var type: Type
 
-    override fun notify(listener: AssetEvent.Listener) =
+    override fun notify(listener: Listener) =
         listener(assetId, type)
 
     fun send(id: CompId, type: Type) {

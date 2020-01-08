@@ -92,9 +92,7 @@ class ESprite private constructor () : EntityComponent(ESprite::class.java.name)
         }
     }
 
-    override fun componentType() =
-        ESprite.Companion
-
+    override fun componentType() = Companion
     companion object : EntityComponentType<ESprite>(ESprite::class.java) {
         override fun createEmpty() = ESprite()
     }

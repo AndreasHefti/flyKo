@@ -1,12 +1,10 @@
 package com.inari.firefly.audio
 
 import com.inari.firefly.FFContext
-import com.inari.firefly.component.CompId
 import com.inari.firefly.component.ComponentRefResolver
 import com.inari.firefly.control.Controller
 import com.inari.firefly.control.trigger.Trigger
 import com.inari.firefly.control.trigger.TriggeredSystemComponent
-import com.inari.firefly.entity.EntitySystem
 import com.inari.firefly.system.component.SystemComponentSingleType
 
 class Sound private constructor() : TriggeredSystemComponent(Sound::class.java.name) {
@@ -45,9 +43,7 @@ class Sound private constructor() : TriggeredSystemComponent(Sound::class.java.n
     fun <A : Trigger> withStopTrigger(cBuilder: Trigger.Subtype<A>, configure: (A.() -> Unit)): A =
         super.with(cBuilder, { FFContext.deactivate(this) }, configure)
 
-    override fun componentType() =
-        Sound.Companion
-
+    override fun componentType() = Companion
     companion object : SystemComponentSingleType<Sound>(Sound::class.java) {
         override fun createEmpty() = Sound()
     }

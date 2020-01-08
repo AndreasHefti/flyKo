@@ -8,17 +8,16 @@ abstract class Composite protected constructor() : SystemComponent(Composite::cl
     var loaded: Boolean = false
         protected set
 
-    internal fun systemLoad() =
+    internal fun systemLoad() {
         if (!loaded)
             load()
-        else {}
-
+    }
     internal fun systemActivate() = activate()
     internal fun systemDeactivate() = deactivate()
-    internal fun systemUnload() =
+    internal fun systemUnload() {
         if (loaded)
             unload()
-        else {}
+    }
 
     protected abstract fun load()
     protected abstract fun activate()

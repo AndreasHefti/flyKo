@@ -58,9 +58,7 @@ class View private constructor (
             "fboScaler=${data.fboScaler})"
     }
 
-    override fun componentType() =
-        View.Companion
-
+    override fun componentType() = Companion
     companion object : SystemComponentSingleType<View>(View::class.java) {
         override fun createEmpty() = View()
     }

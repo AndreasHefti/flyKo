@@ -1,6 +1,7 @@
 package com.inari.firefly.physics.movement
 
 import com.inari.firefly.graphics.ETransform
+import kotlin.math.pow
 
 object EulerIntegrator : Integrator {
 
@@ -10,9 +11,9 @@ object EulerIntegrator : Integrator {
         set(value) {
             field = value
             shift = if (value < 0)
-                Math.pow(10.0, 0.0).toFloat()
+                10.0.pow(0.0).toFloat()
             else
-                Math.pow(10.0, value.toDouble()).toFloat()
+                10.0.pow(value.toDouble()).toFloat()
         }
 
     override fun integrate(movement: EMovement, transform: ETransform, deltaTimeInSeconds: Float) {

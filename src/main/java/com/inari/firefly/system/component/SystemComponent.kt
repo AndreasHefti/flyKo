@@ -19,7 +19,7 @@ abstract class SystemComponent protected constructor(
     var ff_Name: String
         set(value) {
             if (name !== NO_NAME) {
-                throw IllegalStateException("Illegal reassignment of name: $ff_Name to: $ff_Name" )
+                throw IllegalStateException("An illegal reassignment of name: $ff_Name to: $ff_Name" )
             }
             name = value
         }
@@ -31,7 +31,7 @@ abstract class SystemComponent protected constructor(
     var initialized:Boolean = false
         internal set
 
-    internal fun _init() {
+    internal fun internalInit() {
         super.applyNewIndex()
         init()
         initialized = true

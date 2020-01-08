@@ -25,9 +25,7 @@ class EParticle private constructor() : EntityComponent(EParticle::class.java.na
         particle.clear()
     }
 
-    override fun componentType() =
-        EParticle.Companion
-
+    override fun componentType() = Companion
     companion object : EntityComponentType<EParticle>(EParticle::class.java) {
         override fun createEmpty() = EParticle()
     }

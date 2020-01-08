@@ -19,7 +19,7 @@ class EMeta private constructor() : EntityComponent(EMeta::class.java.name), Nam
     var ff_Name: String
         set(ff_Name) {
             check(!(name !== NO_NAME)) {
-                "Illegal reassignment of name: $ff_Name to: $ff_Name"
+                "An illegal reassignment of name: $ff_Name to: $ff_Name"
             }
             name = ff_Name
         }
@@ -40,9 +40,7 @@ class EMeta private constructor() : EntityComponent(EMeta::class.java.name), Nam
     override fun toString(): String =
         "EMeta(controllerRef=$controllerRef, name='$name')"
 
-    override fun componentType(): ComponentType<EMeta> =
-        EMeta.Companion
-
+    override fun componentType(): ComponentType<EMeta> = Companion
     companion object : EntityComponentType<EMeta>(EMeta::class.java) {
         override fun createEmpty() = EMeta()
         val ENTITY_META_ASPECTS = IndexedAspectType("ENTITY_META_ASPECTS")

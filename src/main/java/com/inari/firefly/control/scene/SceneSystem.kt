@@ -14,7 +14,7 @@ object SceneSystem : ComponentSystem {
     override val supportedComponents: Aspects =
         SystemComponent.SYSTEM_COMPONENT_ASPECTS.createAspects(Scene)
 
-    private val _scenes = ComponentSystem.createComponentMapping(
+    private val systemScenes = ComponentSystem.createComponentMapping(
         Scene,
         nameMapping = true,
         activationMapping = true,
@@ -25,20 +25,20 @@ object SceneSystem : ComponentSystem {
             else -> {}
         } }
     )
-    val scenes: ComponentMapRO<Scene> = _scenes
+    val scenes: ComponentMapRO<Scene> = systemScenes
 
 
     init {
         FFContext.registerListener(FFApp.UpdateEvent, object : FFApp.UpdateEvent.Listener {
             override fun invoke() {
-                var i = _scenes.nextActive(0)
+                var i = systemScenes.nextActive(0)
                 while(i >= 0) {
-                    val scene = _scenes[i]
+                    val scene = systemScenes[i]
                     if (scene.paused)
                         continue
 
                     scene()
-                    i = _scenes.nextActive(i + 1)
+                    i = systemScenes.nextActive(i + 1)
                 }
             }
         })
@@ -47,47 +47,47 @@ object SceneSystem : ComponentSystem {
     }
 
     fun runScene(index: Int, callback: Call) {
-        if (index !in _scenes)
+        if (index !in systemScenes)
             return
 
-        val scene = _scenes[index]
+        val scene = systemScenes[index]
         scene.callback = callback
         scene.paused = false
         scene.sceneInit()
-        _scenes.activate(index)
+        systemScenes.activate(index)
     }
 
     fun pauseScene(index: Int) {
-        if (!_scenes.isActive(index))
+        if (!systemScenes.isActive(index))
             return
 
-        _scenes[index].paused = true
+        systemScenes[index].paused = true
     }
 
     fun resumeScene(index: Int) {
-        if (!_scenes.isActive(index))
+        if (!systemScenes.isActive(index))
             return
 
-        _scenes[index].paused = false
+        systemScenes[index].paused = false
     }
 
     fun stopScene(index: Int) {
-        if (!_scenes.isActive(index))
+        if (!systemScenes.isActive(index))
             return
 
-        _scenes.deactivate(index)
+        systemScenes.deactivate(index)
     }
 
     private fun internalStop(index: Int) {
-        val scene = _scenes[index]
+        val scene = systemScenes[index]
         scene.callback()
         if (scene.removeAfterRun)
-            _scenes.delete(scene.index)
+            systemScenes.delete(scene.index)
         else
             scene.sceneReset()
     }
 
     override fun clearSystem() {
-        _scenes.clear()
+        systemScenes.clear()
     }
 }

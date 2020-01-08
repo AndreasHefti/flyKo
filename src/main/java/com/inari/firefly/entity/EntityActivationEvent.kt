@@ -16,18 +16,18 @@ object EntityActivationEvent : AspectedEvent<EntityActivationEvent.Listener>(
     }
 
     private lateinit var entity: Entity
-    private lateinit var type: EntityActivationEvent.Type
+    private lateinit var type: Type
 
     override val aspects: Aspects get() =
         entity.aspects
 
-    override fun notify(listener: EntityActivationEvent.Listener) =
+    override fun notify(listener: Listener) =
         when(type) {
             Type.ACTIVATED -> listener.entityActivated(entity)
             Type.DEACTIVATED -> listener.entityDeactivated(entity)
         }
 
-    fun send(entity: Entity, type: EntityActivationEvent.Type) {
+    fun send(entity: Entity, type: Type) {
         this.entity = entity
         this.type = type
         FFContext.notify(this)

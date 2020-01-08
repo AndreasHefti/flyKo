@@ -220,7 +220,7 @@ object GDXGraphics : FFGraphics {
 
         val type = data.type
         val shapeType = when {
-            type === ShapeType.POINT  -> ShapeRenderer.ShapeType.Point
+            type === POINT  -> ShapeRenderer.ShapeType.Point
             data.fill                           -> ShapeRenderer.ShapeType.Filled
             else                                -> ShapeRenderer.ShapeType.Line
         }

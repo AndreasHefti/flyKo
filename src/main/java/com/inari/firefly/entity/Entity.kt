@@ -16,7 +16,10 @@ class Entity internal constructor(): SystemComponent(Entity::class.java.name), A
         get() = components.aspects
 
     override var name: String
-        set(value) {name = value}
+        set(value) {
+            if (EMeta in components)
+                components.get(EMeta, EMeta::class.java)?.ff_Name = value
+        }
         get() =
             if (EMeta in components)
                 components.get(EMeta, EMeta::class.java)?.name ?: NO_NAME
@@ -55,9 +58,7 @@ class Entity internal constructor(): SystemComponent(Entity::class.java.name), A
             "Entity(name=$name " +
             "components=$components)"
 
-    override fun componentType() =
-        Entity.Companion
-
+    override fun componentType() = Companion
     companion object : SystemComponentSingleType<Entity>(Entity::class.java) {
         public override fun createEmpty() = EntityProvider.get()
     }

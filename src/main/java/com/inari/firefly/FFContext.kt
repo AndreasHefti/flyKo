@@ -84,16 +84,16 @@ object FFContext {
         mapper<C>(id)[id.name]
 
     operator fun <C : Component> get(cType: ComponentType<C>, index: Int): C =
-        mapper<C>(cType)[index]
+        mapper(cType)[index]
 
     operator fun <C : Component> get(cType: ComponentType<C>, indexed: Indexed): C =
-        mapper<C>(cType)[indexed.index]
+        mapper(cType)[indexed.index]
 
     operator fun <C : Component> get(cType: ComponentType<C>, name: String): C =
-        mapper<C>(cType)[name]
+        mapper(cType)[name]
 
     operator fun <C : Component> get(cType: ComponentType<C>, named: Named): C =
-        mapper<C>(cType)[named.name]
+        mapper(cType)[named.name]
 
     operator fun <C : SystemComponent, CC : C> get(cType: SystemComponentSubType<C, CC>, index: Int): CC =
         mapper<CC>(cType)[index]

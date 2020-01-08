@@ -6,6 +6,8 @@ import com.inari.util.aspect.Aspects
 import com.inari.util.collection.DynArray
 import com.inari.util.collection.DynArrayRO
 import com.inari.util.geom.*
+import kotlin.math.ceil
+import kotlin.math.floor
 
 
 class Contacts internal constructor(
@@ -25,8 +27,8 @@ class Contacts internal constructor(
         normalizedContactBounds.width = contactBounds.width
         normalizedContactBounds.height = contactBounds.height
 
-        worldBounds.x = (if (velocity.dx > 0) Math.ceil(position.x.toDouble()).toInt() else Math.floor(position.x.toDouble()).toInt()) + contactBounds.x
-        worldBounds.y = (if (velocity.dy > 0) Math.ceil(position.y.toDouble()).toInt() else Math.floor(position.y.toDouble()).toInt()) + contactBounds.y
+        worldBounds.x = (if (velocity.dx > 0) ceil(position.x.toDouble()).toInt() else floor(position.x.toDouble()).toInt()) + contactBounds.x
+        worldBounds.y = (if (velocity.dy > 0) ceil(position.y.toDouble()).toInt() else floor(position.y.toDouble()).toInt()) + contactBounds.y
         worldBounds.width = contactBounds.width
         worldBounds.height = contactBounds.height
         intersectionMask.reset(0, 0, contactBounds.width, contactBounds.height)

@@ -52,7 +52,7 @@ object EntityProvider {
     }
 
     fun dispose(entityComponent: EntityComponent) {
-        entityComponent._reset()
+        entityComponent.internalReset()
         getOrCreate(entityComponent.index).add(entityComponent)
     }
 

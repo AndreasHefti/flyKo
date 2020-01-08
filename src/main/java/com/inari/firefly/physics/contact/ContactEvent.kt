@@ -7,7 +7,7 @@ object ContactEvent : Event<ContactEvent.Listener>(EVENT_ASPECTS.createAspect("C
 
     @JvmField internal var entity: Int = -1
 
-    override fun notify(listener: ContactEvent.Listener) {
+    override fun notify(listener: Listener) {
         listener(entity)
     }
 

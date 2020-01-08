@@ -16,9 +16,7 @@ class Layer private constructor() : SystemComponent(Layer::class.java.name) {
         return "Layer(view=$viewRef)"
     }
 
-    override fun componentType(): ComponentType<Layer> =
-        Layer.Companion
-
+    override fun componentType(): ComponentType<Layer> = Companion
     companion object : SystemComponentSingleType<Layer>(Layer::class.java) {
         override fun createEmpty() = Layer()
     }

@@ -39,9 +39,7 @@ class ContactConstraint private constructor() : SystemComponent(ContactConstrain
         if (materialFilter.isEmpty) true
         else materialType in materialFilter
 
-    override fun componentType() =
-        ContactConstraint.Companion
-
+    override fun componentType() = Companion
     companion object : SystemComponentSingleType<ContactConstraint>(ContactConstraint::class.java) {
         override fun createEmpty() = ContactConstraint()
     }

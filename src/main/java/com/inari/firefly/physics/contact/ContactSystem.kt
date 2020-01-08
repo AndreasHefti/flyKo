@@ -26,6 +26,7 @@ import com.inari.util.geom.GeomUtils
 import com.inari.util.geom.Rectangle
 import com.inari.util.indexed.Indexed
 import java.util.*
+import kotlin.math.floor
 
 
 object ContactSystem : ComponentSystem {
@@ -266,8 +267,8 @@ object ContactSystem : ComponentSystem {
             otherEntity.index,
             otherContact.material,
             otherContact.contactType,
-            (Math.floor(x.toDouble()) + otherContact.bounds.x).toInt(),
-            (Math.floor(y.toDouble()) + otherContact.bounds.y).toInt(),
+            (floor(x.toDouble()) + otherContact.bounds.x).toInt(),
+            (floor(y.toDouble()) + otherContact.bounds.y).toInt(),
             otherContact.bounds.width,
             otherContact.bounds.height
         )
@@ -314,10 +315,10 @@ object ContactSystem : ComponentSystem {
         else
             c.intersectionMask.setRegion(contact.intersection, true)
 
-        if (contact.contact !== ContactSystem.UNDEFINED_CONTACT_TYPE)
+        if (contact.contact !== UNDEFINED_CONTACT_TYPE)
             c.contactTypes + contact.contact
 
-        if (contact.material != ContactSystem.UNDEFINED_MATERIAL)
+        if (contact.material != UNDEFINED_MATERIAL)
             c.materialTypes + contact.material
 
         c.contacts.add(contact)
@@ -337,8 +338,8 @@ object ContactSystem : ComponentSystem {
             contact.entity = -1
             contact.intersectionMask.clearMask()
             contact.worldBounds(0, 0, 0, 0)
-            contact.contact = ContactSystem.UNDEFINED_CONTACT_TYPE
-            contact.material = ContactSystem.UNDEFINED_MATERIAL
+            contact.contact = UNDEFINED_CONTACT_TYPE
+            contact.material = UNDEFINED_MATERIAL
             contact.intersectionBounds(0, 0, 0, 0)
 
             CONTACTS_POOL.add(contact)

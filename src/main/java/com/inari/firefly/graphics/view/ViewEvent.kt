@@ -16,12 +16,12 @@ object ViewEvent : Event<ViewEvent.Listener>(EVENT_ASPECTS.createAspect("ViewEve
 
     private lateinit var id: CompId
     private lateinit var data: ViewData
-    private lateinit var type: ViewEvent.Type
+    private lateinit var type: Type
 
-    override fun notify(listener: ViewEvent.Listener) =
+    override fun notify(listener: Listener) =
         listener(id, data, type)
 
-    internal fun send(id: CompId, data: ViewData, type: ViewEvent.Type) {
+    internal fun send(id: CompId, data: ViewData, type: Type) {
         this.id = id
         this.data = data
         this.type = type

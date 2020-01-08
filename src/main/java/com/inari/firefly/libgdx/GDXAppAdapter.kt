@@ -14,6 +14,7 @@ import com.inari.firefly.graphics.text.FontAsset
 import com.inari.firefly.graphics.view.ViewSystem
 import com.inari.firefly.libgdx.intro.InariIntro
 import com.inari.firefly.physics.animation.AnimationSystem
+import kotlin.math.roundToInt
 
 
 abstract class GDXAppAdapter : ApplicationAdapter() {
@@ -74,12 +75,12 @@ abstract class GDXAppAdapter : ApplicationAdapter() {
 
         if (fitToWidth) {
             bounds.width = baseWidth
-            bounds.height = Math.round(baseHeight / sourceRatio * targetRatio)
+            bounds.height = (baseHeight / sourceRatio * targetRatio).roundToInt()
             if (centerCamera) {
                 worldPosition.y = -(bounds.height - baseHeight).toFloat() / 2
             }
         } else {
-            bounds.width = Math.round(baseWidth / targetRatio * sourceRatio)
+            bounds.width = (baseWidth / targetRatio * sourceRatio).roundToInt()
             bounds.height = baseHeight
             if (centerCamera) {
                 worldPosition.x = -(bounds.width - baseWidth).toFloat() / 2

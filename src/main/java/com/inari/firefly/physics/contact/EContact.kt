@@ -38,7 +38,7 @@ class EContact private constructor() : EntityComponent(EContact::class.java.name
         set(value) {contactType = value}
     val ff_addConstraint =
         ComponentRefResolver(ContactConstraint) { id ->
-            if (id !in contactScan.contacts) contactScan.contacts.set(id, Contacts(id))
+            if (id !in contactScan.contacts) contactScan.contacts[id] = Contacts(id)
         }
     val ff_removeConstraint =
         ComponentRefResolver(ContactConstraint) { id: Int ->
@@ -75,9 +75,7 @@ class EContact private constructor() : EntityComponent(EContact::class.java.name
         contactScan.clear()
     }
 
-    override fun componentType() =
-        EContact.Companion
-
+    override fun componentType() = Companion
     companion object : EntityComponentType<EContact>(EContact::class.java) {
         override fun createEmpty() = EContact()
     }

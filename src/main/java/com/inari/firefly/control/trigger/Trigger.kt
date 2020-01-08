@@ -33,9 +33,7 @@ abstract class Trigger protected constructor() : SystemComponent(Trigger::class.
         }
     }
 
-    override fun componentType(): ComponentType<Trigger> =
-        Trigger.Companion
-
+    override fun componentType(): ComponentType<Trigger> = Companion
     companion object : SystemComponentType<Trigger>(Trigger::class.java)
 
     abstract class Subtype<A : Trigger> : ComponentType<A> {

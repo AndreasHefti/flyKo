@@ -91,9 +91,7 @@ class ETile private constructor () : EntityComponent(ETile::class.java.name) {
         }
     }
 
-    override fun componentType() =
-        ETile.Companion
-
+    override fun componentType() = Companion
     companion object : EntityComponentType<ETile>(ETile::class.java) {
         override fun createEmpty() = ETile()
     }

@@ -33,7 +33,7 @@ class AnimationData internal constructor() {
     companion object {
 
         val of: (AnimationData.() -> Unit) -> AnimationData = { configure ->
-            val comp: AnimationData = AnimationData()
+            val comp = AnimationData()
             comp.also(configure)
             comp
         }

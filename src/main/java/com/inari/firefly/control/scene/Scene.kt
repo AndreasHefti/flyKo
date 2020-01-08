@@ -41,8 +41,6 @@ abstract class Scene protected constructor() : TriggeredSystemComponent(Scene::c
     internal operator fun invoke() = update()
     protected abstract fun update()
 
-    override fun componentType(): ComponentType<Scene> =
-        Scene.Companion
-
+    override fun componentType(): ComponentType<Scene> = Companion
     companion object : SystemComponentType<Scene>(Scene::class.java)
 }

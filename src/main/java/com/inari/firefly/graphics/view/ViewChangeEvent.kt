@@ -13,12 +13,12 @@ object ViewChangeEvent : Event<ViewChangeEvent.Listener>(EVENT_ASPECTS.createAsp
     }
 
     private lateinit var id: CompId
-    private lateinit var type: ViewChangeEvent.Type
+    private lateinit var type: Type
 
-    override fun notify(listener: ViewChangeEvent.Listener) =
+    override fun notify(listener: Listener) =
         listener(id, type)
 
-    fun send(id: CompId, type: ViewChangeEvent.Type) {
+    fun send(id: CompId, type: Type) {
         this.id = id
         this.type = type
         FFContext.notify(this)

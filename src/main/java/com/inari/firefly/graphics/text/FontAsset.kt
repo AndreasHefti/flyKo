@@ -67,8 +67,8 @@ class FontAsset : Asset() {
 
         tmpSpriteData.textureId = graphics.createTexture(textureData).first
         tmpSpriteData.region(0, 0, charWidth, charHeight)
-        for (y in 0 until charMap.size) {
-            for (x in 0 until charMap[y].size) {
+        for (y in charMap.indices) {
+            for (x in charMap[y].indices) {
                 tmpSpriteData.region.x = x * charWidth
                 tmpSpriteData.region.y = y * charHeight
 

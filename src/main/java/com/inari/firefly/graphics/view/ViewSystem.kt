@@ -11,7 +11,6 @@ import com.inari.firefly.system.component.SystemComponent
 import com.inari.util.aspect.Aspects
 import com.inari.util.collection.DynArray
 import com.inari.util.collection.DynIntArray
-import com.inari.util.geom.Rectangle
 
 object ViewSystem : ComponentSystem {
 

@@ -14,18 +14,18 @@ object WorkflowEvent : Event<WorkflowEvent.Listener>(EVENT_ASPECTS.createAspect(
         WORKFLOW_FINISHED
     }
 
-    private lateinit var type: WorkflowEvent.Type
+    private lateinit var type: Type
     private var workflow: CompId = NO_COMP_ID
     private var workflowName = NO_NAME
     private var stateChangeName = NO_NAME
     private var fromName = NO_NAME
     private var toName = NO_NAME
 
-    override fun notify(listener: WorkflowEvent.Listener) =
+    override fun notify(listener: Listener) =
         listener(type, workflow, workflowName, stateChangeName, fromName, toName)
 
     fun send(
-        type: WorkflowEvent.Type,
+        type: Type,
         workflowId: CompId,
         stateChangeName: String = NO_NAME,
         fromName: String = NO_NAME,
@@ -41,7 +41,7 @@ object WorkflowEvent : Event<WorkflowEvent.Listener>(EVENT_ASPECTS.createAspect(
     }
 
     fun send(
-        type: WorkflowEvent.Type,
+        type: Type,
         workflowId: CompId,
         stateChange: Workflow.StateChange
     ) {
@@ -56,7 +56,7 @@ object WorkflowEvent : Event<WorkflowEvent.Listener>(EVENT_ASPECTS.createAspect(
 
     interface Listener {
         operator fun invoke(
-            type: WorkflowEvent.Type,
+            type: Type,
             workflowId: CompId,
             workflowName: String,
             stateChangeName: String,

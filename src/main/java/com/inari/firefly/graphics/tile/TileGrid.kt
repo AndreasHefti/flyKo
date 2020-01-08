@@ -7,13 +7,13 @@ import com.inari.firefly.graphics.view.View
 import com.inari.firefly.graphics.view.ViewLayerAware
 import com.inari.firefly.system.component.SystemComponent
 import com.inari.firefly.system.component.SystemComponentSingleType
-import com.inari.util.geom.Direction.*
 import com.inari.util.geom.*
 import java.util.*
+import kotlin.math.ceil
+import kotlin.math.floor
 
 
 class TileGrid private constructor() : SystemComponent(TileGrid::class.java.name), ViewLayerAware {
-
 
     @JvmField internal var viewRef = -1
     @JvmField internal var layerRef = -1
@@ -54,7 +54,7 @@ class TileGrid private constructor() : SystemComponent(TileGrid::class.java.name
     @JvmField internal val normalisedWorldBounds = Rectangle(0, 0, 0, 0)
 
     override fun init() {
-        grid = Array(ff_GridHeight) { IntArray(ff_GridWidth) { _ -> -1 } }
+        grid = Array(ff_GridHeight) { IntArray(ff_GridWidth) { -1 } }
         normalisedWorldBounds.width = ff_GridWidth
         normalisedWorldBounds.height = ff_GridHeight
 
@@ -77,12 +77,12 @@ class TileGrid private constructor() : SystemComponent(TileGrid::class.java.name
             grid[ypos][xpos]
 
     fun getTileAt(worldPos: Position): Int =
-        get(Math.floor((worldPos.x.toDouble() - ff_Position.x) / ff_CellWidth).toInt(),
-            Math.floor((worldPos.y.toDouble() - ff_Position.y) / ff_CellHeight).toInt())
+        get(floor((worldPos.x.toDouble() - ff_Position.x) / ff_CellWidth).toInt(),
+            floor((worldPos.y.toDouble() - ff_Position.y) / ff_CellHeight).toInt())
 
     fun getTileAt(xpos: Float, ypos: Float): Int =
-        get(Math.floor((xpos.toDouble() - ff_Position.x) / ff_CellWidth).toInt(),
-            Math.floor((ypos.toDouble() - ff_Position.y) / ff_CellHeight).toInt())
+        get(floor((xpos.toDouble() - ff_Position.x) / ff_CellWidth).toInt(),
+            floor((ypos.toDouble() - ff_Position.y) / ff_CellHeight).toInt())
 
     operator fun set(position: Position, entityId: Int) =
         set(entityId, position.x, position.y)
@@ -197,11 +197,11 @@ class TileGrid private constructor() : SystemComponent(TileGrid::class.java.name
 
         private fun mapWorldClipToTileGridClip(worldClip: Rectangle, tileGrid: TileGrid, result: Rectangle) {
             tmpClip(
-                Math.floor((worldClip.x.toDouble() - tileGrid.position.x) / tileGrid.cellDim.dx).toInt(),
-                Math.floor((worldClip.y.toDouble() - tileGrid.position.y) / tileGrid.cellDim.dy).toInt()
+                floor((worldClip.x.toDouble() - tileGrid.position.x) / tileGrid.cellDim.dx).toInt(),
+                floor((worldClip.y.toDouble() - tileGrid.position.y) / tileGrid.cellDim.dy).toInt()
             )
-            val x2 = Math.ceil((worldClip.x.toDouble() - tileGrid.position.x + worldClip.width) / tileGrid.cellDim.dx).toInt()
-            val y2 = Math.ceil((worldClip.y.toDouble() - tileGrid.position.y + worldClip.height) / tileGrid.cellDim.dy).toInt()
+            val x2 = ceil((worldClip.x.toDouble() - tileGrid.position.x + worldClip.width) / tileGrid.cellDim.dx).toInt()
+            val y2 = ceil((worldClip.y.toDouble() - tileGrid.position.y + worldClip.height) / tileGrid.cellDim.dy).toInt()
             tmpClip.width = x2 - tmpClip.x
             tmpClip.height = y2 - tmpClip.y
             GeomUtils.intersection(tmpClip, tileGrid.normalisedWorldBounds, result)

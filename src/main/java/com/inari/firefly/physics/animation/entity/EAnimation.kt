@@ -43,9 +43,7 @@ class EAnimation : EntityComponent(EAnimation::class.java.name) {
         clearAnimations()
     }
 
-    override fun componentType() =
-        EAnimation.Companion
-
+    override fun componentType() = Companion
     companion object : EntityComponentType<EAnimation>(EAnimation::class.java) {
         override fun createEmpty() = EAnimation()
     }
