@@ -18,7 +18,7 @@ class RenderingSystemTest {
     @Test
     fun testSystemInit() {
         TestApp
-        RenderingSystem
+        RenderingSystem.clearSystem()
 
         assertTrue(
             RenderingSystem[SimpleSpriteRenderer] === SimpleSpriteRenderer.instance
@@ -28,10 +28,11 @@ class RenderingSystemTest {
     @Test
     fun testRenderSprite() {
         TestApp
-        AssetSystem
-        ViewSystem
-        RenderingSystem
-        EntitySystem
+        AssetSystem.clearSystem()
+        ViewSystem.clearSystem()
+        RenderingSystem.clearSystem()
+        EntitySystem.clearSystem()
+        GraphicsMock.clearLogs()
 
         val assetId = TestAsset.buildAndActivate {
             ff_Name = "Test"

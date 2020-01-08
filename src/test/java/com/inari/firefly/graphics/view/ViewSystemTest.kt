@@ -11,6 +11,7 @@ class ViewSystemTest {
 
     @Before
     fun init() {
+        GraphicsMock.clearLogs()
         ViewSystem.clearSystem()
     }
 

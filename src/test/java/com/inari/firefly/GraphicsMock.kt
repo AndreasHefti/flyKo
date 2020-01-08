@@ -37,6 +37,10 @@ object GraphicsMock : FFGraphics {
         )
     }
 
+    fun clearLogs() {
+        log.clear()
+    }
+
     fun clear() {
         loadedAssets.clear()
         views.clear()
