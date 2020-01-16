@@ -21,7 +21,7 @@ object MovementSystem : FFSystem {
         FFContext.registerListener(UpdateEvent, object : UpdateEvent.Listener {
             override fun invoke() {
                 MoveEvent.entities.clear()
-                val deltaTimeInSeconds = FFContext.timer.timeElapsed / 1000f
+                val deltaTimeInSeconds: Long = FFContext.timer.timeElapsed / 1000
 
                 var i: Int = entities.nextSetBit(0)
                 while (i >= 0) {
@@ -36,11 +36,11 @@ object MovementSystem : FFSystem {
 
                     val transform = entity[ETransform]
                     if ( movement.velocity.dx != 0f || movement.velocity.dy != 0f ) {
-                        movementIntegrator.step( movement, transform, deltaTimeInSeconds )
+                        movementIntegrator.step(movement, transform, deltaTimeInSeconds)
                         MoveEvent.entities.set(entity.index)
                     }
 
-                    movementIntegrator.integrate( movement, transform, deltaTimeInSeconds )
+                    movementIntegrator.integrate(movement, transform, deltaTimeInSeconds)
                 }
 
                 if (!MoveEvent.entities.isEmpty)

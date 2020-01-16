@@ -6,7 +6,7 @@ import com.inari.firefly.NO_NAME
 import com.inari.firefly.component.CompId
 import com.inari.util.event.Event
 
-object WorkflowEvent : Event<WorkflowEvent.Listener>(EVENT_ASPECTS.createAspect("WorkflowEvent")) {
+object WorkflowEvent : Event<WorkflowEvent.Listener>(EVENT_ASPECTS.createAspect(WorkflowEvent::class.java.simpleName)) {
 
     enum class Type {
         WORKFLOW_STARTED,

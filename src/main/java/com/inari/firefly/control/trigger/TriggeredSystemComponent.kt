@@ -1,6 +1,8 @@
 package com.inari.firefly.control.trigger
 
 import com.inari.firefly.Call
+import com.inari.firefly.component.CompId
+import com.inari.firefly.entity.EntitySystem
 import com.inari.firefly.system.component.SystemComponent
 import java.util.*
 

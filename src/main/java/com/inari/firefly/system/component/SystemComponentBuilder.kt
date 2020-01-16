@@ -1,8 +1,10 @@
 package com.inari.firefly.system.component
 
 import com.inari.firefly.FFContext
+import com.inari.firefly.Receiver
 import com.inari.firefly.component.CompId
 import com.inari.firefly.component.ComponentBuilder
+import com.inari.firefly.entity.EntityProvider
 import com.inari.util.aspect.Aspect
 
 abstract class SystemComponentBuilder<out C : SystemComponent> : ComponentBuilder<C>() {

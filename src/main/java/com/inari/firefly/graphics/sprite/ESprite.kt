@@ -12,7 +12,7 @@ import com.inari.firefly.graphics.BlendMode
 import com.inari.util.graphics.RGBColor
 
 
-class ESprite private constructor () : EntityComponent(ESprite::class.java.name) {
+class ESprite private constructor() : EntityComponent(ESprite::class.java.name) {
 
     @JvmField internal val spriteRenderable = SpriteRenderable()
 
@@ -21,7 +21,7 @@ class ESprite private constructor () : EntityComponent(ESprite::class.java.name)
         { spriteRenderable.spriteId })
     val ff_Shader = AssetInstanceRefResolver(
         { index -> spriteRenderable.shaderId = index },
-        { spriteRenderable.spriteId })
+        { spriteRenderable.shaderId })
     var ff_Blend: BlendMode
         get() = spriteRenderable.blendMode
         set(value) { spriteRenderable.blendMode = value }

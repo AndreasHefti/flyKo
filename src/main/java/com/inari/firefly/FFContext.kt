@@ -56,6 +56,7 @@ object FFContext {
         @Suppress("UNCHECKED_CAST")
         if (SystemComponent.SYSTEM_COMPONENT_ASPECTS.typeCheck(compAspect) &&
             componentMaps.contains(compAspect.aspectIndex))
+
             componentMaps[compAspect.aspectIndex] as ComponentMap<C>
         else throw RuntimeException("No Component Mapper registered for compAspect: $compAspect")
 

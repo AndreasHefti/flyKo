@@ -1,7 +1,10 @@
 package com.inari.firefly.control.task
 
 import com.inari.firefly.FFContext
+import com.inari.firefly.OpResult
 import com.inari.firefly.component.CompId
+import com.inari.firefly.entity.Entity
+import com.inari.firefly.entity.EntitySystem
 import com.inari.firefly.system.component.ComponentSystem
 import com.inari.firefly.system.component.SystemComponent
 import com.inari.util.aspect.Aspects
@@ -9,31 +12,52 @@ import com.inari.util.aspect.Aspects
 object TaskSystem : ComponentSystem {
 
     override val supportedComponents: Aspects =
-        SystemComponent.SYSTEM_COMPONENT_ASPECTS.createAspects(Task)
+        SystemComponent.SYSTEM_COMPONENT_ASPECTS.createAspects(SystemTask, EntityTask)
 
-    @JvmField val tasks = ComponentSystem.createComponentMapping(
-        Task, nameMapping = true
+    @JvmField val systemTasks = ComponentSystem.createComponentMapping(
+        SystemTask, nameMapping = true
+    )
+
+    @JvmField val entityTasks = ComponentSystem.createComponentMapping(
+            EntityTask, nameMapping = true
     )
 
     init {
         FFContext.loadSystem(this)
     }
 
-    fun runTask(name: String) =
-        runTask(tasks.indexForName(name))
+    fun runSystemTask(name: String) =
+        runSystemTask(systemTasks.indexForName(name))
 
-    fun runTask(taskId: CompId) =
-        runTask(taskId.checkType(Task).instanceId)
+    fun runSystemTask(taskId: CompId) =
+        runSystemTask(taskId.checkType(SystemTask).instanceId)
 
-    fun runTask(taskIndex: Int) {
-        if (taskIndex in tasks) {
-            tasks[taskIndex].task()
-            if (tasks[taskIndex].removeAfterRun)
-                tasks.delete(taskIndex)
+    fun runSystemTask(taskIndex: Int) {
+        if (taskIndex in systemTasks) {
+            systemTasks[taskIndex].task()
+            if (systemTasks[taskIndex].removeAfterRun)
+                systemTasks.delete(taskIndex)
         }
     }
 
+    fun runEntityTask(name: String, entityId: Int): OpResult =
+            runEntityTask(systemTasks.indexForName(name), entityId)
+
+    fun runEntityTask(name: String, entityName: String): OpResult =
+            runEntityTask(
+                    systemTasks.indexForName(name),
+                    EntitySystem[entityName].index)
+
+    fun runEntityTask(taskId: CompId, entityId: CompId): OpResult =
+            runEntityTask(
+                    taskId.checkType(SystemTask).instanceId,
+                    entityId.checkType(Entity).instanceId)
+
+    fun runEntityTask(taskIndex: Int, entityId: Int): OpResult =
+            entityTasks[taskIndex].entityTask(entityId)
+
     override fun clearSystem() {
-        tasks.clear()
+        systemTasks.clear()
+        entityTasks.clear()
     }
 }

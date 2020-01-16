@@ -45,7 +45,7 @@ object InariIntro {
         }
 
         entityId = Entity.buildAndActivate {
-            with(ETransform) {
+            withComponent(ETransform) {
                 ff_View(0)
                 ff_Position(PositionF(
                     FFContext.screenWidth / 2 - texture.width / 2,
@@ -53,13 +53,13 @@ object InariIntro {
                 ))
             }
 
-            with(ESprite) {
+            withComponent(ESprite) {
                 ff_Sprite(spriteAssetId)
                 ff_Tint(RGBColor(1f, 1f, 1f, 0f))
             }
 
-            with(EAnimation) {
-                withActive(EasedProperty) {
+            withComponent(EAnimation) {
+                withActiveAnimation(EasedProperty) {
                     ff_Easing = Easing.Type.LINEAR
                     ff_StartValue = 0f
                     ff_EndValue = 1f

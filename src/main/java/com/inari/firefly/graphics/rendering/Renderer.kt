@@ -25,7 +25,7 @@ abstract class Renderer protected constructor(
         DynArray.ofAny(DynArray::class.java)
 
     fun accept(entity: Entity): Boolean {
-        return if (acceptance(entity)) {
+        return if (entity in acceptance) {
             forceGet(entity[ETransform])?.apply {
                 add(entity)
                 sort?.invoke(this)
@@ -36,7 +36,7 @@ abstract class Renderer protected constructor(
     }
 
     fun dispose(entity: Entity) {
-        if (acceptance(entity))
+        if (entity in acceptance)
             this[entity[ETransform]]?.remove(entity)
     }
 

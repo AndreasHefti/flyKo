@@ -2,7 +2,7 @@ package com.inari.firefly
 
 typealias Consumer<C> = (C) -> Unit
 
-typealias Predicate<C> = (C) -> Boolean
+typealias Operation<C> = (C) -> OpResult
 
 typealias Call = () -> Unit
 
@@ -12,6 +12,14 @@ typealias Receiver<C> = (C) -> C
 
 interface FloatGetter {
     operator fun invoke(): Float
+}
+
+interface IntOperation {
+    operator fun invoke(index: Int): OpResult
+}
+
+interface Predicate<C> {
+    operator fun contains(c: C): Boolean
 }
 
 interface FloatSetter {
@@ -64,6 +72,12 @@ interface FloatConsumer {
 
 interface Named {
     val name: String
+}
+
+enum class OpResult {
+    SUCCESS,
+    RUNNING,
+    FAILED
 }
 
 

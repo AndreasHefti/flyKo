@@ -1,6 +1,7 @@
 package com.inari.firefly.physics.contact
 
 import com.inari.firefly.entity.Entity
+import com.inari.firefly.graphics.ETransform
 import com.inari.firefly.system.component.SystemComponentSubType
 import com.inari.util.geom.Rectangle
 import java.util.*
@@ -23,6 +24,10 @@ class SimpleContactMap : ContactMap() {
 
 
     override fun update(entity: Entity) {
+        // not needed here
+    }
+
+    override fun update(entityId: Int, transform: ETransform, collision: EContact) {
         // not needed here
     }
 

@@ -8,7 +8,7 @@ import com.inari.firefly.TestApp
 import com.inari.firefly.asset.AssetSystem
 import com.inari.firefly.control.ControllerSystem
 import com.inari.firefly.control.PolyController
-import com.inari.firefly.control.action.Action
+import com.inari.firefly.control.task.EntityTask
 import com.inari.firefly.control.trigger.UpdateEventTrigger
 import com.inari.firefly.physics.animation.easing.EasedProperty
 import com.inari.firefly.physics.animation.entity.EAnimation
@@ -126,26 +126,26 @@ fun main(args: Array<String>) {
     }
 
     Entity.build {
-        with(ETransform) {
+        withComponent(ETransform) {
             ff_Position.x = 1f
         }
-        with(EAnimation) {
-            with(EasedProperty) {
+        withComponent(EAnimation) {
+            withAnimation(EasedProperty) {
                 ff_Looping = true
                 ff_PropertyRef = ESprite.Property.TINT_ALPHA
             }
         }
-        with(EMultiplier) {
+        withComponent(EMultiplier) {
             ff_Positions.add(PositionF(1f, 3f))
         }
-        with(EMeta) {
+        withComponent(EMeta) {
             ff_Controller("sofbno")
         }
     }
 
-    Action.build {
+    EntityTask.build {
         ff_Name = ""
-        withTrigger(UpdateEventTrigger, NO_COMP_ID) {
+        ff_WithTrigger(UpdateEventTrigger, NO_COMP_ID) {
             ff_Condition = object : Condition {
                 override fun invoke(): Boolean = true
             }

@@ -9,12 +9,12 @@ interface Integrator {
     fun integrate(
         movement: EMovement,
         transform: ETransform,
-        deltaTimeInSeconds: Float
+        deltaTimeInSeconds: Long
     )
 
     fun step(
         movement: EMovement,
         transform: ETransform,
-        deltaTimeInSeconds: Float
+        deltaTimeInSeconds: Long
     )
 }

@@ -11,14 +11,15 @@ import com.inari.util.collection.DynArray
 class EParticle private constructor() : EntityComponent(EParticle::class.java.name) {
 
     @JvmField internal var rendererRef = SpriteParticleRenderer.instance.index
-    private val particle: DynArray<Particle> = DynArray.of(Particle::class.java)
+    internal val particle: DynArray<Particle> = DynArray.of(Particle::class.java)
 
     var ff_Renderer = ComponentRefResolver(Renderer) { index-> rendererRef = index }
     var ff_Particle = ArrayAccessor(particle)
-
-    @Suppress("UNCHECKED_CAST")
-    internal fun <P : Particle> getParticle(): DynArray<P> =
-        particle as DynArray<P>
+    fun <P : Particle> ff_WithParticle(builder: Particle.ParticleBuilder<P>, configure: (P.() -> Unit)) {
+        val particle = builder.createEmpty()
+        particle.also(configure)
+        this.particle.add(particle)
+    }
 
     override fun reset() {
         rendererRef = -1

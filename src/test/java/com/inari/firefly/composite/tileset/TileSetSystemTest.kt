@@ -3,13 +3,11 @@ package com.inari.firefly.composite.tileset
 import com.inari.firefly.BASE_VIEW
 import com.inari.firefly.FFContext
 import com.inari.firefly.TestApp
-import com.inari.firefly.asset.Asset
 import com.inari.firefly.asset.AssetSystem
 import com.inari.firefly.composite.CompositeSystem
 import com.inari.firefly.entity.EntitySystem
 import com.inari.firefly.graphics.BlendMode
 import com.inari.firefly.graphics.TextureAsset
-import com.inari.firefly.graphics.sprite.Sprite
 import com.inari.firefly.graphics.sprite.SpriteSetAsset
 import com.inari.firefly.graphics.view.Layer
 import com.inari.firefly.graphics.view.ViewSystem
@@ -51,14 +49,28 @@ class TileSetSystemTest {
             ff_Name = "TestTileSet1"
             ff_TextureAsset("TestTextureAsset")
             ff_withTile {
-                ff_Sprite = Sprite(0,0, 8, 8)
+                ff_withSprite {
+                    ff_textureBounds(0,0, 8, 8)
+                    ff_HFlip = true
+                }
                 ff_withAnimation {
-                    ff_addFrame(100, Sprite(8,0, 8, 8, name="s1"))
-                    ff_addFrame(100, Sprite(16,0, 8, 8, name="s2"))
+                    ff_withFrame {
+                        ff_Interval = 100
+                        ff_withSprite {
+                            ff_Name = "s1"
+                            ff_textureBounds(8,0, 8, 8)
+                        }
+                        ff_withSprite {
+                            ff_Name = "s2"
+                            ff_textureBounds(16,0, 8, 8)
+                        }
+                    }
                 }
             }
             ff_withTile {
-                ff_Sprite = Sprite(0,8, 8, 8)
+                ff_withSprite {
+                    ff_textureBounds(0,0, 8, 8)
+                }
                 ff_BlendMode = BlendMode.ADDITIVE_ALPHA
                 ff_ContactMask = BitMask()
                 ff_ContactType = UNDEFINED_CONTACT_TYPE
@@ -66,7 +78,9 @@ class TileSetSystemTest {
                 ff_TintColor = RGBColor.WHITE
             }
             ff_withTile {
-                ff_Sprite = Sprite(8,8, 8, 8)
+                ff_withSprite {
+                    ff_textureBounds(0,0, 8, 8)
+                }
             }
             ff_ActivationResolver = { _ -> TileSetActivation.of {
                 ff_View(ViewSystem.baseView)
@@ -103,17 +117,19 @@ class TileSetSystemTest {
             ff_Name = "TestTileSet2"
             ff_TextureAsset("TestTextureAsset")
             ff_withTile {
-                ff_Sprite = Sprite(0,0, 8, 8)
-                ff_withAnimation {
-                    ff_addFrame(100, Sprite(8,0, 8, 8, name="s1"))
-                    ff_addFrame(100, Sprite(16,0, 8, 8, name="s2"))
+                ff_withSprite {
+                    ff_textureBounds(0,0, 8, 8)
                 }
             }
             ff_withTile {
-                ff_Sprite = Sprite(0,8, 8, 8)
+                ff_withSprite {
+                    ff_textureBounds(8,0, 8, 8)
+                }
             }
             ff_withTile {
-                ff_Sprite = Sprite(8,8, 8, 8)
+                ff_withSprite {
+                    ff_textureBounds(16,0, 8, 8)
+                }
             }
             ff_ActivationResolver = { _ -> TileSetActivation.of {
                 ff_View(ViewSystem.baseView)

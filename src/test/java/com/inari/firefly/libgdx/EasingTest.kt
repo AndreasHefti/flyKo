@@ -18,20 +18,20 @@ class EasingTest : GDXAppAdapter() {
 
     override fun init() {
         Entity.buildAndActivate {
-            with(ETransform) {
+            withComponent(ETransform) {
                 ff_View(0)
                 ff_Position.x = 50f
                 ff_Position.y = 50f
             }
-            with(EShape) {
+            withComponent(EShape) {
                 ff_Type = ShapeType.CIRCLE
                 ff_Segments = 20
                 ff_Fill = true
                 ff_Color = RGBColor(1f, 1f, 1f, 1f)
                 ff_Vertices = floatArrayOf(0f,0f,10f)
             }
-            with(EAnimation) {
-                withActive(EasedProperty) {
+            withComponent(EAnimation) {
+                withActiveAnimation(EasedProperty) {
                     ff_Looping = true
                     ff_InverseOnLoop = true
                     ff_StartValue = 50f

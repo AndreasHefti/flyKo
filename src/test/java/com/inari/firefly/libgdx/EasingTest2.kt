@@ -42,11 +42,11 @@ class EasingTest2 : GDXAppAdapter() {
     private fun createEasingAnimation(type: Easing.Type, position: Int) {
         val ypos = position.toFloat() * (20f + 10f) + 50f
         Entity.buildAndActivate {
-            with(ETransform) {
+            withComponent(ETransform) {
                 ff_View(0)
                 ff_Position(10f, ypos)
             }
-            with(EText) {
+            withComponent(EText) {
                 ff_Renderer(SimpleTextRenderer)
                 ff_FontAsset(SYSTEM_FONT)
                 ff_TextBuffer.append(type.name.replace("_", "-"))
@@ -55,17 +55,17 @@ class EasingTest2 : GDXAppAdapter() {
             }
         }
         Entity.buildAndActivate {
-            with(ETransform) {
+            withComponent(ETransform) {
                 ff_View(0)
             }
-            with(EShape) {
+            withComponent(EShape) {
                 ff_Type = ShapeType.RECTANGLE
                 ff_Fill = true
                 ff_Color(1f, 0f, 0f, 1f)
                 ff_Vertices = floatArrayOf(100f, ypos, 20f, 20f)
             }
-            with(EAnimation) {
-                withActive(EasedProperty) {
+            withComponent(EAnimation) {
+                withActiveAnimation(EasedProperty) {
                     ff_Looping = true
                     ff_InverseOnLoop = true
                     ff_StartValue = 100f

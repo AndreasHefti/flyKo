@@ -32,7 +32,7 @@ class AudioSystem : ComponentSystem {
         if ( soundAsset.streaming )
             FFContext.audio
                 .playMusic(
-                    soundAsset.soundId,
+                    soundAsset.id,
                     sound.looping,
                     sound.volume,
                     sound.pan
@@ -40,7 +40,7 @@ class AudioSystem : ComponentSystem {
         else
             sound.playId = FFContext.audio
                 .playSound(
-                    soundAsset.soundId,
+                    soundAsset.id,
                     sound.channel,
                     sound.looping,
                     sound.volume,
@@ -55,9 +55,9 @@ class AudioSystem : ComponentSystem {
     private fun deactivated(sound: Sound) {
         val soundAsset = FFContext[SoundAsset, sound.soundAssetId]
         if ( soundAsset.streaming )
-            FFContext.audio.stopMusic(soundAsset.soundId)
+            FFContext.audio.stopMusic(soundAsset.id)
         else
-            FFContext.audio.stopSound(soundAsset.soundId, sound.playId)
+            FFContext.audio.stopSound(soundAsset.id, sound.playId)
     }
 
     private fun deleted(sound: Sound) =

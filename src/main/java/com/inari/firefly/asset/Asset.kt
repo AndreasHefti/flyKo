@@ -4,9 +4,7 @@ import com.inari.firefly.FFContext
 import com.inari.firefly.system.component.SystemComponent
 import com.inari.firefly.system.component.SystemComponentType
 
-abstract class Asset protected constructor():
-    SystemComponent(Asset::class.java.name),
-    IndexedInstantiableList {
+abstract class Asset protected constructor() : SystemComponent(Asset::class.java.name), IndexedInstantiableList {
 
     @JvmField protected var dependingRef: Int = -1
     fun dependingIndex(): Int = dependingRef

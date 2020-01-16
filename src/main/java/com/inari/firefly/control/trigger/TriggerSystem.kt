@@ -5,6 +5,7 @@ import com.inari.firefly.system.component.SystemComponent
 import com.inari.util.aspect.Aspects
 
 object TriggerSystem : ComponentSystem {
+
     override val supportedComponents: Aspects =
         SystemComponent.SYSTEM_COMPONENT_ASPECTS.createAspects(Trigger)
 

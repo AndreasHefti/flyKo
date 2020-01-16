@@ -31,8 +31,8 @@ class Entity internal constructor(): SystemComponent(Entity::class.java.name), A
     operator fun <C : EntityComponent> get(type: EntityComponentType<C>): C =
         components.get(type, type.typeClass)!!
 
-    fun <C : EntityComponent> with(cBuilder: EntityComponentBuilder<C>, configure: (C.() -> Unit)): CompId =
-            cBuilder.builder{ comp ->
+    fun <C : EntityComponent> withComponent(cBuilder: EntityComponentBuilder<C>, configure: (C.() -> Unit)): CompId =
+            cBuilder.builder { comp ->
                 components.set(comp.componentType(), comp)
                 comp
             } (configure)

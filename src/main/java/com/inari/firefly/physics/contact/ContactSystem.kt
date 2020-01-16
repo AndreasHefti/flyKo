@@ -2,6 +2,7 @@ package com.inari.firefly.physics.contact
 
 import com.inari.firefly.FFContext
 import com.inari.firefly.Named
+import com.inari.firefly.Predicate
 import com.inari.firefly.component.CompId
 import com.inari.firefly.component.ComponentMap.MapAction.CREATED
 import com.inari.firefly.component.ComponentMap.MapAction.DELETED
@@ -59,7 +60,11 @@ object ContactSystem : ComponentSystem {
         FFContext.registerListener(ViewEvent, object : ViewEvent.Listener{
             override fun invoke(id: CompId, viewPort: ViewData, type: ViewEvent.Type) {
                 when(type) {
-                    ViewEvent.Type.VIEW_DELETED -> contactMaps.deleteAll { map -> map.viewRef == id.instanceId }
+                    ViewEvent.Type.VIEW_DELETED -> contactMaps.deleteAll(object : Predicate<ContactMap> {
+                        override fun contains(c: ContactMap): Boolean {
+                            return c.viewRef == id.instanceId
+                        }
+                    })
                     else -> {}
                 }
             }
@@ -67,15 +72,11 @@ object ContactSystem : ComponentSystem {
 
         FFContext.registerListener(EntityActivationEvent, object : EntityActivationEvent.Listener{
             override fun entityActivated(entity: Entity) {
-                val transform = entity[ETransform]
-                if (transform in contactMapViewLayer)
-                    contactMapViewLayer[transform]?.add(entity)
+                contactMapViewLayer[entity[ETransform]]?.add(entity)
             }
 
             override fun entityDeactivated(entity: Entity) {
-                val transform = entity[ETransform]
-                if (transform in contactMapViewLayer)
-                    contactMapViewLayer[entity[ETransform]]?.remove(entity)
+                contactMapViewLayer[entity[ETransform]]?.remove(entity)
             }
 
             override fun match(aspects: Aspects): Boolean =
@@ -85,8 +86,7 @@ object ContactSystem : ComponentSystem {
         })
 
         FFContext.registerListener(MoveEvent, object : MoveEvent.Listener {
-            override fun invoke(entities: BitSet) =
-                update(entities)
+            override fun invoke(entities: BitSet) = updateContactMaps(entities)
         })
     }
 
@@ -171,7 +171,10 @@ object ContactSystem : ComponentSystem {
         updateContacts(entityName.name, constraint)
     }
 
-    private fun update(entities: BitSet) {
+    private val tmpEntityKeyMap = BitSet()
+    private fun updateContactMaps(entities: BitSet) {
+        // first we have to update all moved entities within the registered ContactMap's
+        tmpEntityKeyMap.clear()
         var i = entities.nextSetBit(0)
         while (i >= 0) {
             val entity = EntitySystem[i]
@@ -179,11 +182,23 @@ object ContactSystem : ComponentSystem {
             if (EContact !in entity.aspects)
                 continue
 
+            tmpEntityKeyMap.set(i)
+            contactMapViewLayer[entity[ETransform]]?.update(entity)
+        }
+
+        // then we can update the contacts on the new positions
+        updateContacts()
+    }
+
+    private fun updateContacts() {
+        var i = tmpEntityKeyMap.nextSetBit(0)
+        while (i >= 0) {
+            val entity = EntitySystem[i]
+            i = tmpEntityKeyMap.nextSetBit(i + 1)
             val contacts = entity[EContact]
             if (contacts.contactScan.contacts.isEmpty)
                 continue
 
-            val transform = entity[ETransform]
             scanContacts(entity, contacts)
 
             if (contacts.resolverRef >= 0)
@@ -194,7 +209,7 @@ object ContactSystem : ComponentSystem {
                 FFContext.notify(ContactEvent)
             }
 
-            contactMapViewLayer[transform]?.update(entity)
+            contactMapViewLayer[entity[ETransform]]?.update(entity)
         }
     }
 
@@ -250,9 +265,8 @@ object ContactSystem : ComponentSystem {
             return
 
         val iterator = contactMapViewLayer[transform.viewRef, layerRef]!![c.worldBounds, entity]
-        while (iterator.hasNext()) {
+        while (iterator.hasNext())
             scanContact(c, EntitySystem[iterator.next()], transform.data.position.x, transform.data.position.y)
-        }
     }
 
     private val checkPivot = Rectangle()

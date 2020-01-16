@@ -57,7 +57,6 @@ const val BASE_VIEW: String = "[[BASE_VIEW]]"
     override operator fun invoke(): PositionF = throw IllegalAccessException()
 }
 
-
 @JvmField val NULL_INT_EXPR: IntExpr = object : IntExpr {
     override fun invoke(i: Int) { throw IllegalStateException("NULL_INT_EXPR called") }
 }
@@ -85,11 +84,20 @@ const val BASE_VIEW: String = "[[BASE_VIEW]]"
 @JvmField val INFINITE_SCHEDULER: FFTimer.Scheduler = object : FFTimer.Scheduler {
     override fun needsUpdate(): Boolean = true
 }
+@JvmField val EMPTY_INT_OPERATION: IntOperation = object : IntOperation {
+    override operator fun invoke(index: Int): OpResult = OpResult.SUCCESS
+}
 
 fun <T> NULL_EXPR(): Consumer<T> = { throw IllegalStateException("NULL_EXPR called") }
 fun <T> VOID_EXPR(): Consumer<T> = {}
-fun <T> TRUE_PREDICATE(): Predicate<T> = {true}
-fun <T> FALSE_PREDICATE(): Predicate<T> = {false}
+fun <T> FAILED_OPERATION(): Operation<T> = {_ -> OpResult.FAILED }
+fun <T> SUCCESS_OPERATION(): Operation<T> = {_ -> OpResult.SUCCESS }
+fun <T> TRUE_PREDICATE(): Predicate<T> = object : Predicate<T> {
+    override fun contains(c: T): Boolean = true
+}
+fun <T> FALSE_PREDICATE(): Predicate<T> = object : Predicate<T> {
+    override fun contains(c: T): Boolean = false
+}
 
 
 

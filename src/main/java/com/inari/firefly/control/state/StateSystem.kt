@@ -12,6 +12,7 @@ import com.inari.util.indexed.Indexed
 
 
 object StateSystem : ComponentSystem {
+
     override val supportedComponents: Aspects =
         SystemComponent.SYSTEM_COMPONENT_ASPECTS.createAspects(Workflow)
 

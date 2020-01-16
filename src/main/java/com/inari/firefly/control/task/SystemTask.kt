@@ -7,7 +7,7 @@ import com.inari.firefly.control.trigger.Trigger
 import com.inari.firefly.control.trigger.TriggeredSystemComponent
 import com.inari.firefly.system.component.SystemComponentSingleType
 
-class Task private constructor() : TriggeredSystemComponent(Task::class.java.name) {
+class SystemTask private constructor() : TriggeredSystemComponent(SystemTask::class.java.name) {
 
     @JvmField internal var removeAfterRun = false
     @JvmField internal var task: Call = NULL_CALL
@@ -21,11 +21,11 @@ class Task private constructor() : TriggeredSystemComponent(Task::class.java.nam
         get() = throw UnsupportedOperationException()
         set(value) { task = value }
 
-    fun <A : Trigger> withTrigger(cBuilder: Trigger.Subtype<A>, configure: (A.() -> Unit)): A =
+    fun <A : Trigger> ff_WithTrigger(cBuilder: Trigger.Subtype<A>, configure: (A.() -> Unit)): A =
         super.with(cBuilder, triggerCall, configure)
 
-    override fun componentType(): ComponentType<Task> = Companion
-    companion object : SystemComponentSingleType<Task>(Task::class.java) {
-        override fun createEmpty() = Task()
+    override fun componentType(): ComponentType<SystemTask> = Companion
+    companion object : SystemComponentSingleType<SystemTask>(SystemTask::class.java) {
+        override fun createEmpty() = SystemTask()
     }
 }

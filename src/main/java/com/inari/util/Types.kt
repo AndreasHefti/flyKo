@@ -1,5 +1,7 @@
 package com.inari.util
 
+import java.util.*
+
 /** Use this on types that can be disposed  */
 interface Disposable {
 

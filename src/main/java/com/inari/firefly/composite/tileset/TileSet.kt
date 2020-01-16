@@ -22,20 +22,17 @@ import java.util.*
 class TileSet private constructor() : Composite() {
 
     @JvmField internal var textureId: Int = -1
+    @JvmField internal val tiles: DynArray<Tile> = DynArray.of(Tile::class.java)
+    @JvmField internal var activationResolver: (TileSet) -> TileSetActivation = { _ -> TileSetActivation() }
+
     var ff_TextureAsset =
             ComponentRefResolver(Asset) { index-> run {
                 textureId = setIfNotInitialized(index, "ff_TextureAsset")
             } }
-
-    @JvmField internal val tiles: DynArray<Tile> = DynArray.of(Tile::class.java)
     val ff_withTile: (Tile.() -> Unit) -> Unit = { configure ->
         val tile = Tile()
         tile.also(configure)
         tiles.add(tile)
-    }
-
-    @JvmField internal var activationResolver: (TileSet) -> TileSetActivation = {
-            _ -> TileSetActivation()
     }
     var ff_ActivationResolver: (TileSet) -> TileSetActivation
         set(value) {activationResolver = value}
@@ -105,20 +102,24 @@ class TileSet private constructor() : Composite() {
                 return false
 
             tile.entityIds[layer.index] = Entity.buildAndActivate {
-                with(ETransform) {
+                withComponent(ETransform) {
                     ff_View(activation.viewRef)
                     ff_Layer(layer)
                 }
-                with(ETile) {
+                withComponent(ETile) {
                     ff_Sprite.instanceId = spriteId
                     ff_Tint = tile.tintColor ?: activation.tintColors[layer.index] ?: ff_Tint
                     ff_Blend = tile.blendMode ?: activation.blendModes[layer.index] ?: ff_Blend
                 }
 
                 if (tile.hasContactComp) {
-                    with(EContact) {
+                    withComponent(EContact) {
                         if (tile.contactType !== ContactSystem.UNDEFINED_CONTACT_TYPE) {
-                            ff_Bounds(0, 0, tile.spriteData.width, tile.spriteData.height)
+                            ff_Bounds(
+                                    0,
+                                    0,
+                                    tile.spriteData.textureBounds.width,
+                                    tile.spriteData.textureBounds.height)
                             ff_ContactType = tile.contactType
                             ff_Material = tile.material
                             ff_Mask = tile.contactMask ?: ff_Mask
@@ -128,8 +129,8 @@ class TileSet private constructor() : Composite() {
                 }
 
                 if (tile.animation != null) {
-                    with(EAnimation) {
-                        withActive(IntTimelineProperty) {
+                    withComponent(EAnimation) {
+                        withActiveAnimation(IntTimelineProperty) {
                             ff_Looping = true
                             ff_Timeline = tile.animation!!.frames.toArray()
                             ff_PropertyRef = ETile.Property.SPRITE_REFERENCE

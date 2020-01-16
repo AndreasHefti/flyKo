@@ -18,18 +18,18 @@ class LoopBlendAnimationTest : GDXAppAdapter() {
 
     override fun init() {
         Entity.buildAndActivate {
-            with(ETransform) {
+            withComponent(ETransform) {
                 ff_Position.x = 50f
                 ff_Position.y = 50f
             }
-            with(EShape) {
+            withComponent(EShape) {
                 ff_Type = ShapeType.RECTANGLE
                 ff_Fill = true
                 ff_Color = RGBColor(1f, 1f, 1f, 1f)
                 ff_Vertices = floatArrayOf(0f,0f,100f,100f)
             }
-            with(EAnimation) {
-                withActive(EasedProperty) {
+            withComponent(EAnimation) {
+                withActiveAnimation(EasedProperty) {
                     ff_Looping = true
                     ff_InverseOnLoop = true
                     ff_StartValue = 1f
@@ -38,7 +38,7 @@ class LoopBlendAnimationTest : GDXAppAdapter() {
                     ff_Easing = Easing.Type.LINEAR
                     ff_PropertyRef = EShape.Property.COLOR_RED
                 }
-                withActive(EasedProperty) {
+                withActiveAnimation(EasedProperty) {
                     ff_Looping = true
                     ff_InverseOnLoop = true
                     ff_StartValue = 1f
@@ -47,7 +47,7 @@ class LoopBlendAnimationTest : GDXAppAdapter() {
                     ff_Easing = Easing.Type.LINEAR
                     ff_PropertyRef = EShape.Property.COLOR_GREEN
                 }
-                withActive(EasedProperty) {
+                withActiveAnimation(EasedProperty) {
                     ff_Looping = true
                     ff_InverseOnLoop = true
                     ff_StartValue = 1f

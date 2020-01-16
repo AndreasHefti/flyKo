@@ -3,6 +3,7 @@ package com.inari.firefly.physics.contact
 import com.inari.firefly.component.ComponentRefResolver
 import com.inari.firefly.entity.Entity
 import com.inari.firefly.entity.EntityComponent
+import com.inari.firefly.entity.EntitySystem
 import com.inari.firefly.graphics.ETransform
 import com.inari.firefly.graphics.tile.ETile
 import com.inari.firefly.graphics.view.Layer
@@ -11,6 +12,7 @@ import com.inari.firefly.graphics.view.ViewLayerAware
 import com.inari.firefly.system.component.SystemComponent
 import com.inari.firefly.system.component.SystemComponentType
 import com.inari.util.geom.Rectangle
+import java.util.*
 
 
 abstract class ContactMap protected constructor() : SystemComponent(ContactMap::class.java.name), ViewLayerAware {
@@ -30,13 +32,13 @@ abstract class ContactMap protected constructor() : SystemComponent(ContactMap::
 
     /** Use this to directly register an entity id for a specified ContactPool instance.
      * This first checks if the Entity is a valid entity by checking the availability of
-     * an ETransform and an EContact component and also the absence of an ETile component.
+     * an ETransform and an EContact component and the absence of an ETile component.
      *
      * (Tiles are not supported by ContactPools, they get checked against contacts within their TileGrid context)
      *
-     * Also the equality of View and Layer id of the Entities Transform must match the View and Layer id of the ContactPool
+     * The equality of View and Layer id of the Entities Transform must match the View and Layer id of the ContactPool
      * to get the entityId registered in a ContactPool.
-     * All this check are done by registering and a User has not to concern about this
+     * All this check are done by registering, and a User has not to concern about that.
      *
      * @param entity the Entity to add / register
      */
@@ -65,12 +67,29 @@ abstract class ContactMap protected constructor() : SystemComponent(ContactMap::
      */
     abstract fun remove(entity: Entity)
 
+    open fun updateAll(entityIds: BitSet) {
+        var i = entityIds.nextSetBit(0)
+        while (i >= 0) {
+            update(EntitySystem[i])
+            i = entityIds.nextSetBit(i + 1)
+        }
+    }
+
     /** This is usually called by CollisionSystem in an entity move event and must update the entity in the pool
      * if the entity id has some orientation related store attributes within the specified ContactPool implementation.
      *
      * @param entity the Entity of an entity that has just moved and changed its position in the world
      */
-    abstract fun update(entity: Entity)
+    open fun update(entity: Entity) {
+        update(entity.index, entity[ETransform], entity[EContact])
+    }
+
+    /** This is usually called by CollisionSystem in an entity move event and must update the entity in the pool
+     * if the entity id has some orientation related store attributes within the specified ContactPool implementation.
+     *
+     * @param entity the Entity of an entity that has just moved and changed its position in the world
+     */
+    abstract fun update(entityId: Int, transform: ETransform, collision: EContact)
 
     /** Use this to get an IntIterator of all entity id's that most possibly has a collision within the given region.
      * The efficiency of this depends on an specified implementation and can be different for different needs.

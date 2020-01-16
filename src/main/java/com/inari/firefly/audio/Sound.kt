@@ -16,7 +16,6 @@ class Sound private constructor() : TriggeredSystemComponent(Sound::class.java.n
     @JvmField internal var pitch: Float = 1.0f
     @JvmField internal var pan: Float = 0.0f
     @JvmField internal var channel: Int = 0
-
     @JvmField internal var playId: Long = -1
 
     val ff_SoundAsset = ComponentRefResolver(SoundAsset) { index -> soundAssetId = index }

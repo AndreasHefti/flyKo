@@ -1,5 +1,6 @@
 package com.inari.firefly.composite
 
+import com.inari.firefly.FFContext
 import com.inari.firefly.component.ComponentMap
 import com.inari.firefly.system.component.ComponentSystem
 import com.inari.firefly.system.component.SystemComponent
@@ -21,6 +22,10 @@ object CompositeSystem : ComponentSystem {
                 ComponentMap.MapAction.DELETED       -> composite.systemUnload()
             } }
     )
+
+    init {
+        FFContext.loadSystem(this)
+    }
 
     override fun clearSystem() {
         composites.clear()
