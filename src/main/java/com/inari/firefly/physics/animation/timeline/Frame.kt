@@ -1,7 +1,6 @@
 package com.inari.firefly.physics.animation.timeline
 
 import com.inari.firefly.component.ComponentDSL
-import com.inari.firefly.composite.tileset.Tile
 import com.inari.firefly.graphics.sprite.ProtoSprite
 
 interface Frame {

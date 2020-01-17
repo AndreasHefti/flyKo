@@ -1,4 +1,4 @@
-package com.inari.firefly.composite.tileset
+package com.inari.firefly.graphics.tile.set
 
 import com.inari.firefly.FFContext
 import com.inari.firefly.graphics.view.Layer
@@ -15,7 +15,7 @@ object TileSetSystem {
     }
 
     internal fun deactivated(tileset: TileSet) {
-        mapping =mapping!!.remove(tileset.index)
+        mapping = mapping!!.remove(tileset.index)
     }
 
     operator fun get(tileSetName: String): TileSet =

@@ -5,7 +5,6 @@ import com.inari.firefly.NO_NAME
 import com.inari.firefly.asset.Asset
 import com.inari.firefly.component.ArrayAccessor
 import com.inari.firefly.component.ComponentRefResolver
-import com.inari.firefly.composite.tileset.Tile
 import com.inari.firefly.external.SpriteData
 import com.inari.firefly.system.component.SystemComponentSubType
 import com.inari.util.collection.DynArray

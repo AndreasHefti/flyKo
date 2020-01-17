@@ -1,4 +1,4 @@
-package com.inari.firefly.composite.tileset
+package com.inari.firefly.graphics.tile.set
 
 import com.inari.firefly.BASE_VIEW
 import com.inari.firefly.FFContext
@@ -9,6 +9,9 @@ import com.inari.firefly.entity.EntitySystem
 import com.inari.firefly.graphics.BlendMode
 import com.inari.firefly.graphics.TextureAsset
 import com.inari.firefly.graphics.sprite.SpriteSetAsset
+import com.inari.firefly.graphics.tile.set.TileSet
+import com.inari.firefly.graphics.tile.set.TileSetActivation
+import com.inari.firefly.graphics.tile.set.TileSetSystem
 import com.inari.firefly.graphics.view.Layer
 import com.inari.firefly.graphics.view.ViewSystem
 import com.inari.firefly.physics.animation.AnimationSystem

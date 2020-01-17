@@ -65,5 +65,4 @@ class AudioSystem : ComponentSystem {
 
     override fun clearSystem() =
         sounds.clear()
-
 }

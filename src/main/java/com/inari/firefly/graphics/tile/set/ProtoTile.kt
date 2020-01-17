@@ -1,4 +1,4 @@
-package com.inari.firefly.composite.tileset
+package com.inari.firefly.graphics.tile.set
 
 import com.inari.firefly.component.ComponentDSL
 import com.inari.firefly.graphics.BlendMode
@@ -10,7 +10,7 @@ import com.inari.util.geom.BitMask
 import com.inari.util.graphics.RGBColor
 
 @ComponentDSL
-class Tile internal constructor() {
+class ProtoTile internal constructor() {
 
     @JvmField internal var spriteData: ProtoSprite = ProtoSprite()
     @JvmField internal var material: Aspect = ContactSystem.UNDEFINED_MATERIAL
@@ -64,10 +64,10 @@ class Tile internal constructor() {
 
     companion object {
 
-        @JvmField internal val EMPTY_TILE = Tile()
+        @JvmField internal val EMPTY_TILE = ProtoTile()
 
-        val of: (Tile.() -> Unit) -> Tile = { configure ->
-            val comp = Tile()
+        val of: (ProtoTile.() -> Unit) -> ProtoTile = { configure ->
+            val comp = ProtoTile()
             comp.also(configure)
             comp
         }

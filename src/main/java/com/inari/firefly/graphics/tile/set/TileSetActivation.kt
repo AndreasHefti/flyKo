@@ -1,4 +1,4 @@
-package com.inari.firefly.composite.tileset
+package com.inari.firefly.graphics.tile.set
 
 import com.inari.firefly.component.ComponentDSL
 import com.inari.firefly.component.ComponentRefResolver

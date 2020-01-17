@@ -1,4 +1,4 @@
-package com.inari.firefly.composite.tileset
+package com.inari.firefly.graphics.tile.set
 
 import com.inari.firefly.FFContext
 import com.inari.firefly.asset.Asset
@@ -22,15 +22,15 @@ import java.util.*
 class TileSet private constructor() : Composite() {
 
     @JvmField internal var textureId: Int = -1
-    @JvmField internal val tiles: DynArray<Tile> = DynArray.of(Tile::class.java)
+    @JvmField internal val tiles: DynArray<ProtoTile> = DynArray.of(ProtoTile::class.java)
     @JvmField internal var activationResolver: (TileSet) -> TileSetActivation = { _ -> TileSetActivation() }
 
     var ff_TextureAsset =
             ComponentRefResolver(Asset) { index-> run {
                 textureId = setIfNotInitialized(index, "ff_TextureAsset")
             } }
-    val ff_withTile: (Tile.() -> Unit) -> Unit = { configure ->
-        val tile = Tile()
+    val ff_withTile: (ProtoTile.() -> Unit) -> Unit = { configure ->
+        val tile = ProtoTile()
         tile.also(configure)
         tiles.add(tile)
     }
@@ -94,7 +94,7 @@ class TileSet private constructor() : Composite() {
         while (it < tiles.capacity) {
             val tile = tiles[it++] ?: continue
 
-            if (tile === Tile.EMPTY_TILE)
+            if (tile === ProtoTile.EMPTY_TILE)
                 continue
 
             val spriteId = tile.spriteData.instanceId
@@ -161,7 +161,7 @@ class TileSet private constructor() : Composite() {
         while (i < tileSet.tiles.capacity) {
             val tile = tileSet.tiles[i++] ?: continue
 
-            if (tile === Tile.EMPTY_TILE)
+            if (tile === ProtoTile.EMPTY_TILE)
                 continue
 
             val entityId = tile.entityIds[layerId]
