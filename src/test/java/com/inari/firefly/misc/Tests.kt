@@ -16,7 +16,7 @@ import com.inari.firefly.entity.EMeta
 import com.inari.firefly.entity.Entity
 import com.inari.firefly.entity.EntitySystem
 import com.inari.firefly.graphics.ETransform
-import com.inari.firefly.graphics.sprite.EMultiplier
+import com.inari.firefly.entity.EMultiplier
 import com.inari.firefly.graphics.sprite.ESprite
 
 

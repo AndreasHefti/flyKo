@@ -88,6 +88,16 @@ const val BASE_VIEW: String = "[[BASE_VIEW]]"
     override operator fun invoke(index: Int): OpResult = OpResult.SUCCESS
 }
 
+@JvmField val TRUE_INT_PREDICATE: IntPredicate = object : IntPredicate {
+    override operator fun invoke(index: Int): Boolean = true
+}
+
+@JvmField val FALSE_INT_PREDICATE: IntPredicate = object : IntPredicate {
+    override operator fun invoke(index: Int): Boolean = false
+}
+
+
+
 fun <T> NULL_EXPR(): Consumer<T> = { throw IllegalStateException("NULL_EXPR called") }
 fun <T> VOID_EXPR(): Consumer<T> = {}
 fun <T> FAILED_OPERATION(): Operation<T> = {_ -> OpResult.FAILED }

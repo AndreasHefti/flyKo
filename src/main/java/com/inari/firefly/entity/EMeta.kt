@@ -40,7 +40,7 @@ class EMeta private constructor() : EntityComponent(EMeta::class.java.name), Nam
     override fun toString(): String =
         "EMeta(controllerRef=$controllerRef, name='$name')"
 
-    override fun componentType(): ComponentType<EMeta> = Companion
+    override fun componentType() = Companion
     companion object : EntityComponentType<EMeta>(EMeta::class.java) {
         override fun createEmpty() = EMeta()
         val ENTITY_META_ASPECTS = IndexedAspectType("ENTITY_META_ASPECTS")

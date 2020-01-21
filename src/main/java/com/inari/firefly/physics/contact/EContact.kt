@@ -1,14 +1,19 @@
 package com.inari.firefly.physics.contact
 
 import com.inari.firefly.Named
+import com.inari.firefly.component.ArrayAccessor
 import com.inari.firefly.component.CompId
 import com.inari.firefly.component.ComponentRefResolver
 import com.inari.firefly.entity.EntityComponent
 import com.inari.firefly.entity.EntityComponentType
+import com.inari.firefly.graphics.tile.set.ProtoTile
+import com.inari.firefly.physics.contact.ContactSystem.CONTACT_TYPE_ASPECT_GROUP
+import com.inari.firefly.physics.contact.ContactSystem.MATERIAL_ASPECT_GROUP
 import com.inari.util.aspect.Aspect
 import com.inari.util.geom.BitMask
 import com.inari.util.geom.Rectangle
 import com.inari.util.indexed.Indexed
+import java.lang.IllegalArgumentException
 
 class EContact private constructor() : EntityComponent(EContact::class.java.name) {
 
@@ -21,29 +26,45 @@ class EContact private constructor() : EntityComponent(EContact::class.java.name
     @JvmField internal val contactScan = ContactScan()
 
     val ff_CollisionResolver = ComponentRefResolver(CollisionResolver) { index -> resolverRef = index }
+
     var ff_Bounds: Rectangle
         get() = bounds
         set(value) = bounds(value)
+
     var ff_Mask: BitMask
         get() = mask
         set(value) {
             mask.reset(value.region())
             mask.or(value)
         }
+
     var ff_Material: Aspect
         get() = material
-        set(value) {material = value}
+        set(value) =
+            if (MATERIAL_ASPECT_GROUP.typeCheck(value)) material = value
+            else throw IllegalArgumentException()
+
     var ff_ContactType: Aspect
         get() = contactType
-        set(value) {contactType = value}
+        set(value) =
+            if (CONTACT_TYPE_ASPECT_GROUP.typeCheck(value)) contactType = value
+            else throw IllegalArgumentException()
+
     val ff_addConstraint =
         ComponentRefResolver(ContactConstraint) { id ->
             if (id !in contactScan.contacts) contactScan.contacts[id] = Contacts(id)
         }
+
     val ff_removeConstraint =
         ComponentRefResolver(ContactConstraint) { id: Int ->
             contactScan.contacts.remove(id)
         }
+
+    val ff_WithConstraint: (ContactConstraint.() -> Unit) -> Unit = { configure ->
+        val id = ContactConstraint.build(configure)
+        contactScan.contacts[id.instanceId] = Contacts(id.instanceId)
+    }
+
     fun ff_clearConstraints() =
         contactScan.clear()
 

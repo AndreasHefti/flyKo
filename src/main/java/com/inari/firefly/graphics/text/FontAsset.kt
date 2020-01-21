@@ -103,5 +103,4 @@ class FontAsset : Asset() {
         override fun createEmpty() = FontAsset()
     }
 
-
 }

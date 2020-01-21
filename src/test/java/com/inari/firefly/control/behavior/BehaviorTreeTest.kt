@@ -1,5 +1,6 @@
 package com.inari.firefly.control.behavior
 
+import com.inari.firefly.FALSE_INT_PREDICATE
 import com.inari.firefly.IntOperation
 import com.inari.firefly.OpResult
 import com.inari.firefly.TestApp
@@ -42,7 +43,7 @@ class BehaviorTreeTest {
                     ff_Name = "Second Selection"
                     ff_WithNode(Condition) {
                         ff_Name ="Condition 1"
-                        ff_Condition = { _, _ -> false }
+                        ff_Condition = FALSE_INT_PREDICATE
                     }
                     ff_WithNode(BehaviorTask) {
                         ff_Name = "First Task"

@@ -159,16 +159,16 @@ object ContactSystem : ComponentSystem {
         updateContacts(EntitySystem[entityId], contacts)
     }
 
-    fun updateContacts(indexed: Indexed, constraint: Contacts) {
-        updateContacts(indexed.index, constraint)
+    fun updateContacts(indexed: Indexed, contacts: Contacts) {
+        updateContacts(indexed.index, contacts)
     }
 
-    fun updateContacts(entityName: String, constraint: Contacts) {
-        updateContacts(EntitySystem[entityName], constraint)
+    fun updateContacts(entityName: String, contacts: Contacts) {
+        updateContacts(EntitySystem[entityName], contacts)
     }
 
-    fun updateContacts(entityName: Named, constraint: Contacts) {
-        updateContacts(entityName.name, constraint)
+    fun updateContacts(entityName: Named, contacts: Contacts) {
+        updateContacts(entityName.name, contacts)
     }
 
     private val tmpEntityKeyMap = BitSet()
@@ -274,7 +274,7 @@ object ContactSystem : ComponentSystem {
         val otherContact = otherEntity[EContact]
         val constraint = constraints[c.constraintRef]
 
-        if (!constraint.match(otherContact.material))
+        if (!constraint.match(otherContact))
             return
 
         val contact = ContactsPool.createContact(

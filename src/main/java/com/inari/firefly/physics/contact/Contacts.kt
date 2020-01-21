@@ -44,7 +44,7 @@ class Contacts internal constructor(
     fun hasAnyContact(): Boolean =
         !contacts.isEmpty
 
-    fun hasContacts(contact: Aspects): Boolean =
+    fun hasContact(contact: Aspects): Boolean =
         contactTypes.intersects(contact)
 
     fun hasContact(contact: Aspect): Boolean =

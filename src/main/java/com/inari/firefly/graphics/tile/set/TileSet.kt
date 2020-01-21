@@ -2,6 +2,7 @@ package com.inari.firefly.graphics.tile.set
 
 import com.inari.firefly.FFContext
 import com.inari.firefly.asset.Asset
+import com.inari.firefly.asset.AssetInstanceRefResolver
 import com.inari.firefly.asset.AssetSystem
 import com.inari.firefly.component.ComponentRefResolver
 import com.inari.firefly.composite.Composite
@@ -21,19 +22,20 @@ import java.util.*
 
 class TileSet private constructor() : Composite() {
 
-    @JvmField internal var textureId: Int = -1
+    @JvmField internal var textureRef: Int = -1
     @JvmField internal val tiles: DynArray<ProtoTile> = DynArray.of(ProtoTile::class.java)
     @JvmField internal var activationResolver: (TileSet) -> TileSetActivation = { _ -> TileSetActivation() }
 
-    var ff_TextureAsset =
-            ComponentRefResolver(Asset) { index-> run {
-                textureId = setIfNotInitialized(index, "ff_TextureAsset")
-            } }
+    val ff_TextureAsset = ComponentRefResolver(Asset) { index->
+            textureRef = setIfNotInitialized(index, "ff_TextureAsset")
+        }
+
     val ff_withTile: (ProtoTile.() -> Unit) -> Unit = { configure ->
         val tile = ProtoTile()
         tile.also(configure)
         tiles.add(tile)
     }
+
     var ff_ActivationResolver: (TileSet) -> TileSetActivation
         set(value) {activationResolver = value}
         get() = activationResolver
@@ -48,7 +50,7 @@ class TileSet private constructor() : Composite() {
 
         SpriteSetAsset.build {
             ff_Name = this@TileSet.name
-            ff_Texture(this@TileSet.textureId)
+            ff_Texture(this@TileSet.textureRef)
 
             this@TileSet.tiles.forEach{
                 if (it.animation != null)

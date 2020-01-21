@@ -4,7 +4,7 @@ import com.inari.firefly.FFContext
 import com.inari.firefly.entity.Entity
 import com.inari.firefly.entity.EntityComponent
 import com.inari.firefly.graphics.ETransform
-import com.inari.firefly.graphics.sprite.EMultiplier
+import com.inari.firefly.entity.EMultiplier
 import com.inari.firefly.graphics.sprite.ESprite
 import com.inari.firefly.system.component.SingletonComponent
 import com.inari.util.geom.Rectangle

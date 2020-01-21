@@ -2,6 +2,7 @@ package com.inari.firefly.graphics.sprite
 
 import com.inari.firefly.NO_NAME
 import com.inari.firefly.component.ComponentDSL
+import com.inari.firefly.graphics.particle.SpriteParticle
 import com.inari.util.geom.Rectangle
 
 @ComponentDSL
@@ -29,5 +30,14 @@ class ProtoSprite internal constructor() {
     var ff_VFlip: Boolean
         get() = flipV
         set(value) { flipV = value }
+
+    companion object {
+
+        val of: (ProtoSprite.() -> Unit) -> ProtoSprite = { configure ->
+            val instance = ProtoSprite()
+            instance.also(configure)
+            instance
+        }
+    }
 
 }

@@ -18,7 +18,7 @@ interface Frame {
     }
 
     @ComponentDSL
-    class SpriteFrame() : IntFrame {
+    class SpriteFrame : IntFrame {
 
         @JvmField internal var sprite: ProtoSprite = ProtoSprite()
         @JvmField internal var interval: Long = 0
@@ -26,6 +26,10 @@ interface Frame {
         var ff_Interval: Long
                 get() = interval
                 set(value) { interval = value }
+
+        var ff_Sprite: ProtoSprite
+            get() = sprite
+            set(value) { sprite = value }
 
         val ff_withSprite: (ProtoSprite.() -> Unit) -> Unit = { configure ->
             val sprite = ProtoSprite()
@@ -38,5 +42,13 @@ interface Frame {
 
         override val value: Int
             get() = sprite.instanceId
+
+        companion object {
+            val of: (SpriteFrame.() -> Unit) -> SpriteFrame = { configure ->
+                val instance = SpriteFrame()
+                instance.also(configure)
+                instance
+            }
+        }
     }
 }

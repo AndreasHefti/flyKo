@@ -21,7 +21,7 @@ class EChild private constructor () : EntityComponent(EChild::class.java.name) {
     override fun toString(): String =
             "EChild(parent=$parent, zpos=$zpos)"
 
-    override fun componentType(): ComponentType<EChild> =  Companion
+    override fun componentType() =  Companion
     companion object : EntityComponentType<EChild>(EChild::class.java) {
         override fun createEmpty() = EChild()
     }
