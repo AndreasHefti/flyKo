@@ -2,7 +2,6 @@ package com.inari.firefly.libgdx
 
 import com.badlogic.gdx.ApplicationAdapter
 import com.badlogic.gdx.Gdx
-import com.inari.firefly.Condition
 import com.inari.firefly.SYSTEM_FONT
 import com.inari.firefly.asset.AssetSystem
 import com.inari.firefly.control.ControllerSystem
@@ -94,10 +93,7 @@ abstract class GDXAppAdapter : ApplicationAdapter() {
             dispose()
             GDXApp.exit()
         }) {
-            ff_Condition = object : Condition {
-                override fun invoke(): Boolean =
-                    Gdx.input.isKeyPressed( key )
-            }
+            ff_Condition = { Gdx.input.isKeyPressed( key ) }
         }
     }
 }

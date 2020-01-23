@@ -2,6 +2,7 @@ package com.inari.firefly.misc
 
 import com.inari.util.geom.Position
 import com.inari.firefly.FFContext
+import com.inari.firefly.IntFunction
 import com.inari.firefly.TestApp
 import com.inari.firefly.measureTime
 import com.inari.util.event.Event
@@ -96,6 +97,27 @@ class EventPerformanceTest {
     }
 
     @Test
+    fun test0() {
+        val intFunctionLambda: IntFunction = { i -> i + 1 }
+        val intFunctionInterface: IntFunction = object : IntFunction {
+            override fun invoke(p1: Int): Int {
+                return p1 + 1
+            }
+        }
+
+        measureTime("primitive interface impl", 100_000_000_0) {
+            intFunctionInterface(1)
+        }
+
+        measureTime("primitive lambda function", 100_000_000_0) {
+            intFunctionLambda(1)
+        }
+
+
+
+    }
+
+    @Test
     fun test1() {
 
         val testListenerType: TestListenerType = { i1, i2, i3 -> i1 + i2 + i3}
@@ -109,30 +131,32 @@ class EventPerformanceTest {
         FFContext.registerListener(TestEvent1, testListenerType)
         FFContext.registerListener(TestEvent2, testListenerInterface)
 
-        measureTime("primitive subType listener", 10000000) {
+        measureTime("primitive interface listener", 100_000_000) {
+            TestEvent2.send(1, 2, 4)
+        }
+
+        measureTime("primitive subType listener", 100_000_000) {
             TestEvent1.send(1, 2, 4)
         }
 
-        measureTime("primitive interface listener", 10000000) {
-            TestEvent2.send(1, 2, 4)
-        }
+
     }
 
     @Test
     fun test2() {
 
-        FFContext.registerListener(TestEvent1, { i1: Int, i2: Int, i3: Int -> i1 + i2 + i3 })
+        FFContext.registerListener(TestEvent1) { i1: Int, i2: Int, i3: Int -> i1 + i2 + i3 }
         FFContext.registerListener(TestEvent2, object : TestListenerInterface {
             override fun invoke(i1: Int, i2: Int, i3: Int) {
                 i1 + i2 + i3
             }
         })
 
-        measureTime("primitive subType listener with lambda", 10000000) {
+        measureTime("primitive subType listener with lambda", 100_000) {
             TestEvent1.send(1, 2, 4)
         }
 
-        measureTime("primitive interface listener with lambda", 10000000) {
+        measureTime("primitive interface listener with lambda", 100_000) {
             TestEvent2.send(1, 2, 4)
         }
     }
@@ -150,11 +174,11 @@ class EventPerformanceTest {
         FFContext.registerListener(TestEvent3, testListenerType)
         FFContext.registerListener(TestEvent4, testListenerInterface)
 
-        measureTime("Obj subType listener", 10000000) {
+        measureTime("Obj subType listener", 100_000) {
             TestEvent3.send(pos1, pos1, pos1)
         }
 
-        measureTime("Obj interface listener", 10000000) {
+        measureTime("Obj interface listener", 100_000) {
             TestEvent4.send(pos1, pos1, pos1)
         }
     }
@@ -162,18 +186,18 @@ class EventPerformanceTest {
     @Test
     fun test4() {
         val pos1 = Position(1, 2)
-        FFContext.registerListener(TestEvent3, { i1: Position, i2: Position, i3: Position -> i1.x + i2.x + i3.x })
+        FFContext.registerListener(TestEvent3) { i1: Position, i2: Position, i3: Position -> i1.x + i2.x + i3.x }
         FFContext.registerListener(TestEvent4, object : TestListenerInterfaceObj {
             override fun invoke(i1: Position, i2: Position, i3: Position) {
                 i1.x + i2.x + i3.x
             }
         })
 
-        measureTime("Obj subType listener with lambda", 10000000) {
+        measureTime("Obj subType listener with lambda", 100_000) {
             TestEvent3.send(pos1, pos1, pos1)
         }
 
-        measureTime("Obj interface listener with lambda", 10000000) {
+        measureTime("Obj interface listener with lambda", 100_000) {
             TestEvent4.send(pos1, pos1, pos1)
         }
     }

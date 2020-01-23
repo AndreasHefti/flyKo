@@ -6,7 +6,7 @@ import com.inari.firefly.control.task.EntityTask
 import com.inari.firefly.control.task.TaskSystem
 import com.inari.firefly.system.component.SystemComponentSubType
 
-class BehaviorTask private constructor() : BehaviorNode() {
+class BxTask private constructor() : BxNode() {
 
     @JvmField internal var entityTaskRef: Int = -1
     @JvmField internal var resetEntityTaskRef: Int = -1
@@ -17,8 +17,8 @@ class BehaviorTask private constructor() : BehaviorNode() {
     override fun tick(entityId: Int, behaviour: EBehavior): OpResult =
             TaskSystem.runEntityTask(entityTaskRef, entityId)
 
-    companion object : SystemComponentSubType<BehaviorNode, BehaviorTask>(BehaviorNode, BehaviorTask::class.java) {
-        override fun createEmpty() = BehaviorTask()
+    companion object : SystemComponentSubType<BxNode, BxTask>(BxNode, BxTask::class.java) {
+        override fun createEmpty() = BxTask()
     }
 
 }

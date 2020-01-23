@@ -5,7 +5,7 @@ import com.inari.firefly.IntPredicate
 import com.inari.firefly.OpResult
 import com.inari.firefly.system.component.SystemComponentSubType
 
-class Condition private constructor() : BehaviorNode() {
+class BxCondition private constructor() : BxNode() {
 
     @JvmField internal var condition: IntPredicate = FALSE_INT_PREDICATE
 
@@ -19,8 +19,8 @@ class Condition private constructor() : BehaviorNode() {
                 false -> OpResult.FAILED
             }
 
-    companion object : SystemComponentSubType<BehaviorNode, Condition>(BehaviorNode, Condition::class.java) {
-        override fun createEmpty() = Condition()
+    companion object : SystemComponentSubType<BxNode, BxCondition>(BxNode, BxCondition::class.java) {
+        override fun createEmpty() = BxCondition()
     }
 
 }

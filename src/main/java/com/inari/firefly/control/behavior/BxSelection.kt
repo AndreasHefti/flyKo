@@ -3,7 +3,7 @@ package com.inari.firefly.control.behavior
 import com.inari.firefly.OpResult
 import com.inari.firefly.system.component.SystemComponentSubType
 
-class Selection private constructor() : Branch() {
+class BxSelection private constructor() : BxBranch() {
 
     override fun tick(entityId: Int, behaviour: EBehavior): OpResult {
         val i = childrenRefs.iterator()
@@ -17,8 +17,8 @@ class Selection private constructor() : Branch() {
         return OpResult.FAILED
     }
 
-    companion object : SystemComponentSubType<BehaviorNode, Selection>(BehaviorNode, Selection::class.java) {
-        override fun createEmpty() = Selection()
+    companion object : SystemComponentSubType<BxNode, BxSelection>(BxNode, BxSelection::class.java) {
+        override fun createEmpty() = BxSelection()
     }
 
 }

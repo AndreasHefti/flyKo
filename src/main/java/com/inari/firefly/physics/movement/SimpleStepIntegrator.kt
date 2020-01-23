@@ -7,6 +7,8 @@ object SimpleStepIntegrator : Integrator {
 
     override fun integrate(movement: EMovement, transform: ETransform, deltaTimeInSeconds: Long) {
         val velocity = movement.velocity
+        if (movement.mass == 0f)
+            return
 
         if (movement.onGround) {
             if (velocity.dy != 0f )

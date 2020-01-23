@@ -2,11 +2,13 @@ package com.inari.firefly.misc
 
 import com.inari.firefly.measureTime
 import com.inari.util.collection.DynArray
+import org.junit.Ignore
 import org.junit.Test
 
 class DynArrayExtensionTest {
 
     @Test
+    @Ignore
     fun testPerformance() {
 
         val dynArray: DynArray<Integer> = DynArray.of(Integer::class.java, 100000)

@@ -1,7 +1,7 @@
 package com.inari.firefly.control
 
-import com.inari.firefly.IntExpr
-import com.inari.firefly.NULL_INT_EXPR
+import com.inari.firefly.IntConsumer
+import com.inari.firefly.NULL_INT_CONSUMER
 import com.inari.firefly.component.CompId
 import com.inari.firefly.system.component.SystemComponentSubType
 import java.util.*
@@ -11,9 +11,9 @@ import java.util.*
 class PolyController private constructor() : Controller() {
 
     @JvmField internal val ids: BitSet = BitSet()
-    @JvmField internal var controlExpr = NULL_INT_EXPR
+    @JvmField internal var controlExpr = NULL_INT_CONSUMER
 
-    var ff_ControlExpr: IntExpr
+    var ff_ControlExpr: IntConsumer
         get() = throw UnsupportedOperationException()
         set(value) {controlExpr = setIfNotInitialized(value, "ff_ControlExpr")}
 
@@ -24,9 +24,11 @@ class PolyController private constructor() : Controller() {
         ids.set(id.instanceId, false)
 
     override fun update() {
+        val maybe = Optional.ofNullable(null)
         var i: Int = -1
         while (ids.nextSetBit(i++) >= 0)
             controlExpr(i)
+
     }
 
     companion object : SystemComponentSubType<Controller, PolyController>(Controller, PolyController::class.java) {

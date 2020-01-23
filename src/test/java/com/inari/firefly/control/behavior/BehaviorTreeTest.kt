@@ -4,13 +4,8 @@ import com.inari.firefly.FALSE_INT_PREDICATE
 import com.inari.firefly.IntOperation
 import com.inari.firefly.OpResult
 import com.inari.firefly.TestApp
-import com.inari.firefly.asset.AssetSystem
-import com.inari.firefly.composite.CompositeSystem
 import com.inari.firefly.control.task.EntityTask
 import com.inari.firefly.control.task.TaskSystem
-import com.inari.firefly.entity.EntitySystem
-import com.inari.firefly.graphics.view.ViewSystem
-import com.inari.firefly.physics.animation.AnimationSystem
 import org.junit.Before
 import org.junit.Test
 
@@ -37,18 +32,24 @@ class BehaviorTreeTest {
 
         BehaviorTree.build {
             ff_Name = "Test Tree"
-            ff_WithRootNode(Selection) {
+            ff_WithRootNode(BxSelection) {
                 ff_Name = "First Selection"
-                ff_WithNode(Selection) {
+                ff_WithNode(BxSelection) {
                     ff_Name = "Second Selection"
-                    ff_WithNode(Condition) {
+                    ff_WithNode(BxCondition) {
                         ff_Name ="Condition 1"
                         ff_Condition = FALSE_INT_PREDICATE
                     }
-                    ff_WithNode(BehaviorTask) {
+                    ff_WithNode(BxTask) {
                         ff_Name = "First Task"
                         ff_Task("Task_Name")
                     }
+                    ff_WithNode(BxSequence) {
+                        ff_Name = ""
+                    }
+
+                }
+                ff_WithNode(BxSequence) {
 
                 }
             }

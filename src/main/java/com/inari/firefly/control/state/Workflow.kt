@@ -1,7 +1,7 @@
 package com.inari.firefly.control.state
 
-import com.inari.firefly.Condition
-import com.inari.firefly.FALSE_CONDITION
+import com.inari.firefly.BooleanSupplier
+import com.inari.firefly.FALSE_SUPPLIER
 import com.inari.firefly.NO_STATE
 import com.inari.firefly.component.ArrayAccessor
 import com.inari.firefly.component.ComponentType
@@ -59,7 +59,7 @@ class Workflow private constructor() : SystemComponent(Workflow::class.java.name
         val name: String,
         val from: String,
         val to: String,
-        val condition: Condition = FALSE_CONDITION
+        val condition: BooleanSupplier = FALSE_SUPPLIER
     )
 
 }

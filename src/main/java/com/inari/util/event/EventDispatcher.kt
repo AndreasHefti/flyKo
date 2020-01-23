@@ -87,7 +87,7 @@ class EventDispatcher : IEventDispatcher {
             val listener = listenersOfType[i]
             if (listener != null) {
                 val matcher = listener.getMatcher<L>()
-                if (event in matcher)
+                if (matcher(event))
                     event._notify(listener)
             }
             i++

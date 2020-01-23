@@ -109,8 +109,8 @@ interface ComponentSystem : FFSystem {
             }
         }
 
-        override fun deleteAll(predicate: Predicate<C>) =
-            _map.filter{it in predicate}
+        override fun deleteAll(predicate: Predicate<C?>) =
+            _map.filter { predicate(it) }
                 .forEach { comp -> delete(comp.index) }
 
         override fun idForName(name: String): CompId {
@@ -149,15 +149,15 @@ interface ComponentSystem : FFSystem {
         override fun nextActive(from: Int): Int =
             active.nextSetBit(from)
 
-        fun nextIndex(predicate: Predicate<C>, currentIndex: Int): Int =
+        fun nextIndex(predicate: Predicate<C?>, currentIndex: Int): Int =
             if (currentIndex >= map.capacity)
                 -1
-            else if (map.contains(currentIndex) && map[currentIndex]!! in predicate)
+            else if (map.contains(currentIndex) && predicate(map[currentIndex]) )
                 currentIndex
             else
                 nextIndex(predicate, currentIndex + 1)
 
-        override fun indexIterator(predicate: Predicate<C>): IntFunction = object : IntFunction {
+        override fun indexIterator(predicate: Predicate<C?>): IntFunction = object : IntFunction {
             override fun invoke(i: Int): Int {
                 return nextIndex(predicate, i)
             }

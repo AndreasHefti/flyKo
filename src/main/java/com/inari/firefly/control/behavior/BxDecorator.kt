@@ -6,16 +6,16 @@ import com.inari.firefly.component.ComponentRefResolver
 import com.inari.firefly.system.component.SystemComponentBuilder
 import com.inari.firefly.system.component.SystemComponentSubType
 
-class Decorator private constructor() : BehaviorNode() {
+class BxDecorator private constructor() : BxNode() {
 
     @JvmField internal var decoration: (OpResult) -> OpResult = { r -> r }
     @JvmField internal var childRef = -1
 
-    var ff_ChildNode = ComponentRefResolver(BehaviorNode) {
+    var ff_ChildNode = ComponentRefResolver(BxNode) {
         index -> childRef = index
     }
 
-    fun <C : BehaviorNode> ff_WithChild(cBuilder: SystemComponentBuilder<C>, configure: (C.() -> Unit)): CompId {
+    fun <C : BxNode> ff_WithChild(cBuilder: SystemComponentBuilder<C>, configure: (C.() -> Unit)): CompId {
         val id = cBuilder.build(configure)
         childRef = id.instanceId
         return id
@@ -24,8 +24,8 @@ class Decorator private constructor() : BehaviorNode() {
     override fun tick(entityId: Int, behaviour: EBehavior): OpResult =
             decoration(BehaviorSystem.nodes.map[childRef]?.tick(entityId, behaviour) ?: OpResult.FAILED)
 
-    companion object : SystemComponentSubType<BehaviorNode, Decorator>(BehaviorNode, Decorator::class.java) {
-        override fun createEmpty() = Decorator()
+    companion object : SystemComponentSubType<BxNode, BxDecorator>(BxNode, BxDecorator::class.java) {
+        override fun createEmpty() = BxDecorator()
     }
 
 }

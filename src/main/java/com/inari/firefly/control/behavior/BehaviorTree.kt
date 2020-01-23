@@ -22,7 +22,7 @@ class BehaviorTree private constructor() : SystemComponent(BehaviorTree::class.j
                 index -> rootNodeRef = index
             }
 
-    fun <C : BehaviorNode> ff_WithRootNode(cBuilder: SystemComponentBuilder<C>, configure: (C.() -> Unit)): CompId {
+    fun <C : BxNode> ff_WithRootNode(cBuilder: SystemComponentBuilder<C>, configure: (C.() -> Unit)): CompId {
         val id = cBuilder.build(configure)
         rootNodeRef = id.instanceId
         return id

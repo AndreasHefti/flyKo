@@ -1,8 +1,6 @@
 package com.inari.firefly.control.trigger
 
-import com.inari.firefly.Call
-import com.inari.firefly.Condition
-import com.inari.firefly.TRUE_CONDITION
+import com.inari.firefly.*
 import com.inari.firefly.component.Component
 import com.inari.firefly.component.ComponentDSL
 import com.inari.firefly.component.ComponentType
@@ -14,12 +12,12 @@ import com.inari.util.aspect.AspectType
 abstract class Trigger protected constructor() : SystemComponent(Trigger::class.java.name) {
 
     @JvmField protected var disposeAfter = false
-    @JvmField protected var condition: Condition = TRUE_CONDITION
+    @JvmField protected var condition: BooleanSupplier = TRUE_SUPPLIER
 
     var ff_DisposeAfter: Boolean
         get() = disposeAfter
         set(value) { disposeAfter = value }
-    var ff_Condition: Condition
+    var ff_Condition: BooleanSupplier
         get() = throw UnsupportedOperationException()
         set(value) { condition = value }
 

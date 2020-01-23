@@ -57,30 +57,19 @@ const val BASE_VIEW: String = "[[BASE_VIEW]]"
     override operator fun invoke(): PositionF = throw IllegalAccessException()
 }
 
-@JvmField val NULL_INT_EXPR: IntExpr = object : IntExpr {
-    override fun invoke(i: Int) { throw IllegalStateException("NULL_INT_EXPR called") }
-}
-@JvmField val VOID_INT_EXPR: IntExpr = object : IntExpr {
-    override fun invoke(i: Int) {}
-}
-@JvmField val NULL_INT_FUNCTION: IntFunction = object : IntFunction {
-    override fun invoke(i: Int): Int { throw IllegalAccessException("NULL_INT_FUNCTION called") }
-}
-@JvmField val VOID_INT_FUNCTION: IntFunction = object : IntFunction {
-    override fun invoke(i: Int): Int = i
-}
+@JvmField val VOID_INT_CONSUMER: IntConsumer = { _ -> }
+@JvmField val INT_FUNCTION_IDENTITY: IntFunction = { i -> i }
+@JvmField val INT_FUNCTION_NULL: IntFunction = { _ -> 0 }
+@JvmField val NULL_INT_FUNCTION: IntFunction = { _ -> throw IllegalStateException("NULL_INT_FUNCTION") }
+@JvmField val NULL_INT_CONSUMER: IntConsumer = { _ -> throw IllegalStateException("NULL_INT_CONSUMER") }
+@JvmField val NULL_CONSUMER: Consumer<Any> = { _ -> throw IllegalStateException("NULL_CONSUMER") }
 @JvmField val NULL_CALL: Call = { throw IllegalStateException("NULL_CALL called") }
 @JvmField val VOID_CALL: Call = {}
+@JvmField val FALSE_SUPPLIER: BooleanSupplier = { false }
+@JvmField val TRUE_SUPPLIER: BooleanSupplier = { true }
+@JvmField val FALSE_PREDICATE: Predicate<Any> = { false }
+@JvmField val TRUE_PREDICATE: Predicate<Any> = { true }
 
-@JvmField val NULL_CONDITION: Condition = object : Condition {
-    override fun invoke(): Boolean = throw IllegalStateException("NULL_CONDITION called")
-}
-@JvmField val FALSE_CONDITION: Condition = object : Condition {
-    override fun invoke(): Boolean = false
-}
-@JvmField val TRUE_CONDITION: Condition = object : Condition {
-    override fun invoke(): Boolean = true
-}
 @JvmField val INFINITE_SCHEDULER: FFTimer.Scheduler = object : FFTimer.Scheduler {
     override fun needsUpdate(): Boolean = true
 }
@@ -96,18 +85,6 @@ const val BASE_VIEW: String = "[[BASE_VIEW]]"
     override operator fun invoke(index: Int): Boolean = false
 }
 
-
-
-fun <T> NULL_EXPR(): Consumer<T> = { throw IllegalStateException("NULL_EXPR called") }
-fun <T> VOID_EXPR(): Consumer<T> = {}
-fun <T> FAILED_OPERATION(): Operation<T> = {_ -> OpResult.FAILED }
-fun <T> SUCCESS_OPERATION(): Operation<T> = {_ -> OpResult.SUCCESS }
-fun <T> TRUE_PREDICATE(): Predicate<T> = object : Predicate<T> {
-    override fun contains(c: T): Boolean = true
-}
-fun <T> FALSE_PREDICATE(): Predicate<T> = object : Predicate<T> {
-    override fun contains(c: T): Boolean = false
-}
 
 
 

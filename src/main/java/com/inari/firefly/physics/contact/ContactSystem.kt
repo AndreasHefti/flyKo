@@ -2,11 +2,9 @@ package com.inari.firefly.physics.contact
 
 import com.inari.firefly.FFContext
 import com.inari.firefly.Named
-import com.inari.firefly.Predicate
 import com.inari.firefly.component.CompId
 import com.inari.firefly.component.ComponentMap.MapAction.CREATED
 import com.inari.firefly.component.ComponentMap.MapAction.DELETED
-import com.inari.firefly.graphics.view.ViewLayerMapping
 import com.inari.firefly.entity.Entity
 import com.inari.firefly.entity.EntityActivationEvent
 import com.inari.firefly.entity.EntitySystem
@@ -15,6 +13,7 @@ import com.inari.firefly.graphics.ETransform
 import com.inari.firefly.graphics.tile.ETile
 import com.inari.firefly.graphics.tile.TileGridSystem
 import com.inari.firefly.graphics.view.ViewEvent
+import com.inari.firefly.graphics.view.ViewLayerMapping
 import com.inari.firefly.physics.movement.EMovement
 import com.inari.firefly.physics.movement.MoveEvent
 import com.inari.firefly.system.component.ComponentSystem
@@ -60,11 +59,7 @@ object ContactSystem : ComponentSystem {
         FFContext.registerListener(ViewEvent, object : ViewEvent.Listener{
             override fun invoke(id: CompId, viewPort: ViewData, type: ViewEvent.Type) {
                 when(type) {
-                    ViewEvent.Type.VIEW_DELETED -> contactMaps.deleteAll(object : Predicate<ContactMap> {
-                        override fun contains(c: ContactMap): Boolean {
-                            return c.viewRef == id.instanceId
-                        }
-                    })
+                    ViewEvent.Type.VIEW_DELETED -> contactMaps.deleteAll { c -> id.instanceId == c?.viewRef }
                     else -> {}
                 }
             }

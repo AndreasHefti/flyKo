@@ -16,14 +16,14 @@ import java.util.*
 object BehaviorSystem : ComponentSystem  {
 
     override val supportedComponents: Aspects =
-            SystemComponent.SYSTEM_COMPONENT_ASPECTS.createAspects(BehaviorTree, BehaviorNode)
+            SystemComponent.SYSTEM_COMPONENT_ASPECTS.createAspects(BehaviorTree, BxNode)
 
     @JvmField val trees = ComponentSystem.createComponentMapping(
             BehaviorTree
     )
 
     @JvmField val nodes = ComponentSystem.createComponentMapping(
-            BehaviorNode
+            BxNode
     )
 
     private val entityIds = BitSet()
@@ -55,7 +55,7 @@ object BehaviorSystem : ComponentSystem  {
         val behavior = EntitySystem[entityId][EBehavior]
         var i = behavior.runningTasks.nextSetBit(0)
         while (i >= 0) {
-            val bTask = nodes[i] as BehaviorTask
+            val bTask = nodes[i] as BxTask
             if (bTask.resetEntityTaskRef >= 0)
                 TaskSystem.runEntityTask(bTask.resetEntityTaskRef, entityId)
             i = behavior.runningTasks.nextSetBit(i + 1)

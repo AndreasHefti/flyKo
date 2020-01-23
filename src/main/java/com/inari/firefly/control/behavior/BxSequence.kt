@@ -3,7 +3,7 @@ package com.inari.firefly.control.behavior
 import com.inari.firefly.OpResult
 import com.inari.firefly.system.component.SystemComponentSubType
 
-class Sequence private constructor() : Branch() {
+class BxSequence private constructor() : BxBranch() {
 
     override fun tick(entityId: Int, behaviour: EBehavior): OpResult {
         val i = childrenRefs.iterator()
@@ -17,7 +17,7 @@ class Sequence private constructor() : Branch() {
         return OpResult.SUCCESS
     }
 
-    companion object : SystemComponentSubType<BehaviorNode, Sequence>(BehaviorNode, Sequence::class.java) {
-        override fun createEmpty() = Sequence()
+    companion object : SystemComponentSubType<BxNode, BxSequence>(BxNode, BxSequence::class.java) {
+        override fun createEmpty() = BxSequence()
     }
 }

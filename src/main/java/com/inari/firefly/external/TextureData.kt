@@ -1,7 +1,9 @@
 package com.inari.firefly.external
 
+import com.inari.firefly.INT_FUNCTION_IDENTITY
 import com.inari.firefly.IntFunction
 import com.inari.firefly.NO_NAME
+import com.inari.firefly.NULL_INT_FUNCTION
 
 class TextureData(
     @JvmField var resourceName: String = NO_NAME,
@@ -10,7 +12,7 @@ class TextureData(
     @JvmField var wrapT: Int = -1,
     @JvmField var minFilter: Int = -1,
     @JvmField var magFilter: Int = -1,
-    @JvmField var colorConverter: IntFunction = IntFunction.identity()
+    @JvmField var colorConverter: IntFunction = NULL_INT_FUNCTION
 ) {
 
     fun reset() {
@@ -20,7 +22,7 @@ class TextureData(
         wrapT = 0
         minFilter = 0
         magFilter = 0
-        colorConverter = IntFunction.identity()
+        colorConverter = NULL_INT_FUNCTION
     }
 
 }

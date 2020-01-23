@@ -15,7 +15,7 @@ import com.inari.util.collection.DynArray
 import com.inari.util.geom.Rectangle
 
 abstract class Renderer protected constructor(
-    private val acceptance: Predicate<Entity> = TRUE_PREDICATE(),
+    private val acceptance: Predicate<Entity> = TRUE_PREDICATE,
     private val sort: Consumer<DynArray<Entity>>? = null
 ) : SystemComponent(Renderer::class.java.name) {
 
@@ -25,7 +25,7 @@ abstract class Renderer protected constructor(
         DynArray.ofAny(DynArray::class.java)
 
     fun accept(entity: Entity): Boolean {
-        return if (entity in acceptance) {
+        return if (acceptance(entity)) {
             forceGet(entity[ETransform])?.apply {
                 add(entity)
                 sort?.invoke(this)
@@ -36,7 +36,7 @@ abstract class Renderer protected constructor(
     }
 
     fun dispose(entity: Entity) {
-        if (entity in acceptance)
+        if (acceptance(entity))
             this[entity[ETransform]]?.remove(entity)
     }
 
@@ -71,8 +71,7 @@ abstract class Renderer protected constructor(
 
     abstract fun render(viewIndex: Int, layerIndex: Int, clip: Rectangle)
 
-    override fun componentType(): ComponentType<Renderer> =
-        Renderer.Companion
+    override fun componentType(): ComponentType<Renderer> = Companion
 
     companion object : SystemComponentType<Renderer>(Renderer::class.java)
 

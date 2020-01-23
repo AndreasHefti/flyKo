@@ -29,8 +29,8 @@ interface ComponentMap<C : Component> : ComponentMapRO<C> {
     fun delete(index: Int)
     fun delete(name: String)
     fun delete(id: CompId)
-    fun deleteAll(predicate: Predicate<C>)
-    fun indexIterator(predicate: Predicate<C>): IntFunction
+    fun deleteAll(predicate: Predicate<C?>)
+    fun indexIterator(predicate: Predicate<C?>): IntFunction
     fun nextActive(from: Int): Int
     fun receiver(): Receiver<C>
     fun forEach(expr: Consumer<C>)

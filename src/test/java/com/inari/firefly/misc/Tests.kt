@@ -1,9 +1,9 @@
 package com.inari.firefly.misc
 
+import com.inari.firefly.IntConsumer
 import com.inari.util.geom.PositionF
-import com.inari.firefly.Condition
-import com.inari.firefly.IntExpr
 import com.inari.firefly.NO_COMP_ID
+import com.inari.firefly.TRUE_SUPPLIER
 import com.inari.firefly.TestApp
 import com.inari.firefly.asset.AssetSystem
 import com.inari.firefly.control.ControllerSystem
@@ -113,11 +113,8 @@ fun main(args: Array<String>) {
 //    PropsTest3.prop
 //    PropsTest3.prop
 //
-    val testControl = object : IntExpr {
-        override fun invoke(i: Int) {
-            println(i)
-        }
-    }
+    val testControl: IntConsumer = { i -> println(i) }
+
 //
     PolyController.build {
         ff_Name = "test"
@@ -146,9 +143,7 @@ fun main(args: Array<String>) {
     EntityTask.build {
         ff_Name = ""
         ff_WithTrigger(UpdateEventTrigger, NO_COMP_ID) {
-            ff_Condition = object : Condition {
-                override fun invoke(): Boolean = true
-            }
+            ff_Condition = TRUE_SUPPLIER
             ff_DisposeAfter = true
         }
     }
