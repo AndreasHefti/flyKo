@@ -3,9 +3,6 @@
 
 [![Build Status](https://travis-ci.org/Inari-Soft/flyKo.svg?branch=master)](https://travis-ci.org/Inari-Soft/flyKo) 
 
-Projects this depends on:
-[commons](https://github.com/Inari-Soft/inari-commons) [![Build Status](https://travis-ci.org/Inari-Soft/inari-firefly.svg?branch=master)](https://travis-ci.org/Inari-Soft/inari-commons)
-
 **Introduction**
 
 FlyKo is the core of [Firefly](https://github.com/Inari-Soft/inari-firefly) for Kotlin Language
@@ -85,17 +82,15 @@ Code example:
 ```
 
 - Indexing for Component types and instances for fast access
-  Firefly comes with an indexing system that allows to index Java types (Class types) within a defined root type on one hand and on the other
-  to index instances (objects) of a specified type. All Components, Entities and Systems are indexed by type and mostly, if needed also by instance
+  Firefly comes with an indexing system that allows to indexed Java types (Class types) within a defined root type on one hand and on the other
+  to index instances (objects) of a specified type. All Components, Entities and Systems are indexed by type and mostly, if needed also by the instance
   to guarantee fast access.
+  
+This repository contains the core API with a reference implementation on libGDX and is fully runnable with no extra extensions and only a few examples
   
 **NOTE:**
 
 FlyKo is still under construction
-
-This is the core API with no lower level implementation. Just the API. 
-At the moment there is only one lower level implementation for the API
-within the famous libGDX in [FlyKoGDX](https://github.com/Inari-Soft/flyKoGDX)
 
 If you want to just to use the Firefly API with a libGDX implementation, 
 this is your starting point.
