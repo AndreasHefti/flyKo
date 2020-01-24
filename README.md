@@ -40,7 +40,7 @@ Key features
   
 Code example:
 
-```
+``` kotlin
   // Create a TextureAsset and register it to the AssetSystem but no loading yet
   
   texAssetId = TextureAsset.build {
@@ -63,22 +63,29 @@ Code example:
   
   Entity.build {
   
-    with(ETransform) {
+    // add an ETransform component to the entity
+    ff_With(ETransform) {
         ff_View(BASE_VIEW)
         ff_Position(100, 100)
     }
     
-    with(ESprite) {
+    // add an ESprite component to the entity
+    ff_With(ESprite) {
         ff_Sprite(spriteId)
         ff_Tint(1f, 1f, 1f, .5f)
     }
     
-    with(EAnimation) {
-        withActive(EasingAnimated) {
+    // add an EAnimation component to the entity
+    ff_With(EAnimation) {
+
+        // with an active easing animation... 
+        ff_WithActive(EasingAnimated) {
             ff_EasingType = Easing.Type.LINEAR
             ff_StartValue = 0f
             ff_EndValue = 1f
             ff_Duration = 1000
+
+            // that is connected to the alpha value of the defines sprite 
             ff_PropertyRef = ESprite.Property.TINT_ALPHA
         }
     }
@@ -100,7 +107,7 @@ FlyKo is still under construction
 
 This repository contains the core API with a reference implementation on libGDX and is fully runnable with no extra extensions and only a few examples
 
-If you want to just to use the Firefly API with a libGDX implementation, this is your starting point.
+If you want to just use the Firefly API with a libGDX implementation, this is your starting point.
 
 *****
 
