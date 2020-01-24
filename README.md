@@ -1,4 +1,4 @@
-# FlyKo
+# Fly-Ko (Firefly on Kotlin)
 
 
 [![Build Status](https://travis-ci.org/Inari-Soft/flyKo.svg?branch=master)](https://travis-ci.org/Inari-Soft/flyKo) 
@@ -36,7 +36,7 @@ Key features
   All code that is written against the Firefly API is not affected by the change of the lower level library. 
   Until now only a project with an implementation for libgdx is supported.
 
-- Stringent Component builder API
+- Stringent Component builder API with DSL support. Use Fly-Ko's builder DSL to build and compose components.
   
 Code example:
 
@@ -54,23 +54,23 @@ Code example:
   // also implicitly loads the TextureAsset
   
   spriteId = SpriteAsset.buildAndActivate {
-    ff_Texture.id = texAssetId
-    ff_TextureRegion = Rectangle(0,0,10,10)
+    ff_Texture(texAssetId)
+    ff_TextureRegion(0,0,10,10)
   }
   
-  // Create an Entity with a position on the base View and the created sprite
-  // heaving a tint color with animated alpha value
+  // Create an Entity positioned on the base View on x=100/y=100 and the formarly 
+  // created sprite with a tint color that has animated alpha value
   
   Entity.build {
   
     with(ETransform) {
-        ff_View.index = 0
-        ff_Position = Position(100,100)
+        ff_View(BASE_VIEW)
+        ff_Position(100, 100)
     }
     
     with(ESprite) {
-        ff_Sprite.id = spriteId
-        ff_Tint.setFrom(RGBColor(1f, 1f, 1f, .5f))
+        ff_Sprite(spriteId)
+        ff_Tint(1f, 1f, 1f, .5f)
     }
     
     with(EAnimation) {
