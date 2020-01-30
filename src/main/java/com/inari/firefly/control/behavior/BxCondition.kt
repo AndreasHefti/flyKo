@@ -1,20 +1,19 @@
 package com.inari.firefly.control.behavior
 
-import com.inari.firefly.FALSE_INT_PREDICATE
-import com.inari.firefly.IntPredicate
 import com.inari.firefly.OpResult
+import com.inari.firefly.control.behavior.BehaviorSystem.TRUE_CONDITION
 import com.inari.firefly.system.component.SystemComponentSubType
 
 class BxCondition private constructor() : BxNode() {
 
-    @JvmField internal var condition: IntPredicate = FALSE_INT_PREDICATE
+    @JvmField internal var condition: BxConditionOp = TRUE_CONDITION
 
-    var ff_Condition: IntPredicate
+    var ff_Condition: BxConditionOp
         get() = condition
         set(value) { condition = value}
 
-    override fun tick(entityId: Int, behaviour: EBehavior): OpResult =
-            when (condition(entityId)) {
+    override fun tick(entityId: Int, behavior: EBehavior): OpResult =
+            when (condition(entityId, behavior) ) {
                 true -> OpResult.SUCCESS
                 false -> OpResult.FAILED
             }

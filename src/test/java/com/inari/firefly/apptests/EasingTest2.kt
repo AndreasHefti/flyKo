@@ -1,4 +1,4 @@
-package com.inari.firefly.libgdx
+package com.inari.firefly.apptests
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration
@@ -13,6 +13,7 @@ import com.inari.firefly.graphics.rendering.RenderingSystem
 import com.inari.firefly.graphics.rendering.SimpleTextRenderer
 import com.inari.firefly.graphics.shape.EShape
 import com.inari.firefly.graphics.text.EText
+import com.inari.firefly.libgdx.GDXAppAdapter
 
 import com.inari.firefly.physics.animation.AnimationSystem
 import com.inari.firefly.physics.animation.easing.EasedProperty
@@ -42,11 +43,11 @@ class EasingTest2 : GDXAppAdapter() {
     private fun createEasingAnimation(type: Easing.Type, position: Int) {
         val ypos = position.toFloat() * (20f + 10f) + 50f
         Entity.buildAndActivate {
-            withComponent(ETransform) {
+            ff_With(ETransform) {
                 ff_View(0)
                 ff_Position(10f, ypos)
             }
-            withComponent(EText) {
+            ff_With(EText) {
                 ff_Renderer(SimpleTextRenderer)
                 ff_FontAsset(SYSTEM_FONT)
                 ff_TextBuffer.append(type.name.replace("_", "-"))
@@ -55,16 +56,16 @@ class EasingTest2 : GDXAppAdapter() {
             }
         }
         Entity.buildAndActivate {
-            withComponent(ETransform) {
+            ff_With(ETransform) {
                 ff_View(0)
             }
-            withComponent(EShape) {
+            ff_With(EShape) {
                 ff_Type = ShapeType.RECTANGLE
                 ff_Fill = true
                 ff_Color(1f, 0f, 0f, 1f)
                 ff_Vertices = floatArrayOf(100f, ypos, 20f, 20f)
             }
-            withComponent(EAnimation) {
+            ff_With(EAnimation) {
                 withActiveAnimation(EasedProperty) {
                     ff_Looping = true
                     ff_InverseOnLoop = true

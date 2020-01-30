@@ -2,7 +2,6 @@ package com.inari.firefly.graphics.tile.set
 
 import com.inari.firefly.FFContext
 import com.inari.firefly.asset.Asset
-import com.inari.firefly.asset.AssetInstanceRefResolver
 import com.inari.firefly.asset.AssetSystem
 import com.inari.firefly.component.ComponentRefResolver
 import com.inari.firefly.composite.Composite
@@ -104,18 +103,18 @@ class TileSet private constructor() : Composite() {
                 return false
 
             tile.entityIds[layer.index] = Entity.buildAndActivate {
-                withComponent(ETransform) {
+                ff_With(ETransform) {
                     ff_View(activation.viewRef)
                     ff_Layer(layer)
                 }
-                withComponent(ETile) {
+                ff_With(ETile) {
                     ff_Sprite.instanceId = spriteId
                     ff_Tint = tile.tintColor ?: activation.tintColors[layer.index] ?: ff_Tint
                     ff_Blend = tile.blendMode ?: activation.blendModes[layer.index] ?: ff_Blend
                 }
 
                 if (tile.hasContactComp) {
-                    withComponent(EContact) {
+                    ff_With(EContact) {
                         if (tile.contactType !== ContactSystem.UNDEFINED_CONTACT_TYPE) {
                             ff_Bounds(
                                     0,
@@ -131,7 +130,7 @@ class TileSet private constructor() : Composite() {
                 }
 
                 if (tile.animation != null) {
-                    withComponent(EAnimation) {
+                    ff_With(EAnimation) {
                         withActiveAnimation(IntTimelineProperty) {
                             ff_Looping = true
                             ff_Timeline = tile.animation!!.frames.toArray()

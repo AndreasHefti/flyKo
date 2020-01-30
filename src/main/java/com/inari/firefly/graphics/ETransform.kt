@@ -39,7 +39,7 @@ class ETransform private constructor() : EntityComponent(ETransform::class.java.
     override val layerIndex: Int
         get() = layerRef
 
-    fun move(dx: Float, dy: Float) {
+    fun move(dx: Float, dy: Float = 0f) {
         data.position.x += dx
         data.position.y += dy
     }

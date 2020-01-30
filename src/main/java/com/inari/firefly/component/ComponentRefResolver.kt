@@ -22,3 +22,19 @@ class ComponentRefResolver<T : Component>(
     operator fun invoke(singleton: SingletonComponent<*, *>) = receiver(singleton.instance.index)
 
 }
+
+class ComponentRefFunction<T : Component, X>(
+        private val type: ComponentType<T>,
+        private val receiver: (Int) -> X
+) {
+
+    operator fun invoke(id: CompId): X = receiver(id.instanceId)
+    operator fun invoke(index: Int): X = receiver(index)
+    operator fun invoke(indexed: Indexed): X = receiver(indexed.index)
+    operator fun invoke(name: String): X = receiver(FFContext[type, name].index)
+    operator fun invoke(named: Named): X = receiver(FFContext[type, named.name].index)
+    operator fun invoke(component: Component): X = receiver(component.index)
+    operator fun invoke(component: SystemComponent): X = receiver(component.index)
+    operator fun invoke(singleton: SingletonComponent<*, *>): X = receiver(singleton.instance.index)
+
+}

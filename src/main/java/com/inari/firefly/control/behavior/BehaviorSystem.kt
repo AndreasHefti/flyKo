@@ -2,25 +2,46 @@ package com.inari.firefly.control.behavior
 
 import com.inari.firefly.FFApp
 import com.inari.firefly.FFContext
-import com.inari.firefly.control.task.TaskSystem
+import com.inari.firefly.OpResult
 import com.inari.firefly.entity.Entity
 import com.inari.firefly.entity.EntityActivationEvent
 import com.inari.firefly.entity.EntitySystem
 import com.inari.firefly.system.component.ComponentSystem
 import com.inari.firefly.system.component.SystemComponent
+import com.inari.util.aspect.Aspect
 import com.inari.util.aspect.Aspects
+import com.inari.util.aspect.IndexedAspectType
 import com.inari.util.collection.BitSetIterator
-import com.inari.firefly.control.behavior.BehaviorTree.Status
 import java.util.*
+
+typealias BxOp = (Int, EBehavior) -> OpResult
+typealias BxConditionOp = (Int, EBehavior) -> Boolean
 
 object BehaviorSystem : ComponentSystem  {
 
-    override val supportedComponents: Aspects =
-            SystemComponent.SYSTEM_COMPONENT_ASPECTS.createAspects(BehaviorTree, BxNode)
+    @JvmField val BEHAVIOR_STATE_ASPECT_GROUP = IndexedAspectType("BEHAVIOR_STATE_ASPECT_GROUP")
+    @JvmField val UNDEFINED_BEHAVIOR_STATE: Aspect = BEHAVIOR_STATE_ASPECT_GROUP.createAspect("UNDEFINED_BEHAVIOR_STATE")
 
-    @JvmField val trees = ComponentSystem.createComponentMapping(
-            BehaviorTree
-    )
+    @JvmField val TRUE_CONDITION: BxConditionOp = { _, _ -> true }
+    @JvmField val FALSE_CONDITION: BxConditionOp = { _, _ -> false }
+    @JvmField val NOT: (BxConditionOp) -> BxConditionOp = {
+        c -> { entityId, bx -> ! c(entityId, bx) }
+    }
+    @JvmField val AND: (BxConditionOp, BxConditionOp) -> BxConditionOp = {
+        c1, c2 -> { entityId, bx -> c1(entityId, bx) && c2(entityId, bx) }
+    }
+    @JvmField val OR: (BxConditionOp, BxConditionOp) -> BxConditionOp = {
+        c1, c2 -> { entityId, bx -> c1(entityId, bx) || c2(entityId, bx) }
+    }
+    @JvmField val ACTION_DONE_CONDITION =  { aspect: Aspect -> {
+        _ : Int, behavior: EBehavior -> aspect in behavior.actionsDone }
+    }
+    @JvmField val SUCCESS_ACTION: BxOp = { _, _ -> OpResult.SUCCESS }
+    @JvmField val FAIL_ACTION: BxOp = { _, _ -> OpResult.FAILED }
+
+
+    override val supportedComponents: Aspects =
+            SystemComponent.SYSTEM_COMPONENT_ASPECTS.createAspects(BxNode)
 
     @JvmField val nodes = ComponentSystem.createComponentMapping(
             BxNode
@@ -53,16 +74,8 @@ object BehaviorSystem : ComponentSystem  {
 
     fun reset(entityId: Int) {
         val behavior = EntitySystem[entityId][EBehavior]
-        var i = behavior.runningTasks.nextSetBit(0)
-        while (i >= 0) {
-            val bTask = nodes[i] as BxTask
-            if (bTask.resetEntityTaskRef >= 0)
-                TaskSystem.runEntityTask(bTask.resetEntityTaskRef, entityId)
-            i = behavior.runningTasks.nextSetBit(i + 1)
-        }
-
-        behavior.runningTasks.clear()
-        behavior.status = BehaviorTree.Status.RESET
+        behavior.treeState = OpResult.SUCCESS
+        behavior.actionsDone.clear()
     }
 
     internal fun update() {
@@ -76,17 +89,16 @@ object BehaviorSystem : ComponentSystem  {
         if (!behavior.active || behavior.treeRef < 0)
             return
 
-        if (behavior.status == Status.SUCCESS || behavior.status == Status.FAILURE)
+        if (behavior.treeState === OpResult.SUCCESS)
             if (!behavior.repeat)
                 return
             else
                 reset(entityId)
 
-        behavior.status = trees[behavior.treeRef].tick(entityId, behavior)
+        behavior.treeState = nodes[behavior.treeRef].tick(entityId, behavior)
     }
 
     override fun clearSystem() {
-        trees.clear()
         nodes.clear()
     }
 }

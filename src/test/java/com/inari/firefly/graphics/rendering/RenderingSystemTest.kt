@@ -39,12 +39,12 @@ class RenderingSystemTest {
         }
 
         Entity.buildAndActivate {
-            withComponent(ETransform) {
+            ff_With(ETransform) {
                 ff_View(0)
                 ff_Pivot.x = 1f
                 ff_Pivot.y = 2f
             }
-            withComponent(ESprite) {
+            ff_With(ESprite) {
                 ff_Sprite( assetId)
             }
         }

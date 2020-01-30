@@ -123,19 +123,19 @@ fun main(args: Array<String>) {
     }
 
     Entity.build {
-        withComponent(ETransform) {
+        ff_With(ETransform) {
             ff_Position.x = 1f
         }
-        withComponent(EAnimation) {
+        ff_With(EAnimation) {
             withAnimation(EasedProperty) {
                 ff_Looping = true
                 ff_PropertyRef = ESprite.Property.TINT_ALPHA
             }
         }
-        withComponent(EMultiplier) {
+        ff_With(EMultiplier) {
             ff_Positions.add(PositionF(1f, 3f))
         }
-        withComponent(EMeta) {
+        ff_With(EMeta) {
             ff_Controller("sofbno")
         }
     }

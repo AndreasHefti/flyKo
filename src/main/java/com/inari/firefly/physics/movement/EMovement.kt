@@ -12,7 +12,7 @@ import com.inari.util.geom.Vector2f
 class EMovement private constructor() : EntityComponent(EMovement::class.java.name) {
 
     @JvmField internal var controllerRef = -1
-    @JvmField internal var active = false
+    @JvmField internal var active = true
     @JvmField internal val velocity = Vector2f(0f, 0f)
     @JvmField internal val acceleration = Vector2f(0f, 0f)
     @JvmField internal var mass = 0f
@@ -57,7 +57,7 @@ class EMovement private constructor() : EntityComponent(EMovement::class.java.na
     var ff_UpdateResolution: Float
         get() = throw UnsupportedOperationException()
         set(value) { scheduler = FFContext.timer.createUpdateScheduler(value) }
-    val ff_Controller = ComponentRefResolver(Controller) { index-> controllerRef = index }
+    val ff_Controller = ComponentRefResolver(Controller) { index -> controllerRef = index }
 
     override fun reset() {
         active = false

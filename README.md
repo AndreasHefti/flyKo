@@ -85,7 +85,7 @@ Code example:
             ff_EndValue = 1f
             ff_Duration = 1000
 
-            // that is connected to the alpha value of the defines sprite 
+            // that is connected to the alpha value of the sprite of the entity
             ff_PropertyRef = ESprite.Property.TINT_ALPHA
         }
     }

@@ -62,6 +62,7 @@ const val BASE_VIEW: String = "[[BASE_VIEW]]"
 @JvmField val INT_FUNCTION_NULL: IntFunction = { _ -> 0 }
 @JvmField val NULL_INT_FUNCTION: IntFunction = { _ -> throw IllegalStateException("NULL_INT_FUNCTION") }
 @JvmField val NULL_INT_CONSUMER: IntConsumer = { _ -> throw IllegalStateException("NULL_INT_CONSUMER") }
+@JvmField val EMPTY_INT_CONSUMER: IntConsumer = { _ -> }
 @JvmField val NULL_CONSUMER: Consumer<Any> = { _ -> throw IllegalStateException("NULL_CONSUMER") }
 @JvmField val NULL_CALL: Call = { throw IllegalStateException("NULL_CALL called") }
 @JvmField val VOID_CALL: Call = {}
@@ -70,7 +71,7 @@ const val BASE_VIEW: String = "[[BASE_VIEW]]"
 @JvmField val FALSE_PREDICATE: Predicate<Any> = { false }
 @JvmField val TRUE_PREDICATE: Predicate<Any> = { true }
 
-@JvmField val INFINITE_SCHEDULER: FFTimer.Scheduler = object : FFTimer.Scheduler {
+        @JvmField val INFINITE_SCHEDULER: FFTimer.Scheduler = object : FFTimer.Scheduler {
     override fun needsUpdate(): Boolean = true
 }
 @JvmField val EMPTY_INT_OPERATION: IntOperation = object : IntOperation {
