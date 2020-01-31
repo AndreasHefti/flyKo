@@ -1,7 +1,7 @@
 package com.inari.firefly.libgdx.filter
 
 import com.badlogic.gdx.graphics.Pixmap
-import com.inari.firefly.IntFunction
+import com.inari.util.IntFunction
 
 class ColorFilteredTextureData(
     resourcePath: String,

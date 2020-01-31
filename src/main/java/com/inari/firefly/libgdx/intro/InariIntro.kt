@@ -10,6 +10,7 @@ import com.inari.firefly.graphics.sprite.ESprite
 import com.inari.firefly.graphics.sprite.SpriteAsset
 import com.inari.firefly.physics.animation.easing.EasedProperty
 import com.inari.firefly.physics.animation.entity.EAnimation
+import com.inari.util.Call
 import com.inari.util.geom.Easing
 import com.inari.util.geom.PositionF
 import com.inari.util.geom.Rectangle

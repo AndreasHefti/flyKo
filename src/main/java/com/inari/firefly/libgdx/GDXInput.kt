@@ -6,18 +6,16 @@ import com.inari.firefly.external.FFInput
 import com.inari.firefly.external.FFInput.InputType.MOUSE_LEFT
 import com.inari.firefly.external.FFInput.InputType.MOUSE_RIGHT
 import com.inari.firefly.external.FFInput.InputType.MOUSE_MIDDLE
+import com.inari.java.types.BitSet
 import com.inari.util.collection.DynArray
 import com.inari.util.collection.DynIntArray
-import java.util.*
 import net.java.games.input.Component.Identifier.Button.TOUCH
-
-
 
 object GDXInput : FFInput {
 
     private val buttonCodeMapping = DynIntArray(255, -1)
     private val pressedCodeMapping = BitSet(255)
-    private val inputTypeMapping = DynArray.of(FFInput.InputType::class.java)
+    private val inputTypeMapping: DynArray<FFInput.InputType> = DynArray.of()
 
     override val xpos: Int
         get() = Gdx.input.x

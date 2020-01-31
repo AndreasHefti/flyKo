@@ -10,9 +10,9 @@ import com.inari.util.collection.DynIntArray
 
 object GDXAudio : FFAudio {
 
-    private val sounds = DynArray.of(Sound::class.java)
+    private val sounds: DynArray<Sound> = DynArray.of()
     private val lastPlayingSoundOnChannel = DynIntArray(5, -1)
-    private val music = DynArray.of(Music::class.java)
+    private val music: DynArray<Music> = DynArray.of()
 
     override fun createSound(resourceName: String, streaming: Boolean): Int =
         if (streaming)

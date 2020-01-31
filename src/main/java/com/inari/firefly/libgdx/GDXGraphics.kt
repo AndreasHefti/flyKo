@@ -32,10 +32,10 @@ import java.nio.ByteOrder
 
 object GDXGraphics : FFGraphics {
 
-    private val textures = DynArray.of(Texture::class.java, 100, 50)
-    private val sprites = DynArray.of(TextureRegion::class.java, 200, 300)
-    private val viewports = DynArray.of(ViewportData::class.java, 20, 10)
-    private val shaders = DynArray.of(ShaderProgram::class.java, 20, 10)
+    private val textures: DynArray<Texture> = DynArray.of(100, 50)
+    private val sprites: DynArray<TextureRegion> = DynArray.of(200, 300)
+    private val viewports: DynArray<ViewportData> = DynArray.of(20, 10)
+    private val shaders: DynArray<ShaderProgram> = DynArray.of(20, 10)
 
     private val spriteBatch = SpriteBatch()
     private var shapeRenderer = ShapeRenderer()
