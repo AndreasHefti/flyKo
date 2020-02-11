@@ -10,9 +10,6 @@ enum class ShapeType {
     POLYGON,
     RECTANGLE,
     CIRCLE,
-    CONE,
-    ARC,
-    CURVE,
     TRIANGLE
 }
 

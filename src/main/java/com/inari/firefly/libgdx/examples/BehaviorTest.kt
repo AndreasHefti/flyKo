@@ -1,9 +1,10 @@
-package com.inari.firefly.apptests
+package com.inari.firefly.libgdx.examples
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration
 import com.inari.firefly.FFContext
 import com.inari.firefly.OpResult
+import com.inari.firefly.SYSTEM_FONT
 import com.inari.firefly.control.behavior.*
 import com.inari.firefly.control.behavior.BehaviorSystem.ACTION_DONE_CONDITION
 import com.inari.firefly.control.behavior.BehaviorSystem.BEHAVIOR_STATE_ASPECT_GROUP
@@ -11,9 +12,11 @@ import com.inari.firefly.control.task.TaskSystem
 import com.inari.firefly.entity.Entity
 import com.inari.firefly.entity.EntitySystem
 import com.inari.firefly.external.ShapeType
+import com.inari.firefly.graphics.BlendMode
 import com.inari.firefly.graphics.ETransform
 import com.inari.firefly.graphics.rendering.RenderingSystem
 import com.inari.firefly.graphics.shape.EShape
+import com.inari.firefly.graphics.text.EText
 import com.inari.firefly.libgdx.GDXAppAdapter
 import com.inari.firefly.physics.movement.EMovement
 import com.inari.firefly.physics.movement.MovementSystem
@@ -36,6 +39,7 @@ class BehaviorTest : GDXAppAdapter() {
         FFContext.loadSystem(TaskSystem)
         MovementSystem
 
+
         val goRightState: Aspect = BEHAVIOR_STATE_ASPECT_GROUP.createAspect("goRight")
         val goLeftState: Aspect = BEHAVIOR_STATE_ASPECT_GROUP.createAspect("goLeft")
         val goDownState: Aspect = BEHAVIOR_STATE_ASPECT_GROUP.createAspect("goDown")
@@ -57,11 +61,11 @@ class BehaviorTest : GDXAppAdapter() {
                         ff_WithNode(BxAction) {
                             ff_Name="GoRight"
                             ff_State = goRightState
-                            ff_TickOp = { entityId, _ ->
-                                val mov = EntitySystem[entityId][EMovement]
+                            ff_TickOp = { entity, _ ->
+                                val mov = entity[EMovement]
                                 if (mov.ff_VelocityX <= 0f)
                                     mov.ff_VelocityX = Random.nextInt(1, 5).toFloat()
-                                if (EntitySystem[entityId][ETransform].ff_Position.x < 800f)
+                                if (entity[ETransform].ff_Position.x < 800f)
                                     OpResult.RUNNING
                                 else
                                     OpResult.SUCCESS
@@ -72,10 +76,10 @@ class BehaviorTest : GDXAppAdapter() {
                         ff_Name="GoLeft"
                         ff_State = goLeftState
                         ff_TickOp = { entityId, bx ->
-                            val mov = EntitySystem[entityId][EMovement]
+                            val mov = entityId[EMovement]
                             if (mov.ff_VelocityX >= 0f)
                                 mov.ff_VelocityX = Random.nextInt(-5, -1).toFloat()
-                            if (EntitySystem[entityId][ETransform].ff_Position.x < 10f) {
+                            if (entityId[ETransform].ff_Position.x < 10f) {
                                 bx.actionsDone - goRightState
                                 OpResult.SUCCESS
                             }
@@ -96,10 +100,10 @@ class BehaviorTest : GDXAppAdapter() {
                             ff_Name="GoDown"
                             ff_State = goDownState
                             ff_TickOp = { entityId, _ ->
-                                val mov = EntitySystem[entityId][EMovement]
+                                val mov = entityId[EMovement]
                                 if (mov.ff_VelocityY <= 0f)
                                     mov.ff_VelocityY = Random.nextInt(1, 5).toFloat()
-                                if (EntitySystem[entityId][ETransform].ff_Position.y < 600)
+                                if (entityId[ETransform].ff_Position.y < 600)
                                     OpResult.RUNNING
                                 else
                                     OpResult.SUCCESS
@@ -110,10 +114,10 @@ class BehaviorTest : GDXAppAdapter() {
                         ff_Name="GoUp"
                         ff_State = goUpState
                         ff_TickOp = { entityId, bx ->
-                            val mov = EntitySystem[entityId][EMovement]
+                            val mov = entityId[EMovement]
                             if (mov.ff_VelocityY >= 0f)
                                 mov.ff_VelocityY = Random.nextInt(-5, -1).toFloat()
-                            if (EntitySystem[entityId][ETransform].ff_Position.y < 10) {
+                            if (entityId[ETransform].ff_Position.y < 10) {
                                 bx.actionsDone - goDownState
                                 OpResult.SUCCESS
                             }
@@ -125,7 +129,8 @@ class BehaviorTest : GDXAppAdapter() {
             }
         }
 
-        for (i in 1..2000) {
+        val vert = floatArrayOf(0f, 0f, 3f, 3f)
+        for (i in 1..10000) {
             Entity.buildAndActivate {
                 ff_With(ETransform) {
                     ff_View(0)
@@ -134,12 +139,20 @@ class BehaviorTest : GDXAppAdapter() {
                 ff_With(EShape) {
                     ff_Type = ShapeType.RECTANGLE
                     ff_Fill = true
-                    ff_Color(1f, 0f, 0f, 1f)
-                    ff_Vertices = floatArrayOf(0f, 0f, 3f, 3f)
+                    ff_Segments = 10
+                    ff_Color(Random.nextFloat(), Random.nextFloat(), Random.nextFloat(), Random.nextFloat())
+                    ff_Vertices = vert
+                    ff_Blend = BlendMode.NORMAL_ALPHA
                 }
                 ff_With(EMovement) {
                     ff_VelocityX = 0f
                 }
+//                ff_With(EText) {
+//                    ff_FontAsset(SYSTEM_FONT)
+//                    ff_TextBuffer.append('*')
+//                    ff_Tint(Random.nextFloat(), Random.nextFloat(), Random.nextFloat(), Random.nextFloat())
+//                    ff_Blend = BlendMode.NORMAL_ALPHA
+//                }
                 ff_With(EBehavior) {
                     ff_BehaviorTree("Root")
                     ff_Repeat = true

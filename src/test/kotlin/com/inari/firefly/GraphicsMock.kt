@@ -88,7 +88,7 @@ object GraphicsMock : FFGraphics {
         log.add("renderSprite::Sprite($renderableSprite)")
     }
 
-    override fun renderShape(data: ShapeData) {
+    override fun renderShape(data: ShapeData, xOffset: Float, yOffset: Float) {
         log.add("renderShape:: $data")
     }
 

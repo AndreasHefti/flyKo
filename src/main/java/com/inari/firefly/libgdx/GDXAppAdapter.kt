@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx
 import com.inari.firefly.SYSTEM_FONT
 import com.inari.firefly.asset.AssetSystem
 import com.inari.firefly.control.ControllerSystem
+import com.inari.firefly.control.behavior.BehaviorSystem
 import com.inari.firefly.control.trigger.TriggerSystem
 import com.inari.firefly.control.trigger.UpdateEventTrigger
 import com.inari.firefly.entity.EntitySystem

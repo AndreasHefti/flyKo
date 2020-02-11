@@ -116,8 +116,10 @@ interface FFGraphics {
     /** This is called form the firefly API to render a shape. See [ShapeData] for more information about the data structure of shapes.
      *
      * @param data [ShapeData] DAO
+     * @param xOffset the x-axis offset, default is 0f
+     * @param yOffset the y-axis offset, default is 0f
      */
-    fun renderShape(data: ShapeData)
+    fun renderShape(data: ShapeData, xOffset: Float = 0f, yOffset: Float = 0f)
 
     /** This is called form the firefly API to render a shape with given [TransformData].
      * See [ShapeData] for more information about the data structure of shapes.

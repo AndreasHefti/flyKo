@@ -13,9 +13,11 @@ import com.inari.util.aspect.Aspect
 import com.inari.util.aspect.Aspects
 import com.inari.util.aspect.IndexedAspectType
 import com.inari.util.collection.BitSetIterator
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
-typealias BxOp = (Int, EBehavior) -> OpResult
-typealias BxConditionOp = (Int, EBehavior) -> Boolean
+typealias BxOp = (Entity, EBehavior) -> OpResult
+typealias BxConditionOp = (Entity, EBehavior) -> Boolean
 
 object BehaviorSystem : ComponentSystem  {
 
@@ -25,16 +27,16 @@ object BehaviorSystem : ComponentSystem  {
     @JvmField val TRUE_CONDITION: BxConditionOp = { _, _ -> true }
     @JvmField val FALSE_CONDITION: BxConditionOp = { _, _ -> false }
     @JvmField val NOT: (BxConditionOp) -> BxConditionOp = {
-        c -> { entityId, bx -> ! c(entityId, bx) }
+        c -> { entity, bx -> ! c(entity, bx) }
     }
     @JvmField val AND: (BxConditionOp, BxConditionOp) -> BxConditionOp = {
-        c1, c2 -> { entityId, bx -> c1(entityId, bx) && c2(entityId, bx) }
+        c1, c2 -> { entity, bx -> c1(entity, bx) && c2(entity, bx) }
     }
     @JvmField val OR: (BxConditionOp, BxConditionOp) -> BxConditionOp = {
-        c1, c2 -> { entityId, bx -> c1(entityId, bx) || c2(entityId, bx) }
+        c1, c2 -> { entity, bx -> c1(entity, bx) || c2(entity, bx) }
     }
     @JvmField val ACTION_DONE_CONDITION =  { aspect: Aspect -> {
-        _ : Int, behavior: EBehavior -> aspect in behavior.actionsDone }
+        _ : Entity, behavior: EBehavior -> aspect in behavior.actionsDone }
     }
     @JvmField val SUCCESS_ACTION: BxOp = { _, _ -> OpResult.SUCCESS }
     @JvmField val FAIL_ACTION: BxOp = { _, _ -> OpResult.FAILED }
@@ -85,17 +87,19 @@ object BehaviorSystem : ComponentSystem  {
     }
 
     internal fun tick(entityId: Int) {
-        val behavior = EntitySystem[entityId][EBehavior]
-        if (!behavior.active || behavior.treeRef < 0)
-            return
-
-        if (behavior.treeState === OpResult.SUCCESS)
-            if (!behavior.repeat)
+            val entity = EntitySystem[entityId]
+            val behavior = entity[EBehavior]
+            if (!behavior.active || behavior.treeRef < 0)
                 return
-            else
-                reset(entityId)
 
-        behavior.treeState = nodes[behavior.treeRef].tick(entityId, behavior)
+            if (behavior.treeState === OpResult.SUCCESS)
+                if (!behavior.repeat)
+                    return
+                else
+                    reset(entityId)
+
+            behavior.treeState = nodes[behavior.treeRef].tick(entity, behavior)
+
     }
 
     override fun clearSystem() {

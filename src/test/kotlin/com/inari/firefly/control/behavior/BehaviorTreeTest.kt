@@ -40,7 +40,7 @@ class BehaviorTreeTest {
                 }
                 ff_WithNode(BxAction) {
                     ff_Name = "First Task"
-                    ff_TickOp = { entityId, _ -> TaskSystem.runEntityTask("Task_Name", entityId) }
+                    ff_TickOp = { entity, _ -> TaskSystem.runEntityTask("Task_Name", entity.index) }
                 }
                 ff_WithNode(BxSequence) {
                     ff_Name = ""

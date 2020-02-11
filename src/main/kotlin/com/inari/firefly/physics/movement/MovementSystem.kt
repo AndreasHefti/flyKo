@@ -10,6 +10,8 @@ import com.inari.firefly.graphics.ETransform
 import com.inari.firefly.system.FFSystem
 import com.inari.java.types.BitSet
 import com.inari.util.aspect.Aspects
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 object MovementSystem : FFSystem {
 
@@ -20,31 +22,31 @@ object MovementSystem : FFSystem {
     init {
         FFContext.registerListener(UpdateEvent, object : UpdateEvent.Listener {
             override fun invoke() {
-                MoveEvent.entities.clear()
-                val deltaTimeInSeconds: Long = FFContext.timer.timeElapsed / 1000
+                    MoveEvent.entities.clear()
+                    val deltaTimeInSeconds: Long = FFContext.timer.timeElapsed / 1000
 
-                var i: Int = entities.nextSetBit(0)
-                while (i >= 0) {
-                    val entity = EntitySystem[i]
-                    i = entities.nextSetBit(i + 1)
-                    if (!entity.has(EMovement))
-                        continue
+                    var i: Int = entities.nextSetBit(0)
+                    while (i >= 0) {
+                        val entity = EntitySystem[i]
+                        i = entities.nextSetBit(i + 1)
+                        if (!entity.has(EMovement))
+                            continue
 
-                    val movement = entity[EMovement]
-                    if (!movement.active || !movement.scheduler.needsUpdate())
-                        continue
+                        val movement = entity[EMovement]
+                        if (!movement.active || !movement.scheduler.needsUpdate())
+                            continue
 
-                    val transform = entity[ETransform]
-                    if ( movement.velocity.dx != 0f || movement.velocity.dy != 0f ) {
-                        movementIntegrator.step(movement, transform, deltaTimeInSeconds)
-                        MoveEvent.entities.set(entity.index)
+                        val transform = entity[ETransform]
+                        if (movement.velocity.dx != 0f || movement.velocity.dy != 0f) {
+                            movementIntegrator.step(movement, transform, deltaTimeInSeconds)
+                            MoveEvent.entities.set(entity.index)
+                        }
+
+                        movementIntegrator.integrate(movement, transform, deltaTimeInSeconds)
                     }
 
-                    movementIntegrator.integrate(movement, transform, deltaTimeInSeconds)
-                }
-
-                if (!MoveEvent.entities.isEmpty)
-                    FFContext.notify(MoveEvent)
+                    if (!MoveEvent.entities.isEmpty)
+                        FFContext.notify(MoveEvent)
             }
         })
 

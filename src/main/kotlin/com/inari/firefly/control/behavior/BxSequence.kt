@@ -1,14 +1,15 @@
 package com.inari.firefly.control.behavior
 
 import com.inari.firefly.OpResult
+import com.inari.firefly.entity.Entity
 import com.inari.firefly.system.component.SystemComponentSubType
 
 class BxSequence private constructor() : BxBranch() {
 
-    override fun tick(entityId: Int, behavior: EBehavior): OpResult {
-        val i = childrenRefs.iterator()
-        loop@ while (i.hasNext()) {
-            when(BehaviorSystem.nodes.map[i.nextInt()]?.tick(entityId, behavior) ?: continue@loop) {
+    override fun tick(entity: Entity, behavior: EBehavior): OpResult {
+        var i = 0
+        loop@ while (i < children.capacity) {
+            when(children[i++]?.tick(entity, behavior) ?: continue@loop) {
                 OpResult.RUNNING -> return OpResult.RUNNING
                 OpResult.FAILED -> return OpResult.FAILED
                 OpResult.SUCCESS -> {}

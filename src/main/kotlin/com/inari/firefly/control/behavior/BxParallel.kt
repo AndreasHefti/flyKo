@@ -1,6 +1,7 @@
 package com.inari.firefly.control.behavior
 
 import com.inari.firefly.OpResult
+import com.inari.firefly.entity.Entity
 import com.inari.firefly.system.component.SystemComponentSubType
 
 
@@ -12,17 +13,17 @@ class BxParallel private constructor() : BxBranch() {
         get() = successThreshold
         set(value) { successThreshold = value }
 
-    override fun tick(entityId: Int, behavior: EBehavior): OpResult {
-        val threshold = if (successThreshold > childrenRefs.size)
-                childrenRefs.size
+    override fun tick(entity: Entity, behavior: EBehavior): OpResult {
+        val threshold = if (successThreshold > children.size)
+                children.size
             else
                 successThreshold
 
-        val i = childrenRefs.iterator()
         var successCount = 0
         var failuresCount = 0
-        loop@ while (i.hasNext()) {
-            when(BehaviorSystem.nodes.map[i.nextInt()]?.tick(entityId, behavior) ?: continue@loop) {
+        var i = 0
+        loop@ while (i < children.capacity) {
+            when(children[i++]?.tick(entity, behavior) ?: continue@loop) {
                 OpResult.RUNNING -> {}
                 OpResult.SUCCESS -> successCount++
                 OpResult.FAILED -> failuresCount++

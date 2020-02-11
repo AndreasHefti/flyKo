@@ -36,7 +36,7 @@ class TileSet private constructor() : Composite() {
     }
 
     var ff_ActivationResolver: (TileSet) -> TileSetActivation
-        set(value) {activationResolver = value}
+        set(value) { activationResolver = value }
         get() = activationResolver
 
     @JvmField internal var activeForLayer = BitSet()

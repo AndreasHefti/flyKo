@@ -7,6 +7,8 @@ import com.inari.util.collection.DynArrayRO
 import com.inari.util.event.Event
 import com.inari.util.event.IEventDispatcher
 import com.inari.util.geom.Rectangle
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import kotlin.math.floor
 
 abstract class FFApp protected constructor(
@@ -36,22 +38,22 @@ abstract class FFApp protected constructor(
     }
 
     fun render() {
-        val size = ViewSystem.activeViewPorts.size
-        if (size > 0) {
-            var i = 0
-            while (i < size) {
-                ViewSystem.activeViewPorts[i++]?.apply {
-                    render(this)
+            val size = ViewSystem.activeViewPorts.size
+            if (size > 0) {
+                var i = 0
+                while (i < size) {
+                    ViewSystem.activeViewPorts[i++]?.apply {
+                        render(this)
+                    }
                 }
+
+                graphics.flush(ViewSystem.activeViewPorts)
+            } else {
+                render(ViewSystem.baseView.data)
+                graphics.flush(NO_VIRTUAL_VIEW_PORTS)
             }
 
-            graphics.flush(ViewSystem.activeViewPorts)
-        } else {
-            render(ViewSystem.baseView.data)
-            graphics.flush(NO_VIRTUAL_VIEW_PORTS)
-        }
-
-        FFContext.notify(PostRenderEvent)
+            FFContext.notify(PostRenderEvent)
     }
 
     private fun render(view: ViewData) {

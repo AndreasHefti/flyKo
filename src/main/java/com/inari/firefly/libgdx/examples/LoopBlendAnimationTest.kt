@@ -1,4 +1,4 @@
-package com.inari.firefly.apptests
+package com.inari.firefly.libgdx.examples
 
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication
@@ -26,7 +26,7 @@ class LoopBlendAnimationTest : GDXAppAdapter() {
             ff_With(EShape) {
                 ff_Type = ShapeType.RECTANGLE
                 ff_Fill = true
-                ff_Color = RGBColor(1f, 1f, 1f, 1f)
+                ff_Color(1f, 1f, 1f, 1f)
                 ff_Vertices = floatArrayOf(0f,0f,100f,100f)
             }
             ff_With(EAnimation) {

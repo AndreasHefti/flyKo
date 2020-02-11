@@ -1,4 +1,4 @@
-package com.inari.firefly.apptests
+package com.inari.firefly.libgdx.examples
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration
