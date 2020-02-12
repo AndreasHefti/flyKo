@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.graphics.g3d.utils.MeshBuilder
 import com.badlogic.gdx.graphics.glutils.FrameBuffer
 import com.badlogic.gdx.graphics.glutils.ShaderProgram
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.math.Matrix4
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.utils.GdxRuntimeException
@@ -44,6 +45,7 @@ object GDXGraphics : FFGraphics {
 
     private val spriteBatch = PolygonSpriteBatch()
     private val meshBuilder = PolygonShapeDrawer()
+    private var shapeRenderer = ShapeRenderer()
 
     private var baseViewport: ViewportData? = null
     private var baseView: ViewData? = null
@@ -51,6 +53,19 @@ object GDXGraphics : FFGraphics {
     private var activeViewport: ViewportData? = null
     private var activeShaderId = -1
     private var activeBlend = BlendMode.NONE
+    private var activeShapeShaderId = -1
+
+
+
+    private val SHAPE_COLOR_1 = Color()
+    private val SHAPE_COLOR_2 = Color()
+    private val SHAPE_COLOR_3 = Color()
+    private val SHAPE_COLOR_4 = Color()
+
+    private val transformMatrix = Matrix4()
+    private val vector1 = Vector3()
+    private val vector2 = Vector3()
+    private val vector3 = Vector3()
 
     override val screenHeight: Int
         get() = Gdx.graphics.height
@@ -166,7 +181,7 @@ object GDXGraphics : FFGraphics {
 
     override fun startRendering(view: ViewData, clear: Boolean) {
         activeViewport = viewports[view.index]
-        activeViewport?.activate(spriteBatch, view, clear)
+        activeViewport?.activate(spriteBatch, shapeRenderer, view, clear)
         spriteBatch.begin()
     }
 
@@ -208,18 +223,21 @@ object GDXGraphics : FFGraphics {
         )
     }
 
-    private val vector1 = Vector3()
-    private val vector2 = Vector3()
-    private val vector3 = Vector3()
-    override fun renderShape(data: ShapeData, xOffset: Float, yOffset: Float) {
 
-        setColorAndBlendMode(data.color1, data.blend)
-        setShaderForSpriteBatch(data.shaderRef)
+    override fun renderShape(data: ShapeData, xOffset: Float, yOffset: Float) {
 
         getShapeColor(data.color1, SHAPE_COLOR_1)
         getShapeColor(data.color2 ?: data.color1, SHAPE_COLOR_2)
         getShapeColor(data.color3 ?: data.color1, SHAPE_COLOR_3)
         getShapeColor(data.color4 ?: data.color1, SHAPE_COLOR_4)
+
+        if (doRenderWithShapeRenderer(data)) {
+            renderWithShapeRenderer(data, xOffset, yOffset)
+            return
+        }
+
+        setColorAndBlendMode(data.color1, data.blend)
+        setShaderForSpriteBatch(data.shaderRef)
 
         meshBuilder.setColor(SHAPE_COLOR_1)
 
@@ -242,25 +260,7 @@ object GDXGraphics : FFGraphics {
                 val y1 = data.vertices[index++] + yOffset
                 val x2 = data.vertices[index++] + xOffset
                 val y2 = data.vertices[index++] + yOffset
-                meshBuilder.rect(
-                        x1, y1, 0.0f,
-                        x2, y1, 0.0f,
-                        x2, y2, 0.0f,
-                        x1, y2, 0.0f,
-                        0f, 0f, 0.0f)
-            }
-            POLY_LINE   -> while (index < data.vertices.size) {
-                val x1 = data.vertices[index] + xOffset
-                val y1 = data.vertices[index + 1] + yOffset
-                val x2 = data.vertices[index + 2] + xOffset
-                val y2 = data.vertices[index + 3] + yOffset
-                meshBuilder.rect(
-                        x1, y1, 0.0f,
-                        x2, y1, 0.0f,
-                        x2, y2, 0.0f,
-                        x1, y2, 0.0f,
-                        0f, 0f, 0.0f)
-                index += 2
+                meshBuilder.line(x1, y1, 0.0f, x2, y2, 0.0f)
             }
             POLYGON     -> meshBuilder.vertex(*data.vertices)
             RECTANGLE   -> while (index < data.vertices.size) {
@@ -276,12 +276,10 @@ object GDXGraphics : FFGraphics {
                         1f, 1f, 1f)
             }
             CIRCLE     -> while (index < data.vertices.size) {
-                meshBuilder.circle(
-                        data.vertices[index++],
-                        data.segments,
-                        data.vertices[index++] + xOffset,
-                        data.vertices[index++] + yOffset,
-                        0f, 0f, 0f, 1f)
+                val radius = data.vertices[index++]
+                val xpos = data.vertices[index++] + xOffset
+                val ypos = data.vertices[index++] + yOffset
+                meshBuilder.circle(radius, data.segments, xpos, ypos, 0f, 0f, 0f, 1f)
             }
             TRIANGLE     -> while (index < data.vertices.size) {
                 meshBuilder.triangle(
@@ -298,8 +296,13 @@ object GDXGraphics : FFGraphics {
         Gdx.gl.glDisable(GL20.GL_BLEND)
     }
 
-    private val transformMatrix = Matrix4()
     override fun renderShape(data: ShapeData, transform: TransformData) {
+
+        if (doRenderWithShapeRenderer(data)) {
+            renderWithShapeRenderer(data, transform)
+            return
+        }
+
         transformMatrix.idt()
 
         if (transform.hasScale) {
@@ -324,6 +327,130 @@ object GDXGraphics : FFGraphics {
         }
     }
 
+    private fun doRenderWithShapeRenderer(data: ShapeData): Boolean =
+            if (data.fill)
+                data.type === POLY_LINE || data.type === ARC || data.type === CURVE
+            else
+                data.type !== LINE && data.type !== POINT
+
+    private fun renderWithShapeRenderer(data: ShapeData, xOffset: Float, yOffset: Float) {
+        if (data.shaderRef != activeShapeShaderId)
+            shapeRenderer = if (data.shaderRef < 0)
+                ShapeRenderer()
+            else
+                ShapeRenderer(1000, shaders[data.shaderRef])
+        activeShapeShaderId = data.shaderRef
+
+        shapeRenderer.color = SHAPE_COLOR_1
+        var restartSpriteBatch = false
+        if (spriteBatch.isDrawing) {
+            restartSpriteBatch = true
+            spriteBatch.end()
+        }
+
+        val type = data.type
+        val shapeType = when {
+            type === POINT  -> ShapeRenderer.ShapeType.Point
+            data.fill       -> ShapeRenderer.ShapeType.Filled
+            else            -> ShapeRenderer.ShapeType.Line
+        }
+        shapeRenderer.begin(shapeType)
+
+        val blendMode = data.blend
+        val vertices = data.vertices
+        val segments = data.segments
+        if (blendMode !== BlendMode.NONE) {
+            Gdx.gl.glEnable(GL20.GL_BLEND)
+            Gdx.gl.glBlendColor(1f, 1f, 1f, 1f)
+            Gdx.gl.glBlendFunc(blendMode.source, blendMode.dest)
+        }
+
+        var index = 0
+        when (data.type) {
+            POLY_LINE   -> shapeRenderer.polyline(vertices)
+            RECTANGLE   -> while (index < vertices.size) {
+                shapeRenderer.rect(
+                        vertices[index++] + xOffset,
+                        vertices[index++] + yOffset,
+                        vertices[index++],
+                        vertices[index++],
+                        SHAPE_COLOR_1,
+                        SHAPE_COLOR_2,
+                        SHAPE_COLOR_3,
+                        SHAPE_COLOR_4)
+            }
+            CIRCLE      -> while (index < vertices.size) {
+                val radius = data.vertices[index++]
+                val xpos = data.vertices[index++] + xOffset
+                val ypos = data.vertices[index++] + yOffset
+                shapeRenderer.circle(xpos, ypos, radius, segments)
+            }
+            ARC         -> while (index < vertices.size) {
+                shapeRenderer.arc(
+                        vertices[index++] + xOffset,
+                        vertices[index++] + yOffset,
+                        vertices[index++],
+                        vertices[index++],
+                        vertices[index++],
+                        segments)
+            }
+            CURVE       -> while (index < vertices.size) {
+                shapeRenderer.curve(
+                        vertices[index++] + xOffset,
+                        vertices[index++] + yOffset,
+                        vertices[index++] + xOffset,
+                        vertices[index++] + yOffset,
+                        vertices[index++] + xOffset,
+                        vertices[index++] + yOffset,
+                        vertices[index++] + xOffset,
+                        vertices[index++] + yOffset,
+                        segments
+                )
+            }
+            TRIANGLE    -> while (index < vertices.size) {
+                shapeRenderer.triangle(
+                        vertices[index++] + xOffset,
+                        vertices[index++] + yOffset,
+                        vertices[index++] + xOffset,
+                        vertices[index++] + yOffset,
+                        vertices[index++] + xOffset,
+                        vertices[index++] + yOffset,
+                        SHAPE_COLOR_1,
+                        SHAPE_COLOR_2,
+                        SHAPE_COLOR_3
+                )
+            }
+            else        -> {}
+        }
+
+        shapeRenderer.flush()
+        shapeRenderer.end()
+
+        if (restartSpriteBatch)
+            spriteBatch.begin()
+
+        Gdx.gl.glDisable(GL20.GL_BLEND)
+    }
+
+    private fun renderWithShapeRenderer(data: ShapeData, transform: TransformData) {
+        shapeRenderer.identity()
+
+        if (transform.hasScale) {
+            shapeRenderer.translate(transform.pivot.x, transform.pivot.y, 0f)
+            shapeRenderer.scale(transform.scale.dx, transform.scale.dy, 0f)
+            shapeRenderer.translate(-transform.pivot.x, -transform.pivot.y, 0f)
+        }
+
+        if (transform.hasRotation) {
+            shapeRenderer.translate(transform.pivot.x, transform.pivot.y, 0f)
+            shapeRenderer.rotate(0f, 0f, 1f, transform.rotation)
+            shapeRenderer.translate(-transform.pivot.x, -transform.pivot.y, 0f)
+        }
+
+        renderWithShapeRenderer(data, transform.position.x, transform.position.y)
+        shapeRenderer.identity()
+    }
+
     override fun endRendering(view: ViewData) {
         spriteBatch.flush()
         if (!view.isBase )
@@ -334,7 +461,7 @@ object GDXGraphics : FFGraphics {
 
     override fun flush(virtualViews: DynArrayRO<ViewData>) {
         if (!virtualViews.isEmpty) {
-            baseViewport?.activate(spriteBatch, baseView!!, true)
+            baseViewport?.activate(spriteBatch, shapeRenderer, baseView!!, true)
             spriteBatch.begin()
 
             var i = 0
@@ -417,6 +544,7 @@ object GDXGraphics : FFGraphics {
 
         internal fun activate(
             spriteBatch: PolygonSpriteBatch,
+            shapeRenderer: ShapeRenderer,
             view: ViewData,
             clear: Boolean
         ) {
@@ -430,6 +558,7 @@ object GDXGraphics : FFGraphics {
             camera.position.y = camera.position.y + worldPosition.y
             camera.update()
             spriteBatch.projectionMatrix = camera.combined
+            shapeRenderer.projectionMatrix = camera.combined
 
             fbo?.begin()
 
@@ -479,10 +608,6 @@ object GDXGraphics : FFGraphics {
         }
     }
 
-    private val SHAPE_COLOR_1 = Color()
-    private val SHAPE_COLOR_2 = Color()
-    private val SHAPE_COLOR_3 = Color()
-    private val SHAPE_COLOR_4 = Color()
     private fun getShapeColor(rgbColor: RGBColor, color: Color) =
         color.set(rgbColor.r, rgbColor.g, rgbColor.b, rgbColor.a)
 
@@ -515,7 +640,5 @@ object GDXGraphics : FFGraphics {
             batch.draw(texture, vertices, 0, numVertices * floatsPerVertex, indices, 0, numIndices)
             clear()
         }
-
-
     }
 }

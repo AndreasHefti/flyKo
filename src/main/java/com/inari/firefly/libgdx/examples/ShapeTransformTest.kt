@@ -72,11 +72,106 @@ class ShapeTransformTest : GDXAppAdapter() {
             }
         }
 
+        Entity.buildAndActivate {
+            ff_With(ETransform) {
+                ff_Position(100f, 80f)
+                ff_Pivot(110f, 90f)
+                ff_Rotation = 0f
+            }
+            ff_With(EShape) {
+                ff_Type = ShapeType.RECTANGLE
+                ff_Fill = false
+                ff_Color(1f, 0f, 0f, 1f)
+                ff_Vertices = floatArrayOf(0f, 0f, 20f, 20f)
+            }
+            ff_With(EAnimation) {
+                withActiveAnimation(EasedProperty) {
+                    ff_Looping = true
+                    ff_InverseOnLoop = true
+                    ff_StartValue = 0f
+                    ff_EndValue = 180f
+                    ff_Duration = 1000
+                    ff_Easing = Easing.Type.LINEAR
+                    ff_PropertyRef = ETransform.Property.ROTATION
+                }
+                withActiveAnimation(EasedProperty) {
+                    ff_Looping = true
+                    ff_InverseOnLoop = true
+                    ff_StartValue = 100f
+                    ff_EndValue = 600f
+                    ff_Duration = 3000
+                    ff_Easing = Easing.Type.SIN_IN_OUT
+                    ff_PropertyRef = ETransform.Property.POSITION_X
+                }
+                withActiveAnimation(EasedProperty) {
+                    ff_Looping = true
+                    ff_InverseOnLoop = true
+                    ff_StartValue = 110f
+                    ff_EndValue = 610f
+                    ff_Duration = 3000
+                    ff_Easing = Easing.Type.SIN_IN_OUT
+                    ff_PropertyRef = ETransform.Property.PIVOT_X
+                }
+            }
+        }
+
 
         Entity.buildAndActivate {
             ff_With(ETransform) {
                 ff_Position(100f, 150f)
                 ff_Pivot(110f, 160f)
+                ff_Scale(1f, 1f)
+            }
+            ff_With(EShape) {
+                ff_Type = ShapeType.TRIANGLE
+                ff_Fill = false
+                ff_Color(1f, 0f, 0f, 1f)
+                ff_Vertices = floatArrayOf(10f, 0f, 20f, 20f, 0f, 20f)
+            }
+            ff_With(EAnimation) {
+                withActiveAnimation(EasedProperty) {
+                    ff_Looping = true
+                    ff_InverseOnLoop = true
+                    ff_StartValue = .5f
+                    ff_EndValue = 2f
+                    ff_Duration = 1000
+                    ff_Easing = Easing.Type.LINEAR
+                    ff_PropertyRef = ETransform.Property.SCALE_X
+                }
+                withActiveAnimation(EasedProperty) {
+                    ff_Looping = true
+                    ff_InverseOnLoop = true
+                    ff_StartValue = .5f
+                    ff_EndValue = 2f
+                    ff_Duration = 1000
+                    ff_Easing = Easing.Type.LINEAR
+                    ff_PropertyRef = ETransform.Property.SCALE_Y
+                }
+                withActiveAnimation(EasedProperty) {
+                    ff_Looping = true
+                    ff_InverseOnLoop = true
+                    ff_StartValue = 100f
+                    ff_EndValue = 600f
+                    ff_Duration = 3000
+                    ff_Easing = Easing.Type.SIN_OUT
+                    ff_PropertyRef = ETransform.Property.POSITION_X
+                }
+                withActiveAnimation(EasedProperty) {
+                    ff_Looping = true
+                    ff_InverseOnLoop = true
+                    ff_StartValue = 110f
+                    ff_EndValue = 610f
+                    ff_Duration = 3000
+                    ff_Easing = Easing.Type.SIN_OUT
+                    ff_PropertyRef = ETransform.Property.PIVOT_X
+                }
+            }
+        }
+
+        Entity.buildAndActivate {
+            ff_With(ETransform) {
+                ff_Position(100f, 180f)
+                ff_Pivot(110f, 190f)
                 ff_Scale(1f, 1f)
             }
             ff_With(EShape) {
@@ -129,11 +224,11 @@ class ShapeTransformTest : GDXAppAdapter() {
         Entity.buildAndActivate {
             ff_With(ETransform) {
                 ff_Position(100f, 300f)
-                ff_Pivot(110f, 160f)
                 ff_Scale(1f, 1f)
             }
             ff_With(EShape) {
                 ff_Type = ShapeType.CIRCLE
+                ff_Fill = false
                 ff_Segments = 20
                 ff_Color(1f, 0f, 0f, 1f)
                 ff_Vertices = floatArrayOf(10f, 0f, 0f)
@@ -156,6 +251,31 @@ class ShapeTransformTest : GDXAppAdapter() {
                     ff_Duration = 1500
                     ff_Easing = Easing.Type.SIN_IN_OUT
                     ff_PropertyRef = ETransform.Property.POSITION_Y
+                }
+            }
+        }
+
+        Entity.buildAndActivate {
+            ff_With(ETransform) {
+                ff_Position(100f, 350f)
+                ff_Scale(1f, 1f)
+            }
+            ff_With(EShape) {
+                ff_Type = ShapeType.ARC
+                ff_Fill = false
+                ff_Segments = 20
+                ff_Color(1f, 0f, 0f, 1f)
+                ff_Vertices = floatArrayOf(0f, 0f, 10f, 0f, 90f)
+            }
+            ff_With(EAnimation) {
+                withActiveAnimation(EasedProperty) {
+                    ff_Looping = true
+                    ff_InverseOnLoop = true
+                    ff_StartValue = 100f
+                    ff_EndValue = 600f
+                    ff_Duration = 3000
+                    ff_Easing = Easing.Type.CIRC_IN
+                    ff_PropertyRef = ETransform.Property.POSITION_X
                 }
             }
         }
