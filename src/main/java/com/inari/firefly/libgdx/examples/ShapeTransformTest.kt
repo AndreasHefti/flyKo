@@ -279,6 +279,31 @@ class ShapeTransformTest : GDXAppAdapter() {
                 }
             }
         }
+
+        Entity.buildAndActivate {
+            ff_With(ETransform) {
+                ff_Position(100f, 400f)
+                ff_Scale(1f, 1f)
+            }
+            ff_With(EShape) {
+                ff_Type = ShapeType.CURVE
+                ff_Fill = false
+                ff_Segments = 20
+                ff_Color(1f, 0f, 0f, 1f)
+                ff_Vertices = floatArrayOf(0f, 0f, 10f, 10f, 5f, 5f, 20f, 0f)
+            }
+            ff_With(EAnimation) {
+                withActiveAnimation(EasedProperty) {
+                    ff_Looping = true
+                    ff_InverseOnLoop = true
+                    ff_StartValue = 100f
+                    ff_EndValue = 600f
+                    ff_Duration = 3000
+                    ff_Easing = Easing.Type.CIRC_OUT
+                    ff_PropertyRef = ETransform.Property.POSITION_X
+                }
+            }
+        }
     }
 }
 
