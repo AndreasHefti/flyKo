@@ -2,15 +2,20 @@ package com.inari.firefly.graphics.text
 
 import com.inari.firefly.*
 import com.inari.firefly.asset.Asset
+import com.inari.firefly.component.CompId
+import com.inari.firefly.component.ComponentRefResolver
 import com.inari.firefly.external.SpriteData
 import com.inari.firefly.external.TextureData
+import com.inari.firefly.graphics.TextureAsset
 import com.inari.firefly.system.component.SystemComponentSubType
 import com.inari.util.collection.DynIntArray
 
 
 class FontAsset : Asset() {
 
-    @JvmField internal val textureData = TextureData()
+    //@JvmField internal val textureData = TextureData()
+
+    @JvmField internal var textureAssetId = NO_COMP_ID
     @JvmField internal var charMap: Array<CharArray> = emptyArray()
     @JvmField internal var charWidth = 0
     @JvmField internal var charHeight = 0
@@ -23,24 +28,29 @@ class FontAsset : Asset() {
     internal val charSpriteMap = DynIntArray(256, -1)
     private val tmpSpriteData = SpriteData()
 
-    var ff_ResourceName: String
-        get() = textureData.resourceName
-        set(value) {textureData.resourceName = setIfNotInitialized(value, "ff_ResourceName")}
-    var ff_MipMap
-        get() = textureData.isMipmap
-        set(value) {textureData.isMipmap = setIfNotInitialized(value, "ff_MipMap")}
-    var ff_WrapS
-        get() = textureData.wrapS
-        set(value) {textureData.wrapS = setIfNotInitialized(value, "ff_WrapS")}
-    var ff_WrapT
-        get() = textureData.wrapT
-        set(value) {textureData.wrapT = setIfNotInitialized(value, "ff_WrapT")}
-    var ff_MinFilter
-        get() = textureData.minFilter
-        set(value) {textureData.minFilter = setIfNotInitialized(value, "ff_MinFilter")}
-    var ff_MagFilter
-        get() = textureData.magFilter
-        set(value) {textureData.magFilter = setIfNotInitialized(value, "ff_MagFilter")}
+    var ff_Texture =
+            ComponentRefResolver(Asset) { index-> run {
+                dependingRef = setIfNotInitialized(index, "ff_TextureAsset")
+                textureAssetId = CompId(index, TextureAsset)
+            } }
+//    var ff_ResourceName: String
+//        get() = textureData.resourceName
+//        set(value) {textureData.resourceName = setIfNotInitialized(value, "ff_ResourceName")}
+//    var ff_MipMap
+//        get() = textureData.isMipmap
+//        set(value) {textureData.isMipmap = setIfNotInitialized(value, "ff_MipMap")}
+//    var ff_WrapS
+//        get() = textureData.wrapS
+//        set(value) {textureData.wrapS = setIfNotInitialized(value, "ff_WrapS")}
+//    var ff_WrapT
+//        get() = textureData.wrapT
+//        set(value) {textureData.wrapT = setIfNotInitialized(value, "ff_WrapT")}
+//    var ff_MinFilter
+//        get() = textureData.minFilter
+//        set(value) {textureData.minFilter = setIfNotInitialized(value, "ff_MinFilter")}
+//    var ff_MagFilter
+//        get() = textureData.magFilter
+//        set(value) {textureData.magFilter = setIfNotInitialized(value, "ff_MagFilter")}
     var ff_CharMap
         get() = charMap
         set(value) {charMap = setIfNotInitialized(value, "ff_CharMap")}
@@ -72,8 +82,10 @@ class FontAsset : Asset() {
 
     override fun load() {
         val graphics = FFContext.graphics
+        FFContext.activate(textureAssetId)
+        val texture: TextureAsset = FFContext[textureAssetId]
 
-        tmpSpriteData.textureId = graphics.createTexture(textureData).first
+        tmpSpriteData.textureId = texture.instanceId
         tmpSpriteData.region(0, 0, charWidth, charHeight)
         for (y in charMap.indices) {
             for (x in charMap[y].indices) {

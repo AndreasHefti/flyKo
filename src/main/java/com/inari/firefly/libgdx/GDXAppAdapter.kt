@@ -5,12 +5,13 @@ import com.badlogic.gdx.Gdx
 import com.inari.firefly.BASE_VIEW
 import com.inari.firefly.FFContext
 import com.inari.firefly.SYSTEM_FONT
+import com.inari.firefly.SYSTEM_FONT_ASSET
 import com.inari.firefly.asset.AssetSystem
 import com.inari.firefly.control.ControllerSystem
-import com.inari.firefly.control.behavior.BehaviorSystem
 import com.inari.firefly.control.trigger.TriggerSystem
 import com.inari.firefly.control.trigger.UpdateEventTrigger
 import com.inari.firefly.entity.EntitySystem
+import com.inari.firefly.graphics.TextureAsset
 import com.inari.firefly.graphics.rendering.RenderingSystem
 import com.inari.firefly.graphics.text.FontAsset
 import com.inari.firefly.graphics.view.View
@@ -53,9 +54,14 @@ abstract class GDXAppAdapter : ApplicationAdapter() {
     }
 
     private fun loadSystemFont() {
+        TextureAsset.build {
+            ff_Name = SYSTEM_FONT_ASSET
+            ff_ResourceName = "firefly/fireflyMicroFont.png"
+        }
+
         FontAsset.buildAndActivate {
             ff_Name = SYSTEM_FONT
-            ff_ResourceName = "firefly/fireflyMicroFont.png"
+            ff_Texture(SYSTEM_FONT_ASSET)
             ff_CharWidth = 8
             ff_CharHeight = 16
             ff_CharSpace = 0

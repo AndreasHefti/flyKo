@@ -12,6 +12,7 @@ import com.inari.util.*
 import com.inari.util.aspect.AspectType
 import com.inari.util.indexed.Indexed
 
+const val SYSTEM_FONT_ASSET = "SYSTEM_FONT_ASSET"
 const val SYSTEM_FONT = "SYSTEM_FONT"
 
 object GLBlendMode {
