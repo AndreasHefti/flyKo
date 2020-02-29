@@ -17,6 +17,8 @@ class FontAsset : Asset() {
     @JvmField internal var charSpace = 0
     @JvmField internal var lineSpace = 0
     @JvmField internal var defaultChar = -1
+    @JvmField internal var xOffset = 0
+    @JvmField internal var yOffset = 0
 
     internal val charSpriteMap = DynIntArray(256, -1)
     private val tmpSpriteData = SpriteData()
@@ -57,6 +59,12 @@ class FontAsset : Asset() {
     var ff_DefaultChar : Char
         get() = defaultChar.toChar()
         set(value) {defaultChar = setIfNotInitialized(value.toInt(), "ff_DefaultChar")}
+    var ff_XOffset
+        get() = xOffset
+        set(value) {xOffset = setIfNotInitialized(value, "ff_XOffset")}
+    var ff_YOffset
+        get() = yOffset
+        set(value) {yOffset = setIfNotInitialized(value, "ff_YOffset")}
 
 
     override fun instanceId(index: Int): Int =
@@ -69,8 +77,9 @@ class FontAsset : Asset() {
         tmpSpriteData.region(0, 0, charWidth, charHeight)
         for (y in charMap.indices) {
             for (x in charMap[y].indices) {
-                tmpSpriteData.region.x = x * charWidth
-                tmpSpriteData.region.y = y * charHeight
+                tmpSpriteData.region(
+                        x * charWidth + xOffset,
+                        y * charHeight + yOffset)
 
                 val charSpriteId = graphics.createSprite(tmpSpriteData)
                 charSpriteMap[charMap[y][x].toInt()] = charSpriteId
