@@ -9,7 +9,7 @@ import com.inari.util.Consumer
 class SingleController private constructor() : Controller() {
 
     @JvmField internal var id: CompId = NO_COMP_ID
-    @JvmField internal var controlExpr: Consumer<Component> = NULL_CONSUMER
+    @JvmField internal var controlExpr: Consumer<in Component> = NULL_CONSUMER
 
     var ff_ControlExpr: Consumer<Component>
         get() = throw UnsupportedOperationException()

@@ -33,24 +33,6 @@ class FontAsset : Asset() {
                 dependingRef = setIfNotInitialized(index, "ff_TextureAsset")
                 textureAssetId = CompId(index, TextureAsset)
             } }
-//    var ff_ResourceName: String
-//        get() = textureData.resourceName
-//        set(value) {textureData.resourceName = setIfNotInitialized(value, "ff_ResourceName")}
-//    var ff_MipMap
-//        get() = textureData.isMipmap
-//        set(value) {textureData.isMipmap = setIfNotInitialized(value, "ff_MipMap")}
-//    var ff_WrapS
-//        get() = textureData.wrapS
-//        set(value) {textureData.wrapS = setIfNotInitialized(value, "ff_WrapS")}
-//    var ff_WrapT
-//        get() = textureData.wrapT
-//        set(value) {textureData.wrapT = setIfNotInitialized(value, "ff_WrapT")}
-//    var ff_MinFilter
-//        get() = textureData.minFilter
-//        set(value) {textureData.minFilter = setIfNotInitialized(value, "ff_MinFilter")}
-//    var ff_MagFilter
-//        get() = textureData.magFilter
-//        set(value) {textureData.magFilter = setIfNotInitialized(value, "ff_MagFilter")}
     var ff_CharMap
         get() = charMap
         set(value) {charMap = setIfNotInitialized(value, "ff_CharMap")}

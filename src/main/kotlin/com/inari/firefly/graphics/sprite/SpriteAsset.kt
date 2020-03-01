@@ -4,18 +4,20 @@ import com.inari.firefly.FFContext
 import com.inari.firefly.asset.Asset
 import com.inari.firefly.component.ComponentRefResolver
 import com.inari.firefly.external.SpriteData
+import com.inari.firefly.graphics.TextureAsset
 import com.inari.firefly.system.component.SystemComponentSubType
 import com.inari.util.geom.Rectangle
 
 class SpriteAsset private constructor() : Asset() {
 
+    @JvmField internal var textureAssetRef = -1
     @JvmField internal var spriteId: Int = -1
     @JvmField internal val spriteData = SpriteData()
 
     var ff_Texture =
         ComponentRefResolver(Asset) { index-> run {
             dependingRef = setIfNotInitialized(index, "ff_TextureAsset")
-            spriteData.textureId = index
+            textureAssetRef = index
         } }
     var ff_TextureRegion: Rectangle
         get() = spriteData.region
@@ -30,8 +32,12 @@ class SpriteAsset private constructor() : Asset() {
     override fun instanceId(index: Int): Int = spriteId
 
     override fun load() {
-        if (spriteId < 0)
-            spriteId = FFContext.graphics.createSprite(spriteData)
+        if (spriteId >= 0)
+            return
+
+        FFContext.activate(TextureAsset, textureAssetRef)
+        spriteData.textureId = FFContext[TextureAsset, textureAssetRef].instanceId
+        spriteId = FFContext.graphics.createSprite(spriteData)
     }
 
     override fun unload() {
