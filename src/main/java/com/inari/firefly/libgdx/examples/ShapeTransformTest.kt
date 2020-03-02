@@ -42,7 +42,7 @@ class ShapeTransformTest : GDXAppAdapter() {
                 ff_Vertices = floatArrayOf(0f, 0f, 20f, 20f)
             }
             ff_With(EAnimation) {
-                withActiveAnimation(EasedProperty) {
+                ff_WithActiveAnimation(EasedProperty) {
                     ff_Looping = true
                     ff_InverseOnLoop = true
                     ff_StartValue = 0f
@@ -51,7 +51,7 @@ class ShapeTransformTest : GDXAppAdapter() {
                     ff_Easing = Easing.Type.LINEAR
                     ff_PropertyRef = ETransform.Property.ROTATION
                 }
-                withActiveAnimation(EasedProperty) {
+                ff_WithActiveAnimation(EasedProperty) {
                     ff_Looping = true
                     ff_InverseOnLoop = true
                     ff_StartValue = 100f
@@ -60,7 +60,7 @@ class ShapeTransformTest : GDXAppAdapter() {
                     ff_Easing = Easing.Type.SIN_IN_OUT
                     ff_PropertyRef = ETransform.Property.POSITION_X
                 }
-                withActiveAnimation(EasedProperty) {
+                ff_WithActiveAnimation(EasedProperty) {
                     ff_Looping = true
                     ff_InverseOnLoop = true
                     ff_StartValue = 110f
@@ -85,7 +85,7 @@ class ShapeTransformTest : GDXAppAdapter() {
                 ff_Vertices = floatArrayOf(0f, 0f, 20f, 20f)
             }
             ff_With(EAnimation) {
-                withActiveAnimation(EasedProperty) {
+                ff_WithActiveAnimation(EasedProperty) {
                     ff_Looping = true
                     ff_InverseOnLoop = true
                     ff_StartValue = 0f
@@ -94,7 +94,7 @@ class ShapeTransformTest : GDXAppAdapter() {
                     ff_Easing = Easing.Type.LINEAR
                     ff_PropertyRef = ETransform.Property.ROTATION
                 }
-                withActiveAnimation(EasedProperty) {
+                ff_WithActiveAnimation(EasedProperty) {
                     ff_Looping = true
                     ff_InverseOnLoop = true
                     ff_StartValue = 100f
@@ -103,7 +103,7 @@ class ShapeTransformTest : GDXAppAdapter() {
                     ff_Easing = Easing.Type.SIN_IN_OUT
                     ff_PropertyRef = ETransform.Property.POSITION_X
                 }
-                withActiveAnimation(EasedProperty) {
+                ff_WithActiveAnimation(EasedProperty) {
                     ff_Looping = true
                     ff_InverseOnLoop = true
                     ff_StartValue = 110f
@@ -129,7 +129,7 @@ class ShapeTransformTest : GDXAppAdapter() {
                 ff_Vertices = floatArrayOf(10f, 0f, 20f, 20f, 0f, 20f)
             }
             ff_With(EAnimation) {
-                withActiveAnimation(EasedProperty) {
+                ff_WithActiveAnimation(EasedProperty) {
                     ff_Looping = true
                     ff_InverseOnLoop = true
                     ff_StartValue = .5f
@@ -138,7 +138,7 @@ class ShapeTransformTest : GDXAppAdapter() {
                     ff_Easing = Easing.Type.LINEAR
                     ff_PropertyRef = ETransform.Property.SCALE_X
                 }
-                withActiveAnimation(EasedProperty) {
+                ff_WithActiveAnimation(EasedProperty) {
                     ff_Looping = true
                     ff_InverseOnLoop = true
                     ff_StartValue = .5f
@@ -147,7 +147,7 @@ class ShapeTransformTest : GDXAppAdapter() {
                     ff_Easing = Easing.Type.LINEAR
                     ff_PropertyRef = ETransform.Property.SCALE_Y
                 }
-                withActiveAnimation(EasedProperty) {
+                ff_WithActiveAnimation(EasedProperty) {
                     ff_Looping = true
                     ff_InverseOnLoop = true
                     ff_StartValue = 100f
@@ -156,7 +156,7 @@ class ShapeTransformTest : GDXAppAdapter() {
                     ff_Easing = Easing.Type.SIN_OUT
                     ff_PropertyRef = ETransform.Property.POSITION_X
                 }
-                withActiveAnimation(EasedProperty) {
+                ff_WithActiveAnimation(EasedProperty) {
                     ff_Looping = true
                     ff_InverseOnLoop = true
                     ff_StartValue = 110f
@@ -181,7 +181,7 @@ class ShapeTransformTest : GDXAppAdapter() {
                 ff_Vertices = floatArrayOf(10f, 0f, 20f, 20f, 0f, 20f)
             }
             ff_With(EAnimation) {
-                withActiveAnimation(EasedProperty) {
+                ff_WithActiveAnimation(EasedProperty) {
                     ff_Looping = true
                     ff_InverseOnLoop = true
                     ff_StartValue = .5f
@@ -190,7 +190,7 @@ class ShapeTransformTest : GDXAppAdapter() {
                     ff_Easing = Easing.Type.LINEAR
                     ff_PropertyRef = ETransform.Property.SCALE_X
                 }
-                withActiveAnimation(EasedProperty) {
+                ff_WithActiveAnimation(EasedProperty) {
                     ff_Looping = true
                     ff_InverseOnLoop = true
                     ff_StartValue = .5f
@@ -199,7 +199,7 @@ class ShapeTransformTest : GDXAppAdapter() {
                     ff_Easing = Easing.Type.LINEAR
                     ff_PropertyRef = ETransform.Property.SCALE_Y
                 }
-                withActiveAnimation(EasedProperty) {
+                ff_WithActiveAnimation(EasedProperty) {
                     ff_Looping = true
                     ff_InverseOnLoop = true
                     ff_StartValue = 100f
@@ -208,7 +208,7 @@ class ShapeTransformTest : GDXAppAdapter() {
                     ff_Easing = Easing.Type.SIN_OUT
                     ff_PropertyRef = ETransform.Property.POSITION_X
                 }
-                withActiveAnimation(EasedProperty) {
+                ff_WithActiveAnimation(EasedProperty) {
                     ff_Looping = true
                     ff_InverseOnLoop = true
                     ff_StartValue = 110f
@@ -234,7 +234,7 @@ class ShapeTransformTest : GDXAppAdapter() {
                 ff_Vertices = floatArrayOf(10f, 0f, 0f)
             }
             ff_With(EAnimation) {
-                withActiveAnimation(EasedProperty) {
+                ff_WithActiveAnimation(EasedProperty) {
                     ff_Looping = true
                     ff_InverseOnLoop = true
                     ff_StartValue = 100f
@@ -243,7 +243,7 @@ class ShapeTransformTest : GDXAppAdapter() {
                     ff_Easing = Easing.Type.SIN_IN
                     ff_PropertyRef = ETransform.Property.POSITION_X
                 }
-                withActiveAnimation(EasedProperty) {
+                ff_WithActiveAnimation(EasedProperty) {
                     ff_Looping = true
                     ff_InverseOnLoop = true
                     ff_StartValue = 250f
@@ -268,7 +268,7 @@ class ShapeTransformTest : GDXAppAdapter() {
                 ff_Vertices = floatArrayOf(0f, 0f, 10f, 0f, 90f)
             }
             ff_With(EAnimation) {
-                withActiveAnimation(EasedProperty) {
+                ff_WithActiveAnimation(EasedProperty) {
                     ff_Looping = true
                     ff_InverseOnLoop = true
                     ff_StartValue = 100f
@@ -293,7 +293,7 @@ class ShapeTransformTest : GDXAppAdapter() {
                 ff_Vertices = floatArrayOf(0f, 0f, 10f, 10f, 5f, 5f, 20f, 0f)
             }
             ff_With(EAnimation) {
-                withActiveAnimation(EasedProperty) {
+                ff_WithActiveAnimation(EasedProperty) {
                     ff_Looping = true
                     ff_InverseOnLoop = true
                     ff_StartValue = 100f

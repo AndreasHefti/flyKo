@@ -86,15 +86,14 @@ abstract class GDXAppAdapter : ApplicationAdapter() {
         if (fitToWidth) {
             bounds.width = baseWidth
             bounds.height = (baseHeight / sourceRatio * targetRatio).roundToInt()
-            if (centerCamera) {
-                worldPosition.y = -(bounds.height - baseHeight).toFloat() / 2 * zoom
-            }
         } else {
             bounds.width = (baseWidth / targetRatio * sourceRatio).roundToInt()
             bounds.height = baseHeight
-            if (centerCamera) {
-                worldPosition.x = -(bounds.width - baseWidth).toFloat() / 2 * zoom
-            }
+        }
+
+        if (centerCamera) {
+            worldPosition.x = -(bounds.width - baseWidth).toFloat() / 2 * zoom
+            worldPosition.y = -(bounds.height - baseHeight).toFloat() / 2 * zoom
         }
     }
 

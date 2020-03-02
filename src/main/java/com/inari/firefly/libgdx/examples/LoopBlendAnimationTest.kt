@@ -11,7 +11,6 @@ import com.inari.firefly.libgdx.GDXAppAdapter
 import com.inari.firefly.physics.animation.easing.EasedProperty
 import com.inari.firefly.physics.animation.entity.EAnimation
 import com.inari.util.geom.Easing
-import com.inari.util.graphics.RGBColor
 
 class LoopBlendAnimationTest : GDXAppAdapter() {
 
@@ -30,7 +29,7 @@ class LoopBlendAnimationTest : GDXAppAdapter() {
                 ff_Vertices = floatArrayOf(0f,0f,100f,100f)
             }
             ff_With(EAnimation) {
-                withActiveAnimation(EasedProperty) {
+                ff_WithActiveAnimation(EasedProperty) {
                     ff_Looping = true
                     ff_InverseOnLoop = true
                     ff_StartValue = 1f
@@ -39,7 +38,7 @@ class LoopBlendAnimationTest : GDXAppAdapter() {
                     ff_Easing = Easing.Type.LINEAR
                     ff_PropertyRef = EShape.Property.COLOR_RED
                 }
-                withActiveAnimation(EasedProperty) {
+                ff_WithActiveAnimation(EasedProperty) {
                     ff_Looping = true
                     ff_InverseOnLoop = true
                     ff_StartValue = 1f
@@ -48,7 +47,7 @@ class LoopBlendAnimationTest : GDXAppAdapter() {
                     ff_Easing = Easing.Type.LINEAR
                     ff_PropertyRef = EShape.Property.COLOR_GREEN
                 }
-                withActiveAnimation(EasedProperty) {
+                ff_WithActiveAnimation(EasedProperty) {
                     ff_Looping = true
                     ff_InverseOnLoop = true
                     ff_StartValue = 1f

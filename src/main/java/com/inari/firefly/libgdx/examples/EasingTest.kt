@@ -32,7 +32,7 @@ class EasingTest : GDXAppAdapter() {
                 ff_Vertices = floatArrayOf(0f,0f,10f)
             }
             ff_With(EAnimation) {
-                withActiveAnimation(EasedProperty) {
+                ff_WithActiveAnimation(EasedProperty) {
                     ff_Looping = true
                     ff_InverseOnLoop = true
                     ff_StartValue = 50f

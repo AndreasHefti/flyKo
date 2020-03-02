@@ -127,7 +127,7 @@ fun main(args: Array<String>) {
             ff_Position.x = 1f
         }
         ff_With(EAnimation) {
-            withAnimation(EasedProperty) {
+            ff_WithAnimation(EasedProperty) {
                 ff_Looping = true
                 ff_PropertyRef = ESprite.Property.TINT_ALPHA
             }

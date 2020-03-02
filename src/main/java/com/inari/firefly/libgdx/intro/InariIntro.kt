@@ -60,7 +60,7 @@ object InariIntro {
             }
 
             ff_With(EAnimation) {
-                withActiveAnimation(EasedProperty) {
+                ff_WithActiveAnimation(EasedProperty) {
                     ff_Easing = Easing.Type.LINEAR
                     ff_StartValue = 0f
                     ff_EndValue = 1f

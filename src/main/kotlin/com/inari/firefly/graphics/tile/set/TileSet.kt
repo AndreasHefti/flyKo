@@ -131,7 +131,7 @@ class TileSet private constructor() : Composite() {
 
                 if (tile.animation != null) {
                     ff_With(EAnimation) {
-                        withActiveAnimation(IntTimelineProperty) {
+                        ff_WithActiveAnimation(IntTimelineProperty) {
                             ff_Looping = true
                             ff_Timeline = tile.animation!!.frames.toArray()
                             ff_PropertyRef = ETile.Property.SPRITE_REFERENCE
