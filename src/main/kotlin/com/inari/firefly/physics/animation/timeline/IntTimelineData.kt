@@ -26,16 +26,16 @@ internal class IntTimelineData {
             currentIndex++
             currentFrameTime = 0
             if ((endValue >= 0 && currentIndex > endValue) || currentIndex > timeline.size - 1) {
-                return if (looping) {
+                if (looping) {
                     if (inverseOnLoop) {
                         val tmp = startValue
                         startValue = endValue
                         endValue = tmp
                     }
                     reset()
-                    true
+                    return true
                 } else {
-                    false
+                    return false
                 }
             }
         }

@@ -20,8 +20,6 @@
     </repositories>
 
     <build>
-        <sourceDirectory>${project.basedir}/src/main</sourceDirectory>
-
         <plugins>
             <plugin>
                 <groupId>org.jetbrains.kotlin</groupId>
@@ -78,6 +76,12 @@
                         <goals>
                             <goal>jar</goal>
                         </goals>
+                        <configuration>
+                            <includes>
+                                <include>${project.basedir}/src/main/kotlin</include>
+                                <include>${project.basedir}/src/main/java</include>
+                            </includes>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>

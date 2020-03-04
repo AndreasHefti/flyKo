@@ -30,8 +30,9 @@ class MultiPositionSpriteRenderer private constructor() : Renderer() {
             val positions = multiplier.positions
             while (j < positions.capacity) {
                 val pos = positions[j++] ?: continue
-                transformCollector(pos)
+                transformCollector + pos
                 graphics.renderSprite(sprite.spriteRenderable, transformCollector.data)
+                transformCollector - pos
             }
         }
     }

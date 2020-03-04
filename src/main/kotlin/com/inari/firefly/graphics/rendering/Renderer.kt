@@ -82,6 +82,7 @@ abstract class Renderer protected constructor(
         operator fun set(offset: PositionF, transform: TransformData)
         operator fun plus(transform: TransformData)
         operator fun plus(offset: PositionF)
+        operator fun minus(offset: PositionF)
     }
 
     protected class ExactTransformDataCollector internal constructor() : TransformDataCollector {
@@ -109,6 +110,10 @@ abstract class Renderer protected constructor(
 
         override operator fun plus(offset: PositionF) {
             data.position + offset
+        }
+
+        override fun minus(offset: PositionF) {
+            data.position - offset
         }
     }
 
@@ -157,6 +162,11 @@ abstract class Renderer protected constructor(
         override operator fun plus(offset: PositionF) {
             data.position.x += floor(offset.x.toDouble()).toFloat()
             data.position.y += floor(offset.y.toDouble()).toFloat()
+        }
+
+        override fun minus(offset: PositionF) {
+            data.position.x -= floor(offset.x.toDouble()).toFloat()
+            data.position.y -= floor(offset.y.toDouble()).toFloat()
         }
     }
 }
