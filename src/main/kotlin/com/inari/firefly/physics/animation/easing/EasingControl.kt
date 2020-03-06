@@ -1,6 +1,7 @@
 package com.inari.firefly.physics.animation.easing
 
 import com.inari.firefly.FFContext
+import com.inari.firefly.NULL_CALL
 import com.inari.firefly.entity.property.FloatPropertyAccessor
 import com.inari.firefly.physics.animation.Animation
 import com.inari.firefly.physics.animation.AnimationSystem
@@ -45,8 +46,12 @@ internal class EasingControl(
                     endValue = tmp
                 }
                 reset()
-            } else
-                AnimationSystem.animations.deactivate(animation.index)
+            } else {
+                reset()
+                FFContext.deactivate(animation)
+                if (animation.callback != NULL_CALL)
+                    animation.callback()
+            }
             return
         }
 

@@ -1,6 +1,7 @@
 package com.inari.firefly.physics.animation.timeline
 
 import com.inari.firefly.FFContext
+import com.inari.firefly.NULL_CALL
 import com.inari.firefly.entity.Entity
 import com.inari.firefly.entity.property.IntPropertyAccessor
 import com.inari.firefly.physics.animation.IntAnimation
@@ -34,8 +35,13 @@ class IntTimelineProperty private constructor() : EntityPropertyAnimation(), Int
     override fun update() {
         if (data.update(looping))
             propertyAccessor?.set(data.timeline[data.currentIndex].value)
-        else
+        else {
+            reset()
             FFContext.deactivate(this)
+            if (callback != NULL_CALL)
+                callback()
+        }
+
     }
 
     override fun reset() {

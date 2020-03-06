@@ -34,10 +34,8 @@ internal class IntTimelineData {
                     }
                     reset()
                     return true
-                } else {
-                    reset()
+                } else
                     return false
-                }
             }
         }
 
