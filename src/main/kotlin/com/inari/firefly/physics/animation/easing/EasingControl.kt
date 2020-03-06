@@ -47,7 +47,8 @@ internal class EasingControl(
                 }
                 reset()
             } else {
-                reset()
+                if (animation.resetOnFinish)
+                    reset()
                 FFContext.deactivate(animation)
                 if (animation.callback != NULL_CALL)
                     animation.callback()

@@ -66,6 +66,7 @@ object InariIntro {
                     ff_EndValue = 1f
                     ff_Duration = 1000
                     ff_PropertyRef = ESprite.Property.TINT_ALPHA
+                    ff_ResetOnFinish = false
                 }
             }
         }

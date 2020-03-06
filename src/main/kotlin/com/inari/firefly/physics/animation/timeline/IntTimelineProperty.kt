@@ -36,7 +36,8 @@ class IntTimelineProperty private constructor() : EntityPropertyAnimation(), Int
         if (data.update(looping))
             propertyAccessor?.set(data.timeline[data.currentIndex].value)
         else {
-            reset()
+            if (resetOnFinish)
+                reset()
             FFContext.deactivate(this)
             if (callback != NULL_CALL)
                 callback()

@@ -9,11 +9,16 @@ import com.inari.util.Call
 abstract class Animation protected constructor() : SystemComponent(Animation::class.java.name) {
 
     @JvmField internal var looping: Boolean = false
+    @JvmField internal var resetOnFinish: Boolean = true
     @JvmField internal var callback: Call = NULL_CALL
 
     var ff_Looping: Boolean
         get() = looping
         set(value) { looping = value }
+
+    var ff_ResetOnFinish: Boolean
+        get() = resetOnFinish
+        set(value) { resetOnFinish = value }
 
     var ff_Callback: Call
         get() = callback
