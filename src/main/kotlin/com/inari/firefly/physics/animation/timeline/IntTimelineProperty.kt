@@ -47,7 +47,7 @@ class IntTimelineProperty private constructor() : EntityPropertyAnimation(), Int
 
     override fun reset() {
         data.reset()
-        propertyAccessor?.set(data.startValue)
+        propertyAccessor?.set(data.timeline[data.currentIndex].value)
     }
 
     companion object : PropertyAnimationSubtype<IntTimelineProperty>() {
