@@ -1,18 +1,17 @@
 package com.inari.firefly.control
 
-import com.inari.firefly.*
+import com.inari.firefly.NO_COMP_ID
+import com.inari.firefly.NULL_CALL
 import com.inari.firefly.component.CompId
-import com.inari.firefly.component.Component
 import com.inari.firefly.system.component.SystemComponentSubType
-import com.inari.util.Consumer
-import com.inari.util.IntConsumer
+import com.inari.util.Call
 
-class SingleController private constructor() : Controller() {
+class SimpleController private constructor() : Controller() {
 
     @JvmField internal var id: CompId = NO_COMP_ID
-    @JvmField internal var controlExpr = NULL_INT_CONSUMER
+    @JvmField internal var controlExpr = NULL_CALL
 
-    var ff_ControlExpr: IntConsumer
+    var ff_ControlExpr: Call
         get() = throw UnsupportedOperationException()
         set(value) {controlExpr = setIfNotInitialized(value, "ff_ControlExpr")}
 
@@ -25,10 +24,10 @@ class SingleController private constructor() : Controller() {
     }
 
     override fun update() {
-        controlExpr(id.instanceId)
+        controlExpr()
     }
 
-    companion object : SystemComponentSubType<Controller, SingleController>(Controller, SingleController::class.java) {
-        override fun createEmpty() = SingleController()
+    companion object : SystemComponentSubType<Controller, SimpleController>(Controller, SimpleController::class.java) {
+        override fun createEmpty() = SimpleController()
     }
 }
