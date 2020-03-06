@@ -83,6 +83,7 @@ abstract class Renderer protected constructor(
         operator fun plus(transform: TransformData)
         operator fun plus(offset: PositionF)
         operator fun minus(offset: PositionF)
+        fun move(dx: Float, dy:Float)
     }
 
     protected class ExactTransformDataCollector internal constructor() : TransformDataCollector {
@@ -114,6 +115,11 @@ abstract class Renderer protected constructor(
 
         override fun minus(offset: PositionF) {
             data.position - offset
+        }
+
+        override fun move(dx: Float, dy: Float) {
+            data.position.x += dx
+            data.position.y += dy
         }
     }
 
@@ -167,6 +173,11 @@ abstract class Renderer protected constructor(
         override fun minus(offset: PositionF) {
             data.position.x -= floor(offset.x.toDouble()).toFloat()
             data.position.y -= floor(offset.y.toDouble()).toFloat()
+        }
+
+        override fun move(dx: Float, dy: Float) {
+            data.position.x -= floor(dx.toDouble()).toFloat()
+            data.position.y -= floor(dy.toDouble()).toFloat()
         }
     }
 }

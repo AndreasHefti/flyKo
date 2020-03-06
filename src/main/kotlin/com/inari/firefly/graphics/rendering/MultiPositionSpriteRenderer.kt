@@ -26,13 +26,11 @@ class MultiPositionSpriteRenderer private constructor() : Renderer() {
             val multiplier = entity[EMultiplier]
             transformCollector(transform.data)
 
-            var j = 0
             val positions = multiplier.positions
-            while (j < positions.capacity) {
-                val pos = positions[j++] ?: continue
-                transformCollector + pos
+            for (index in positions.indices step 2) {
+                transformCollector.move(positions[index], positions[index + 1])
                 graphics.renderSprite(sprite.spriteRenderable, transformCollector.data)
-                transformCollector - pos
+                transformCollector.move(-positions[index], -positions[index + 1])
             }
         }
     }
