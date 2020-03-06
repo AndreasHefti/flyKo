@@ -35,6 +35,7 @@ internal class IntTimelineData {
                     reset()
                     return true
                 } else {
+                    reset()
                     return false
                 }
             }
