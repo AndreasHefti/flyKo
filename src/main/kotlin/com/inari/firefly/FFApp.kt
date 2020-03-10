@@ -2,6 +2,7 @@ package com.inari.firefly
 
 import com.inari.firefly.external.*
 import com.inari.firefly.graphics.view.ViewSystem
+import com.inari.util.Call
 import com.inari.util.collection.DynArray
 import com.inari.util.collection.DynArrayRO
 import com.inari.util.event.Event
@@ -113,15 +114,8 @@ abstract class FFApp protected constructor(
         }
     }
 
-
-    object UpdateEvent : Event<UpdateEvent.Listener>(EVENT_ASPECTS.createAspect("UpdateEvent")) {
-
-        override fun notify(listener: Listener) =
-            listener()
-
-        interface Listener {
-            operator fun invoke()
-        }
+    object UpdateEvent : Event<Call>(EVENT_ASPECTS.createAspect("UpdateEvent")) {
+        override fun notify(listener: Call) = listener()
     }
 
     object RenderEvent : Event<RenderEvent.Listener>(EVENT_ASPECTS.createAspect("RenderEvent")) {

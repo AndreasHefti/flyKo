@@ -19,17 +19,12 @@ object ControllerSystem : ComponentSystem {
     )
 
     init {
-        FFContext.registerListener(
-            FFApp.UpdateEvent,
-            object : FFApp.UpdateEvent.Listener {
-                override fun invoke() {
-                    controller.forEachActive{ c ->
-                        if (c.needsUpdate)
-                            c.update()
-                    }
-                }
+        FFContext.registerListener(FFApp.UpdateEvent) {
+            controller.forEachActive{ c ->
+                if (c.needsUpdate)
+                    c.update()
             }
-        )
+        }
 
         FFContext.loadSystem(this)
     }

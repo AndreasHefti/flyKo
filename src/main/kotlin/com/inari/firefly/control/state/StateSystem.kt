@@ -36,15 +36,10 @@ object StateSystem : ComponentSystem {
         get() { throw UnsupportedOperationException() }
 
     init {
-        FFContext.registerListener(
-            FFApp.UpdateEvent,
-            object : FFApp.UpdateEvent.Listener {
-                override fun invoke() {
-                    if (scheduler.needsUpdate())
-                        update()
-                }
-            }
-        )
+        FFContext.registerListener(FFApp.UpdateEvent) {
+            if (scheduler.needsUpdate())
+                update()
+        }
 
         FFContext.loadSystem(this)
     }

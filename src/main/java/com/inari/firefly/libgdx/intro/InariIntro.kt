@@ -22,14 +22,13 @@ object InariIntro {
     private var spriteAssetId = NO_COMP_ID
     private var entityId = NO_COMP_ID
 
-    private var updateListener = object : FFApp.UpdateEvent.Listener {
-        override fun invoke() {
-            if ( Gdx.input.isKeyPressed( Input.Keys.SPACE ) ||
-                Gdx.input.isTouched ||
-                Gdx.input.isButtonPressed( Input.Buttons.LEFT ) )
-                dispose()
-        }
+    private var updateListener = {
+        if ( Gdx.input.isKeyPressed( Input.Keys.SPACE ) ||
+            Gdx.input.isTouched ||
+            Gdx.input.isButtonPressed( Input.Buttons.LEFT ) )
+            dispose()
     }
+
     private var callback: Call = VOID_CALL
 
     internal fun show(callback: Call) {

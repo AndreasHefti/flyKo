@@ -8,9 +8,8 @@ import com.inari.util.Call
 class UpdateEventTrigger private constructor() : Trigger() {
 
     private var call: Call = NULL_CALL
-    private val updateEventListener = object : FFApp.UpdateEvent.Listener {
-        override fun invoke() = doTrigger(call)
-    }
+    private val updateEventListener = { doTrigger(call) }
+
     
     override fun register(call: Call) {
         this.call = call

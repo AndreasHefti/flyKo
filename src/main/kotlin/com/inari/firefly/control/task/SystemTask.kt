@@ -22,7 +22,7 @@ class SystemTask private constructor() : TriggeredSystemComponent(SystemTask::cl
         set(value) { task = value }
 
     fun <A : Trigger> ff_WithTrigger(cBuilder: Trigger.Subtype<A>, configure: (A.() -> Unit)): A =
-        super.with(cBuilder, triggerCall, configure)
+        super.ff_With(cBuilder, triggerCall, configure)
 
     override fun componentType(): ComponentType<SystemTask> = Companion
     companion object : SystemComponentSingleType<SystemTask>(SystemTask::class.java) {

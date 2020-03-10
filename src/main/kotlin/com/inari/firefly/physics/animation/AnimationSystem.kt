@@ -25,10 +25,9 @@ object AnimationSystem : ComponentSystem {
     init {
         val update: Consumer<Animation> = { animation -> animation.update() }
 
-        FFContext.registerListener(FFApp.UpdateEvent, object : FFApp.UpdateEvent.Listener {
-            override fun invoke() =
+        FFContext.registerListener(FFApp.UpdateEvent) {
                 animations.forEachActive(update)
-        })
+        }
 
         FFContext.registerListener(EntityActivationEvent, object: EntityActivationEvent.Listener {
             override fun entityActivated(entity: Entity) =

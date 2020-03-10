@@ -29,20 +29,17 @@ object SceneSystem : ComponentSystem {
 
 
     init {
-        FFContext.registerListener(FFApp.UpdateEvent, object : FFApp.UpdateEvent.Listener {
-            override fun invoke() {
-                var i = systemScenes.nextActive(0)
-                while(i >= 0) {
-                    val scene = systemScenes[i]
-                    if (scene.paused)
-                        continue
+        FFContext.registerListener(FFApp.UpdateEvent) {
+            var i = systemScenes.nextActive(0)
+            while(i >= 0) {
+                val scene = systemScenes[i]
+                if (scene.paused)
+                    continue
 
-                    scene()
-                    i = systemScenes.nextActive(i + 1)
-                }
+                scene()
+                i = systemScenes.nextActive(i + 1)
             }
-        })
-
+        }
         FFContext.loadSystem(this)
     }
 

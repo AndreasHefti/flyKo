@@ -216,10 +216,9 @@ class StaticList<T>(
      * So this gets a packed array of the list representing within this StaticList. If you need the exact array representation
      * with the null references and the exact indices, use toExactArray method.
      *
-     * @param type the type of the array
      * @return an Array of specified type from this StaticList.
      */
-    fun toArray(type: Class<T>): Array<T> {
+    fun toArray(): Array<T> {
         @Suppress("UNCHECKED_CAST")
         val result: Array<T> = arrayOfNulls<Any?>(list.size) as Array<T>
         var index = 0
@@ -234,10 +233,9 @@ class StaticList<T>(
 
     /** Use this to get an exact Array representation of this StaticList instance.
      * This contains also all null references and the indices has no change to the StaticList.
-     * @param type the type of the array
      * @return an exact Array representation of this StaticList instance.
      */
-    fun toExactArray(type: Class<T>): Array<T?> {
+    fun toExactArray(): Array<T?> {
         @Suppress("UNCHECKED_CAST")
         val result: Array<T?> = arrayOfNulls<Any?>(list.size) as Array<T?>
         for (i in list.indices) {

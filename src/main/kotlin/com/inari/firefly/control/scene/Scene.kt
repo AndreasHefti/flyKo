@@ -24,16 +24,16 @@ abstract class Scene protected constructor() : TriggeredSystemComponent(Scene::c
         set(value) { removeAfterRun = value }
 
     fun <A : Trigger> ff_WithRunTrigger(cBuilder: Trigger.Subtype<A>, callback: Call, configure: (A.() -> Unit)): A =
-        super.with(cBuilder, { SceneSystem.runScene(index, callback) }, configure)
+        super.ff_With(cBuilder, { SceneSystem.runScene(index, callback) }, configure)
 
     fun <A : Trigger> ff_WithStopTrigger(cBuilder: Trigger.Subtype<A>, configure: (A.() -> Unit)): A =
-        super.with(cBuilder, stopCall, configure)
+        super.ff_With(cBuilder, stopCall, configure)
 
     fun <A : Trigger> ff_WithPauseTrigger(cBuilder: Trigger.Subtype<A>, configure: (A.() -> Unit)): A =
-        super.with(cBuilder, pauseCall, configure)
+        super.ff_With(cBuilder, pauseCall, configure)
 
     fun <A : Trigger> ff_WithResumeTrigger(cBuilder: Trigger.Subtype<A>, configure: (A.() -> Unit)): A =
-        super.with(cBuilder, resumeCall, configure)
+        super.ff_With(cBuilder, resumeCall, configure)
 
     abstract fun sceneInit()
     abstract fun sceneReset()

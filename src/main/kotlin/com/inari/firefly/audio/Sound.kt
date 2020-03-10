@@ -37,10 +37,10 @@ class Sound private constructor() : TriggeredSystemComponent(Sound::class.java.n
         set(value) { channel = value }
 
     fun <A : Trigger> withPlayTrigger(cBuilder: Trigger.Subtype<A>, configure: (A.() -> Unit)): A =
-        super.with(cBuilder, { FFContext.activate(this) }, configure)
+        super.ff_With(cBuilder, { FFContext.activate(this) }, configure)
 
     fun <A : Trigger> withStopTrigger(cBuilder: Trigger.Subtype<A>, configure: (A.() -> Unit)): A =
-        super.with(cBuilder, { FFContext.deactivate(this) }, configure)
+        super.ff_With(cBuilder, { FFContext.deactivate(this) }, configure)
 
     override fun componentType() = Companion
     companion object : SystemComponentSingleType<Sound>(Sound::class.java) {

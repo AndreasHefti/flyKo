@@ -13,8 +13,6 @@ import com.inari.util.aspect.Aspect
 import com.inari.util.aspect.Aspects
 import com.inari.util.aspect.IndexedAspectType
 import com.inari.util.collection.BitSetIterator
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 
 typealias BxOp = (Entity, EBehavior) -> OpResult
 typealias BxConditionOp = (Entity, EBehavior) -> Boolean
@@ -52,12 +50,9 @@ object BehaviorSystem : ComponentSystem  {
     private val entityIds = BitSet()
 
     init {
-        FFContext.registerListener(
-                FFApp.UpdateEvent,
-                object : FFApp.UpdateEvent.Listener {
-                    override fun invoke() = update()
-                }
-        )
+        FFContext.registerListener(FFApp.UpdateEvent) {
+            update()
+        }
 
         FFContext.registerListener(
                 EntityActivationEvent,

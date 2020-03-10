@@ -22,7 +22,7 @@ class EntityTask private constructor() : TriggeredSystemComponent(EntityTask::cl
         set(value) { entityTask = setIfNotInitialized(value, "ff_Task") }
 
     fun <A : Trigger> ff_WithTrigger(cBuilder: Trigger.Subtype<A>, entityId: CompId, configure: (A.() -> Unit)): A =
-            super.with(cBuilder, { entityTask(entityId.instanceId)}, configure)
+            super.ff_With(cBuilder, { entityTask(entityId.instanceId)}, configure)
 
     override fun componentType() = Companion
     companion object : SystemComponentSingleType<EntityTask>(EntityTask::class.java) {
