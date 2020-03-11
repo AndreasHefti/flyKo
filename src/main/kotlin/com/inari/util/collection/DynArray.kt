@@ -143,6 +143,15 @@ class DynArray<T> constructor(
         return index
     }
 
+    /** Add the specified value at the first empty (null) position that is found in the DynArray.
+     * If there is no empty position the list is growing by the grow value and the value is added
+     * to at the end of old list.
+     *
+     * @param value The value to add to the DynArray
+     * @return the index of the newly added value
+     */
+    operator fun plus(value: T): Int = add(value)
+
     /** Use this to add all values of a DynArray to the instance of DynArray.
      *
      * @param values the other DynArray to get the values form
@@ -242,6 +251,15 @@ class DynArray<T> constructor(
             remove(indexOf)
         return indexOf
     }
+
+    /** Removes the first found specified instance of object value from DynArray and returns the index where it as removed.
+     * Also this remove sets a null value on specified index of internal ArrayList instead of removing it
+     * to avoid the index shift of an ArrayList remove.
+     *
+     * @param value The value to remove.
+     * @return the index of the value that was removed or -1 if there was no such value.
+     */
+    operator fun minus(value: T): Int = remove(value)
 
 
     /** Sorts the list within the given comparator.

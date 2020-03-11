@@ -44,7 +44,6 @@ object FFContext {
     val screenHeight: Int
         get() = graphics.screenHeight
 
-
     fun <S : ComponentSystem> loadSystem(system: S) {
         for (aspect in system.supportedComponents)
             systemTypeMapping[aspect.aspectIndex] = system
