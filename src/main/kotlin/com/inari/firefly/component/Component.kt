@@ -22,11 +22,16 @@ interface ComponentType<C : Component> : Aspect {
 class CompId (
     val instanceId: Int,
     val componentType: ComponentType<*>
-) {
+) : Indexed {
     fun checkType(typeAspect: Aspect): CompId {
         componentType.aspectType.typeCheck(typeAspect)
         return this
     }
+
+    override val index: Int = instanceId
+
+    override val indexedTypeName: String
+        get() = componentType.aspectName
 
     override fun toString(): String {
         return "CompId(instanceId=$instanceId, componentType=$componentType)"
