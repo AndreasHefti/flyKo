@@ -1,12 +1,13 @@
 package com.inari.firefly.graphics.sprite
 
 import com.inari.firefly.NO_NAME
+import com.inari.firefly.asset.IndexedInstantiable
 import com.inari.firefly.component.ComponentDSL
 import com.inari.firefly.graphics.particle.SpriteParticle
 import com.inari.util.geom.Rectangle
 
 @ComponentDSL
-class ProtoSprite internal constructor() {
+class ProtoSprite internal constructor() : IndexedInstantiable {
 
     @JvmField internal val textureBounds: Rectangle = Rectangle()
     @JvmField internal var flipH: Boolean = false
@@ -14,7 +15,7 @@ class ProtoSprite internal constructor() {
     @JvmField internal var name: String = NO_NAME
 
     @JvmField internal var instId = -1
-    val instanceId: Int get() = instId
+    override val instanceId: Int get() = instId
 
     var ff_Name: String
         get() = name
