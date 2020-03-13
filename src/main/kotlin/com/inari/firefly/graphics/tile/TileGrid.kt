@@ -153,8 +153,6 @@ class TileGrid private constructor() : SystemComponent(TileGrid::class.java.name
 
     class TileGridIterator private constructor() : IntIterator() {
 
-
-
         @JvmField internal val tmpClip = Rectangle()
         @JvmField internal val worldPosition = PositionF()
         @JvmField internal val clip = Rectangle()

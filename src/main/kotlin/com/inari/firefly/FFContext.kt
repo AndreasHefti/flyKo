@@ -84,6 +84,9 @@ object FFContext {
     operator fun <C : Component> get(cType: ComponentType<C>, index: Int): C =
         mapper(cType)[index]
 
+    operator fun <C : Component> get(cType: ComponentType<C>, compId: CompId): C =
+            mapper(cType)[compId.instanceId]
+
     operator fun <C : Component> get(cType: ComponentType<C>, indexed: Indexed): C =
         mapper(cType)[indexed.index]
 
@@ -95,6 +98,9 @@ object FFContext {
 
     operator fun <C : SystemComponent, CC : C> get(cType: SystemComponentSubType<C, CC>, index: Int): CC =
         mapper<CC>(cType)[index]
+
+    operator fun <C : SystemComponent, CC : C> get(cType: SystemComponentSubType<C, CC>, compId: CompId): CC =
+            mapper<CC>(cType)[compId.instanceId]
 
     operator fun <C : SystemComponent, CC : C> get(cType: SystemComponentSubType<C, CC>, indexed: Indexed): CC =
         mapper<CC>(cType)[indexed.index]
