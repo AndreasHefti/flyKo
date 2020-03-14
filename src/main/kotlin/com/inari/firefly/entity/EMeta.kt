@@ -28,13 +28,13 @@ class EMeta private constructor() : EntityComponent(EMeta::class.java.name), Nam
         }
         get() = name
     val ff_Controller = ComponentRefResolver(Controller) { index-> controllerRef = index }
-    fun ff_WithController(cBuilder: SystemComponentSubType<Controller, SingleEntityController>, configure: (SingleEntityController.() -> Unit)): CompId {
-        val id = cBuilder.build(configure)
+    fun ff_WithController(configure: (SingleEntityController.() -> Unit)): CompId {
+        val id = SingleEntityController.build(configure)
         controllerRef = id.index
         return id
     }
-    fun ff_WithActiveController(cBuilder: SystemComponentSubType<Controller, SingleEntityController>, configure: (SingleEntityController.() -> Unit)): CompId {
-        val id = cBuilder.buildAndActivate(configure)
+    fun ff_WithActiveController(configure: (SingleEntityController.() -> Unit)): CompId {
+        val id = SingleEntityController.buildAndActivate(configure)
         controllerRef = id.index
         return id
     }
