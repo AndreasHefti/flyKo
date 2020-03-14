@@ -1,10 +1,13 @@
 package com.inari.firefly.entity
 
 import com.inari.firefly.NO_NAME
+import com.inari.firefly.component.CompId
 import com.inari.firefly.component.ComponentRefResolver
 import com.inari.firefly.component.ComponentType
 import com.inari.firefly.component.NamedComponent
 import com.inari.firefly.control.Controller
+import com.inari.firefly.control.SingleEntityController
+import com.inari.firefly.system.component.SystemComponentSubType
 import com.inari.util.aspect.Aspects
 import com.inari.util.aspect.IndexedAspectType
 
@@ -25,6 +28,17 @@ class EMeta private constructor() : EntityComponent(EMeta::class.java.name), Nam
         }
         get() = name
     val ff_Controller = ComponentRefResolver(Controller) { index-> controllerRef = index }
+    fun ff_WithController(cBuilder: SystemComponentSubType<Controller, SingleEntityController>, configure: (SingleEntityController.() -> Unit)): CompId {
+        val id = cBuilder.build(configure)
+        controllerRef = id.index
+        return id
+    }
+    fun ff_WithActiveController(cBuilder: SystemComponentSubType<Controller, SingleEntityController>, configure: (SingleEntityController.() -> Unit)): CompId {
+        val id = cBuilder.buildAndActivate(configure)
+        controllerRef = id.index
+        return id
+    }
+
     var ff_Aspects: Aspects
         get() = aspects
         set(value) {

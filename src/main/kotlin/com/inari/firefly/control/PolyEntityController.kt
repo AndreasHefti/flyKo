@@ -8,7 +8,7 @@ import com.inari.util.IntConsumer
 
 // NOTE using IntExpr here is because of performance reasons to avoid boxing
 // TODO is this the best way to do that?
-class PolyController private constructor() : Controller() {
+class PolyEntityController private constructor() : Controller() {
 
     @JvmField internal val ids: BitSet = BitSet()
     @JvmField internal var controlExpr = NULL_INT_CONSUMER
@@ -29,7 +29,7 @@ class PolyController private constructor() : Controller() {
             controlExpr(i)
     }
 
-    companion object : SystemComponentSubType<Controller, PolyController>(Controller, PolyController::class.java) {
-        override fun createEmpty() = PolyController()
+    companion object : SystemComponentSubType<Controller, PolyEntityController>(Controller, PolyEntityController::class.java) {
+        override fun createEmpty() = PolyEntityController()
     }
 }
