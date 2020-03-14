@@ -19,7 +19,7 @@ class ArrayAccessor<T>(
         if (trim) array.trim()
     }
     fun addAll(a: DynArray<T>) {
-        array.addAll(array)
+        array.addAll(a)
         if (trim) array.trim()
     }
     fun addAll(vararg a: T) {
