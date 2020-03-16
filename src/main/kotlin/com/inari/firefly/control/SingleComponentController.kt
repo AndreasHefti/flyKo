@@ -5,7 +5,7 @@ import com.inari.firefly.component.CompId
 import com.inari.firefly.system.component.SystemComponentSubType
 import com.inari.util.IntConsumer
 
-class SingleEntityController private constructor() : Controller() {
+class SingleComponentController private constructor() : Controller() {
 
     @JvmField internal var id: CompId = NO_COMP_ID
     @JvmField internal var controlExpr = NULL_INT_CONSUMER
@@ -26,7 +26,7 @@ class SingleEntityController private constructor() : Controller() {
         controlExpr(id.instanceId)
     }
 
-    companion object : SystemComponentSubType<Controller, SingleEntityController>(Controller, SingleEntityController::class.java) {
-        override fun createEmpty() = SingleEntityController()
+    companion object : SystemComponentSubType<Controller, SingleComponentController>(Controller, SingleComponentController::class.java) {
+        override fun createEmpty() = SingleComponentController()
     }
 }

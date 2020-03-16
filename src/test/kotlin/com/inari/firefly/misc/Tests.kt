@@ -5,7 +5,7 @@ import com.inari.firefly.TRUE_SUPPLIER
 import com.inari.firefly.TestApp
 import com.inari.firefly.asset.AssetSystem
 import com.inari.firefly.control.ControllerSystem
-import com.inari.firefly.control.PolyEntityController
+import com.inari.firefly.control.PolyComponentController
 import com.inari.firefly.control.task.EntityTask
 import com.inari.firefly.control.trigger.UpdateEventTrigger
 import com.inari.firefly.physics.animation.easing.EasedProperty
@@ -115,7 +115,7 @@ fun main(args: Array<String>) {
     val testControl: IntConsumer = { i -> println(i) }
 
 //
-    PolyEntityController.build {
+    PolyComponentController.build {
         ff_Name = "test"
         ff_UpdateResolution = 1f
         ff_ControlExpr = testControl

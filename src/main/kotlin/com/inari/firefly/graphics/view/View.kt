@@ -1,8 +1,10 @@
 package com.inari.firefly.graphics.view
 
+import com.inari.firefly.component.CompId
 import com.inari.util.geom.PositionF
 import com.inari.firefly.component.ComponentRefResolver
 import com.inari.firefly.control.Controller
+import com.inari.firefly.control.SingleComponentController
 import com.inari.firefly.graphics.BlendMode
 import com.inari.firefly.system.component.SystemComponent
 import com.inari.firefly.external.ViewData
@@ -44,7 +46,17 @@ class View private constructor (
         get() = data.fboScaler
         set(value) { data.fboScaler = value }
     var ff_Controller =
-        ComponentRefResolver(Controller) { index-> controllerRef = setIfNotInitialized(index, "ff_ControllerId") }
+        ComponentRefResolver(Controller) { index-> controllerRef = setIfNotInitialized(index, "controllerRef") }
+    fun ff_WithController(configure: (SingleComponentController.() -> Unit)): CompId {
+        val id = SingleComponentController.build(configure)
+        controllerRef = id.index
+        return id
+    }
+    fun ff_WithActiveController(configure: (SingleComponentController.() -> Unit)): CompId {
+        val id = SingleComponentController.buildAndActivate(configure)
+        controllerRef = id.index
+        return id
+    }
 
     override fun toString(): String {
         return "View(baseView=$baseView, " +
