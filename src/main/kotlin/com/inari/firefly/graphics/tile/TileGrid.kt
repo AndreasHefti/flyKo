@@ -85,7 +85,7 @@ class TileGrid private constructor() : SystemComponent(TileGrid::class.java.name
             floor((ypos.toDouble() - ff_Position.y) / ff_CellHeight).toInt())
 
     operator fun set(position: Position, entityId: Int) =
-        set(entityId, position.x, position.y)
+        set(position.x, position.y, entityId)
 
     operator fun set(xpos: Int, ypos: Int, entityId: Int) =
         if (ff_Spherical)
