@@ -1,0 +1,74 @@
+package com.inari.firefly.physics.animation.timeline
+
+import com.inari.firefly.FFContext
+import com.inari.firefly.NULL_CALL
+import com.inari.firefly.entity.Entity
+import com.inari.firefly.entity.property.IntPropertyAccessor
+import com.inari.firefly.physics.animation.Animation
+import com.inari.firefly.physics.animation.IntAnimation
+import com.inari.firefly.physics.animation.entity.EntityPropertyAnimation
+import com.inari.firefly.system.component.SystemComponentSubType
+import com.inari.util.collection.DynArray
+
+class IntTimelineProperties private constructor() : EntityPropertyAnimation(), IntAnimation {
+
+    @JvmField internal var propertyAccessor: DynArray<IntPropertyAccessor> = DynArray.of()
+    @JvmField internal val data = IntTimelineData()
+
+    var ff_Timeline: Array<out Frame.IntFrame>
+        get() = data.timeline
+        set(value) { data.timeline = value }
+    var ff_StartValue: Int
+        get() = data.startValue
+        set(value) { data.startValue = value }
+    var ff_EndValue: Int
+        get() = data.endValue
+        set(value) { data.endValue = value }
+    var ff_InverseOnLoop: Boolean
+        get() = data.inverseOnLoop
+        set(value) { data.inverseOnLoop = value }
+
+    override val value: Int
+        get() = data.timeline[data.currentIndex].value
+
+    override fun init(entity: Entity) {
+        propertyAccessor + propertyRef.accessor(entity)
+    }
+
+    override fun update() {
+        if (data.update(looping)) {
+            var i = 0
+            val v = value
+            while (i < propertyAccessor.capacity) {
+                val acc = propertyAccessor[i++] ?: continue
+                acc.set(v)
+            }
+        }
+
+
+
+        else {
+            if (resetOnFinish)
+                reset()
+            FFContext.deactivate(this)
+            if (callback != NULL_CALL)
+                callback()
+        }
+
+    }
+
+    override fun reset() {
+        data.reset()
+        var i = 0
+        val v = value
+        while (i < propertyAccessor.capacity) {
+            val acc = propertyAccessor[i++] ?: continue
+            acc.set(v)
+        }
+    }
+
+    companion object : SystemComponentSubType<Animation, IntTimelineProperties>(Animation, IntTimelineProperties::class.java) {
+        override fun createEmpty() = IntTimelineProperties()
+    }
+
+}
