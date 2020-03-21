@@ -46,8 +46,6 @@ object AnimationSystem : ComponentSystem {
         while (i >= 0) {
             val animProp: EntityPropertyAnimation = animations.getAs(i)
             animProp.compile(entity)
-            if (eAnim.activeAnimations[i])
-                animations.activate(i)
             i = eAnim.animations.nextSetBit(i + 1)
         }
     }

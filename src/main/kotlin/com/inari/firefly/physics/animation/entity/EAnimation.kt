@@ -12,16 +12,9 @@ import com.inari.java.types.BitSet
 class EAnimation : EntityComponent(EAnimation::class.java.name) {
 
     @JvmField internal val animations: BitSet = BitSet()
-    @JvmField internal val activeAnimations: BitSet = BitSet()
 
-    val ff_RegisterAnimation = ComponentRefResolver(Animation) {
+    val ff_WithAnimation = ComponentRefResolver(Animation) {
         index-> animations.set(index)
-    }
-
-    val ff_RegisterActiveAnimation = ComponentRefResolver(Animation) {
-        index->
-            animations.set(index)
-            activeAnimations.set(index)
     }
 
     fun <A : Animation> ff_WithAnimation(builder: SystemComponentSubType<Animation, A>, configure: (A.() -> Unit)): CompId {
@@ -34,7 +27,6 @@ class EAnimation : EntityComponent(EAnimation::class.java.name) {
     fun <A : Animation> ff_WithActiveAnimation(builder: SystemComponentSubType<Animation, A>, configure: (A.() -> Unit)): CompId {
         val id = builder.buildAndActivate(configure)
         animations.set(id.index)
-        activeAnimations.set(id.index)
         return id
     }
 
@@ -45,7 +37,6 @@ class EAnimation : EntityComponent(EAnimation::class.java.name) {
             i = animations.nextSetBit(i + 1)
         }
         animations.clear()
-        activeAnimations.clear()
     }
 
     override fun reset() {
