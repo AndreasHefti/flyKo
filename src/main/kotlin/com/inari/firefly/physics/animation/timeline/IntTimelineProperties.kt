@@ -32,7 +32,7 @@ class IntTimelineProperties private constructor() : EntityPropertyAnimation(), I
         get() = data.timeline[data.currentIndex].value
 
     override fun init(entity: Entity) {
-        propertyAccessor + propertyRef.accessor(entity)
+        propertyAccessor + propertyRef.accessor(entity) as IntPropertyAccessor
     }
 
     override fun update() {
@@ -43,11 +43,7 @@ class IntTimelineProperties private constructor() : EntityPropertyAnimation(), I
                 val acc = propertyAccessor[i++] ?: continue
                 acc.set(v)
             }
-        }
-
-
-
-        else {
+        } else {
             if (resetOnFinish)
                 reset()
             FFContext.deactivate(this)
