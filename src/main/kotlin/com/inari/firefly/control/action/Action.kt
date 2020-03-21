@@ -14,10 +14,10 @@ class Action private constructor() : SystemComponent(Action::class.java.name) {
         set(value) { actionCall = value }
 
     fun call(
-            entity1: CompId = NO_COMP_ID,
-            entity2: CompId = NO_COMP_ID,
-            entity3: CompId = NO_COMP_ID,
-            entity4: CompId = NO_COMP_ID) {
+            entity1: Int = -1,
+            entity2: Int = -1,
+            entity3: Int = -1,
+            entity4: Int = -1) {
 
         actionCall(entity1, entity2, entity3, entity4)
     }

@@ -6,7 +6,7 @@ import com.inari.firefly.system.component.ComponentSystem
 import com.inari.firefly.system.component.SystemComponent
 import com.inari.util.aspect.Aspects
 
-typealias ActionCall = (CompId, CompId, CompId, CompId) -> Unit
+typealias ActionCall = (Int, Int, Int, Int) -> Unit
 object ActionSystem : ComponentSystem {
 
 
