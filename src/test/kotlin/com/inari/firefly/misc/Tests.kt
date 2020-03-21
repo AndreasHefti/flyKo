@@ -133,7 +133,7 @@ fun main(args: Array<String>) {
             }
         }
         ff_With(EMultiplier) {
-            ff_Positions = floatArrayOf(1f, 3f)
+            ff_Positions.addAll(1f, 3f)
         }
         ff_With(EMeta) {
             ff_Controller("sofbno")

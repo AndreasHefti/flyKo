@@ -1,6 +1,5 @@
 package com.inari.firefly.graphics.tile
 
-import com.inari.util.geom.Position
 import com.inari.firefly.asset.AssetInstanceRefResolver
 import com.inari.firefly.component.ArrayAccessor
 import com.inari.firefly.entity.Entity
@@ -12,12 +11,13 @@ import com.inari.firefly.entity.property.VirtualPropertyRef
 import com.inari.firefly.external.SpriteRenderable
 import com.inari.firefly.graphics.BlendMode
 import com.inari.util.collection.DynArray
+import com.inari.util.geom.Position
 import com.inari.util.graphics.RGBColor
 
 class ETile private constructor () : EntityComponent(ETile::class.java.name) {
 
     @JvmField internal val spriteRenderable = SpriteRenderable()
-    @JvmField internal var positions: DynArray<Position> = DynArray.of()
+    @JvmField internal var position: Position = Position()
 
     val ff_Sprite = AssetInstanceRefResolver(
         { index -> spriteRenderable.spriteId = index },
@@ -31,12 +31,13 @@ class ETile private constructor () : EntityComponent(ETile::class.java.name) {
     var ff_Tint: RGBColor
         get() = spriteRenderable.tintColor
         set(value) { spriteRenderable.tintColor(value) }
-    val ff_Positions =
-        ArrayAccessor(positions)
+    val ff_Position: Position
+        get() = position
 
     override fun reset() {
         spriteRenderable.reset()
-        positions.clear()
+        position.x = 0
+        position.y = 0
     }
 
     private val accessorSpriteRef: IntPropertyAccessor = object : IntPropertyAccessor {

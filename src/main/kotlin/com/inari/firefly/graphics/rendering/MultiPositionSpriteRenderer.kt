@@ -26,11 +26,13 @@ class MultiPositionSpriteRenderer private constructor() : Renderer() {
             val multiplier = entity[EMultiplier]
             transformCollector(transform.data)
 
-            val positions = multiplier.positions
-            for (index in positions.indices step 2) {
-                transformCollector.move(positions[index], positions[index + 1])
+            val pi = multiplier.positions.iterator()
+            while (pi.hasNext()) {
+                val x = pi.nextFloat()
+                val y = pi.nextFloat()
+                transformCollector.move(x, y)
                 graphics.renderSprite(sprite.spriteRenderable, transformCollector.data)
-                transformCollector.move(-positions[index], -positions[index + 1])
+                transformCollector.move(-x, -y)
             }
         }
     }

@@ -4,6 +4,7 @@ import com.inari.firefly.FFContext
 import com.inari.firefly.component.CompId
 import com.inari.firefly.component.ComponentMap.MapAction.CREATED
 import com.inari.firefly.component.ComponentMap.MapAction.DELETED
+import com.inari.firefly.entity.EMultiplier
 import com.inari.firefly.entity.Entity
 import com.inari.firefly.entity.EntityActivationEvent
 import com.inari.firefly.external.ViewData
@@ -15,7 +16,6 @@ import com.inari.firefly.graphics.view.ViewLayerMapping
 import com.inari.firefly.system.component.ComponentSystem
 import com.inari.firefly.system.component.SystemComponent
 import com.inari.util.aspect.Aspects
-import com.inari.util.geom.Position
 
 
 object TileGridSystem : ComponentSystem {
@@ -74,43 +74,39 @@ object TileGridSystem : ComponentSystem {
     operator fun get(viewIndex: Int, layerIndex: Int): TileGrid? =
             viewLayerMapping[viewIndex][layerIndex]
 
-    fun removeMultiTilePosition(tileGridId: Int, entityId: Int, x: Int, y: Int) {
-        val tile = FFContext[entityId, ETile]
-        tile.positions.remove(Position(x, y))
-        this.grids[tileGridId].reset(x, y)
-    }
-
-    fun addMultiTilePosition(tileGridId: Int, entityId: Int, x: Int, y: Int) {
-        val tile = FFContext[entityId, ETile]
-        tile.positions.add(Position(x, y))
-        this.grids[tileGridId][entityId, x] = y
-    }
-
     override fun clearSystem() {
         grids.clear()
     }
 
     private fun addEntity(entity: Entity) {
         val tileGrid = this[entity[ETransform]] ?: return
-        val positions = entity[ETile].positions
-        val entityId = entity.index
 
-        var i = 0
-        while (i < positions.capacity) {
-            val pos = positions[i++] ?: continue
-            tileGrid[pos] = entityId
+        if (entity.has(EMultiplier)) {
+            val multiplier = entity[EMultiplier]
+            val pi = multiplier.positions.iterator()
+            while (pi.hasNext()) {
+                val x: Int = pi.nextFloat().toInt()
+                val y: Int = pi.nextFloat().toInt()
+                tileGrid[x, y] = entity.index
+            }
+        } else {
+            tileGrid[entity[ETile].position] = entity.index
         }
     }
 
     private fun removeEntity(entity: Entity) {
         val tileGrid = this[entity[ETransform]] ?: return
-        val positions = entity[ETile].positions
-        val entityId = entity.index
 
-        var i = 0
-        while (i < positions.capacity) {
-            val pos = positions[i++] ?: continue
-            tileGrid.resetIfMatch(entityId, pos)
+        if (entity.has(EMultiplier)) {
+            val multiplier = entity[EMultiplier]
+            val pi = multiplier.positions.iterator()
+            while (pi.hasNext()) {
+                val x: Int = pi.nextFloat().toInt()
+                val y: Int = pi.nextFloat().toInt()
+                tileGrid.resetIfMatch(entity.index, x, y)
+            }
+        } else {
+            tileGrid.resetIfMatch(entity.index, entity[ETile].position)
         }
     }
 }

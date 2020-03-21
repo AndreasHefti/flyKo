@@ -1,20 +1,17 @@
 package com.inari.firefly.entity
 
-import com.inari.firefly.EMPTY_FLOAT_ARRAY
-import com.inari.firefly.component.ArrayAccessor
-import com.inari.util.collection.DynArray
-import com.inari.util.geom.PositionF
+import com.inari.util.collection.DynFloatArray
 
 class EMultiplier private constructor () : EntityComponent(EMultiplier::class.java.name) {
 
-    @JvmField internal var positions: FloatArray = EMPTY_FLOAT_ARRAY
+    @JvmField internal var positions: DynFloatArray = DynFloatArray()
 
-    var ff_Positions: FloatArray
+    var ff_Positions: DynFloatArray
             get() = positions
             set(value) { positions = value }
 
     override fun reset() {
-        positions = EMPTY_FLOAT_ARRAY
+        positions.clear()
     }
 
     override fun componentType() = Companion
