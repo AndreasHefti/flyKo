@@ -15,7 +15,7 @@ interface DynFloatArrayRO {
 
 class DynFloatArray(
     initSize: Int = 10,
-    override val nullValue: Float = Float.NaN,
+    override val nullValue: Float = Float.NEGATIVE_INFINITY,
     override val expand: Int = 10
 ) : DynFloatArrayRO {
 
@@ -130,7 +130,7 @@ class DynFloatArray(
     override fun indexOf(value: Float): Int {
         var i = 0
         while (i < array.size) {
-            if (array[i] == value)
+            if (array[i] === value)
                 return i
             i++
         }
