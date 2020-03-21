@@ -2,11 +2,10 @@ package com.inari.firefly.physics.animation
 
 import com.inari.firefly.FFApp
 import com.inari.firefly.FFContext
-import com.inari.firefly.control.ControllerSystem
-import com.inari.firefly.physics.animation.entity.EAnimation
-import com.inari.firefly.physics.animation.entity.EntityPropertyAnimation
 import com.inari.firefly.entity.Entity
 import com.inari.firefly.entity.EntityActivationEvent
+import com.inari.firefly.physics.animation.entity.EAnimation
+import com.inari.firefly.physics.animation.entity.EntityPropertyAnimation
 import com.inari.firefly.system.component.ComponentSystem
 import com.inari.firefly.system.component.SystemComponent
 import com.inari.util.Consumer
@@ -51,11 +50,6 @@ object AnimationSystem : ComponentSystem {
                 animations.activate(i)
             i = eAnim.animations.nextSetBit(i + 1)
         }
-
-        if (eAnim.controllerRef >= 0) {
-            ControllerSystem.controller[eAnim.controllerRef]
-                .register(entity.componentId)
-        }
     }
 
     private fun deactivateForEntity(entity: Entity) {
@@ -65,11 +59,6 @@ object AnimationSystem : ComponentSystem {
             animations.getAs<EntityPropertyAnimation>(i).reset()
             animations.deactivate(i)
             i = eAnim.animations.nextSetBit(i + 1)
-        }
-
-        if (eAnim.controllerRef >= 0 && eAnim.controllerRef in ControllerSystem.controller) {
-            ControllerSystem.controller[eAnim.controllerRef]
-                .unregister(entity.componentId)
         }
     }
 

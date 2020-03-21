@@ -3,8 +3,11 @@ package com.inari.firefly.physics.animation.easing
 import com.inari.firefly.NO_PROPERTY_REF
 import com.inari.firefly.entity.Entity
 import com.inari.firefly.entity.property.FloatPropertyAccessor
+import com.inari.firefly.physics.animation.Animation
 import com.inari.firefly.physics.animation.FloatAnimation
 import com.inari.firefly.physics.animation.entity.EntityPropertyAnimation
+import com.inari.firefly.physics.animation.timeline.IntTimelineProperty
+import com.inari.firefly.system.component.SystemComponentSubType
 import com.inari.util.geom.Easing
 
 class EasedProperty : EntityPropertyAnimation(), FloatAnimation {
@@ -40,7 +43,7 @@ class EasedProperty : EntityPropertyAnimation(), FloatAnimation {
     override fun reset() = control.reset()
     override fun update() = control.update()
 
-    companion object : PropertyAnimationSubtype<EasedProperty>() {
-        override fun createEmpty(): EasedProperty = EasedProperty()
+    companion object : SystemComponentSubType<Animation, EasedProperty>(Animation, EasedProperty::class.java) {
+        override fun createEmpty() = EasedProperty()
     }
 }

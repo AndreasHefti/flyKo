@@ -16,6 +16,7 @@ import com.inari.firefly.entity.EntitySystem
 import com.inari.firefly.graphics.ETransform
 import com.inari.firefly.entity.EMultiplier
 import com.inari.firefly.graphics.sprite.ESprite
+import com.inari.firefly.physics.animation.timeline.IntTimelineProperty
 import com.inari.util.IntConsumer
 
 

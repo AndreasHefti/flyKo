@@ -1,31 +1,41 @@
 package com.inari.firefly.physics.animation.entity
 
+import com.inari.firefly.component.CompId
 import com.inari.firefly.component.ComponentRefResolver
-import com.inari.firefly.control.Controller
-import com.inari.firefly.physics.animation.AnimationSystem
 import com.inari.firefly.entity.EntityComponent
 import com.inari.firefly.entity.EntityComponentType
+import com.inari.firefly.physics.animation.Animation
+import com.inari.firefly.physics.animation.AnimationSystem
+import com.inari.firefly.system.component.SystemComponentSubType
 import com.inari.java.types.BitSet
 
 class EAnimation : EntityComponent(EAnimation::class.java.name) {
 
-    @JvmField internal var controllerRef = -1
     @JvmField internal val animations: BitSet = BitSet()
     @JvmField internal val activeAnimations: BitSet = BitSet()
 
-    val ff_Controller = ComponentRefResolver(Controller) { index-> controllerRef = index }
-
-    fun <A : EntityPropertyAnimation> ff_WithAnimation(cBuilder: EntityPropertyAnimation.PropertyAnimationSubtype<A>, configure: (A.() -> Unit)): A {
-        val animation = cBuilder.doBuild(configure)
-        animations.set(animation.index)
-        return animation
+    val ff_RegisterAnimation = ComponentRefResolver(Animation) {
+        index-> animations.set(index)
     }
 
-    fun <A : EntityPropertyAnimation> ff_WithActiveAnimation(cBuilder: EntityPropertyAnimation.PropertyAnimationSubtype<A>, configure: (A.() -> Unit)): A {
-        val animation = cBuilder.doBuild(configure)
-        animations.set(animation.index)
-        activeAnimations.set(animation.index)
-        return animation
+    val ff_RegisterActiveAnimation = ComponentRefResolver(Animation) {
+        index->
+            animations.set(index)
+            activeAnimations.set(index)
+    }
+
+    fun <A : Animation> ff_WithAnimation(builder: SystemComponentSubType<Animation, A>, configure: (A.() -> Unit)): CompId {
+        val id = builder.build(configure)
+        animations.set(id.index)
+        return id
+    }
+
+
+    fun <A : Animation> ff_WithActiveAnimation(builder: SystemComponentSubType<Animation, A>, configure: (A.() -> Unit)): CompId {
+        val id = builder.buildAndActivate(configure)
+        animations.set(id.index)
+        activeAnimations.set(id.index)
+        return id
     }
 
     fun clearAnimations() {
@@ -39,7 +49,6 @@ class EAnimation : EntityComponent(EAnimation::class.java.name) {
     }
 
     override fun reset() {
-        controllerRef = -1
         clearAnimations()
     }
 

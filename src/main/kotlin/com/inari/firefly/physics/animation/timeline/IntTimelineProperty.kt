@@ -2,10 +2,14 @@ package com.inari.firefly.physics.animation.timeline
 
 import com.inari.firefly.FFContext
 import com.inari.firefly.NULL_CALL
+import com.inari.firefly.asset.Asset
 import com.inari.firefly.entity.Entity
 import com.inari.firefly.entity.property.IntPropertyAccessor
+import com.inari.firefly.graphics.sprite.SpriteAsset
+import com.inari.firefly.physics.animation.Animation
 import com.inari.firefly.physics.animation.IntAnimation
 import com.inari.firefly.physics.animation.entity.EntityPropertyAnimation
+import com.inari.firefly.system.component.SystemComponentSubType
 
 class IntTimelineProperty private constructor() : EntityPropertyAnimation(), IntAnimation {
 
@@ -50,7 +54,7 @@ class IntTimelineProperty private constructor() : EntityPropertyAnimation(), Int
         propertyAccessor?.set(data.timeline[data.currentIndex].value)
     }
 
-    companion object : PropertyAnimationSubtype<IntTimelineProperty>() {
+    companion object : SystemComponentSubType<Animation, IntTimelineProperty>(Animation, IntTimelineProperty::class.java) {
         override fun createEmpty() = IntTimelineProperty()
     }
 

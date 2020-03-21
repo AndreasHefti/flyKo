@@ -27,7 +27,7 @@ abstract class Animation protected constructor() : SystemComponent(Animation::cl
     abstract fun update()
     abstract fun reset()
 
-    override fun componentType(): ComponentType<Animation> = Companion
+    override fun componentType() = Companion
     companion object : SystemComponentType<Animation>(Animation::class.java)
 }
 
