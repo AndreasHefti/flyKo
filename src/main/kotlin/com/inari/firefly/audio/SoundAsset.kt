@@ -8,7 +8,6 @@ import com.inari.firefly.system.component.SystemComponentSubType
 class SoundAsset private constructor() : Asset() {
 
     @JvmField internal var id: Int = -1
-    @JvmField internal var instance: Int = -1
     @JvmField internal var resourceName: String = NO_NAME
     @JvmField internal var streaming: Boolean = false
 

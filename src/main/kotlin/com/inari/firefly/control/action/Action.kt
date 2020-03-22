@@ -7,7 +7,7 @@ import com.inari.firefly.system.component.SystemComponentSingleType
 
 class Action private constructor() : SystemComponent(Action::class.java.name) {
 
-@JvmField var actionCall: ActionCall = { _, _, _, _ -> }
+    @JvmField var actionCall: ActionCall = { _, _, _, _ -> }
 
     var ff_ActionCall: ActionCall
         get() = actionCall

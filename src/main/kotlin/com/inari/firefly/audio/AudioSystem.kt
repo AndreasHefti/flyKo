@@ -7,7 +7,7 @@ import com.inari.firefly.system.component.ComponentSystem
 import com.inari.firefly.system.component.SystemComponent
 import com.inari.util.aspect.Aspects
 
-class AudioSystem : ComponentSystem {
+object AudioSystem : ComponentSystem {
 
     override val supportedComponents: Aspects =
         SystemComponent.SYSTEM_COMPONENT_ASPECTS.createAspects(Sound)
@@ -65,4 +65,5 @@ class AudioSystem : ComponentSystem {
 
     override fun clearSystem() =
         sounds.clear()
+
 }
