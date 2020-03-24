@@ -32,8 +32,14 @@ class IntTimelineProperty private constructor() : EntityPropertyAnimation(), Int
     override val value: Int
         get() = propertyAccessor?.get() ?: -1
 
-    override fun init(entity: Entity) {
+    override fun applyToEntity(entity: Entity) {
         propertyAccessor = propertyRef.accessor(entity) as IntPropertyAccessor
+    }
+
+    override fun detachFromEntity(entity: Entity) {
+        propertyAccessor = null
+        reset()
+        FFContext.deactivate(this)
     }
 
     override fun update() {

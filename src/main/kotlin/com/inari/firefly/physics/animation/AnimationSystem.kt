@@ -22,10 +22,8 @@ object AnimationSystem : ComponentSystem {
     )
 
     init {
-        val update: Consumer<Animation> = { animation -> animation.update() }
-
         FFContext.registerListener(FFApp.UpdateEvent) {
-                animations.forEachActive(update)
+                animations.forEachActive { it.update() }
         }
 
         FFContext.registerListener(EntityActivationEvent, object: EntityActivationEvent.Listener {
@@ -45,7 +43,7 @@ object AnimationSystem : ComponentSystem {
         var i = eAnim.animations.nextSetBit(0)
         while (i >= 0) {
             val animProp: EntityPropertyAnimation = animations.getAs(i)
-            animProp.compile(entity)
+            animProp.applyToEntity(entity)
             i = eAnim.animations.nextSetBit(i + 1)
         }
     }
@@ -54,8 +52,8 @@ object AnimationSystem : ComponentSystem {
         val eAnim = entity[EAnimation]
         var i = eAnim.animations.nextSetBit(0)
         while (i >= 0) {
-            animations.getAs<EntityPropertyAnimation>(i).reset()
-            animations.deactivate(i)
+            val animProp: EntityPropertyAnimation = animations.getAs(i)
+            animProp.detachFromEntity(entity)
             i = eAnim.animations.nextSetBit(i + 1)
         }
     }

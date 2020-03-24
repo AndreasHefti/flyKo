@@ -31,8 +31,12 @@ class IntTimelineProperties private constructor() : EntityPropertyAnimation(), I
     override val value: Int
         get() = data.timeline[data.currentIndex].value
 
-    override fun init(entity: Entity) {
+    override fun applyToEntity(entity: Entity) {
         propertyAccessor + propertyRef.accessor(entity) as IntPropertyAccessor
+    }
+
+    override fun detachFromEntity(entity: Entity) {
+        propertyAccessor - propertyRef.accessor(entity) as IntPropertyAccessor
     }
 
     override fun update() {

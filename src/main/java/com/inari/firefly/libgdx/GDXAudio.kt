@@ -50,7 +50,7 @@ object GDXAudio : FFAudio {
 
     override fun playSound(soundId: Int, channel: Int, looping: Boolean, volume: Float, pitch: Float, pan: Float): Long {
         val sound = sounds[soundId] ?: return -1
-        if (channel >= 0 && lastPlayingSoundOnChannel[channel] >= 0)
+        if (channel >= 0 && channel < lastPlayingSoundOnChannel.length && lastPlayingSoundOnChannel[channel] >= 0)
             sounds[lastPlayingSoundOnChannel[channel]]?.stop()
 
         lastPlayingSoundOnChannel[channel] = soundId

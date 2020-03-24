@@ -1,5 +1,6 @@
 package com.inari.firefly.physics.animation.easing
 
+import com.inari.firefly.FFContext
 import com.inari.firefly.NO_PROPERTY_REF
 import com.inari.firefly.entity.Entity
 import com.inari.firefly.entity.property.FloatPropertyAccessor
@@ -33,14 +34,22 @@ class EasedProperty : EntityPropertyAnimation(), FloatAnimation {
     override val value: Float
         get() = control.propertyAccessor?.get() ?: 0f
 
-    override fun init(entity: Entity) {
+    override fun applyToEntity(entity: Entity) {
         if (propertyRef == NO_PROPERTY_REF)
             throw IllegalStateException("No property reference for animation is set")
         control.propertyAccessor = propertyRef.accessor(entity) as FloatPropertyAccessor
         reset()
     }
 
+    override fun detachFromEntity(entity: Entity) {
+        control.propertyAccessor = null
+        reset()
+        FFContext.deactivate(this)
+    }
+
     override fun reset() = control.reset()
+
+
     override fun update() = control.update()
 
     companion object : SystemComponentSubType<Animation, EasedProperty>(Animation, EasedProperty::class.java) {

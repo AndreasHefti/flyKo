@@ -14,9 +14,7 @@ abstract class EntityPropertyAnimation protected constructor() : Animation() {
         get() = propertyRef
         set(value) { propertyRef = if (FFContext.isActive(componentId)) throw IllegalStateException() else value }
 
-    internal fun compile(entity: Entity) =
-        init(entity)
-
-    protected abstract fun init(entity: Entity)
+    internal abstract fun applyToEntity(entity: Entity)
+    internal abstract fun detachFromEntity(entity: Entity)
 
 }
