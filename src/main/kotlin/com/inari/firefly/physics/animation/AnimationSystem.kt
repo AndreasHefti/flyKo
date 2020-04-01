@@ -38,7 +38,7 @@ object AnimationSystem : ComponentSystem {
         FFContext.loadSystem(this)
     }
 
-    private fun activateForEntity(entity: Entity) {
+    fun activateForEntity(entity: Entity) {
         val eAnim = entity[EAnimation]
         var i = eAnim.animations.nextSetBit(0)
         while (i >= 0) {
@@ -48,7 +48,7 @@ object AnimationSystem : ComponentSystem {
         }
     }
 
-    private fun deactivateForEntity(entity: Entity) {
+    fun deactivateForEntity(entity: Entity) {
         val eAnim = entity[EAnimation]
         var i = eAnim.animations.nextSetBit(0)
         while (i >= 0) {

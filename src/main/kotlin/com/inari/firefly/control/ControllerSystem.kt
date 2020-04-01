@@ -47,8 +47,11 @@ object ControllerSystem : ComponentSystem {
         unregister(controllerId.instanceId, id)
 
     fun unregister(controllerId: Int, id: CompId) {
-        if (controllerId in controller)
+        if (controllerId in controller) {
             controller[controllerId].unregister(id)
+            if (controller.isActive(controllerId))
+                controller.deactivate(controllerId)
+        }
     }
 
     override fun clearSystem() {

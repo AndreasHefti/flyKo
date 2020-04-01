@@ -8,6 +8,7 @@ import com.inari.firefly.control.SingleComponentController
 import com.inari.firefly.graphics.BlendMode
 import com.inari.firefly.system.component.SystemComponent
 import com.inari.firefly.external.ViewData
+import com.inari.firefly.system.component.SystemComponentBuilder
 import com.inari.firefly.system.component.SystemComponentSingleType
 import com.inari.util.geom.Rectangle
 import com.inari.util.graphics.RGBColor
@@ -47,13 +48,13 @@ class View private constructor (
         set(value) { data.fboScaler = value }
     var ff_Controller =
         ComponentRefResolver(Controller) { index-> controllerRef = setIfNotInitialized(index, "controllerRef") }
-    fun ff_WithController(configure: (SingleComponentController.() -> Unit)): CompId {
-        val id = SingleComponentController.build(configure)
+    fun <C : Controller> ff_WithController(builder: SystemComponentBuilder<C>, configure: (C.() -> Unit)): CompId {
+        val id = builder. build(configure)
         controllerRef = id.index
         return id
     }
-    fun ff_WithActiveController(configure: (SingleComponentController.() -> Unit)): CompId {
-        val id = SingleComponentController.buildAndActivate(configure)
+    fun <C : Controller> ff_WithActiveController(builder: SystemComponentBuilder<C>, configure: (C.() -> Unit)): CompId {
+        val id = builder.buildAndActivate(configure)
         controllerRef = id.index
         return id
     }
