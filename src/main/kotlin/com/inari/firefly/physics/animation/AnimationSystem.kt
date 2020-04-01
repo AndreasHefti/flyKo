@@ -37,6 +37,9 @@ object AnimationSystem : ComponentSystem {
         FFContext.loadSystem(this)
     }
 
+    fun registerEntityAnimations(entityId: Int) =
+            registerEntityAnimations(FFContext[Entity, entityId])
+
     fun registerEntityAnimations(entity: Entity) {
         val eAnim = entity[EAnimation]
         var i = eAnim.animations.nextSetBit(0)
@@ -46,6 +49,9 @@ object AnimationSystem : ComponentSystem {
             i = eAnim.animations.nextSetBit(i + 1)
         }
     }
+
+    fun detachEntityAnimations(entityId: Int) =
+            detachEntityAnimations(FFContext[Entity, entityId])
 
     fun detachEntityAnimations(entity: Entity) {
         val eAnim = entity[EAnimation]
