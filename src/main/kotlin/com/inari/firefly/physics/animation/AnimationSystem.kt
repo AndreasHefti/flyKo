@@ -8,7 +8,6 @@ import com.inari.firefly.physics.animation.entity.EAnimation
 import com.inari.firefly.physics.animation.entity.EntityPropertyAnimation
 import com.inari.firefly.system.component.ComponentSystem
 import com.inari.firefly.system.component.SystemComponent
-import com.inari.util.Consumer
 import com.inari.util.aspect.Aspects
 
 object AnimationSystem : ComponentSystem {
@@ -28,9 +27,9 @@ object AnimationSystem : ComponentSystem {
 
         FFContext.registerListener(EntityActivationEvent, object: EntityActivationEvent.Listener {
             override fun entityActivated(entity: Entity) =
-                activateForEntity(entity)
+                registerEntityAnimations(entity)
             override fun entityDeactivated(entity: Entity) =
-                deactivateForEntity(entity)
+                detachEntityAnimations(entity)
             override fun match(aspects: Aspects): Boolean =
                 EAnimation in aspects
         })
@@ -38,7 +37,7 @@ object AnimationSystem : ComponentSystem {
         FFContext.loadSystem(this)
     }
 
-    fun activateForEntity(entity: Entity) {
+    fun registerEntityAnimations(entity: Entity) {
         val eAnim = entity[EAnimation]
         var i = eAnim.animations.nextSetBit(0)
         while (i >= 0) {
@@ -48,7 +47,7 @@ object AnimationSystem : ComponentSystem {
         }
     }
 
-    fun deactivateForEntity(entity: Entity) {
+    fun detachEntityAnimations(entity: Entity) {
         val eAnim = entity[EAnimation]
         var i = eAnim.animations.nextSetBit(0)
         while (i >= 0) {
