@@ -2,6 +2,7 @@ package com.inari.firefly.physics.animation
 
 import com.inari.firefly.FFApp
 import com.inari.firefly.FFContext
+import com.inari.firefly.component.CompId
 import com.inari.firefly.entity.Entity
 import com.inari.firefly.entity.EntityActivationEvent
 import com.inari.firefly.physics.animation.entity.EAnimation
@@ -37,10 +38,45 @@ object AnimationSystem : ComponentSystem {
         FFContext.loadSystem(this)
     }
 
-    fun registerEntityAnimations(entityId: Int) =
-            registerEntityAnimations(FFContext[Entity, entityId])
+    fun registerEntityAnimation(entityName: String, animationName: String) {
+        val entity = FFContext[Entity, entityName]
+        val eAnim = entity[EAnimation]
+        val animProp: EntityPropertyAnimation = animations.getAs(animationName)
+        eAnim.animations.set(animProp.index)
+        animProp.applyToEntity(entity)
+    }
 
-    fun registerEntityAnimations(entity: Entity) {
+    fun registerEntityAnimation(entityId: CompId, animationId: CompId) =
+            registerEntityAnimation(entityId.index, animationId.index)
+
+    fun registerEntityAnimation(entityId: Int, animationId: Int) {
+        val entity = FFContext[Entity, entityId]
+        val eAnim = entity[EAnimation]
+        val animProp: EntityPropertyAnimation = animations.getAs(animationId)
+        eAnim.animations.set(animationId)
+        animProp.applyToEntity(entity)
+    }
+
+    fun detachEntityAnimation(entityName: String, animationName: String) {
+        val entity = FFContext[Entity, entityName]
+        val eAnim = entity[EAnimation]
+        val animProp: EntityPropertyAnimation = animations.getAs(animationName)
+        eAnim.animations.clear(animProp.index)
+        animProp.detachFromEntity(entity)
+    }
+
+    fun detachEntityAnimation(entityId: CompId, animationId: CompId) =
+            detachEntityAnimation(entityId.index, animationId.index)
+
+    fun detachEntityAnimation(entityId: Int, animationId: Int) {
+        val entity = FFContext[Entity, entityId]
+        val eAnim = entity[EAnimation]
+        val animProp: EntityPropertyAnimation = animations.getAs(animationId)
+        eAnim.animations.clear(animationId)
+        animProp.detachFromEntity(entity)
+    }
+
+    internal fun registerEntityAnimations(entity: Entity) {
         val eAnim = entity[EAnimation]
         var i = eAnim.animations.nextSetBit(0)
         while (i >= 0) {
@@ -50,10 +86,7 @@ object AnimationSystem : ComponentSystem {
         }
     }
 
-    fun detachEntityAnimations(entityId: Int) =
-            detachEntityAnimations(FFContext[Entity, entityId])
-
-    fun detachEntityAnimations(entity: Entity) {
+    internal fun detachEntityAnimations(entity: Entity) {
         val eAnim = entity[EAnimation]
         var i = eAnim.animations.nextSetBit(0)
         while (i >= 0) {
