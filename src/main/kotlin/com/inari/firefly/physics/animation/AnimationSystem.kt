@@ -76,6 +76,15 @@ object AnimationSystem : ComponentSystem {
         animProp.detachFromEntity(entity)
     }
 
+    fun detachEntityAnimations(entityName: String) =
+            detachEntityAnimations(FFContext[Entity, entityName])
+
+    fun detachEntityAnimations(entityId: CompId) =
+            detachEntityAnimations(entityId.index)
+
+    fun detachEntityAnimations(entityId: Int) =
+            detachEntityAnimations(FFContext[Entity, entityId])
+
     internal fun registerEntityAnimations(entity: Entity) {
         val eAnim = entity[EAnimation]
         var i = eAnim.animations.nextSetBit(0)
