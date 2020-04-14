@@ -10,6 +10,7 @@ import com.inari.firefly.external.FFGraphics
 import com.inari.firefly.external.FFInput
 import com.inari.firefly.external.FFTimer
 import com.inari.firefly.system.component.*
+import com.inari.java.types.BitSet
 import com.inari.util.aspect.Aspect
 import com.inari.util.collection.DynArray
 import com.inari.util.event.AspectedEvent
@@ -201,6 +202,15 @@ object FFContext {
         return this
     }
 
+    fun deactivateAll(cType: ComponentType<*>, set: BitSet): FFContext {
+        var i = set.nextSetBit(0)
+        while (i >= 0) {
+            mapper<Component>(cType).deactivate(i)
+            i = set.nextSetBit(i + 1)
+        }
+        return this
+    }
+
     fun deactivate(cType: ComponentType<*>, indexed: Indexed): FFContext {
         mapper<Component>(cType).deactivate(indexed.index)
         return this
@@ -238,6 +248,15 @@ object FFContext {
 
     fun delete(cType: ComponentType<*>, index: Int): FFContext {
         mapper<Component>(cType).delete(index)
+        return this
+    }
+
+    fun deleteAll(cType: ComponentType<*>, set: BitSet): FFContext {
+        var i = set.nextSetBit(0)
+        while (i >= 0) {
+            mapper<Component>(cType).delete(i)
+            i = set.nextSetBit(i + 1)
+        }
         return this
     }
 
