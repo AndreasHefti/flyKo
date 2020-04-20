@@ -89,8 +89,10 @@ object AnimationSystem : ComponentSystem {
         val eAnim = entity[EAnimation]
         var i = eAnim.animations.nextSetBit(0)
         while (i >= 0) {
-            val animProp: EntityPropertyAnimation = animations.getAs(i)
-            animProp.applyToEntity(entity)
+            if (i in animations) {
+                val animProp: EntityPropertyAnimation = animations.getAs(i)
+                animProp.applyToEntity(entity)
+            }
             i = eAnim.animations.nextSetBit(i + 1)
         }
     }
@@ -99,8 +101,10 @@ object AnimationSystem : ComponentSystem {
         val eAnim = entity[EAnimation]
         var i = eAnim.animations.nextSetBit(0)
         while (i >= 0) {
-            val animProp: EntityPropertyAnimation = animations.getAs(i)
-            animProp.detachFromEntity(entity)
+            if (i in animations) {
+                val animProp: EntityPropertyAnimation = animations.getAs(i)
+                animProp.detachFromEntity(entity)
+            }
             i = eAnim.animations.nextSetBit(i + 1)
         }
     }
