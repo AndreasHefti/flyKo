@@ -251,39 +251,67 @@ object FFContext {
         return this
     }
 
+    fun deleteQuietly(cType: ComponentType<*>, index: Int): FFContext {
+        val mapper = mapper<Component>(cType)
+        if (mapper.map.contains(index))
+            mapper.delete(index)
+        return this
+    }
+
     fun deleteAll(cType: ComponentType<*>, set: BitSet): FFContext {
         var i = set.nextSetBit(0)
-        while (i >= 0) {
-            mapper<Component>(cType).delete(i)
-            i = set.nextSetBit(i + 1)
-        }
+        while (i >= 0)
+            delete(cType, i)
         return this
     }
 
-    fun delete(cType: ComponentType<*>, indexed: Indexed): FFContext {
-        mapper<Component>(cType).delete(indexed.index)
+    fun deleteAllQuietly(cType: ComponentType<*>, set: BitSet): FFContext {
+        var i = set.nextSetBit(0)
+        while (i >= 0)
+            deleteQuietly(cType, i)
         return this
     }
 
-    fun delete(id: CompId): FFContext {
-        mapper<Component>(id).delete(id.instanceId)
+    fun delete(cType: ComponentType<*>, indexed: Indexed): FFContext =
+        delete(cType, indexed.index)
+
+    fun deleteQuietly(cType: ComponentType<*>, indexed: Indexed): FFContext =
+        deleteQuietly(cType, indexed.index)
+
+    fun delete(id: CompId): FFContext =
+        delete(id.componentType, id.instanceId)
+
+    fun deleteQuietly(id: CompId): FFContext {
+        if (id != NO_COMP_ID)
+            deleteQuietly(id.componentType, id.instanceId)
         return this
     }
 
-    fun delete(id: CompNameId): FFContext {
-        mapper<Component>(id).delete(id.name)
-        return this
-    }
+    fun delete(id: CompNameId): FFContext =
+        delete(id.componentType, id.name)
+
+    fun deleteQuietly(id: CompNameId): FFContext =
+        deleteQuietly(id.componentType, id.name)
 
     fun delete(cType: ComponentType<*>, name: String): FFContext {
         mapper<Component>(cType).delete(name)
         return this
     }
 
-    fun delete(cType: ComponentType<*>, named: Named): FFContext {
-        mapper<Component>(cType).delete(named.name)
+    fun deleteQuietly(cType: ComponentType<*>, name: String): FFContext {
+        if (name == NO_NAME)
+            return this
+        val mapper = mapper<Component>(cType)
+        if (mapper.contains(name))
+            mapper.delete(name)
         return this
     }
+
+    fun delete(cType: ComponentType<*>, named: Named): FFContext =
+        delete(cType, named.name)
+
+    fun deleteQuietly(cType: ComponentType<*>, named: Named): FFContext =
+        deleteQuietly(cType, named.name)
 
     fun delete(singleton: SingletonComponent<*,*>): FFContext {
         singleton.dispose()
