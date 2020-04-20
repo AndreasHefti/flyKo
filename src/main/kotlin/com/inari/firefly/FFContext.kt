@@ -260,15 +260,19 @@ object FFContext {
 
     fun deleteAll(cType: ComponentType<*>, set: BitSet): FFContext {
         var i = set.nextSetBit(0)
-        while (i >= 0)
+        while (i >= 0) {
             delete(cType, i)
+            i = set.nextSetBit(i + 1)
+        }
         return this
     }
 
     fun deleteAllQuietly(cType: ComponentType<*>, set: BitSet): FFContext {
         var i = set.nextSetBit(0)
-        while (i >= 0)
+        while (i >= 0) {
             deleteQuietly(cType, i)
+            i = set.nextSetBit(i + 1)
+        }
         return this
     }
 
