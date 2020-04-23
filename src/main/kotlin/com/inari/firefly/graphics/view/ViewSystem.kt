@@ -71,7 +71,7 @@ object ViewSystem : ComponentSystem {
 
         updateViewMapping()
 
-        if (view.controllerRef >= 0)
+        if (view.controllerRef >= 0 && view.controllerRef in ControllerSystem.controller)
             ControllerSystem.controller[view.controllerRef]
                 .register(view.componentId)
 
@@ -83,7 +83,7 @@ object ViewSystem : ComponentSystem {
             throw IllegalStateException("Base View cannot be deactivated")
 
         updateViewMapping()
-        if (view.controllerRef >= 0)
+        if (view.controllerRef >= 0 && view.controllerRef in ControllerSystem.controller)
             ControllerSystem.controller[view.controllerRef]
                 .unregister(view.componentId)
 
