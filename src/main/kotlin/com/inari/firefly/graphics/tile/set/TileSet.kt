@@ -58,7 +58,6 @@ class TileSet private constructor() : Composite() {
             }
         }
 
-        loaded = true
     }
 
     override fun activate() {
@@ -182,8 +181,6 @@ class TileSet private constructor() : Composite() {
 
         FFContext.deactivate(TileSet, name)
         FFContext.delete(Asset, name)
-
-        loaded = false
     }
 
     companion object : SystemComponentSubType<Composite, TileSet>(Composite, TileSet::class.java) {
