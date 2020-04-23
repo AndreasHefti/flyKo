@@ -6,17 +6,21 @@ import com.inari.firefly.system.component.SystemComponentType
 abstract class Composite protected constructor() : SystemComponent(Composite::class.java.name) {
 
     var loaded: Boolean = false
-        protected set
+        private set
 
     internal fun systemLoad() {
-        if (!loaded)
+        if (!loaded) {
             load()
+            loaded = true
+        }
     }
     internal fun systemActivate() = activate()
     internal fun systemDeactivate() = deactivate()
     internal fun systemUnload() {
-        if (loaded)
+        if (loaded) {
             unload()
+            loaded = false
+        }
     }
 
     protected abstract fun load()
