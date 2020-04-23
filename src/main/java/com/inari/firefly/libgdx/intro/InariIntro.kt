@@ -21,6 +21,7 @@ object InariIntro {
     private var textureAssetId = NO_COMP_ID
     private var spriteAssetId = NO_COMP_ID
     private var entityId = NO_COMP_ID
+    private var animationId = NO_COMP_ID
 
     private var updateListener = {
         if ( Gdx.input.isKeyPressed( Input.Keys.SPACE ) ||
@@ -59,7 +60,7 @@ object InariIntro {
             }
 
             ff_With(EAnimation) {
-                ff_WithActiveAnimation(EasedProperty) {
+                animationId = ff_WithActiveAnimation(EasedProperty) {
                     ff_Easing = Easing.Type.LINEAR
                     ff_StartValue = 0f
                     ff_EndValue = 1f
@@ -75,10 +76,10 @@ object InariIntro {
 
     private fun dispose() {
         FFContext.disposeListener(FFApp.UpdateEvent, updateListener)
-        FFContext.delete(entityId)
-        FFContext.delete(spriteAssetId)
-        FFContext.delete(textureAssetId)
-
+        FFContext.deleteQuietly(entityId)
+        FFContext.deleteQuietly(spriteAssetId)
+        FFContext.deleteQuietly(textureAssetId)
+        FFContext.deleteQuietly(animationId)
         callback()
     }
 }
