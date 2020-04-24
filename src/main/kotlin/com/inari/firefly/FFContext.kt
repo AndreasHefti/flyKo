@@ -322,13 +322,6 @@ object FFContext {
         return this
     }
 
-    fun deleteAll(cType: ComponentType<*>) {
-        val mapper = mapper<Component>(cType)
-        mapper.deleteAll(TRUE_PREDICATE)
-
-    }
-
-
 
     fun <L> registerListener(event: Event<L>, listener: L): FFContext {
         eventDispatcher.register(event.eventAspect, listener)
