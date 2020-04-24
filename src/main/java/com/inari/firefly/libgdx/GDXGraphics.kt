@@ -433,6 +433,12 @@ object GDXGraphics : FFGraphics {
     }
 
     private fun renderWithShapeRenderer(data: ShapeData, transform: TransformData) {
+
+        getShapeColor(data.color1, SHAPE_COLOR_1)
+        getShapeColor(data.color2 ?: data.color1, SHAPE_COLOR_2)
+        getShapeColor(data.color3 ?: data.color1, SHAPE_COLOR_3)
+        getShapeColor(data.color4 ?: data.color1, SHAPE_COLOR_4)
+
         shapeRenderer.identity()
 
         if (transform.hasScale) {
