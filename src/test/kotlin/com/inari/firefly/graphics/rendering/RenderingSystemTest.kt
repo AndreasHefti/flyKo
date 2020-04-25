@@ -62,7 +62,7 @@ class RenderingSystemTest {
                 "tintColor=[r=1.0,g=1.0,b=1.0,a=1.0], " +
                 "blendMode=NONE, " +
                 "zoom=1.0, " +
-                "fboScaler=4.0), " +
+                "fboScaler=1.0), " +
                 "renderSprite::Sprite(SpriteRenderable(" +
                 "spriteId=1, " +
                 "tintColor=[r=1.0,g=1.0,b=1.0,a=1.0], " +
@@ -76,7 +76,7 @@ class RenderingSystemTest {
                 "tintColor=[r=1.0,g=1.0,b=1.0,a=1.0], " +
                 "blendMode=NONE, " +
                 "zoom=1.0, " +
-                "fboScaler=4.0), " +
+                "fboScaler=1.0), " +
                 "flush]",
             GraphicsMock.log())
     }

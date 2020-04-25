@@ -12,7 +12,7 @@ abstract class ViewData constructor(
     @JvmField var tintColor: RGBColor = RGBColor( 1f, 1f, 1f, 1f ),
     @JvmField var blendMode: BlendMode = BlendMode.NONE,
     @JvmField var zoom: Float = 1.0f,
-    @JvmField var fboScaler: Float = 4.0f
+    @JvmField var fboScaler: Float = 1.0f
 ) {
     abstract val index: Int
     abstract val isBase: Boolean

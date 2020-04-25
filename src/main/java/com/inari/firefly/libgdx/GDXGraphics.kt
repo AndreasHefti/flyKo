@@ -32,6 +32,7 @@ import com.inari.util.geom.Rectangle
 import com.inari.util.graphics.RGBColor
 import org.lwjgl.opengl.GL11
 import org.lwjgl.opengl.GL12
+import java.lang.UnsupportedOperationException
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 
@@ -225,16 +226,15 @@ object GDXGraphics : FFGraphics {
 
 
     override fun renderShape(data: ShapeData, xOffset: Float, yOffset: Float) {
+        if (doRenderWithShapeRenderer(data)) {
+            renderWithShapeRenderer(data, xOffset, yOffset)
+            return
+        }
 
         getShapeColor(data.color1, SHAPE_COLOR_1)
         getShapeColor(data.color2 ?: data.color1, SHAPE_COLOR_2)
         getShapeColor(data.color3 ?: data.color1, SHAPE_COLOR_3)
         getShapeColor(data.color4 ?: data.color1, SHAPE_COLOR_4)
-
-        if (doRenderWithShapeRenderer(data)) {
-            renderWithShapeRenderer(data, xOffset, yOffset)
-            return
-        }
 
         setColorAndBlendMode(data.color1, data.blend)
         setShaderForSpriteBatch(data.shaderRef)
@@ -245,24 +245,7 @@ object GDXGraphics : FFGraphics {
         var index = 0
 
         when (type) {
-            POINT       -> while (index < data.vertices.size)  {
-                val x = data.vertices[index++] + xOffset
-                val y = data.vertices[index++] + yOffset
-                meshBuilder.rect(
-                        x, y, 0.0f,
-                        x, y, 0.0f,
-                        x, y, 0.0f,
-                        x, y, 0.0f,
-                        0f, 0f, 0.0f)
-            }
-            LINE        -> while (index < data.vertices.size) {
-                val x1 = data.vertices[index++] + xOffset
-                val y1 = data.vertices[index++] + yOffset
-                val x2 = data.vertices[index++] + xOffset
-                val y2 = data.vertices[index++] + yOffset
-                meshBuilder.line(x1, y1, 0.0f, x2, y2, 0.0f)
-            }
-            POLYGON     -> meshBuilder.vertex(*data.vertices)
+            POLYGON     -> throw UnsupportedOperationException() //meshBuilder.vertex(*data.vertices)
             RECTANGLE   -> while (index < data.vertices.size) {
                 val x = data.vertices[index++] + xOffset
                 val y = data.vertices[index++] + yOffset
@@ -328,10 +311,12 @@ object GDXGraphics : FFGraphics {
     }
 
     private fun doRenderWithShapeRenderer(data: ShapeData): Boolean =
-            if (data.fill)
-                data.type === POLY_LINE || data.type === ARC || data.type === CURVE
-            else
-                data.type !== LINE && data.type !== POINT
+            data.type === LINE ||
+                    data.type === POINT ||
+                    data.type === POLY_LINE ||
+                    data.type === ARC ||
+                    data.type === CURVE || !data.fill
+
 
     private fun renderWithShapeRenderer(data: ShapeData, xOffset: Float, yOffset: Float) {
         getShapeColor(data.color1, SHAPE_COLOR_1)
@@ -356,7 +341,6 @@ object GDXGraphics : FFGraphics {
         val type = data.type
         val shapeType = when {
             type === POINT  -> ShapeRenderer.ShapeType.Point
-            data.fill       -> ShapeRenderer.ShapeType.Filled
             else            -> ShapeRenderer.ShapeType.Line
         }
         shapeRenderer.begin(shapeType)
@@ -372,7 +356,31 @@ object GDXGraphics : FFGraphics {
 
         var index = 0
         when (data.type) {
-            POLY_LINE   -> shapeRenderer.polyline(vertices)
+            POINT       -> while (index < vertices.size) {
+                shapeRenderer.point(
+                        vertices[index++] + xOffset,
+                        vertices[index++] + yOffset,
+                        0f)
+            }
+            LINE        -> while (index < vertices.size) {
+                shapeRenderer.line(
+                        vertices[index++] + xOffset,
+                        vertices[index++] + yOffset,
+                        vertices[index++] + xOffset,
+                        vertices[index++] + yOffset,
+                        SHAPE_COLOR_1,
+                        SHAPE_COLOR_2)
+            }
+            POLY_LINE   -> {
+                shapeRenderer.translate(xOffset, yOffset, 0f)
+                shapeRenderer.polyline(vertices)
+                shapeRenderer.translate(-xOffset, -yOffset, 0f)
+            }
+            POLYGON     -> {
+                shapeRenderer.translate(xOffset, yOffset, 0f)
+                shapeRenderer.polygon(vertices)
+                shapeRenderer.translate(-xOffset, -yOffset, 0f)
+            }
             RECTANGLE   -> while (index < vertices.size) {
                 shapeRenderer.rect(
                         vertices[index++] + xOffset,
