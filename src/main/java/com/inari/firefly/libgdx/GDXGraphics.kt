@@ -273,6 +273,7 @@ object GDXGraphics : FFGraphics {
                         vector3.set(data.vertices[index++] + xOffset, data.vertices[index++] + yOffset, 0f),
                         SHAPE_COLOR_4)
             }
+            else -> throw java.lang.IllegalStateException()
         }
 
         meshBuilder.draw(spriteBatch)
@@ -433,7 +434,6 @@ object GDXGraphics : FFGraphics {
                         SHAPE_COLOR_3
                 )
             }
-            else        -> {}
         }
 
         shapeRenderer.flush()
