@@ -3,6 +3,7 @@ package com.inari.firefly.physics.animation.easing
 import com.inari.firefly.entity.property.FloatPropertyAccessor
 import com.inari.firefly.physics.animation.Animation
 import com.inari.firefly.physics.animation.FloatAnimation
+import com.inari.firefly.system.component.SystemComponentSubType
 import com.inari.util.geom.Easing
 
 class EasedValue : Animation(), FloatAnimation {
@@ -38,4 +39,8 @@ class EasedValue : Animation(), FloatAnimation {
 
     override fun reset() = control.reset()
     override fun update() = control.update()
+
+    companion object : SystemComponentSubType<Animation, EasedValue>(Animation, EasedValue::class.java) {
+        override fun createEmpty() = EasedValue()
+    }
 }
