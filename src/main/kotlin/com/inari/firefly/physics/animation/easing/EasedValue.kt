@@ -10,13 +10,6 @@ class EasedValue : Animation(), FloatAnimation {
 
     private var control = EasingControl(this)
 
-    init {
-        control.propertyAccessor = object : FloatPropertyAccessor {
-            private var v = 0f
-            override fun set(value: Float) { v = value}
-            override fun get(): Float = v
-        }
-    }
 
     var ff_Easing: Easing.EasingFunctions.EasingFunction
         get() = control.easing
@@ -33,6 +26,9 @@ class EasedValue : Animation(), FloatAnimation {
     var ff_InverseOnLoop: Boolean
         get() = control.inverseOnLoop
         set(value) { control.inverseOnLoop = value }
+    var ff_PropertyAccessor: FloatPropertyAccessor
+        get() = control.propertyAccessor
+        set(value) { control.propertyAccessor = value }
 
     override val value: Float
         get() = control.propertyAccessor?.get() ?: 0f

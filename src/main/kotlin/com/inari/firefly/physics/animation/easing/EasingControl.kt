@@ -12,7 +12,11 @@ internal class EasingControl(
     val animation: Animation
 ) {
 
-    @JvmField  var propertyAccessor: FloatPropertyAccessor? = null
+    @JvmField var propertyAccessor: FloatPropertyAccessor = object : FloatPropertyAccessor {
+        private var v = 0f
+        override fun set(value: Float) { v = value}
+        override fun get(): Float = v
+    }
 
     @JvmField var easing: Easing.EasingFunctions.EasingFunction = Easing.Type.LINEAR
     @JvmField var startValue = 0f
@@ -24,6 +28,15 @@ internal class EasingControl(
     @JvmField var changeInValue = 0f
     @JvmField var runningTime: Long = 0
 
+    internal fun init() {
+        propertyAccessor = object : FloatPropertyAccessor {
+            private var v = 0f
+            override fun set(value: Float) { v = value}
+            override fun get(): Float = v
+        }
+        reset()
+    }
+
     fun reset() {
         runningTime = 0
         changeInValue  = endValue - startValue
@@ -33,7 +46,7 @@ internal class EasingControl(
         } else
             inverse = false
 
-        propertyAccessor?.set(startValue)
+        propertyAccessor.set(startValue)
     }
 
     fun update() {
@@ -61,7 +74,7 @@ internal class EasingControl(
         if (inverse)
             value *= -1
 
-        propertyAccessor?.set(startValue + value)
+        propertyAccessor.set(startValue + value)
     }
 
 }

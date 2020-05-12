@@ -7,7 +7,6 @@ import com.inari.firefly.entity.property.FloatPropertyAccessor
 import com.inari.firefly.physics.animation.Animation
 import com.inari.firefly.physics.animation.FloatAnimation
 import com.inari.firefly.physics.animation.entity.EntityPropertyAnimation
-import com.inari.firefly.physics.animation.timeline.IntTimelineProperty
 import com.inari.firefly.system.component.SystemComponentSubType
 import com.inari.util.geom.Easing
 
@@ -32,7 +31,7 @@ class EasedProperty : EntityPropertyAnimation(), FloatAnimation {
         set(value) { control.inverseOnLoop = value }
 
     override val value: Float
-        get() = control.propertyAccessor?.get() ?: 0f
+        get() = control.propertyAccessor.get()
 
     override fun applyToEntity(entity: Entity) {
         if (propertyRef == NO_PROPERTY_REF)
@@ -42,7 +41,7 @@ class EasedProperty : EntityPropertyAnimation(), FloatAnimation {
     }
 
     override fun detachFromEntity(entity: Entity) {
-        control.propertyAccessor = null
+        control.init()
         reset()
         FFContext.deactivate(this)
     }
