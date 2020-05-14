@@ -46,12 +46,18 @@ class SimpleTextRenderer private constructor() : Renderer() {
                     continue
                 }
 
-                if ( char == ' ' || char.toInt() !in font.charSpriteMap) {
+                if (char == ' ') {
                     renderingTransform.data.position.x += horizontalStep
                     continue
                 }
 
                 textRenderable.spriteId = font.charSpriteMap[char.toInt()]
+
+                if (textRenderable.spriteId < 0) {
+                    renderingTransform.data.position.x += horizontalStep
+                    continue
+                }
+
                 graphics.renderSprite(textRenderable, renderingTransform.data)
                 renderingTransform.data.position.x += horizontalStep
             }
