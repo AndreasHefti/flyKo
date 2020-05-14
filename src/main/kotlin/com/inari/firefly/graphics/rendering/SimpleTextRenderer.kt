@@ -46,7 +46,7 @@ class SimpleTextRenderer private constructor() : Renderer() {
                     continue
                 }
 
-                if ( char == ' ' ) {
+                if ( char == ' ' || char.toInt() !in font.charSpriteMap) {
                     renderingTransform.data.position.x += horizontalStep
                     continue
                 }
