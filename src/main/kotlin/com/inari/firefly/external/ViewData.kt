@@ -11,20 +11,26 @@ abstract class ViewData constructor(
     @JvmField var clearColor: RGBColor = RGBColor( 0f, 0f, 0f, 1f ),
     @JvmField var tintColor: RGBColor = RGBColor( 1f, 1f, 1f, 1f ),
     @JvmField var blendMode: BlendMode = BlendMode.NONE,
+    @JvmField var shaderId: Int = -1,
     @JvmField var zoom: Float = 1.0f,
-    @JvmField var fboScaler: Float = 1.0f
+    @JvmField var fboScale: Float = 1.0f
 ) {
     abstract val index: Int
     abstract val isBase: Boolean
 
     override fun toString(): String {
-        return "ViewData(baseView=$isBase, " +
-            "bounds=$bounds, " +
-            "worldPosition=$worldPosition, " +
-            "clearColor=$clearColor, " +
-            "tintColor=$tintColor, " +
-            "blendMode=$blendMode, " +
-            "zoom=$zoom, " +
-            "fboScaler=$fboScaler)"
+        return "ViewData(" +
+                "bounds=$bounds, " +
+                "worldPosition=$worldPosition, " +
+                "clearColor=$clearColor, " +
+                "tintColor=$tintColor, " +
+                "blendMode=$blendMode, " +
+                "shaderId=$shaderId, " +
+                "zoom=$zoom, " +
+                "fboScale=$fboScale, " +
+                "index=$index, " +
+                "isBase=$isBase)"
     }
+
+
 }

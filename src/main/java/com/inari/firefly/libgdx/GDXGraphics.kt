@@ -39,10 +39,35 @@ import java.nio.ByteOrder
 
 object GDXGraphics : FFGraphics {
 
+    private const val DEFAULT_VERTEX_SHADER =
+            "attribute vec4 a_position;" +
+             "attribute vec4 a_color;" +
+             "attribute vec2 a_texCoord0;" +
+             "uniform mat4 u_projTrans;" +
+             "varying vec4 v_color;" +
+             "varying vec2 v_texCoords;" +
+             "void main() {" +
+             "    v_color = a_color;" +
+             "    v_texCoords = a_texCoord0;" +
+             "    gl_Position = u_projTrans * a_position;" +
+             "}"
+
+    private const val DEFAULT_FRAGMENT_SHADER =
+            "#ifdef GL_ES" +
+            "precision mediump float;" +
+            "#endif" +
+            "varying vec4 v_color;" +
+            "varying vec2 v_texCoords;" +
+            "uniform sampler2D u_texture;" +
+            "void main()" +
+            "{" +
+            "  gl_FragColor = v_color * texture2D(u_texture, v_texCoords);" +
+            "}"
+
     private val textures: DynArray<Texture> = DynArray.of(100, 50)
     private val sprites: DynArray<TextureRegion> = DynArray.of(200, 300)
     private val viewports: DynArray<ViewportData> = DynArray.of(20, 10)
-    private val shaders: DynArray<ShaderProgram> = DynArray.of(20, 10)
+    private val shaderPrograms: DynArray<ShaderProgram> = DynArray.of(20, 10)
 
     private val spriteBatch = PolygonSpriteBatch()
     private val meshBuilder = PolygonShapeDrawer()
@@ -55,8 +80,6 @@ object GDXGraphics : FFGraphics {
     private var activeShaderId = -1
     private var activeBlend = BlendMode.NONE
     private var activeShapeShaderId = -1
-
-
 
     private val SHAPE_COLOR_1 = Color()
     private val SHAPE_COLOR_2 = Color()
@@ -74,6 +97,7 @@ object GDXGraphics : FFGraphics {
         get() = Gdx.graphics.width
 
     init {
+        //ShaderProgram.pedantic = false
         FFContext.registerListener(ViewEvent, object : ViewEvent.Listener {
             override fun invoke(id: CompId, viewPort: ViewData, type: ViewEvent.Type) {
                 when (type) {
@@ -149,20 +173,24 @@ object GDXGraphics : FFGraphics {
         var fragmentShader = data.fragmentShaderProgram
 
         if (vertexShader === NO_PROGRAM) {
-            try {
-                vertexShader = Gdx.files.internal(data.vertexShaderResourceName).readString()
+            // try to load from resource
+            vertexShader = try {
+                Gdx.files.internal(data.vertexShaderResourceName).readString()
             } catch (e: Exception) {
-                throw RuntimeException("Failed to load vertex shader from resource: " + data.vertexShaderResourceName, e)
+                System.err.println("Failed to load vertex shader from resource: ${data.vertexShaderResourceName}")
+                println("Use default vertex shader")
+                DEFAULT_VERTEX_SHADER
             }
         }
 
         if (fragmentShader === NO_PROGRAM) {
-            try {
-                fragmentShader = Gdx.files.internal(data.fragmentShaderResourceName).readString()
+            fragmentShader = try {
+                Gdx.files.internal(data.fragmentShaderResourceName).readString()
             } catch (e: Exception) {
-                throw RuntimeException("Failed to load fragment shader from resource: " + data.fragmentShaderResourceName, e)
+                System.err.println("Failed to load fragment shader from resource: ${data.fragmentShaderResourceName}")
+                println("Use default fragment shader")
+                DEFAULT_FRAGMENT_SHADER
             }
-
         }
 
         val shaderProgram = ShaderProgram(vertexShader, fragmentShader)
@@ -173,11 +201,11 @@ object GDXGraphics : FFGraphics {
             throw RuntimeException("ShaderData with name: " + data.name + " failed to compile:" + shaderProgram.log)
         }
 
-        return shaders.add(shaderProgram)
+        return shaderPrograms.add(shaderProgram)
     }
 
     override fun disposeShader(shaderId: Int) {
-        shaders.remove( shaderId )?.dispose()
+        shaderPrograms.remove( shaderId )?.dispose()
     }
 
     override fun startRendering(view: ViewData, clear: Boolean) {
@@ -329,7 +357,7 @@ object GDXGraphics : FFGraphics {
             shapeRenderer = if (data.shaderRef < 0)
                 ShapeRenderer()
             else
-                ShapeRenderer(1000, shaders[data.shaderRef])
+                ShapeRenderer(1000, shaderPrograms[data.shaderRef])
         activeShapeShaderId = data.shaderRef
 
         shapeRenderer.color = SHAPE_COLOR_1
@@ -483,6 +511,7 @@ object GDXGraphics : FFGraphics {
                 val viewport = viewports[virtualView.index] ?: continue
                 val bounds = virtualView.bounds
                 setColorAndBlendMode(virtualView.tintColor, virtualView.blendMode)
+                setShaderForSpriteBatch(virtualView.shaderId)
 
                 spriteBatch.draw(
                     viewport.fboTexture,
@@ -537,11 +566,11 @@ object GDXGraphics : FFGraphics {
             viewPort.bounds.width.toFloat(),
             viewPort.bounds.height.toFloat()
         )
-        val fboScaler = viewPort.fboScaler
+        val fboScale = viewPort.fboScale
         val frameBuffer = FrameBuffer(
             Pixmap.Format.RGBA8888,
-            (viewPort.bounds.width * fboScaler).toInt(),
-            (viewPort.bounds.height * fboScaler).toInt(),
+            (viewPort.bounds.width * fboScale).toInt(),
+            (viewPort.bounds.height * fboScale).toInt(),
             false
         )
         val textureRegion = TextureRegion(frameBuffer.colorBufferTexture)
@@ -614,7 +643,7 @@ object GDXGraphics : FFGraphics {
                 spriteBatch.shader = null
                 activeShaderId = -1
             } else {
-                val shaderProgram = shaders[shaderId]
+                val shaderProgram = shaderPrograms[shaderId]
                 spriteBatch.shader = shaderProgram
                 activeShaderId = shaderId
             }
@@ -635,11 +664,11 @@ object GDXGraphics : FFGraphics {
                         VertexAttribute.TexCoords(0)),
                     GL20.GL_TRIANGLES)
 
-            val pixmap = Pixmap(1, 1, Pixmap.Format.RGBA8888)
-            pixmap.setColor(1f, 1f, 1f, 1f)
-            pixmap.fill()
-            texture = Texture(pixmap)
-            pixmap.dispose()
+            val pixMap = Pixmap(1, 1, Pixmap.Format.RGBA8888)
+            pixMap.setColor(1f, 1f, 1f, 1f)
+            pixMap.fill()
+            texture = Texture(pixMap)
+            pixMap.dispose()
         }
         override fun end(): Mesh {
             throw GdxRuntimeException("Not supported!")

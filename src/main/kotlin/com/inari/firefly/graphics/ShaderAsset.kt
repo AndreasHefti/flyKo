@@ -19,22 +19,22 @@ class ShaderAsset private constructor() : Asset() {
             data.name = value
         }
 
-    var ff_VertexShaderName: String
+    var ff_VertShaderResource: String
         get() = data.vertexShaderResourceName
-        set(value) {data.vertexShaderResourceName = setIfNotInitialized(value, "ff_VertexShaderName")}
-    var ff_VertexShaderProgr: String
+        set(value) {data.vertexShaderResourceName = setIfNotInitialized(value, "ff_VertShaderResource")}
+    var ff_VertShaderProgram: String
         get() = data.vertexShaderProgram
-        set(value) {data.vertexShaderProgram = setIfNotInitialized(value, "ff_VertexShaderProgr")}
-    var ff_FragmentShaderName: String
+        set(value) {data.vertexShaderProgram = setIfNotInitialized(value, "ff_VertShaderProgram")}
+    var ff_FragShaderResource: String
         get() = data.fragmentShaderResourceName
-        set(value) {data.fragmentShaderResourceName = setIfNotInitialized(value, "ff_FragmentShaderName")}
-    var ff_FragmentShaderProgr: String
+        set(value) {data.fragmentShaderResourceName = setIfNotInitialized(value, "ff_FragShaderResource")}
+    var ff_FragShaderProgram: String
         get() = data.fragmentShaderProgram
-        set(value) {data.fragmentShaderProgram = setIfNotInitialized(value, "ff_FragmentShaderProgr")}
+        set(value) {data.fragmentShaderProgram = setIfNotInitialized(value, "ff_FragShaderProgram")}
 
     override fun load() {
         if (shaderId < 0)
-            FFContext.graphics.createShader(data)
+            shaderId = FFContext.graphics.createShader(data)
     }
 
     override fun unload() {

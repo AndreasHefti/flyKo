@@ -1,10 +1,10 @@
 package com.inari.firefly.graphics.view
 
+import com.inari.firefly.asset.AssetInstanceRefResolver
 import com.inari.firefly.component.CompId
 import com.inari.util.geom.PositionF
 import com.inari.firefly.component.ComponentRefResolver
 import com.inari.firefly.control.Controller
-import com.inari.firefly.control.SingleComponentController
 import com.inari.firefly.graphics.BlendMode
 import com.inari.firefly.system.component.SystemComponent
 import com.inari.firefly.external.ViewData
@@ -40,12 +40,15 @@ class View private constructor (
     var ff_BlendMode: BlendMode
         get() = data.blendMode
         set(value) { data.blendMode = value }
+    val ff_Shader = AssetInstanceRefResolver(
+        { index -> data.shaderId = index },
+        { data.shaderId })
     var ff_Zoom: Float
         get() = data.zoom
         set(value) { data.zoom = value }
-    var ff_FboScaler: Float
-        get() = data.fboScaler
-        set(value) { data.fboScaler = value }
+    var ff_FboScale: Float
+        get() = data.fboScale
+        set(value) { data.fboScale = value }
     var ff_Controller =
         ComponentRefResolver(Controller) { index-> controllerRef = setIfNotInitialized(index, "controllerRef") }
     fun <C : Controller> ff_WithController(builder: SystemComponentBuilder<C>, configure: (C.() -> Unit)): CompId {
@@ -67,8 +70,9 @@ class View private constructor (
             "clearColor=${data.clearColor}, " +
             "tintColor=${data.tintColor}, " +
             "blendMode=${data.blendMode}, " +
+            "shaderId=${data.shaderId}, " +
             "zoom=${data.zoom}, " +
-            "fboScaler=${data.fboScaler})"
+            "fboScale=${data.fboScale})"
     }
 
     override fun componentType() = Companion

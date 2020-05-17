@@ -29,7 +29,7 @@ class ShapeAndSprite : GDXAppAdapter()  {
         View.buildAndActivate {
             ff_Name = "TestView"
             ff_Bounds(10, 10, 800, 600)
-            ff_FboScaler = 1.0f
+            ff_FboScale = 1.0f
         }
 
         Entity.buildAndActivate {
