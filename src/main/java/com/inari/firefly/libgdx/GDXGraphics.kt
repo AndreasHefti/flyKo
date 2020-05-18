@@ -23,11 +23,15 @@ import com.inari.firefly.external.*
 import com.inari.firefly.external.ShapeType.*
 import com.inari.firefly.external.TextureData
 import com.inari.firefly.graphics.BlendMode
+import com.inari.firefly.graphics.TextureAsset
+import com.inari.firefly.graphics.view.View
 import com.inari.firefly.graphics.view.ViewEvent
 import com.inari.firefly.libgdx.filter.ColorFilteredTextureData
 import com.inari.util.collection.DynArray
 import com.inari.util.collection.DynArrayRO
 import com.inari.util.geom.GeomUtils
+import com.inari.util.geom.Position
+import com.inari.util.geom.PositionF
 import com.inari.util.geom.Rectangle
 import com.inari.util.graphics.RGBColor
 import org.lwjgl.opengl.GL11
@@ -67,7 +71,8 @@ object GDXGraphics : FFGraphics {
     private val textures: DynArray<Texture> = DynArray.of(100, 50)
     private val sprites: DynArray<TextureRegion> = DynArray.of(200, 300)
     private val viewports: DynArray<ViewportData> = DynArray.of(20, 10)
-    private val shaderPrograms: DynArray<ShaderProgram> = DynArray.of(20, 10)
+    private val shaderPrograms: DynArray<ShaderInitData> = DynArray.of(20, 10)
+    private val shaderInit: GDXShaderInitAdapter = GDXShaderInitAdapter()
 
     private val spriteBatch = PolygonSpriteBatch()
     private val meshBuilder = PolygonShapeDrawer()
@@ -201,11 +206,11 @@ object GDXGraphics : FFGraphics {
             throw RuntimeException("ShaderData with name: " + data.name + " failed to compile:" + shaderProgram.log)
         }
 
-        return shaderPrograms.add(shaderProgram)
+        return shaderPrograms.add(ShaderInitData(data.shaderInit, shaderProgram))
     }
 
     override fun disposeShader(shaderId: Int) {
-        shaderPrograms.remove( shaderId )?.dispose()
+        shaderPrograms.remove( shaderId )?.program?.dispose()
     }
 
     override fun startRendering(view: ViewData, clear: Boolean) {
@@ -357,7 +362,7 @@ object GDXGraphics : FFGraphics {
             shapeRenderer = if (data.shaderRef < 0)
                 ShapeRenderer()
             else
-                ShapeRenderer(1000, shaderPrograms[data.shaderRef])
+                ShapeRenderer(1000, shaderPrograms[data.shaderRef]?.program)
         activeShapeShaderId = data.shaderRef
 
         shapeRenderer.color = SHAPE_COLOR_1
@@ -643,9 +648,13 @@ object GDXGraphics : FFGraphics {
                 spriteBatch.shader = null
                 activeShaderId = -1
             } else {
-                val shaderProgram = shaderPrograms[shaderId]
-                spriteBatch.shader = shaderProgram
-                activeShaderId = shaderId
+                val shaderData = shaderPrograms[shaderId]
+                if (shaderData != null) {
+                    spriteBatch.shader = shaderData.program
+                    activeShaderId = shaderId
+                    shaderInit.shaderId = shaderId
+                    shaderData.init.invoke(shaderInit)
+                }
             }
         }
     }
@@ -681,6 +690,90 @@ object GDXGraphics : FFGraphics {
         fun draw(batch: PolygonSpriteBatch) {
             batch.draw(texture, vertices, 0, numVertices * floatsPerVertex, indices, 0, numIndices)
             clear()
+        }
+    }
+
+    private class ShaderInitData (
+            internal val init: ShaderInit,
+            internal val program: ShaderProgram
+    )
+
+    private class GDXShaderInitAdapter : ShaderInitAdapter {
+
+        internal var shaderId: Int = -1
+
+        override fun setTexture(name: String, textureName: String) {
+            if (shaderId < 0)
+                return
+
+            val texture = FFContext[TextureAsset, textureName]
+            setTexture(name, texture.instanceId)
+        }
+
+        override fun setTexture(name: String, textureId: CompId) {
+            if (shaderId < 0)
+                return
+
+            val texture = FFContext[TextureAsset, textureId]
+            setTexture(name, texture.instanceId)
+        }
+
+        override fun setViewTexture(name: String, viewName: String) {
+            if (shaderId < 0)
+                return
+
+            val view = FFContext[View, viewName]
+            val viewport = viewports[view.index]
+            if (viewport != null)
+                setTexture(name, viewport.fboTexture?.texture)
+        }
+
+        override fun setViewTexture(name: String, viewId: CompId) {
+            if (shaderId < 0)
+                return
+
+            val view = FFContext[View, viewId]
+            val viewport = viewports[view.index]
+            if (viewport != null)
+                setTexture(name, viewport.fboTexture?.texture)
+        }
+
+        override fun setUniformVec2(name: String, position: PositionF) {
+            if (shaderId < 0)
+                return
+
+            shaderPrograms[shaderId]?.program?.setUniformf(name, position.x, position.y)
+        }
+
+        override fun setUniformVec2(name: String, position: Position) {
+            if (shaderId < 0)
+                return
+
+            shaderPrograms[shaderId]?.program?.setUniformf(
+                    name,
+                    position.x.toFloat(),
+                    position.y.toFloat())
+        }
+
+        override fun setUniformColorVec4(name: String, color: RGBColor) {
+            if (shaderId < 0)
+                return
+
+            shaderPrograms[shaderId]?.program?.setUniformf(
+                    name, color.r, color.g, color.b, color.a)
+        }
+
+        private fun setTexture(name: String, textureId: Int) =
+                setTexture(name, textures[textureId])
+
+        private fun setTexture(name: String, texture: Texture?) {
+            val shaderData = shaderPrograms[shaderId]
+            if (texture != null && shaderData != null) {
+                Gdx.graphics.gL20.glActiveTexture(GL20.GL_TEXTURE1)
+                texture.bind(1)
+                shaderData.program.setUniformi(name, 1)
+                Gdx.graphics.gL20.glActiveTexture(GL20.GL_TEXTURE0)
+            }
         }
     }
 }

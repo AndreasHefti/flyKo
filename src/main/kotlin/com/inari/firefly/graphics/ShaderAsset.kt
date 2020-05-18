@@ -3,6 +3,7 @@ package com.inari.firefly.graphics
 import com.inari.firefly.FFContext
 import com.inari.firefly.asset.Asset
 import com.inari.firefly.external.ShaderData
+import com.inari.firefly.external.ShaderInit
 import com.inari.firefly.system.component.SystemComponentSubType
 
 class ShaderAsset private constructor() : Asset() {
@@ -31,6 +32,9 @@ class ShaderAsset private constructor() : Asset() {
     var ff_FragShaderProgram: String
         get() = data.fragmentShaderProgram
         set(value) {data.fragmentShaderProgram = setIfNotInitialized(value, "ff_FragShaderProgram")}
+    var ff_ShaderInit: ShaderInit
+        get() = data.shaderInit
+        set(value) {data.shaderInit = setIfNotInitialized(value, "ff_ShaderInit")}
 
     override fun load() {
         if (shaderId < 0)

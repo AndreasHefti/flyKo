@@ -20,14 +20,19 @@ class SimpleShaderTest : GDXAppAdapter() {
 
 
         TextureAsset.build {
-            ff_Name = "TEST"
+            ff_Name = "BASE_TEXTURE"
             ff_ResourceName = "firefly/inari.png"
+        }
+
+        TextureAsset.buildAndActivate {
+            ff_Name = "ALPHA_MASK"
+            ff_ResourceName = "firefly/alphaMaskCircle.png"
         }
 
         SpriteAsset.buildAndActivate {
             ff_Name = "TestSprite"
-            ff_Texture("TEST")
-            ff_TextureRegion(0,0,200,100)
+            ff_Texture("BASE_TEXTURE")
+            ff_TextureRegion(0,0,100,100)
         }
 
         ShaderAsset.buildAndActivate {
@@ -39,12 +44,16 @@ class SimpleShaderTest : GDXAppAdapter() {
                     "varying vec4 v_color;\n" +
                     "varying vec2 v_texCoords;\n" +
                     "uniform sampler2D u_texture;\n" +
+                    "uniform sampler2D u_textureMask;\n" +
                     "\n" +
                     "void main() {\n" +
                     "    vec4 color = texture2D(u_texture, v_texCoords);\n" +
-                    "    color.rgb = 1.0 - color.rgb;\n" +
+                    "    color.a = texture2D(u_textureMask, v_texCoords).r;\n" +
                     "    gl_FragColor = v_color * color;\n" +
                     "}"
+            ff_ShaderInit = { shaderInit ->
+                shaderInit.setTexture("u_textureMask", "ALPHA_MASK")
+            }
         }
 
         Entity.buildAndActivate {
