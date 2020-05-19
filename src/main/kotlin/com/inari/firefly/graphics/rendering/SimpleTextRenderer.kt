@@ -41,12 +41,12 @@ class SimpleTextRenderer private constructor() : Renderer() {
 
             val horizontalStep = (font.charWidth + font.charSpace) * transform.data.scale.dx
             val verticalStep = (font.charHeight + font.lineSpace) * transform.data.scale.dy
-
+            val newLinePos = transformCollector.data.position.x
             var j = 0
             while (j < chars.length) {
                 val char = chars[j++]
                 if (char == '\n') {
-                    transformCollector.data.position.x = transform.data.position.x
+                    transformCollector.data.position.x = newLinePos
                     transformCollector.data.position.y += verticalStep
                     continue
                 }
