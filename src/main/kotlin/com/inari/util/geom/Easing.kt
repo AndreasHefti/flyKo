@@ -32,7 +32,8 @@ interface Easing {
         CIRC_IN_OUT(EasingFunctions.circleInOut),
         BACK_IN(EasingFunctions.backIn()),
         BACK_OUT(EasingFunctions.backOut()),
-        BACK_IN_OUT(EasingFunctions.backInOut())
+        BONCE_IN(EasingFunctions.bonceIn()),
+        BONCE_OUT(EasingFunctions.bonceOut())
         ;
 
         override operator fun invoke(t: Float): Float = func(t)
@@ -168,17 +169,17 @@ interface Easing {
 
         }
 
-        fun backInOut(backFactor: Float = 1.70158f) = object : EasingFunction {
-            override operator fun invoke(t: Float): Float {
-                val tt = t * 2f
-                return if (tt < 1f) {
-                    t * ((backFactor + 1f) * t - backFactor) / 2f
-                } else {
-                    val ttt = tt - 2f
-                    (ttt * ttt * ((backFactor + 1f) * ttt + backFactor) + 2f) / 2f
-                }
-            }
-        }
+//        fun backInOut(backFactor: Float = 1.70158f) = object : EasingFunction {
+//            override operator fun invoke(t: Float): Float {
+//                val tt = t * 2f
+//                return if (tt < 1f) {
+//                    t * ((backFactor + 1f) * t - backFactor) / 2f
+//                } else {
+//                    val ttt = tt - 2f
+//                    (ttt * ttt * ((backFactor + 1f) * ttt + backFactor) + 2f) / 2f
+//                }
+//            }
+//        }
 
         fun bonceIn(
             b1: Float = 4f / 11f,
@@ -228,26 +229,26 @@ interface Easing {
             }
         }
 
-        fun bonceInOut(
-            b1: Float = 4f / 11f,
-            b2: Float = 6f / 11f,
-            b3: Float = 8f / 11f,
-            b4: Float = 3f / 4f,
-            b5: Float = 9f / 11f,
-            b6: Float = 10f / 11f,
-            b7: Float = 15f / 16f,
-            b8: Float = 21f / 22f,
-            b9: Float = 63 / 64f
-        ) = object : EasingFunction {
-            val bounceOut = bonceOut(b1, b2, b3, b4, b5, b6, b7, b8, b9)
-            override operator fun invoke(t: Float): Float {
-                val tt = t * 2f
-                return if (tt < 1)
-                    (1f - bounceOut(1f - t)) / 2f
-                else
-                    (bounceOut(t - 1f) + 1f) / 2f
-            }
-        }
+//        fun bonceInOut(
+//            b1: Float = 4f / 11f,
+//            b2: Float = 6f / 11f,
+//            b3: Float = 8f / 11f,
+//            b4: Float = 3f / 4f,
+//            b5: Float = 9f / 11f,
+//            b6: Float = 10f / 11f,
+//            b7: Float = 15f / 16f,
+//            b8: Float = 21f / 22f,
+//            b9: Float = 63 / 64f
+//        ) = object : EasingFunction {
+//            val bounceOut = bonceOut(b1, b2, b3, b4, b5, b6, b7, b8, b9)
+//            override operator fun invoke(t: Float): Float {
+//                val tt = t * 2f
+//                return if (tt < 1)
+//                    (1f - bounceOut(1f - t)) / 2f
+//                else
+//                    (bounceOut(t - 1f) + 1f) / 2f
+//            }
+//        }
 
 
         interface EasingFunction {

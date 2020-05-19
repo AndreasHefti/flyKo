@@ -85,7 +85,7 @@ class EasingTest2 : GDXAppAdapter() {
                 val config = LwjglApplicationConfiguration()
                 config.resizable = true
                 config.width = 800
-                config.height = 800
+                config.height = 900
                 LwjglApplication(EasingTest2(), config)
             } catch (t: Throwable) {
                 t.printStackTrace()
