@@ -29,7 +29,11 @@ interface Easing {
         SIN_IN_OUT(EasingFunctions.sinInOut),
         CIRC_IN(EasingFunctions.circleIn),
         CIRC_OUT(EasingFunctions.circleOut),
-        CIRC_IN_OUT(EasingFunctions.circleInOut);
+        CIRC_IN_OUT(EasingFunctions.circleInOut),
+        BACK_IN(EasingFunctions.backIn()),
+        BACK_OUT(EasingFunctions.backOut()),
+        BACK_IN_OUT(EasingFunctions.backInOut())
+        ;
 
         override operator fun invoke(t: Float): Float = func(t)
     }
