@@ -15,7 +15,6 @@
  */
 package com.inari.firefly.external
 
-
 interface FFInput {
 
     val xpos: Int
@@ -63,5 +62,14 @@ interface FFInput {
     fun typed(buttonType: ButtonType): Boolean
 
     fun isPressed(buttonType: ButtonType): Boolean
+
+    fun listenKeyDown(keyDown: (Int) -> Unit)
+    fun stopListenKeyDown()
+
+    fun listenKeyTyped(keyTyped: (Char) -> Unit)
+    fun stopListenKeyTyped()
+
+    fun listenKeyUp(keyUp: (Int) -> Unit)
+    fun stopListenKeyUp()
 
 }
