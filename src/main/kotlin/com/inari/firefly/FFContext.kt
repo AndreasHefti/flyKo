@@ -211,6 +211,13 @@ object FFContext {
         return this
     }
 
+    fun deactivateAll(list: DynArray<CompId>): FFContext {
+        val it = list.iterator()
+        while (it.hasNext())
+            deactivate(it.next())
+        return this
+    }
+
     fun deactivate(cType: ComponentType<*>, indexed: Indexed): FFContext {
         mapper<Component>(cType).deactivate(indexed.index)
         return this
@@ -276,14 +283,14 @@ object FFContext {
         return this
     }
 
-    fun deleteAll(cType: ComponentType<*>, list: DynArray<CompId>): FFContext {
+    fun deleteAll(list: DynArray<CompId>): FFContext {
         val it = list.iterator()
         while (it.hasNext())
             delete(it.next())
         return this
     }
 
-    fun deleteAllQuietly(cType: ComponentType<*>, list: DynArray<CompId>): FFContext {
+    fun deleteAllQuietly(list: DynArray<CompId>): FFContext {
         val it = list.iterator()
         while (it.hasNext())
             deleteQuietly(it.next())
