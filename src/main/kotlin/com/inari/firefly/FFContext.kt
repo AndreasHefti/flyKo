@@ -276,6 +276,20 @@ object FFContext {
         return this
     }
 
+    fun deleteAll(cType: ComponentType<*>, list: DynArray<CompId>): FFContext {
+        val it = list.iterator()
+        while (it.hasNext())
+            delete(it.next())
+        return this
+    }
+
+    fun deleteAllQuietly(cType: ComponentType<*>, list: DynArray<CompId>): FFContext {
+        val it = list.iterator()
+        while (it.hasNext())
+            deleteQuietly(it.next())
+        return this
+    }
+
     fun delete(cType: ComponentType<*>, indexed: Indexed): FFContext =
         delete(cType, indexed.index)
 
