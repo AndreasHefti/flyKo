@@ -24,6 +24,30 @@ object InputMock : FFInput {
         return false
     }
 
+    override fun listenKeyDown(keyDown: (Int) -> Unit) {
+        TODO("Not yet implemented")
+    }
+
+    override fun stopListenKeyDown() {
+        TODO("Not yet implemented")
+    }
+
+    override fun listenKeyTyped(keyTyped: (Char) -> Unit) {
+        TODO("Not yet implemented")
+    }
+
+    override fun stopListenKeyTyped() {
+        TODO("Not yet implemented")
+    }
+
+    override fun listenKeyUp(keyUp: (Int) -> Unit) {
+        TODO("Not yet implemented")
+    }
+
+    override fun stopListenKeyUp() {
+        TODO("Not yet implemented")
+    }
+
     override fun typed(buttonType: FFInput.ButtonType): Boolean {
         return false
     }

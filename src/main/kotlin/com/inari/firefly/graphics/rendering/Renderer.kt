@@ -3,7 +3,9 @@ package com.inari.firefly.graphics.rendering
 import com.inari.util.geom.PositionF
 import com.inari.firefly.TRUE_PREDICATE
 import com.inari.firefly.component.ComponentType
+import com.inari.firefly.entity.EChild
 import com.inari.firefly.entity.Entity
+import com.inari.firefly.entity.EntitySystem
 import com.inari.firefly.external.TransformData
 import com.inari.firefly.graphics.ETransform
 import com.inari.firefly.graphics.view.ViewLayerAware
@@ -53,6 +55,17 @@ abstract class Renderer protected constructor(
         val result = entities[viewIndex]?.get(layerIndex)
         return if (result != null && !result.isEmpty) result
             else null
+    }
+
+    protected fun collectTransformData(parentId: Int, transformCollector: TransformDataCollector) {
+        if (parentId < 0)
+            return
+
+        val parent = EntitySystem[parentId]
+        val parentTransform = parent[ETransform]
+        transformCollector + parentTransform.data
+        if (EChild in parent.aspects)
+            collectTransformData(parent[EChild].parent, transformCollector)
     }
 
     private fun forceGet(viewLayer: ViewLayerAware): DynArray<Entity>? =

@@ -1,8 +1,10 @@
 package com.inari.firefly.graphics.rendering
 
 import com.inari.firefly.FFContext
+import com.inari.firefly.entity.EChild
 import com.inari.firefly.entity.Entity
 import com.inari.firefly.entity.EntityComponent
+import com.inari.firefly.entity.EntitySystem
 import com.inari.firefly.external.SpriteRenderable
 import com.inari.firefly.graphics.ETransform
 import com.inari.firefly.graphics.text.EText
@@ -33,7 +35,10 @@ class SimpleTextRenderer private constructor() : Renderer() {
             textRenderable.shaderId = text.shaderRef
             textRenderable.tintColor(text.tint)
             textRenderable.blendMode = text.blend
-            renderingTransform(transform.data)
+            transformCollector(transform.data)
+            if (EChild in entity.aspects)
+                collectTransformData(entity[EChild].parent, transformCollector)
+
             val horizontalStep = (font.charWidth + font.charSpace) * transform.data.scale.dx
             val verticalStep = (font.charHeight + font.lineSpace) * transform.data.scale.dy
 
@@ -41,30 +46,29 @@ class SimpleTextRenderer private constructor() : Renderer() {
             while (j < chars.length) {
                 val char = chars[j++]
                 if (char == '\n') {
-                    renderingTransform.data.position.x = transform.data.position.x
-                    renderingTransform.data.position.y += verticalStep
+                    transformCollector.data.position.x = transform.data.position.x
+                    transformCollector.data.position.y += verticalStep
                     continue
                 }
 
                 if (char == ' ') {
-                    renderingTransform.data.position.x += horizontalStep
+                    transformCollector.data.position.x += horizontalStep
                     continue
                 }
 
                 textRenderable.spriteId = font.charSpriteMap[char.toInt()]
 
                 if (textRenderable.spriteId < 0) {
-                    renderingTransform.data.position.x += horizontalStep
+                    transformCollector.data.position.x += horizontalStep
                     continue
                 }
 
-                graphics.renderSprite(textRenderable, renderingTransform.data)
-                renderingTransform.data.position.x += horizontalStep
+                graphics.renderSprite(textRenderable, transformCollector.data)
+                transformCollector.data.position.x += horizontalStep
             }
         }
     }
 
-    private val renderingTransform = ExactTransformDataCollector()
     private val textRenderable = SpriteRenderable()
 
     companion object : SingletonComponent<Renderer, SimpleTextRenderer>(Renderer, SimpleTextRenderer::class.java) {

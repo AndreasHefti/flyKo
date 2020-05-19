@@ -36,17 +36,6 @@ class SpriteGroupRenderer private constructor() : Renderer(
         }
     }
 
-    private fun collectTransformData(parentId: Int, transformCollector: TransformDataCollector) {
-        if (parentId < 0)
-            return
-
-        val parent = EntitySystem[parentId]
-        val parentTransform = parent[ETransform]
-        transformCollector + parentTransform.data
-        if (EChild in parent.aspects)
-            collectTransformData(parent[EChild].parent, transformCollector)
-    }
-
     companion object : SingletonComponent<Renderer, SpriteGroupRenderer>(Renderer, SpriteGroupRenderer::class.java) {
         private val COMPARATOR = Comparator<Entity?> { e1, e2 ->
             if (e1 == null && e2 == null)
