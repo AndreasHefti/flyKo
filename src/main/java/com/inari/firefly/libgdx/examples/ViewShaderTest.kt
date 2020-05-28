@@ -1,7 +1,7 @@
 package com.inari.firefly.libgdx.examples
 
-import com.badlogic.gdx.backends.lwjgl.LwjglApplication
-import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration
 import com.inari.firefly.entity.Entity
 import com.inari.firefly.graphics.ETransform
 import com.inari.firefly.graphics.ShaderAsset
@@ -66,12 +66,10 @@ class ViewShaderTest : GDXAppAdapter() {
 
 fun main(args: Array<String>) {
     try {
-        val config = LwjglApplicationConfiguration()
-        config.resizable = false
-        config.width = 704
-        config.height = 480
-        config.fullscreen = false
-        LwjglApplication(ViewShaderTest(), config)
+        val config = Lwjgl3ApplicationConfiguration()
+        config.setResizable(true)
+        config.setWindowedMode(800, 600)
+        Lwjgl3Application(ViewShaderTest(), config)
     } catch (t: Throwable) {
         t.printStackTrace()
     }

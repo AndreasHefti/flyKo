@@ -81,7 +81,7 @@ abstract class GDXAppAdapter : ApplicationAdapter() {
         val targetRatio = height.toFloat() / width
         val sourceRatio = baseHeight.toFloat() / baseWidth
         val fitToWidth = targetRatio > sourceRatio
-        val zoom = FFContext[View, BASE_VIEW].ff_Zoom
+        val zoom = ViewSystem.baseView.ff_Zoom
 
         if (fitToWidth) {
             bounds.width = baseWidth
@@ -90,6 +90,8 @@ abstract class GDXAppAdapter : ApplicationAdapter() {
             bounds.width = (baseWidth / targetRatio * sourceRatio).roundToInt()
             bounds.height = baseHeight
         }
+
+        println("** $bounds")
 
         if (centerCamera) {
             worldPosition.x = -(bounds.width - baseWidth).toFloat() / 2 * zoom

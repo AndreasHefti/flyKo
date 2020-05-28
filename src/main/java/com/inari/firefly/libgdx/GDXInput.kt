@@ -7,13 +7,11 @@ import com.badlogic.gdx.InputProcessor
 import com.inari.firefly.VOID_CALL
 import com.inari.firefly.VOID_INT_CONSUMER
 import com.inari.firefly.external.FFInput
-import com.inari.firefly.external.FFInput.InputType.MOUSE_LEFT
-import com.inari.firefly.external.FFInput.InputType.MOUSE_RIGHT
-import com.inari.firefly.external.FFInput.InputType.MOUSE_MIDDLE
+import com.inari.firefly.external.FFInput.InputType.*
 import com.inari.java.types.BitSet
 import com.inari.util.collection.DynArray
 import com.inari.util.collection.DynIntArray
-import net.java.games.input.Component.Identifier.Button.TOUCH
+
 
 object GDXInput : FFInput {
 
@@ -83,7 +81,7 @@ object GDXInput : FFInput {
                 MOUSE_LEFT      -> pressed = Gdx.input.isButtonPressed(LEFT)
                 MOUSE_RIGHT     -> pressed = Gdx.input.isButtonPressed(RIGHT)
                 MOUSE_MIDDLE    -> pressed = Gdx.input.isButtonPressed(MIDDLE)
-                TOUCH           -> pressed = Gdx.input.isTouched
+                TOUCH            -> pressed = Gdx.input.isTouched
                 else            -> {}
             }
         }

@@ -1,8 +1,8 @@
 package com.inari.firefly.libgdx.examples
 
 import com.badlogic.gdx.Input
-import com.badlogic.gdx.backends.lwjgl.LwjglApplication
-import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration
 import com.inari.firefly.libgdx.GDXAppAdapter
 import com.inari.firefly.system.FFInfoSystem
 import com.inari.firefly.system.FrameRateInfo
@@ -23,12 +23,10 @@ class FPSInfoTest : GDXAppAdapter() {
 
 fun main(args: Array<String>) {
     try {
-        val config = LwjglApplicationConfiguration()
-        config.resizable = false
-        config.width = 704
-        config.height = 480
-        config.fullscreen = false
-        LwjglApplication(FPSInfoTest(), config)
+        val config = Lwjgl3ApplicationConfiguration()
+        config.setResizable(true)
+        config.setWindowedMode(704, 480)
+        Lwjgl3Application(FPSInfoTest(), config)
     } catch (t: Throwable) {
         t.printStackTrace()
     }

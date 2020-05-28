@@ -1,8 +1,8 @@
 package com.inari.firefly.libgdx.examples
 
 import com.badlogic.gdx.Input
-import com.badlogic.gdx.backends.lwjgl.LwjglApplication
-import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration
 import com.inari.firefly.entity.Entity
 import com.inari.firefly.external.ShapeType
 import com.inari.firefly.graphics.ETransform
@@ -66,12 +66,10 @@ class LoopBlendAnimationTest : GDXAppAdapter() {
 
 fun main(args: Array<String>) {
     try {
-        val config = LwjglApplicationConfiguration()
-        config.resizable = false
-        config.width = 704
-        config.height = 480
-        config.fullscreen = false
-        LwjglApplication(LoopBlendAnimationTest(), config)
+        val config = Lwjgl3ApplicationConfiguration()
+        config.setResizable(true)
+        config.setWindowedMode(704, 480)
+        Lwjgl3Application(LoopBlendAnimationTest(), config)
     } catch (t: Throwable) {
         t.printStackTrace()
     }

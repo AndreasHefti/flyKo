@@ -1,7 +1,7 @@
 package com.inari.firefly.libgdx.examples
 
-import com.badlogic.gdx.backends.lwjgl.LwjglApplication
-import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration
 import com.inari.firefly.FFContext
 import com.inari.firefly.SYSTEM_FONT
 import com.inari.firefly.entity.Entity
@@ -82,11 +82,10 @@ class EasingTest2 : GDXAppAdapter() {
     companion object {
         @JvmStatic fun main(arg: Array<String>) {
             try {
-                val config = LwjglApplicationConfiguration()
-                config.resizable = true
-                config.width = 800
-                config.height = 900
-                LwjglApplication(EasingTest2(), config)
+                val config = Lwjgl3ApplicationConfiguration()
+                config.setResizable(true)
+                config.setWindowedMode(800, 900)
+                Lwjgl3Application(EasingTest2(), config)
             } catch (t: Throwable) {
                 t.printStackTrace()
             }

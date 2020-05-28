@@ -1,7 +1,7 @@
 package com.inari.firefly.libgdx.examples
 
-import com.badlogic.gdx.backends.lwjgl.LwjglApplication
-import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration
 import com.inari.firefly.FFContext
 import com.inari.firefly.entity.Entity
 import com.inari.firefly.entity.EntitySystem
@@ -57,12 +57,10 @@ class ShapeAndSprite : GDXAppAdapter()  {
 
 fun main(args: Array<String>) {
     try {
-        val config = LwjglApplicationConfiguration()
-        config.resizable = false
-        config.width = 800
-        config.height = 600
-        config.fullscreen = false
-        LwjglApplication(ShapeAndSprite(), config)
+        val config = Lwjgl3ApplicationConfiguration()
+        config.setResizable(true)
+        config.setWindowedMode(800, 600)
+        Lwjgl3Application(ShapeAndSprite(), config)
     } catch (t: Throwable) {
         t.printStackTrace()
     }
