@@ -1,159 +1,175 @@
 package com.inari.firefly.libgdx
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.Input
-import com.badlogic.gdx.Input.Buttons.*
-import com.badlogic.gdx.InputProcessor
-import com.inari.firefly.VOID_CALL
-import com.inari.firefly.VOID_INT_CONSUMER
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Graphics
 import com.inari.firefly.external.FFInput
-import com.inari.firefly.external.FFInput.InputType.*
+import com.inari.firefly.external.FFInput.*
+import com.inari.firefly.external.FFInput.ControllerInput.*
 import com.inari.java.types.BitSet
-import com.inari.util.collection.DynArray
 import com.inari.util.collection.DynIntArray
+import org.lwjgl.glfw.GLFW
+import kotlin.experimental.and
+import kotlin.experimental.or
+import kotlin.experimental.xor
 
 
 object GDXInput : FFInput {
-
-    private val buttonCodeMapping = DynIntArray(255, -1)
-    private val pressedCodeMapping = BitSet(255)
-    private val inputTypeMapping: DynArray<FFInput.InputType> = DynArray.of()
-    private var inputListener = 0
-    private var iKeyDownSet = false
-    private var iKeyDown: (Int) -> Unit = {}
-    private var iKeyTypedSet = false
-    private var iKeyTyped: (Char) -> Unit = {}
-    private var iKeyUpSet = false
-    private var iKeyUp: (Int) -> Unit = {}
-    private val inputProcessor: InputProcessor = object : InputProcessor {
-
-        override fun keyTyped(character: Char): Boolean {
-            iKeyTyped.invoke(character)
-            return false
-        }
-
-        override fun keyUp(keycode: Int): Boolean {
-            iKeyUp.invoke(keycode)
-            return false
-        }
-
-        override fun keyDown(keycode: Int): Boolean {
-            iKeyDown.invoke(keycode)
-            return false
-        }
-
-        override fun mouseMoved(screenX: Int, screenY: Int): Boolean {
-            TODO("Not yet implemented")
-        }
-
-        override fun scrolled(amount: Int): Boolean {
-            TODO("Not yet implemented")
-        }
-
-        override fun touchDragged(screenX: Int, screenY: Int, pointer: Int): Boolean {
-            TODO("Not yet implemented")
-        }
-
-        override fun touchUp(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
-            TODO("Not yet implemented")
-        }
-
-        override fun touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
-            TODO("Not yet implemented")
-        }
-    }
-
 
     override val xpos: Int
         get() = Gdx.input.x
     override val ypos: Int
         get() = Gdx.input.y
+    override val dx: Int
+        get() = Gdx.input.deltaX
+    override val dy: Int
+        get() = Gdx.input.deltaY
 
-    override fun isPressed(buttonType: FFInput.ButtonType): Boolean {
-        val buttonCode = buttonType.ordinal
-        val keyCode = buttonCodeMapping[buttonCode]
-        if (keyCode >= 0 && Gdx.input.isKeyPressed(keyCode))
-            return true
+    override val implementations: List<InputImpl> = listOf(
+            GLFWDesktopKeyboardInput)
+    override val devices: MutableMap<String, InputDevice> = HashMap()
 
-        var pressed = false
-        if (buttonCode in inputTypeMapping) {
-            when (inputTypeMapping[buttonCode]) {
-                MOUSE_LEFT      -> pressed = Gdx.input.isButtonPressed(LEFT)
-                MOUSE_RIGHT     -> pressed = Gdx.input.isButtonPressed(RIGHT)
-                MOUSE_MIDDLE    -> pressed = Gdx.input.isButtonPressed(MIDDLE)
-                TOUCH            -> pressed = Gdx.input.isTouched
-                else            -> {}
-            }
+    override fun <T : InputDevice> createDevice(
+            name: String,
+            implementation: InputImpl,
+            window: Long): T {
+
+        return if (window < 0) {
+            val w = (Gdx.graphics as Lwjgl3Graphics).window
+            val instance = implementation.create<T>(w.windowHandle)
+            devices[name] = instance
+            instance
+        } else {
+            val instance = implementation.create<T>(window)
+            devices[name] = instance
+            instance
         }
-        return pressed
     }
 
-    override fun typed(buttonType: FFInput.ButtonType): Boolean {
-        val buttonCode = buttonType.ordinal
-        val keyCode = buttonCodeMapping[buttonCode]
-        val pressed = isPressed(buttonType)
+    override fun getDevice(name: String): InputDevice =
+            devices[name] ?: FFInput.NULL_INPUT_DEVICE
 
-        if (pressed && pressedCodeMapping[keyCode])
+
+    class GLFWDesktopKeyboardInput(override val window: Long) : KeyInput {
+        override val name: String = "DEFAULT DESKTOP KEYBOARD INPUT"
+        override val type: InputImpl = Companion
+
+        private val buttonCodeMapping = DynIntArray(20, -1)
+        private val pressedCodeMapping = BitSet()
+
+        override fun buttonPressed(button: ButtonType): Boolean {
+            val buttonCode = button.ordinal
+            val keyCode = buttonCodeMapping[buttonCode]
+            if (keyCode >= 0 && GLFW.glfwGetKey(window, keyCode) == 1)
+                return true
+
             return false
+        }
 
-        pressedCodeMapping.set(keyCode, pressed)
-        return pressed
+        override fun buttonTyped(button: ButtonType): Boolean {
+            val buttonCode = button.ordinal
+            val keyCode = buttonCodeMapping[buttonCode]
+            val pressed = buttonPressed(button)
+
+            if (pressed && pressedCodeMapping[keyCode])
+                return false
+
+            pressedCodeMapping.set(keyCode, pressed)
+            return pressed
+        }
+
+        override fun mapKeyInput(buttonType: ButtonType, keyCode: Int) {
+            buttonCodeMapping[buttonType.ordinal] = keyCode
+        }
+        companion object : FFInput.InputImpl {
+            override val type = DeviceType.KEYBOARD
+            override fun <T : InputDevice> create(window: Long): T = GLFWDesktopKeyboardInput(window) as T
+        }
     }
 
-    override fun mapInputType(buttonType: FFInput.ButtonType, inputType: FFInput.InputType) {
-        inputTypeMapping[buttonType.ordinal] = inputType
+    class GLFWControllerInput(override val window: Long) : ControllerInput {
+
+        override val name: String = "Basic Controller Input"
+        override val type: InputImpl = Companion
+        override val controllerDefinitions: List<ControllerDef> get() = scanController()
+        override var controller: ControllerDef
+            get() = currentController
+            set(value) { currentController = value }
+        private var currentController = ControllerDef(-1, "NULL")
+        private val buttonCodeMapping = DynIntArray(20, -1)
+        private val hatCodeMapping = DynIntArray(20, -1)
+        private val pressedCodeMapping = BitSet(255)
+
+        init {
+            mapHatInput(ButtonType.UP, GLFW.GLFW_HAT_UP)
+            mapHatInput(ButtonType.RIGHT, GLFW.GLFW_HAT_RIGHT)
+            mapHatInput(ButtonType.DOWN, GLFW.GLFW_HAT_DOWN)
+            mapHatInput(ButtonType.LEFT, GLFW.GLFW_HAT_LEFT)
+            mapButtonInput(ButtonType.BUTTON_A, GLFW.GLFW_GAMEPAD_BUTTON_A)
+            mapButtonInput(ButtonType.BUTTON_B, GLFW.GLFW_GAMEPAD_BUTTON_B)
+            mapButtonInput(ButtonType.BUTTON_X, GLFW.GLFW_GAMEPAD_BUTTON_X)
+            mapButtonInput(ButtonType.BUTTON_Y, GLFW.GLFW_GAMEPAD_BUTTON_Y)
+            mapButtonInput(ButtonType.QUIT, GLFW.GLFW_GAMEPAD_BUTTON_BACK)
+            mapButtonInput(ButtonType.ENTER, GLFW.GLFW_GAMEPAD_BUTTON_START)
+            mapButtonInput(ButtonType.FIRE_1, GLFW.GLFW_GAMEPAD_BUTTON_X)
+            mapButtonInput(ButtonType.FIRE_2, GLFW.GLFW_GAMEPAD_BUTTON_Y)
+            mapButtonInput(ButtonType.FIRE_1, GLFW.GLFW_GAMEPAD_BUTTON_A)
+            mapButtonInput(ButtonType.FIRE_2, GLFW.GLFW_GAMEPAD_BUTTON_B)
+        }
+
+        override fun buttonPressed(button: ButtonType): Boolean {
+            val buttonCode = button.ordinal
+
+            if (!hatCodeMapping.isEmpty(buttonCode)) {
+                val keyCode = hatCodeMapping[buttonCode]
+                val hats = GLFW.glfwGetJoystickHats(currentController.id)!!
+                return (hats[0] and keyCode.toByte() > 0)
+
+            }
+            val buttons = GLFW.glfwGetJoystickButtons(currentController.id)!!
+            val keyCode = buttonCodeMapping[buttonCode]
+            if (keyCode >= 0 && buttons[keyCode] == ONE)
+                return true
+
+            return false
+        }
+
+        override fun buttonTyped(button: ButtonType): Boolean {
+            val buttonCode = button.ordinal
+            val pressed = buttonPressed(button)
+            if (pressed && pressedCodeMapping[buttonCode])
+                return false
+
+            pressedCodeMapping.set(buttonCode, pressed)
+            return pressed
+        }
+
+        override fun mapButtonInput(buttonType: ButtonType, padButton: Int) {
+            buttonCodeMapping[buttonType.ordinal] = padButton
+        }
+
+        override fun mapHatInput(buttonType: ButtonType, padHat: Int) {
+            hatCodeMapping[buttonType.ordinal] = padHat
+        }
+
+        override fun axis(axisType: Int): Float =
+                GLFW.glfwGetJoystickAxes(currentController.id)!![axisType]
+
+        private fun scanController(): List<ControllerDef> {
+            val list: MutableList<ControllerDef> = ArrayList()
+            for (i in 0 .. 4) {
+                if (GLFW.glfwJoystickPresent(i)) {
+                    list.add(ControllerDef(i, GLFW.glfwGetJoystickName(i)!!))
+                }
+            }
+            return list
+        }
+
+        companion object : InputImpl {
+            private const val ONE = 1.toByte()
+            override val type = DeviceType.JOYSTICK_PAD
+            override fun <T : InputDevice> create(window: Long): T = GLFWControllerInput(window) as T
+        }
     }
 
-    override fun mapKeyInput(buttonType: FFInput.ButtonType, keyCode: Int) {
-        buttonCodeMapping[buttonType.ordinal] = keyCode
-    }
-
-    override fun listenKeyDown(keyDown: (Int) -> Unit) {
-        Gdx.input.inputProcessor = inputProcessor
-        iKeyDown = keyDown
-        if (!iKeyDownSet)
-            inputListener++
-        iKeyDownSet = true
-    }
-
-    override fun stopListenKeyDown() {
-        iKeyDown = {}
-        if (iKeyDownSet)
-            inputListener--
-        if (inputListener <= 0)
-            Gdx.input.inputProcessor = null
-    }
-
-    override fun listenKeyTyped(keyTyped: (Char) -> Unit) {
-        Gdx.input.inputProcessor = inputProcessor
-        iKeyTyped = keyTyped
-        if (!iKeyTypedSet)
-            inputListener++
-        iKeyTypedSet = true
-    }
-
-    override fun stopListenKeyTyped() {
-        iKeyTyped = {}
-        if (iKeyTypedSet)
-            inputListener--
-        if (inputListener <= 0)
-            Gdx.input.inputProcessor = null
-    }
-
-    override fun listenKeyUp(keyUp: (Int) -> Unit) {
-        Gdx.input.inputProcessor = inputProcessor
-        iKeyUp = keyUp
-        if (!iKeyUpSet)
-            inputListener++
-        iKeyUpSet = true
-    }
-
-    override fun stopListenKeyUp() {
-        iKeyUp = {}
-        if (iKeyUpSet)
-            inputListener--
-        if (inputListener <= 0)
-            Gdx.input.inputProcessor = null
-    }
 
 }

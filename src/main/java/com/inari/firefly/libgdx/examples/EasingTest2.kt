@@ -50,7 +50,7 @@ class EasingTest2 : GDXAppAdapter() {
             ff_With(EText) {
                 ff_Renderer(SimpleTextRenderer)
                 ff_FontAsset(SYSTEM_FONT)
-                ff_TextBuffer.append(type.name.replace("_", "-"))
+                ff_Text.append(type.name.replace("_", "-"))
                 ff_Blend = BlendMode.NORMAL_ALPHA
                 ff_Tint(1f, 1f, 1f, 1f)
             }

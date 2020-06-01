@@ -16,7 +16,7 @@ class EText private constructor() : EntityComponent(EText::class.java.name) {
     @JvmField internal var rendererRef = SimpleTextRenderer.instance.index
     @JvmField internal var fontAssetRef = -1
     @JvmField internal var shaderRef = -1
-    @JvmField internal val textBuffer = StringBuffer()
+    @JvmField internal val text = StringBuilder()
     @JvmField internal val tint = RGBColor(1f, 1f, 1f, 1f)
     @JvmField internal var blend = BlendMode.NONE
 
@@ -26,8 +26,8 @@ class EText private constructor() : EntityComponent(EText::class.java.name) {
         { index -> shaderRef = index },
         { shaderRef })
 
-    val ff_TextBuffer: StringBuffer
-        get() = textBuffer
+    val ff_Text: StringBuilder
+        get() = text
     var ff_Tint: RGBColor
         get() = tint
         set(value) { tint(value) }
@@ -39,7 +39,7 @@ class EText private constructor() : EntityComponent(EText::class.java.name) {
         rendererRef = -1
         fontAssetRef = -1
         shaderRef = -1
-        textBuffer.setLength(0)
+        text.setLength(0)
         tint.r = 1f; tint.g = 1f; tint.b = 1f; tint.a = 1f
         blend = BlendMode.NONE
     }

@@ -4,7 +4,6 @@ import com.inari.firefly.FFContext
 import com.inari.firefly.entity.EChild
 import com.inari.firefly.entity.Entity
 import com.inari.firefly.entity.EntityComponent
-import com.inari.firefly.entity.EntitySystem
 import com.inari.firefly.external.SpriteRenderable
 import com.inari.firefly.graphics.ETransform
 import com.inari.firefly.graphics.text.EText
@@ -30,7 +29,7 @@ class SimpleTextRenderer private constructor() : Renderer() {
             val text = entity[EText]
             val transform = entity[ETransform]
             val font = FFContext[FontAsset, text.fontAssetRef]
-            val chars = text.textBuffer
+            val chars = text.text
 
             textRenderable.shaderId = text.shaderRef
             textRenderable.tintColor(text.tint)

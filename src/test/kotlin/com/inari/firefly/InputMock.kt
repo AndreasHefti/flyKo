@@ -11,45 +11,21 @@ object InputMock : FFInput {
     override
     val ypos: Int
         get() = 0
+    override val dx: Int
+        get() = 0
+    override val dy: Int
+        get() = 0
 
-    override fun mapKeyInput(buttonType: FFInput.ButtonType, keyCode: Int) {
+    override val implementations: List<FFInput.InputImpl> = listOf()
+    override val devices: MutableMap<String, FFInput.InputDevice>
+        get() = TODO("Not yet implemented")
 
-    }
-
-    override fun mapInputType(buttonType: FFInput.ButtonType, inputType: FFInput.InputType) {
-
-    }
-
-    override fun isPressed(buttonType: FFInput.ButtonType): Boolean {
-        return false
-    }
-
-    override fun listenKeyDown(keyDown: (Int) -> Unit) {
+    override fun <T : FFInput.InputDevice> createDevice(name: String, implementation: FFInput.InputImpl, window: Long): T {
         TODO("Not yet implemented")
     }
 
-    override fun stopListenKeyDown() {
+    override fun getDevice(name: String): FFInput.InputDevice {
         TODO("Not yet implemented")
-    }
-
-    override fun listenKeyTyped(keyTyped: (Char) -> Unit) {
-        TODO("Not yet implemented")
-    }
-
-    override fun stopListenKeyTyped() {
-        TODO("Not yet implemented")
-    }
-
-    override fun listenKeyUp(keyUp: (Int) -> Unit) {
-        TODO("Not yet implemented")
-    }
-
-    override fun stopListenKeyUp() {
-        TODO("Not yet implemented")
-    }
-
-    override fun typed(buttonType: FFInput.ButtonType): Boolean {
-        return false
     }
 
 
