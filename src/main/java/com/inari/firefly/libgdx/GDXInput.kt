@@ -9,8 +9,6 @@ import com.inari.java.types.BitSet
 import com.inari.util.collection.DynIntArray
 import org.lwjgl.glfw.GLFW
 import kotlin.experimental.and
-import kotlin.experimental.or
-import kotlin.experimental.xor
 
 
 object GDXInput : FFInput {
@@ -67,13 +65,11 @@ object GDXInput : FFInput {
 
         override fun buttonTyped(button: ButtonType): Boolean {
             val buttonCode = button.ordinal
-            val keyCode = buttonCodeMapping[buttonCode]
             val pressed = buttonPressed(button)
-
-            if (pressed && pressedCodeMapping[keyCode])
+            if (pressed && pressedCodeMapping[buttonCode])
                 return false
 
-            pressedCodeMapping.set(keyCode, pressed)
+            pressedCodeMapping.set(buttonCode, pressed)
             return pressed
         }
 
