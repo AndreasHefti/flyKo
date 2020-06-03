@@ -23,8 +23,14 @@ object GDXInput : FFInput {
         get() = Gdx.input.deltaY
 
     override val implementations: List<InputImpl> = listOf(
-            GLFWDesktopKeyboardInput)
+            GLFWDesktopKeyboardInput,
+            GLFWControllerInput)
+
     override val devices: MutableMap<String, InputDevice> = HashMap()
+
+    init {
+        devices[FFInput.VOID_INPUT_DEVICE] = VOIDAdapter()
+    }
 
     override fun <T : InputDevice> createDevice(
             name: String,
@@ -44,7 +50,7 @@ object GDXInput : FFInput {
     }
 
     override fun getDevice(name: String): InputDevice =
-            devices[name] ?: FFInput.NULL_INPUT_DEVICE
+            devices[name] ?: devices[FFInput.VOID_INPUT_DEVICE]!!
 
 
     class GLFWDesktopKeyboardInput(override val window: Long) : KeyInput {

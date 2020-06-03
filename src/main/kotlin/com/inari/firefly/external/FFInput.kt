@@ -1,5 +1,6 @@
 package com.inari.firefly.external
 
+import com.inari.firefly.FFContext
 import com.inari.firefly.libgdx.GDXInput
 import com.inari.java.types.BitSet
 import java.lang.UnsupportedOperationException
@@ -16,7 +17,8 @@ interface FFInput {
         MOUSE,
         JOYSTICK_PAD,
         TOUCH,
-        OR
+        OR,
+        VOID
     }
 
     enum class ButtonType {
@@ -70,7 +72,6 @@ interface FFInput {
         return adapter
     }
 
-
     interface InputDevice {
 
         val name: String
@@ -112,7 +113,6 @@ interface FFInput {
             override val name: String = "OR",
             override val window: Long = -1
     ) : InputDevice {
-
         override val type: InputImpl = Companion
         private val pressedCodeMapping = BitSet()
         override fun buttonPressed(button: ButtonType): Boolean =
@@ -126,29 +126,29 @@ interface FFInput {
             pressedCodeMapping.set(buttonCode, pressed)
             return pressed
         }
-
-
-        companion object : InputImpl{
+        companion object : InputImpl {
             override val type = DeviceType.OR
             override fun <T : InputDevice> create(window: Long): T =
                     throw UnsupportedOperationException()
         }
     }
 
-    companion object {
-        val NULL_INPUT_DEVICE: InputDevice = object : InputDevice {
-            override val name: String = "NULL"
-            override val type: InputImpl = object : InputImpl {
-                override val type: DeviceType
-                    get() = TODO("Not yet implemented")
-                override fun <T : InputDevice> create(window: Long): T {
-                    TODO("Not yet implemented")
-                }
-            }
-            override val window: Long = 0
-            override fun buttonTyped(button: ButtonType): Boolean = false
-            override fun buttonPressed(button: ButtonType): Boolean = false
+    class VOIDAdapter(
+            override val name: String = VOID_INPUT_DEVICE,
+            override val window: Long = -1
+    ) : InputDevice {
+        override val type: InputImpl = Companion
+        override fun buttonPressed(button: ButtonType): Boolean = false
+        override fun buttonTyped(button: ButtonType): Boolean = false
+        companion object : InputImpl {
+            override val type = DeviceType.VOID
+            override fun <T : InputDevice> create(window: Long): T =
+                    throw UnsupportedOperationException()
         }
+    }
+
+    companion object {
+        const val VOID_INPUT_DEVICE = "VOID_INPUT_DEVICE"
     }
 
 }
