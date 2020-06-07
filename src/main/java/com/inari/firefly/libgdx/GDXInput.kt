@@ -82,7 +82,7 @@ object GDXInput : FFInput {
         override fun mapKeyInput(buttonType: ButtonType, keyCode: Int) {
             buttonCodeMapping[buttonType.ordinal] = keyCode
         }
-        companion object : FFInput.InputImpl {
+        companion object : InputImpl {
             override val type = DeviceType.KEYBOARD
             override fun <T : InputDevice> create(window: Long): T = GLFWDesktopKeyboardInput(window) as T
         }

@@ -12,7 +12,7 @@ abstract class FFTimer protected constructor() : FFApp.SystemTimer() {
     var timeElapsed: Long = 0
         protected set
 
-    private val updateSchedulers: MutableMap<Float, UpdateScheduler> = HashMap()
+
     private val schedulers: DynArray<UpdateScheduler> = DynArray.of( 20)
 
     internal fun updateSchedulers() {
@@ -25,14 +25,9 @@ abstract class FFTimer protected constructor() : FFApp.SystemTimer() {
     }
 
     fun createUpdateScheduler(resolution: Float): UpdateScheduler {
-        return if (!updateSchedulers.containsKey(resolution)) {
-            val updateScheduler = UpdateScheduler(resolution)
-            updateSchedulers[resolution] = updateScheduler
-            schedulers.add(updateScheduler)
-            updateScheduler
-        } else {
-            updateSchedulers[resolution]!!
-        }
+        val updateScheduler = UpdateScheduler(resolution)
+        schedulers.add(updateScheduler)
+        return updateScheduler
     }
 
     override fun toString(): String {
