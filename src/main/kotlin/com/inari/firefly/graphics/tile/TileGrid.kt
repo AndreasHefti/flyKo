@@ -1,5 +1,6 @@
 package com.inari.firefly.graphics.tile
 
+import com.inari.firefly.BASE_VIEW
 import com.inari.firefly.component.ComponentRefResolver
 import com.inari.firefly.graphics.rendering.Renderer
 import com.inari.firefly.graphics.view.Layer
@@ -16,7 +17,7 @@ import kotlin.math.floor
 class TileGrid private constructor() : SystemComponent(TileGrid::class.java.name), ViewLayerAware {
 
     @JvmField internal var viewRef = -1
-    @JvmField internal var layerRef = -1
+    @JvmField internal var layerRef = 0
     @JvmField internal var rendererRef = -1
     @JvmField internal val gridDim = Vector2i(-1, -1)
     @JvmField internal val cellDim = Vector2i(-1, -1)
@@ -65,15 +66,19 @@ class TileGrid private constructor() : SystemComponent(TileGrid::class.java.name
         this[rectPos.pos]
 
     operator fun get(pos: Position): Int =
-        if (ff_Spherical)
-            grid[pos.y % ff_GridHeight][pos.x % ff_GridWidth]
-        else
+        if (spherical) {
+            val y = pos.y % gridDim.dy
+            val x = pos.x % gridDim.dx
+            grid[if (y < 0) gridDim.dy + y else y][if (x < 0) gridDim.dx + x else x]
+        } else
             grid[pos.y][pos.x]
 
     operator fun get(xpos: Int, ypos: Int): Int =
-        if (ff_Spherical)
-            grid[ypos % ff_GridHeight][xpos % ff_GridWidth]
-         else
+        if (spherical) {
+            val y = ypos % gridDim.dy
+            val x = xpos % gridDim.dx
+            grid[if (y < 0) gridDim.dy + y else y][if (x < 0) gridDim.dx + x else x]
+        } else
             grid[ypos][xpos]
 
     fun getTileAt(worldPos: Position): Int =
@@ -88,15 +93,19 @@ class TileGrid private constructor() : SystemComponent(TileGrid::class.java.name
         set(position.x, position.y, entityId)
 
     operator fun set(xpos: Int, ypos: Int, entityId: Int) =
-        if (ff_Spherical)
-            grid[ypos % ff_GridHeight][xpos % ff_GridWidth] = entityId
-        else
+        if (spherical) {
+            val y = ypos % gridDim.dy
+            val x = xpos % gridDim.dx
+            grid[if (y < 0) gridDim.dy + y else y][if (x < 0) gridDim.dx + x else x] = entityId
+        } else
             grid[ypos][xpos] = entityId
 
     fun reset(xpos: Int, ypos: Int): Int {
-        return if (ff_Spherical) {
-            val old = grid[ypos % ff_GridHeight][xpos % ff_GridWidth]
-            grid[ypos % ff_GridHeight][xpos % ff_GridWidth] = -1
+        return if (spherical) {
+            val y = if (ypos < 0) gridDim.dy + (ypos % gridDim.dy) else ypos % gridDim.dy
+            val x = if (xpos < 0) gridDim.dx + (xpos % gridDim.dx) else xpos % gridDim.dx
+            val old = grid[y][x]
+            grid[y][x] = -1
             old
         } else {
             val old = grid[ypos][xpos]
@@ -111,9 +120,9 @@ class TileGrid private constructor() : SystemComponent(TileGrid::class.java.name
     fun resetIfMatch(entityId: Int, xpos: Int, ypos: Int) {
         var ixpos = xpos
         var iypos = ypos
-        if (ff_Spherical) {
-            ixpos = xpos % ff_GridWidth
-            iypos = ypos % ff_GridHeight
+        if (spherical) {
+            ixpos = if (xpos < 0) gridDim.dx + (xpos % gridDim.dx) else xpos % gridDim.dx
+            iypos = if (ypos < 0) gridDim.dy + (ypos % gridDim.dy) else ypos % gridDim.dy
         }
         if (grid[iypos][ixpos] == entityId) {
             grid[iypos][ixpos] = -1

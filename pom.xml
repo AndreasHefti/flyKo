@@ -120,12 +120,6 @@
             <version>1.9.10</version>
             <classifier>natives-desktop</classifier>
         </dependency>
-        <dependency>
-            <groupId>com.badlogicgames.gdx</groupId>
-            <artifactId>gdx-controllers-lwjgl3</artifactId>
-            <version>1.9.10</version>
-        </dependency>
-
 
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
