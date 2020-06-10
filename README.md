@@ -8,23 +8,13 @@
 Introduction
 ------------
 
+Fly-Ko is a top level 2D game framework for Kotlin. Focusing on intuitive API and build within stringent architecture and design principles like Component-Entity-System, Builder/DSL and component indexing for fast access.
 
+The main idea of Firefly is to have a top-level 2D game API that comes with an in-build Component-Entity-System architecture that helps organizing all the game-objects, data and assets in a well defined form and also helps a lot on keeping the game code-base as flexible as possible for changes. Since almost everything in Fly-Ko is a component, to create the them is following always the very same builder DSL while business-code stays in their System(s). This leads to more flexibility when content or behavior must be changed or need to be extended. 
 
-FlyKo is the core of [Firefly](https://github.com/Inari-Soft/inari-firefly) for Kotlin Language
+Fly-Ko's Entity-Component-System is implemented on-top of a small set of interfaces that defines the API to the lower-level libraries that can be used to render graphics, play sounds or gather or poll input events. Within the current version Fly-Ko uses libgdx and lwjgl as lower-level libraries.
 
-Firefly is a top level 2D game engine framework for Kotlin/Java focusing on intuitive API build on stringent architecture and design.
-What makes it different to other java gaming frameworks is its focus on build and manage components and game objects within a component-
-entity-system approach and being independent from low level implementation(s).
-
-The main idea of Firefly is to have a top-level 2D game API that comes with a in-build Component-Entity-System architecture that helps
-organizing all the game-objects, data and assets in a well defined form and also helps a lot on keeping the game codebase as flexible 
-as possible for changes, modify/adding new behavior during the development cycle. What is one of the most impressive benefits of a 
-Component-Entity-System based architecture and design approach.
-Firefly is implemented on-top of other existing java gaming frameworks like lwjgl or libgdx with the flexibility to change the lower level 
-implementation while reusing as much of the game code as possible.
-
-
-Key features
+Key features of Fly-Ko 2D game API:
 
 - Strong backing on Component and Component-Entity-System approach.
   Almost everything within Firefly is a Component or a Entity (composite of components) or a System
@@ -37,6 +27,15 @@ Key features
   Until now only a project with an implementation for libgdx is supported.
 
 - Stringent Component builder API with DSL support. Use Fly-Ko's builder DSL to build and compose components.
+
+- Indexing for Component types and instances for fast access
+  Firefly comes with an indexing system that allows to indexed Java types (Class types) within a defined root type on one hand and on the other
+  to index instances (objects) of a specified type. All Components, Entities and Systems are indexed by type and mostly, if needed also by the instance
+  to guarantee fast access.
+  
+- Multiple Views 
+  Views on Fly-Ko are like windows to separated worlds within the main game window that can be placed at the main game window and render its own (layered) world. And of course views are components and can be build like any other component in Fly-Ko. 
+  Under the hood, Views uses OpenGL's FBO (Frame Buffer Object) to render each world-view to a texture and render all this textures to the main game window at the end.
   
 Code example:
 
@@ -93,23 +92,11 @@ Code example:
 
 ```
 
-- Indexing for Component types and instances for fast access
-  Firefly comes with an indexing system that allows to indexed Java types (Class types) within a defined root type on one hand and on the other
-  to index instances (objects) of a specified type. All Components, Entities and Systems are indexed by type and mostly, if needed also by the instance
-  to guarantee fast access.
-  
+Let's Get Started with Fly-Ko
+------------------------------
 
-  
-NOTES:
-********
+Want to give it a try? Give me half an hour to bring your hands on Fly-Ko and who knows maybe you want more... 
 
-FlyKo is still under construction
-
-This repository contains the core API with a reference implementation on libGDX and is fully runnable with no extra extensions and only a few examples
-
-If you want to just use the Firefly API with a libGDX implementation, this is your starting point.
-
-*****
 
 Installation
 ----------------
