@@ -57,7 +57,7 @@ Key Features
   
 Code Example
 --------------
-
+![Result of Code Example](https://github.com/Inari-Soft/flyKo/raw/master/wiki/example1.gif) 
 ``` kotlin
   // Create a TextureAsset and register it to the AssetSystem but no loading yet.
   //
@@ -134,10 +134,12 @@ Code Example
   }
 ```
 
-![](https://github.com/Inari-Soft/flyKo/raw/master/wiki/example1.gif) 
+
 
 Let's Get Started with Fly-Ko
 ------------------------------
+
+![Result of Code Example](https://github.com/Inari-Soft/flyKo/raw/master/wiki/microdash_small.gif) 
 
 Want to give it a try? Give me half an hour to bring your [hands on Fly-Ko](https://github.com/Inari-Soft/flyKo/wiki) and who knows maybe you want more... 
 
