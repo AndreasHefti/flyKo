@@ -8,6 +8,7 @@ import com.inari.firefly.NO_COMP_ID
 import com.inari.firefly.SYSTEM_FONT
 import com.inari.firefly.entity.Entity
 import com.inari.firefly.graphics.ETransform
+import com.inari.firefly.graphics.TextureAsset
 import com.inari.firefly.graphics.text.EText
 import com.inari.firefly.libgdx.GDXAppAdapter
 import com.inari.util.Call
