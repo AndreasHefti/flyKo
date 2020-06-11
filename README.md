@@ -59,10 +59,10 @@ Code Example
 --------------
 ![Result of Code Example](https://github.com/Inari-Soft/flyKo/raw/master/wiki/example1.gif) 
 ``` kotlin
-  // Create a TextureAsset and register it to the AssetSystem but no loading yet.
+  // Create a TextureAsset and register it to the AssetSystem but not loading yet.
   //
-  // Within this method you are able to define all your assets on one place without
-  // loading the assets into memory yet. While when you need them you can simple load
+  // WIth this method you are able to define all your assets in one place without
+  // loading the assets into memory yet. When you need them you can simply load
   // them by calling FFContext.activate(TextureAsset, "logoTexture") and dispose them
   // with FFContext.dispose(TextureAsset, "logoTexture"). The asset definition is still
   // available and can be deleted with FFContext.delete(TextureAsset, "logoTexture")
@@ -80,8 +80,10 @@ Code Example
       ff_VerticalFlip = false
   }
 
-  // Create an Entity positioned on the base View on x=100/y=100, and the formerly
-  // created sprite with a tint color that has animated alpha value
+  // Create an Entity positioned on the base View on x=50/y=150, and the formerly
+  // created sprite with a tint color.
+  // Add also two animation, one for the alpha of the tint color and one for the
+  // position on the x axis and activate everything immediately.
   Entity.buildAndActivate {
 
       // add a transform component to the entity that defines the orientation of the Entity
