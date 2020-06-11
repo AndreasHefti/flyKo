@@ -134,7 +134,7 @@ Code Example
   }
 ```
 
-[![]](https://github.com/Inari-Soft/flyKo/tree/master/wiki/example.gif) 
+![](https://github.com/Inari-Soft/flyKo/raw/master/wiki/example1.gif) 
 
 Let's Get Started with Fly-Ko
 ------------------------------
