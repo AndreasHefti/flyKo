@@ -57,7 +57,8 @@ Key Features
   
 Code Example
 --------------
-![Result of Code Example](https://github.com/Inari-Soft/flyKo/raw/master/wiki/example1.gif) 
+<img align="center" src="https://github.com/Inari-Soft/flyKo/raw/master/wiki/example1.gif" alt="Result of Code Example">
+
 ``` kotlin
   // Create a TextureAsset and register it to the AssetSystem but not loading yet.
   //
