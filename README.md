@@ -144,7 +144,9 @@ Let's Get Started with Fly-Ko
 
 Want to give it a try? Give me half an hour to bring your [hands on Fly-Ko](https://github.com/Inari-Soft/flyKo/wiki) and who knows maybe you want more... 
 
-![Result of Code Example](https://github.com/Inari-Soft/flyKo/raw/master/wiki/microdash_small.gif) 
+<div align="center"><img src="https://github.com/Inari-Soft/flyKo/raw/master/wiki/microdash_small.gif" alt="Micro Dash (WorkInProgress)"></div>
+
+
 
 License
 --------
