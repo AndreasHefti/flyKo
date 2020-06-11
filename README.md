@@ -1,5 +1,5 @@
-# Fly-Ko (Firefly on Kotlin)
-
+# Fly-Ko 
+(Firefly on Kotlin)
 
 [![Build Status](https://travis-ci.org/Inari-Soft/flyKo.svg?branch=master)](https://travis-ci.org/Inari-Soft/flyKo) 
 [![codecov](https://codecov.io/gh/Inari-Soft/flyKo/branch/master/graph/badge.svg)](https://codecov.io/gh/Inari-Soft/flyKo)
