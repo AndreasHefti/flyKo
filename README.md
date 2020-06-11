@@ -25,7 +25,8 @@ Within the current version Fly-Ko uses [libgdx](https://libgdx.badlogicgames.com
 Building and packaging games for desktop (Win, Mac and Linux) is currently supported and other platforms like 
 Android or HTML5 should be possible but is not tested yet.
 
-Key features of Fly-Ko 2D game API:
+Key Features 
+-----------------
 
 - Strong backing on Component and Component-Entity-System approach.
 
