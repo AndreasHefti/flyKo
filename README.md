@@ -55,7 +55,8 @@ Key Features
   Views on Fly-Ko are like windows to separated worlds within the main game window that can be placed at the main game window and render its own (layered) world. And of course views are components and can be build like any other component in Fly-Ko. 
   Under the hood, Views uses OpenGL's FBO (Frame Buffer Object) to render each world-view to a texture and render all this textures to the main game window at the end.
   
-Code example:
+Code Example
+--------------
 
 ``` kotlin
   // Create a TextureAsset and register it to the AssetSystem but no loading yet.
