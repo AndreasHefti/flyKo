@@ -75,6 +75,8 @@ Code Example
   // Create and activate/load a SpriteAsset with reference to the TextureAsset.
   // This also implicitly loads the TextureAsset if it is not already loaded.
   val spriteId = SpriteAsset.buildAndActivate {
+      // It would also be possible to use the name of the texture asset here
+      // instead of the identifier. But of corse, identifier (index) gives faster access
       ff_Texture(texAssetId)
       ff_TextureRegion(0,0,32,32)
       ff_HorizontalFlip = false
@@ -85,7 +87,7 @@ Code Example
   // created sprite with a tint color.
   // Add also two animation, one for the alpha of the tint color and one for the
   // position on the x axis and activate everything immediately.
-  Entity.buildAndActivate {
+  val entityId = Entity.buildAndActivate {
 
       // add a transform component to the entity that defines the orientation of the Entity
       ff_With(ETransform) {
