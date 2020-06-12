@@ -30,31 +30,16 @@ Key Features
 
 - Strong backing on Component and Component-Entity-System approach.
 
-  Almost everything within Firefly is a Component, or an Entity (composite of components) or a System.
-
 - Lightweight but power-full and easy extendable event system for communication between Systems.  
 
 - Independent Lower Level interface definition
 
-  There are a few interface definitions that must be implemented to implement Firefly within a lower level library like lwjgl or libgdx.
-  All code that is written against the Firefly API is not affected by the change of the lower level library. 
-  Until now only a project with an implementation for [libgdx](https://libgdx.badlogicgames.com/) is supported.
-
 - Stringent Component builder API with DSL support. 
   
-  Use Fly-Ko's builder DSL to build and compose components.
-
 - Indexing for Component types and instances for fast access
 
-  Firefly comes with an indexing system that allows to indexed Java types (Class types) within a defined root type on one hand and on the other
-  to index instances (objects) of a specified type. All Components, Entities and Systems are indexed by type and mostly, if needed also by the instance
-  to guarantee fast access.
-  
 - Multiple Views 
 
-  Views on Fly-Ko are like windows to separated worlds within the main game window that can be placed at the main game window and render its own (layered) world. And of course views are components and can be build like any other component in Fly-Ko. 
-  Under the hood, Views uses OpenGL's FBO (Frame Buffer Object) to render each world-view to a texture and render all this textures to the main game window at the end.
-  
 Code Example
 --------------
 <div align="center"><img src="https://github.com/Inari-Soft/flyKo/raw/master/wiki/example1.gif" alt="Result of Code Example"></div>
@@ -148,7 +133,41 @@ Want to give it a try? Give me half an hour to bring your [hands on Fly-Ko](http
 
 <div align="center"><img src="https://github.com/Inari-Soft/flyKo/raw/master/wiki/microdash_small.gif" alt="Micro Dash (WorkInProgress)"></div>
 
+Install
+-------
 
+Fly-Ko is available from Jitpack repository as release candidate version. 
+If you want to use the newest development version use "-SNAPSHOT" as version.
+
+#### Maven
+
+``` xml
+<repositories>
+    <repository>
+        <id>jitpack.io</id>
+        <url>https://jitpack.io</url>
+    </repository>
+</repositories>
+
+<dependency>
+    <groupId>com.github.Inari-Soft</groupId>
+    <artifactId>FlyKo</artifactId>
+    <version>1.0.0-rc</version>
+</dependency>
+```
+
+#### Gradle
+
+``` groovy
+
+repositories {
+    maven { url "https://jitpack.io" }
+}
+
+dependencies {
+    compile group: 'com.github.Inari-Soft', name: 'FlyKo', version:'1.0.0-rc'
+}
+```
 
 License
 --------
