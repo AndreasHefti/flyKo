@@ -32,13 +32,19 @@ Key Features
 
 - Lightweight but power-full and easy extendable event system for communication between Systems.  
 
-- Independent Lower Level interface definition
+- Independent Lower Level interface definition.
 
 - Stringent Component builder API with DSL support. 
   
 - Indexing for Component types and instances for fast access
 
-- Multiple Views 
+- Multiple Views by using render-to-texture with FBO - Framebuffer Object.
+
+- OpenGL shader support.
+
+- Basic libraries for input, audio, tile-maps, animation, movement, contact/collision, particle, action, state, behavior and many more.
+
+- Extendable by design. Easily add and integrate third party libraries for physics or other needs within your game.  
 
 Code Example
 --------------
