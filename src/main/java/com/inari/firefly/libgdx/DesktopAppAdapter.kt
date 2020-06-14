@@ -2,8 +2,6 @@ package com.inari.firefly.libgdx
 
 import com.badlogic.gdx.ApplicationAdapter
 import com.badlogic.gdx.Gdx
-import com.inari.firefly.BASE_VIEW
-import com.inari.firefly.FFContext
 import com.inari.firefly.SYSTEM_FONT
 import com.inari.firefly.SYSTEM_FONT_ASSET
 import com.inari.firefly.asset.AssetSystem
@@ -14,14 +12,13 @@ import com.inari.firefly.entity.EntitySystem
 import com.inari.firefly.graphics.TextureAsset
 import com.inari.firefly.graphics.rendering.RenderingSystem
 import com.inari.firefly.graphics.text.FontAsset
-import com.inari.firefly.graphics.view.View
 import com.inari.firefly.graphics.view.ViewSystem
 import com.inari.firefly.libgdx.intro.InariIntro
 import com.inari.firefly.physics.animation.AnimationSystem
 import kotlin.math.roundToInt
 
 
-abstract class GDXAppAdapter : ApplicationAdapter() {
+abstract class DesktopAppAdapter : ApplicationAdapter() {
 
     abstract val title: String
 
@@ -29,7 +26,7 @@ abstract class GDXAppAdapter : ApplicationAdapter() {
         Gdx.graphics.setTitle(title)
 
         // load the app
-        GDXApp
+        DesktopApp
         // load some initial systems
         AssetSystem
         ViewSystem
@@ -49,8 +46,8 @@ abstract class GDXAppAdapter : ApplicationAdapter() {
     protected abstract fun init()
 
     override fun render() {
-        GDXApp.update()
-        GDXApp.render()
+        DesktopApp.update()
+        DesktopApp.render()
     }
 
     private fun loadSystemFont() {
@@ -103,7 +100,7 @@ abstract class GDXAppAdapter : ApplicationAdapter() {
         TriggerSystem
         UpdateEventTrigger.build({
             dispose()
-            GDXApp.exit()
+            DesktopApp.exit()
         }) {
             ff_Condition = { Gdx.input.isKeyPressed( key ) }
         }

@@ -3,15 +3,14 @@ package com.inari.firefly.libgdx.examples
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration
 import com.inari.firefly.entity.Entity
-import com.inari.firefly.graphics.BlendMode
 import com.inari.firefly.graphics.ETransform
 import com.inari.firefly.graphics.ShaderAsset
 import com.inari.firefly.graphics.TextureAsset
 import com.inari.firefly.graphics.sprite.ESprite
 import com.inari.firefly.graphics.sprite.SpriteAsset
-import com.inari.firefly.libgdx.GDXAppAdapter
+import com.inari.firefly.libgdx.DesktopAppAdapter
 
-class SimpleShaderTest : GDXAppAdapter() {
+class SimpleShaderTest : DesktopAppAdapter() {
 
     override val title: String = "SimpleShaderTest"
 

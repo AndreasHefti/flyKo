@@ -3,7 +3,6 @@ package com.inari.firefly.libgdx
 import com.badlogic.gdx.utils.TimeUtils
 import com.inari.firefly.external.FFTimer
 
-
 object GDXTimer : FFTimer() {
     override val tickAction: () -> Unit
         get() = {

@@ -8,16 +8,14 @@ import com.inari.firefly.NO_COMP_ID
 import com.inari.firefly.SYSTEM_FONT
 import com.inari.firefly.entity.Entity
 import com.inari.firefly.graphics.ETransform
-import com.inari.firefly.graphics.TextureAsset
 import com.inari.firefly.graphics.text.EText
-import com.inari.firefly.libgdx.GDXAppAdapter
+import com.inari.firefly.libgdx.DesktopAppAdapter
 import com.inari.util.Call
 import org.lwjgl.glfw.GLFW
 import java.nio.ByteBuffer
 import java.nio.FloatBuffer
-import java.util.*
 
-class ControllerTest : GDXAppAdapter() {
+class ControllerTest : DesktopAppAdapter() {
 
     override val title: String = this.javaClass.simpleName
     private var text1 = StringBuilder("")

@@ -8,7 +8,7 @@ import com.inari.util.geom.PositionF
 import com.inari.util.geom.Vector2f
 import com.inari.util.graphics.RGBColor
 
-class SpriteParticle() : Particle() {
+class SpriteParticle : Particle() {
 
     @JvmField internal val spriteRenderable = SpriteRenderable()
     @JvmField internal val spriteRef: Int = -1

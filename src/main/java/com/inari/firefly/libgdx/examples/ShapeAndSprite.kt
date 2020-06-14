@@ -6,18 +6,15 @@ import com.inari.firefly.FFContext
 import com.inari.firefly.entity.Entity
 import com.inari.firefly.entity.EntitySystem
 import com.inari.firefly.external.ShapeType
-import com.inari.firefly.graphics.BlendMode
 import com.inari.firefly.graphics.ETransform
 import com.inari.firefly.graphics.rendering.RenderingSystem
 import com.inari.firefly.graphics.shape.EShape
 import com.inari.firefly.graphics.view.View
-import com.inari.firefly.libgdx.GDXAppAdapter
+import com.inari.firefly.libgdx.DesktopAppAdapter
 import com.inari.firefly.physics.animation.AnimationSystem
-import com.inari.firefly.system.FFInfoSystem
-import com.inari.firefly.system.FrameRateInfo
 import com.inari.util.graphics.RGBColor
 
-class ShapeAndSprite : GDXAppAdapter()  {
+class ShapeAndSprite : DesktopAppAdapter()  {
 
     override val title: String = "ShapeAndSprite"
 

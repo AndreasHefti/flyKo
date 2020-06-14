@@ -6,9 +6,9 @@ import com.inari.firefly.entity.Entity
 import com.inari.firefly.external.ShapeType
 import com.inari.firefly.graphics.ETransform
 import com.inari.firefly.graphics.shape.EShape
-import com.inari.firefly.libgdx.GDXAppAdapter
+import com.inari.firefly.libgdx.DesktopAppAdapter
 
-class DynamicViewTest : GDXAppAdapter() {
+class DynamicViewTest : DesktopAppAdapter() {
 
     override val title: String = "DynamicViewTest"
 

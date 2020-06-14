@@ -1,5 +1,6 @@
 package com.inari.firefly
 
+import com.inari.firefly.FFContext
 import com.inari.firefly.component.CompId
 import com.inari.firefly.external.*
 import com.inari.firefly.graphics.view.ViewEvent
@@ -22,17 +23,17 @@ object GraphicsMock : FFGraphics {
 
     init {
         FFContext.registerListener(
-            ViewEvent,
-            object : ViewEvent.Listener {
-                override fun invoke(id: CompId, viewPort: ViewData, type: ViewEvent.Type) {
-                    when (type) {
-                        ViewEvent.Type.VIEW_CREATED -> views.add(id)
-                        ViewEvent.Type.VIEW_DELETED -> views.remove(id)
-                        else -> {
+                ViewEvent,
+                object : ViewEvent.Listener {
+                    override fun invoke(id: CompId, viewPort: ViewData, type: ViewEvent.Type) {
+                        when (type) {
+                            ViewEvent.Type.VIEW_CREATED -> views.add(id)
+                            ViewEvent.Type.VIEW_DELETED -> views.remove(id)
+                            else -> {
+                            }
                         }
                     }
                 }
-            }
         )
     }
 

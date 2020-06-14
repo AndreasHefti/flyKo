@@ -3,11 +3,11 @@ package com.inari.firefly.libgdx.examples
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration
-import com.inari.firefly.libgdx.GDXAppAdapter
+import com.inari.firefly.libgdx.DesktopAppAdapter
 import com.inari.firefly.system.FFInfoSystem
 import com.inari.firefly.system.FrameRateInfo
 
-class FPSInfoTest : GDXAppAdapter() {
+class FPSInfoTest : DesktopAppAdapter() {
 
     override val title: String = "FPSInfoTest"
 

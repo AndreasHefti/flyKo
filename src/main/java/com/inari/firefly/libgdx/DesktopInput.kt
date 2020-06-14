@@ -2,16 +2,22 @@ package com.inari.firefly.libgdx
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Graphics
-import com.inari.firefly.external.FFInput
+import com.inari.firefly.FFApp
+import com.inari.firefly.FFContext
+import com.inari.firefly.external.*
 import com.inari.firefly.external.FFInput.*
+import com.inari.firefly.external.FFInput.Companion.ACTION_PRESS
+import com.inari.firefly.external.FFInput.Companion.ACTION_TYPED
 import com.inari.firefly.external.FFInput.ControllerInput.*
 import com.inari.java.types.BitSet
+import com.inari.util.Call
 import com.inari.util.collection.DynIntArray
 import org.lwjgl.glfw.GLFW
+import java.lang.IllegalArgumentException
 import kotlin.experimental.and
 
 
-object GDXInput : FFInput {
+object DesktopInput : FFInput {
 
     override val xpos: Int
         get() = Gdx.input.x
@@ -49,15 +55,64 @@ object GDXInput : FFInput {
         }
     }
 
+    override fun createOrAdapter(name: String, a: String, b: String): ORAdapter {
+        val adapter = ORAdapter(getDevice(a), getDevice(b), name)
+        devices[name] = adapter
+        return adapter
+    }
+
     override fun getDevice(name: String): InputDevice =
             devices[name] ?: devices[FFInput.VOID_INPUT_DEVICE]!!
 
+    override fun clearDevice(name: String) {
+        devices.remove(name)
+    }
+
+    override fun setKeyCallback(callback: KeyCallback) {
+        val w = (Gdx.graphics as Lwjgl3Graphics).window.windowHandle
+        GLFW.glfwSetKeyCallback(w) { _, key, scancode, action, _ -> callback.invoke(key, scancode, action) }
+    }
+
+    override fun setMouseButtonCallback(callback: MouseCallback) {
+        val w = (Gdx.graphics as Lwjgl3Graphics).window.windowHandle
+        GLFW.glfwSetMouseButtonCallback(w) { _, key, action, _ -> callback.invoke(key, action) }
+    }
+
+    override fun setJoystickConnectionCallback(callback: JoystickConnectionCallback) {
+        GLFW.glfwSetJoystickCallback { joystick, action -> callback.invoke(joystick, action) }
+    }
+
+    private var buttonCallbackUpdate: Call = {}
+    override fun setButtonCallback(deviceName: String, callback: ButtonCallback) {
+        if (deviceName in devices) {
+            val device = devices[deviceName]!!
+            val buttonTypes = ButtonType.values()
+            buttonCallbackUpdate = {
+                buttonTypes.forEach {
+                    if (device.buttonPressed(it))
+                        callback.invoke(it, ACTION_TYPED)
+                    if (device.buttonPressed(it))
+                        callback.invoke(it, ACTION_PRESS)
+                }
+            }
+            FFContext.registerListener(FFApp.UpdateEvent, buttonCallbackUpdate)
+        } else throw IllegalArgumentException("No device with name: $deviceName found")
+    }
+
+    override fun resetInputCallbacks() {
+        val w = (Gdx.graphics as Lwjgl3Graphics).window.windowHandle
+        GLFW.glfwSetKeyCallback(w, null)
+        GLFW.glfwSetMouseButtonCallback(w, null)
+        GLFW.glfwSetJoystickCallback(null)
+        FFContext.disposeListener(FFApp.UpdateEvent, buttonCallbackUpdate)
+        buttonCallbackUpdate = {}
+    }
 
     class GLFWDesktopKeyboardInput(override val window: Long) : KeyInput {
         override val name: String = "DEFAULT DESKTOP KEYBOARD INPUT"
         override val type: InputImpl = Companion
 
-        private val buttonCodeMapping = DynIntArray(20, -1)
+        private val buttonCodeMapping = DynIntArray(ButtonType.values().size, -1)
         private val pressedCodeMapping = BitSet()
 
         override fun buttonPressed(button: ButtonType): Boolean {
@@ -97,8 +152,8 @@ object GDXInput : FFInput {
             get() = currentController
             set(value) { currentController = value }
         private var currentController = ControllerDef(-1, "NULL")
-        private val buttonCodeMapping = DynIntArray(20, -1)
-        private val hatCodeMapping = DynIntArray(20, -1)
+        private val buttonCodeMapping = DynIntArray(ButtonType.values().size, -1)
+        private val hatCodeMapping = DynIntArray(ButtonType.values().size, -1)
         private val pressedCodeMapping = BitSet(255)
 
         init {
@@ -127,6 +182,7 @@ object GDXInput : FFInput {
                 return (hats[0] and keyCode.toByte() > 0)
 
             }
+
             val buttons = GLFW.glfwGetJoystickButtons(currentController.id)!!
             val keyCode = buttonCodeMapping[buttonCode]
             if (keyCode >= 0 && buttons[keyCode] == ONE)

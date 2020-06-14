@@ -13,7 +13,7 @@ import com.inari.firefly.graphics.rendering.RenderingSystem
 import com.inari.firefly.graphics.rendering.SimpleTextRenderer
 import com.inari.firefly.graphics.shape.EShape
 import com.inari.firefly.graphics.text.EText
-import com.inari.firefly.libgdx.GDXAppAdapter
+import com.inari.firefly.libgdx.DesktopAppAdapter
 
 import com.inari.firefly.physics.animation.AnimationSystem
 import com.inari.firefly.physics.animation.easing.EasedProperty
@@ -23,7 +23,7 @@ import com.inari.firefly.system.FrameRateInfo
 import com.inari.util.geom.Easing
 
 
-class EasingTest2 : GDXAppAdapter() {
+class EasingTest2 : DesktopAppAdapter() {
 
     override val title: String = "EasingTest2"
 

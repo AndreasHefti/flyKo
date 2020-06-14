@@ -9,7 +9,7 @@ import com.inari.firefly.external.ShapeType
 import com.inari.firefly.graphics.ETransform
 import com.inari.firefly.graphics.rendering.RenderingSystem
 import com.inari.firefly.graphics.shape.EShape
-import com.inari.firefly.libgdx.GDXAppAdapter
+import com.inari.firefly.libgdx.DesktopAppAdapter
 import com.inari.firefly.physics.animation.AnimationSystem
 import com.inari.firefly.physics.animation.easing.EasedProperty
 import com.inari.firefly.physics.animation.entity.EAnimation
@@ -17,7 +17,7 @@ import com.inari.firefly.system.FFInfoSystem
 import com.inari.firefly.system.FrameRateInfo
 import com.inari.util.geom.Easing
 
-class ShapeTransformTest : GDXAppAdapter() {
+class ShapeTransformTest : DesktopAppAdapter() {
 
     override val title: String = "ShapeTransformTest"
 

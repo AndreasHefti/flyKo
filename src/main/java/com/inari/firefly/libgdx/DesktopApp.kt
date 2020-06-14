@@ -4,11 +4,11 @@ import com.badlogic.gdx.Gdx
 import com.inari.firefly.FFApp
 import com.inari.util.event.EventDispatcher
 
-object GDXApp : FFApp(
+object DesktopApp : FFApp(
     { EventDispatcher() },
     { GDXGraphics },
     { GDXAudio },
-    { GDXInput },
+    { DesktopInput },
     { GDXTimer }
 ) {
 

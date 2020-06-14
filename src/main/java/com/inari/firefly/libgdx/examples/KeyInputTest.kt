@@ -1,9 +1,7 @@
 package com.inari.firefly.libgdx.examples
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration
-import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Graphics
 import com.inari.firefly.FFApp
 import com.inari.firefly.FFContext
 import com.inari.firefly.NO_COMP_ID
@@ -12,13 +10,13 @@ import com.inari.firefly.entity.Entity
 import com.inari.firefly.external.FFInput.ButtonType.*
 import com.inari.firefly.graphics.ETransform
 import com.inari.firefly.graphics.text.EText
-import com.inari.firefly.libgdx.GDXAppAdapter
-import com.inari.firefly.libgdx.GDXInput
+import com.inari.firefly.libgdx.DesktopAppAdapter
+import com.inari.firefly.libgdx.DesktopInput
 import com.inari.util.Call
 import org.lwjgl.glfw.GLFW
 
 
-class KeyInputTest : GDXAppAdapter() {
+class KeyInputTest : DesktopAppAdapter() {
 
     override val title: String = this.javaClass.simpleName
 
@@ -39,12 +37,12 @@ class KeyInputTest : GDXAppAdapter() {
 
     override fun init() {
 
-        val keyInput1 = FFContext.input.createDevice<GDXInput.GLFWDesktopKeyboardInput>(
+        val keyInput1 = FFContext.input.createDevice<DesktopInput.GLFWDesktopKeyboardInput>(
                 "KeyInput1",
-                GDXInput.GLFWDesktopKeyboardInput)
-        val keyInput2 = FFContext.input.createDevice<GDXInput.GLFWDesktopKeyboardInput>(
+                DesktopInput.GLFWDesktopKeyboardInput)
+        val keyInput2 = FFContext.input.createDevice<DesktopInput.GLFWDesktopKeyboardInput>(
                 "KeyInput2",
-                GDXInput.GLFWDesktopKeyboardInput)
+                DesktopInput.GLFWDesktopKeyboardInput)
 
         keyInput1.mapKeyInput(UP, GLFW.GLFW_KEY_W)
         keyInput1.mapKeyInput(RIGHT, GLFW.GLFW_KEY_D)

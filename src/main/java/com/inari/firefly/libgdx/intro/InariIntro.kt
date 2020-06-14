@@ -1,13 +1,12 @@
 package com.inari.firefly.libgdx.intro
 
-import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.Input
 import com.inari.firefly.*
 import com.inari.firefly.entity.Entity
 import com.inari.firefly.graphics.ETransform
 import com.inari.firefly.graphics.TextureAsset
 import com.inari.firefly.graphics.sprite.ESprite
 import com.inari.firefly.graphics.sprite.SpriteAsset
+import com.inari.firefly.libgdx.DesktopInput
 import com.inari.firefly.physics.animation.easing.EasedProperty
 import com.inari.firefly.physics.animation.entity.EAnimation
 import com.inari.util.Call
@@ -22,15 +21,8 @@ object InariIntro {
     private var spriteAssetId = NO_COMP_ID
     private var entityId = NO_COMP_ID
     private var animationId = NO_COMP_ID
-
-    private var updateListener = {
-        if ( Gdx.input.isKeyPressed( Input.Keys.SPACE ) ||
-            Gdx.input.isTouched ||
-            Gdx.input.isButtonPressed( Input.Buttons.LEFT ) )
-            dispose()
-    }
-
     private var callback: Call = VOID_CALL
+    private var disposing = false
 
     internal fun show(callback: Call) {
         this.callback = callback
@@ -71,15 +63,28 @@ object InariIntro {
             }
         }
 
-        FFContext.registerListener(FFApp.UpdateEvent, updateListener)
+        FFContext.input.setKeyCallback { _, _, _ -> dispose() }
+        FFContext.input.setMouseButtonCallback { _, _ -> dispose() }
+        val controllerInput = FFContext.input.createDevice<DesktopInput.GLFWControllerInput>(
+                "ControllerInput",
+                DesktopInput.GLFWControllerInput)
+        if (controllerInput.controllerDefinitions.isNotEmpty()) {
+            controllerInput.controller = controllerInput.controllerDefinitions[0]
+            FFContext.input.setButtonCallback("ControllerInput") { _, _ -> dispose() }
+        } else {
+            FFContext.input.clearDevice("ControllerInput")
+        }
     }
 
     private fun dispose() {
-        FFContext.disposeListener(FFApp.UpdateEvent, updateListener)
-        FFContext.deleteQuietly(entityId)
-        FFContext.deleteQuietly(spriteAssetId)
-        FFContext.deleteQuietly(textureAssetId)
-        FFContext.deleteQuietly(animationId)
-        callback()
+        if (!disposing) {
+            disposing = true
+            FFContext.deleteQuietly(entityId)
+            FFContext.deleteQuietly(spriteAssetId)
+            FFContext.deleteQuietly(textureAssetId)
+            FFContext.deleteQuietly(animationId)
+            FFContext.input.resetInputCallbacks()
+            callback()
+        }
     }
 }

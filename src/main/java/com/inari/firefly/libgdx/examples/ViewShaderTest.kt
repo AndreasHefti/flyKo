@@ -9,9 +9,9 @@ import com.inari.firefly.graphics.TextureAsset
 import com.inari.firefly.graphics.sprite.ESprite
 import com.inari.firefly.graphics.sprite.SpriteAsset
 import com.inari.firefly.graphics.view.View
-import com.inari.firefly.libgdx.GDXAppAdapter
+import com.inari.firefly.libgdx.DesktopAppAdapter
 
-class ViewShaderTest : GDXAppAdapter() {
+class ViewShaderTest : DesktopAppAdapter() {
 
     override val title: String = "ViewShaderTest"
 

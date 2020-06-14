@@ -2,17 +2,17 @@ package com.inari.firefly.libgdx.examples
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration
-import com.inari.firefly.libgdx.GDXApp
-import com.inari.firefly.libgdx.GDXAppAdapter
+import com.inari.firefly.libgdx.DesktopApp
+import com.inari.firefly.libgdx.DesktopAppAdapter
 
 
-class IntroTest : GDXAppAdapter() {
+class IntroTest : DesktopAppAdapter() {
 
     override val title: String = "IntroTest"
 
     override fun init() {
         dispose()
-        GDXApp.exit()
+        DesktopApp.exit()
     }
 
 }

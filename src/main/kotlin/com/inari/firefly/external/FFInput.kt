@@ -1,16 +1,16 @@
 package com.inari.firefly.external
 
-import com.inari.firefly.FFContext
-import com.inari.firefly.libgdx.GDXInput
+import com.inari.firefly.libgdx.DesktopInput
 import com.inari.java.types.BitSet
-import java.lang.UnsupportedOperationException
+
+typealias KeyCallback = (Int, Int, Int) -> Unit // key, scancode, action
+typealias MouseCallback = (Int, Int) -> Unit    // button, action
+typealias JoystickConnectionCallback = (Int, Int) -> Unit // joystickId, action
+typealias ButtonCallback = (FFInput.ButtonType, Int) -> Unit
 
 interface FFInput {
 
-    val xpos: Int
-    val ypos: Int
-    val dx: Int
-    val dy: Int
+
 
     enum class DeviceType {
         KEYBOARD,
@@ -59,18 +59,26 @@ interface FFInput {
         fun <T : InputDevice> create(window: Long = 0): T
     }
 
+    val xpos: Int
+    val ypos: Int
+    val dx: Int
+    val dy: Int
+
     val implementations: List<InputImpl>
-    val devices: MutableMap<String, InputDevice>
+    val devices: Map<String, InputDevice>
 
     fun <T : InputDevice> createDevice(name: String, implementation: InputImpl, window: Long = -1): T
     fun getDevice(name: String): InputDevice
     fun <T : InputDevice> getDeviceOf(name: String): T =
-            GDXInput.getDevice(name) as T
-    fun createOrAdapter(name: String, a: String, b: String): ORAdapter {
-        val adapter = ORAdapter(getDevice(a), getDevice(b), name)
-        devices[name] = adapter
-        return adapter
-    }
+            DesktopInput.getDevice(name) as T
+    fun createOrAdapter(name: String, a: String, b: String): ORAdapter
+    fun clearDevice(name: String)
+
+    fun setKeyCallback(callback: KeyCallback)
+    fun setMouseButtonCallback(callback: MouseCallback)
+    fun setJoystickConnectionCallback(callback: JoystickConnectionCallback)
+    fun setButtonCallback(device: String, callback: ButtonCallback)
+    fun resetInputCallbacks()
 
     interface InputDevice {
 
@@ -80,7 +88,6 @@ interface FFInput {
 
         fun buttonTyped(button: ButtonType): Boolean
         fun buttonPressed(button: ButtonType): Boolean
-
     }
 
     interface KeyInput : InputDevice {
@@ -148,6 +155,10 @@ interface FFInput {
     }
 
     companion object {
+        const val ACTION_PRESS = 1
+        const val ACTION_TYPED = 2
+        const val ACTION_CONNECTED = 0x40001
+        const val ACTION_DISCONNECTED = 0x40002
         const val VOID_INPUT_DEVICE = "VOID_INPUT_DEVICE"
     }
 

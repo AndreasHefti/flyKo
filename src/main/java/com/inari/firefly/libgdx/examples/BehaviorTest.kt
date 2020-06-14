@@ -4,7 +4,6 @@ import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration
 import com.inari.firefly.FFContext
 import com.inari.firefly.OpResult
-import com.inari.firefly.SYSTEM_FONT
 import com.inari.firefly.control.behavior.*
 import com.inari.firefly.control.behavior.BehaviorSystem.ACTION_DONE_CONDITION
 import com.inari.firefly.control.behavior.BehaviorSystem.BEHAVIOR_STATE_ASPECT_GROUP
@@ -16,8 +15,7 @@ import com.inari.firefly.graphics.BlendMode
 import com.inari.firefly.graphics.ETransform
 import com.inari.firefly.graphics.rendering.RenderingSystem
 import com.inari.firefly.graphics.shape.EShape
-import com.inari.firefly.graphics.text.EText
-import com.inari.firefly.libgdx.GDXAppAdapter
+import com.inari.firefly.libgdx.DesktopAppAdapter
 import com.inari.firefly.physics.movement.EMovement
 import com.inari.firefly.physics.movement.MovementSystem
 import com.inari.firefly.system.FFInfoSystem
@@ -25,7 +23,7 @@ import com.inari.firefly.system.FrameRateInfo
 import com.inari.util.aspect.Aspect
 import kotlin.random.Random
 
-class BehaviorTest : GDXAppAdapter() {
+class BehaviorTest : DesktopAppAdapter() {
 
     override val title: String = "BehaviorTest"
 

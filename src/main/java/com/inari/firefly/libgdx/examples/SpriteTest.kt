@@ -7,10 +7,9 @@ import com.inari.firefly.graphics.ETransform
 import com.inari.firefly.graphics.TextureAsset
 import com.inari.firefly.graphics.sprite.ESprite
 import com.inari.firefly.graphics.sprite.SpriteAsset
-import com.inari.firefly.libgdx.GDXApp
-import com.inari.firefly.libgdx.GDXAppAdapter
+import com.inari.firefly.libgdx.DesktopAppAdapter
 
-class SpriteTest : GDXAppAdapter() {
+class SpriteTest : DesktopAppAdapter() {
 
     override val title: String = "IntroTest"
 
@@ -36,10 +35,6 @@ class SpriteTest : GDXAppAdapter() {
             }
         }
 
-    }
-
-    override fun resize(width: Int, height: Int) {
-        fitBaseViewportToScreen(width, height, 704, 480, true)
     }
 
 }
