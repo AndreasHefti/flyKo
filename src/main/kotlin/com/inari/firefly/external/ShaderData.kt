@@ -28,6 +28,8 @@ class ShaderData(
 typealias ShaderInit = (ShaderInitAdapter) -> Unit
 interface ShaderInitAdapter {
 
+    fun setUniformFloat(name: String, value: Float)
+
     fun setTexture(name: String, textureName: String)
     fun setTexture(name: String, textureId: CompId)
     fun setViewTexture(name: String, viewName: String)

@@ -102,7 +102,7 @@ object GDXGraphics : FFGraphics {
         get() = Gdx.graphics.width
 
     init {
-        //ShaderProgram.pedantic = false
+        ShaderProgram.pedantic = false
         FFContext.registerListener(ViewEvent, object : ViewEvent.Listener {
             override fun invoke(id: CompId, viewPort: ViewData, type: ViewEvent.Type) {
                 when (type) {
@@ -701,6 +701,13 @@ object GDXGraphics : FFGraphics {
     private class GDXShaderInitAdapter : ShaderInitAdapter {
 
         internal var shaderId: Int = -1
+
+        override fun setUniformFloat(name: String, value: Float) {
+            if (shaderId < 0)
+                return
+
+            shaderPrograms[shaderId]?.program?.setUniformf(name, value)
+        }
 
         override fun setTexture(name: String, textureName: String) {
             if (shaderId < 0)

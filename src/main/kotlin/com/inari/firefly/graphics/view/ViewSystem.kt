@@ -96,11 +96,11 @@ object ViewSystem : ComponentSystem {
 
         // delete also all layers of this view
         val index = view.index
-        layersOfView[index]?.also { bag -> run {
+        layersOfView[index]?.also { bag ->
             val i = bag.iterator()
             while (i.hasNext())
                 layers.delete(i.next())
-        } }
+        }
 
         orderedView.remove(index)
         orderedView.trim()
@@ -115,7 +115,7 @@ object ViewSystem : ComponentSystem {
     }
 
     private fun deleted(layer: Layer) =
-        layersOfView[layer.viewRef]?.remove(layer.viewRef)
+        layersOfView[layer.viewRef]?.remove(layer.index)
 
 
     private fun updateViewMapping() {
