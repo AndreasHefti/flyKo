@@ -130,7 +130,7 @@ class DynFloatArray(
     override fun indexOf(value: Float): Int {
         var i = 0
         while (i < array.size) {
-            if (array[i] === value)
+            if (array[i] == value)
                 return i
             i++
         }

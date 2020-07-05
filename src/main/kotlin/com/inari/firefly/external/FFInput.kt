@@ -69,15 +69,14 @@ interface FFInput {
 
     fun <T : InputDevice> createDevice(name: String, implementation: InputImpl, window: Long = -1): T
     fun getDevice(name: String): InputDevice
-    fun <T : InputDevice> getDeviceOf(name: String): T =
-            DesktopInput.getDevice(name) as T
+    fun <T : InputDevice> getDeviceOf(name: String): T = DesktopInput.getDevice(name) as T
     fun createOrAdapter(name: String, a: String, b: String): ORAdapter
     fun clearDevice(name: String)
 
     fun setKeyCallback(callback: KeyCallback)
     fun setMouseButtonCallback(callback: MouseCallback)
     fun setJoystickConnectionCallback(callback: JoystickConnectionCallback)
-    fun setButtonCallback(device: String, callback: ButtonCallback)
+    fun setButtonCallback(deviceName: String, callback: ButtonCallback)
     fun resetInputCallbacks()
 
     interface InputDevice {

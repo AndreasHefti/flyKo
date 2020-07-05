@@ -8,8 +8,6 @@ import com.inari.util.collection.DynArrayRO
 import com.inari.util.event.Event
 import com.inari.util.event.IEventDispatcher
 import com.inari.util.geom.Rectangle
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import kotlin.math.floor
 
 abstract class FFApp protected constructor(

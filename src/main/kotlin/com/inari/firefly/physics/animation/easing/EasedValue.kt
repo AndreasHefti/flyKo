@@ -31,7 +31,7 @@ class EasedValue : Animation(), FloatAnimation {
         set(value) { control.propertyAccessor = value }
 
     override val value: Float
-        get() = control.propertyAccessor?.get() ?: 0f
+        get() = control.propertyAccessor.get()
 
     override fun reset() = control.reset()
     override fun update() = control.update()

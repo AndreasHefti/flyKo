@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.VertexAttribute
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.graphics.g3d.utils.MeshBuilder
+import com.badlogic.gdx.graphics.g3d.utils.shapebuilders.EllipseShapeBuilder
 import com.badlogic.gdx.graphics.glutils.FrameBuffer
 import com.badlogic.gdx.graphics.glutils.ShaderProgram
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer
@@ -36,7 +37,6 @@ import com.inari.util.geom.Rectangle
 import com.inari.util.graphics.RGBColor
 import org.lwjgl.opengl.GL11
 import org.lwjgl.opengl.GL12
-import java.lang.UnsupportedOperationException
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 
@@ -295,7 +295,7 @@ object GDXGraphics : FFGraphics {
                 val radius = data.vertices[index++]
                 val xpos = data.vertices[index++] + xOffset
                 val ypos = data.vertices[index++] + yOffset
-                meshBuilder.circle(radius, data.segments, xpos, ypos, 0f, 0f, 0f, 1f)
+                EllipseShapeBuilder.build(meshBuilder, radius, data.segments, xpos, ypos, 0f, 0f, 0f, 1f)
             }
             TRIANGLE     -> while (index < data.vertices.size) {
                 meshBuilder.triangle(
