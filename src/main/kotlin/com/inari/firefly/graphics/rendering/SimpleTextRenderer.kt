@@ -64,7 +64,7 @@ class SimpleTextRenderer private constructor() : Renderer() {
                     continue
                 }
 
-                val charData = metadata?.resolver?.invoke(j)
+                val charData = metadata?.resolver?.invoke(j - 1)
                 charData?.also {
                     transformCollector + it.transformData
                     textRenderable.blendMode = it.blend
@@ -72,7 +72,11 @@ class SimpleTextRenderer private constructor() : Renderer() {
                 }
 
                 graphics.renderSprite(textRenderable, transformCollector.data)
-                charData?.also { transformCollector - it.transformData.position }
+                charData?.also {
+                    transformCollector - it.transformData.position
+                    textRenderable.blendMode = text.blend
+                    textRenderable.tintColor = text.tint
+                }
                 transformCollector.data.position.x += horizontalStep
             }
         }
