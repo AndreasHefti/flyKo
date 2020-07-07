@@ -7,6 +7,7 @@ import com.inari.firefly.entity.EntityComponent
 import com.inari.firefly.external.SpriteRenderable
 import com.inari.firefly.graphics.ETransform
 import com.inari.firefly.graphics.text.EText
+import com.inari.firefly.graphics.text.ETextMeta
 import com.inari.firefly.graphics.text.FontAsset
 import com.inari.firefly.system.component.SingletonComponent
 import com.inari.util.geom.Rectangle
@@ -28,6 +29,7 @@ class SimpleTextRenderer private constructor() : Renderer() {
 
             val text = entity[EText]
             val transform = entity[ETransform]
+            val metadata = if (entity.has(ETextMeta)) entity[ETextMeta] else null
             val font = FFContext[FontAsset, text.fontAssetRef]
             val chars = text.text
 
@@ -62,7 +64,15 @@ class SimpleTextRenderer private constructor() : Renderer() {
                     continue
                 }
 
+                val charData = metadata?.resolver?.invoke(j)
+                charData?.also {
+                    transformCollector + it.transformData
+                    textRenderable.blendMode = it.blend
+                    textRenderable.tintColor = it.tint
+                }
+
                 graphics.renderSprite(textRenderable, transformCollector.data)
+                charData?.also { transformCollector - it.transformData.position }
                 transformCollector.data.position.x += horizontalStep
             }
         }
