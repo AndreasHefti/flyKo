@@ -74,6 +74,9 @@ class SimpleTextRenderer private constructor() : Renderer() {
                 graphics.renderSprite(textRenderable, transformCollector.data)
                 charData?.also {
                     transformCollector - it.transformData.position
+                    transformCollector.data.pivot(transform.ff_Pivot)
+                    transformCollector.data.rotation = transform.ff_Rotation
+                    transformCollector.data.scale(transform.ff_Scale)
                     textRenderable.blendMode = text.blend
                     textRenderable.tintColor = text.tint
                 }
