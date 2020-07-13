@@ -185,7 +185,7 @@ object GeomUtils {
 
 
 
-    fun rotateLeft(d: Direction): Direction =
+    fun rotateRight(d: Direction): Direction =
         when (d) {
             NORTH -> NORTH_EAST
             NORTH_EAST -> EAST
@@ -198,7 +198,7 @@ object GeomUtils {
             else -> NONE
         }
 
-    fun rotateLeft2(d: Direction): Direction =
+    fun rotateRight2(d: Direction): Direction =
         when (d) {
             NORTH -> EAST
             NORTH_EAST -> SOUTH_EAST
@@ -211,7 +211,7 @@ object GeomUtils {
             else -> NONE
         }
 
-    fun rotateRight(d: Direction): Direction =
+    fun rotateLeft(d: Direction): Direction =
         when (d) {
             NORTH -> NORTH_WEST
             NORTH_WEST -> WEST
@@ -224,7 +224,7 @@ object GeomUtils {
             else -> NONE
         }
 
-    fun rotateRight2(d: Direction): Direction =
+    fun rotateLeft2(d: Direction): Direction =
         when (d) {
             NORTH -> WEST
             NORTH_WEST -> SOUTH_WEST
