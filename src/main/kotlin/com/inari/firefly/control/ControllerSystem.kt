@@ -20,6 +20,9 @@ object ControllerSystem : ComponentSystem {
             listener = {c, l ->
             if (l == ComponentMap.MapAction.DELETED)
                 println("Delete: " + c.name)
+                if (l == ComponentMap.MapAction.DELETED && c.name == "TIME_COUNTER")
+                    println("TIME_COUNTER: " + c.name)
+
         }
     )
 
