@@ -16,14 +16,7 @@ object ControllerSystem : ComponentSystem {
     @JvmField val controller = ComponentSystem.createComponentMapping(
         Controller,
         activationMapping = true,
-        nameMapping = true,
-            listener = {c, l ->
-            if (l == ComponentMap.MapAction.DELETED)
-                println("Delete: " + c.name)
-                if (l == ComponentMap.MapAction.DELETED && c.name == "TIME_COUNTER")
-                    println("TIME_COUNTER: " + c.name)
-
-        }
+        nameMapping = true
     )
 
     init {
