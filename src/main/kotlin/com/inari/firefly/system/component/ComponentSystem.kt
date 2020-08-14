@@ -91,7 +91,6 @@ interface ComponentSystem : FFSystem {
 
         override fun delete(index: Int) {
             if (_map.contains(index)) {
-
                 // first remove from map
                 val c: C = _map.remove(index)!!
                 if (nameMapping)

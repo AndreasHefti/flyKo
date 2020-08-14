@@ -3,6 +3,7 @@ package com.inari.firefly.control
 import com.inari.firefly.FFApp
 import com.inari.firefly.FFContext
 import com.inari.firefly.component.CompId
+import com.inari.firefly.component.ComponentMap
 import com.inari.firefly.system.component.ComponentSystem
 import com.inari.firefly.system.component.SystemComponent
 import com.inari.util.aspect.Aspects
@@ -15,7 +16,11 @@ object ControllerSystem : ComponentSystem {
     @JvmField val controller = ComponentSystem.createComponentMapping(
         Controller,
         activationMapping = true,
-        nameMapping = true
+        nameMapping = true,
+            listener = {c, l ->
+            if (l == ComponentMap.MapAction.DELETED)
+                println("Delete: " + c.name)
+        }
     )
 
     init {
