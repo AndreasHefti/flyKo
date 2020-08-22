@@ -88,8 +88,6 @@ abstract class DesktopAppAdapter : ApplicationAdapter() {
             bounds.height = baseHeight
         }
 
-        println("** $bounds")
-
         if (centerCamera) {
             worldPosition.x = -(bounds.width - baseWidth).toFloat() / 2 * zoom
             worldPosition.y = -(bounds.height - baseHeight).toFloat() / 2 * zoom
