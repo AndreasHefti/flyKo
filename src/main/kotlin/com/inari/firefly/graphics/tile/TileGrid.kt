@@ -1,6 +1,5 @@
 package com.inari.firefly.graphics.tile
 
-import com.inari.firefly.BASE_VIEW
 import com.inari.firefly.component.ComponentRefResolver
 import com.inari.firefly.graphics.rendering.Renderer
 import com.inari.firefly.graphics.view.Layer
@@ -71,7 +70,7 @@ class TileGrid private constructor() : SystemComponent(TileGrid::class.java.name
             val x = pos.x % gridDim.dx
             grid[if (y < 0) gridDim.dy + y else y][if (x < 0) gridDim.dx + x else x]
         } else
-            grid[pos.y][pos.x]
+            checkAndGet(pos.x, pos.y)
 
     operator fun get(xpos: Int, ypos: Int): Int =
         if (spherical) {
@@ -79,7 +78,12 @@ class TileGrid private constructor() : SystemComponent(TileGrid::class.java.name
             val x = xpos % gridDim.dx
             grid[if (y < 0) gridDim.dy + y else y][if (x < 0) gridDim.dx + x else x]
         } else
+            checkAndGet(xpos, ypos)
+
+    private fun checkAndGet(xpos: Int, ypos: Int): Int =
+        if (xpos >= 0 && xpos < gridDim.dx && ypos >= 0 && ypos < gridDim.dy)
             grid[ypos][xpos]
+        else -1
 
     fun getTileAt(worldPos: Position): Int =
         get(floor((worldPos.x.toDouble() - ff_Position.x) / ff_CellWidth).toInt(),
