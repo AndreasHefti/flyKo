@@ -104,10 +104,11 @@ class TileGrid private constructor() : SystemComponent(TileGrid::class.java.name
         } else
             grid[ypos][xpos] = entityId
 
+
     fun reset(xpos: Int, ypos: Int): Int {
         return if (spherical) {
-            val y = if (ypos < 0) gridDim.dy + (ypos % gridDim.dy) else ypos % gridDim.dy
-            val x = if (xpos < 0) gridDim.dx + (xpos % gridDim.dx) else xpos % gridDim.dx
+            val y = if (ypos % gridDim.dy < 0) gridDim.dy + (ypos % gridDim.dy) else ypos % gridDim.dy
+            val x = if (xpos % gridDim.dx < 0) gridDim.dx + (xpos % gridDim.dx) else xpos % gridDim.dx
             val old = grid[y][x]
             grid[y][x] = -1
             old
@@ -125,8 +126,8 @@ class TileGrid private constructor() : SystemComponent(TileGrid::class.java.name
         var ixpos = xpos
         var iypos = ypos
         if (spherical) {
-            ixpos = if (xpos < 0) gridDim.dx + (xpos % gridDim.dx) else xpos % gridDim.dx
-            iypos = if (ypos < 0) gridDim.dy + (ypos % gridDim.dy) else ypos % gridDim.dy
+            ixpos = if (xpos % gridDim.dx < 0) gridDim.dx + (xpos % gridDim.dx) else xpos % gridDim.dx
+            iypos = if (ypos % gridDim.dy < 0) gridDim.dy + (ypos % gridDim.dy) else ypos % gridDim.dy
         }
         if (grid[iypos][ixpos] == entityId) {
             grid[iypos][ixpos] = -1
