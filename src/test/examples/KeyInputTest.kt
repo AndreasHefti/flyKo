@@ -19,16 +19,23 @@ class KeyInputTest : DesktopAppAdapter() {
     override val title: String = this.javaClass.simpleName
 
     private var text = StringBuilder("")
+    private var textSPACE = StringBuilder("")
     private var textId = NO_COMP_ID
+    private var textSPACEId = NO_COMP_ID
     private val updateCall: Call = {
         val textEntity = FFContext[textId, EText]
+        val textSPACEEntity = FFContext[textSPACEId, EText]
         val keyInput = FFContext.input.getDevice("KeyInput")
         when {
-            keyInput.buttonPressed(UP) -> textEntity.text.clear().append("UP")
+         //   keyInput.buttonPressed(UP) -> textEntity.text.clear().append("UP")
             keyInput.buttonPressed(RIGHT) -> textEntity.text.clear().append("RIGHT")
-            keyInput.buttonPressed(DOWN) -> textEntity.text.clear().append("DOWN")
-            keyInput.buttonPressed(LEFT) -> textEntity.text.clear().append("LEFT")
+         //   keyInput.buttonPressed(DOWN) -> textEntity.text.clear().append("DOWN")
+         //   keyInput.buttonPressed(LEFT) -> textEntity.text.clear().append("LEFT")
             else -> textEntity.text.clear().append("--")
+        }
+        when {
+            keyInput.buttonPressed(FIRE_1) -> textSPACEEntity.text.clear().append("SPACE")
+            else -> textSPACEEntity.text.clear().append("--")
         }
 
     }
@@ -38,19 +45,20 @@ class KeyInputTest : DesktopAppAdapter() {
         val keyInput1 = FFContext.input.createDevice<DesktopInput.GLFWDesktopKeyboardInput>(
                 "KeyInput1",
                 DesktopInput.GLFWDesktopKeyboardInput)
-        val keyInput2 = FFContext.input.createDevice<DesktopInput.GLFWDesktopKeyboardInput>(
-                "KeyInput2",
-                DesktopInput.GLFWDesktopKeyboardInput)
+//        val keyInput2 = FFContext.input.createDevice<DesktopInput.GLFWDesktopKeyboardInput>(
+//                "KeyInput2",
+//                DesktopInput.GLFWDesktopKeyboardInput)
 
         keyInput1.mapKeyInput(UP, GLFW.GLFW_KEY_W)
         keyInput1.mapKeyInput(RIGHT, GLFW.GLFW_KEY_D)
         keyInput1.mapKeyInput(DOWN, GLFW.GLFW_KEY_S)
         keyInput1.mapKeyInput(LEFT, GLFW.GLFW_KEY_A)
+        keyInput1.mapKeyInput(FIRE_1, GLFW.GLFW_KEY_SPACE)
 
-        keyInput2.mapKeyInput(UP, GLFW.GLFW_KEY_UP)
-        keyInput2.mapKeyInput(RIGHT, GLFW.GLFW_KEY_RIGHT)
-        keyInput2.mapKeyInput(DOWN, GLFW.GLFW_KEY_DOWN)
-        keyInput2.mapKeyInput(LEFT, GLFW.GLFW_KEY_LEFT)
+//        keyInput2.mapKeyInput(UP, GLFW.GLFW_KEY_UP)
+//        keyInput2.mapKeyInput(RIGHT, GLFW.GLFW_KEY_RIGHT)
+//        keyInput2.mapKeyInput(DOWN, GLFW.GLFW_KEY_DOWN)
+//        keyInput2.mapKeyInput(LEFT, GLFW.GLFW_KEY_LEFT)
 
         FFContext.input.createOrAdapter("KeyInput", "KeyInput1", "KeyInput2")
 
@@ -62,6 +70,17 @@ class KeyInputTest : DesktopAppAdapter() {
                 ff_FontAsset(SYSTEM_FONT)
                 ff_Text.append(text)
                 this@KeyInputTest.text = ff_Text
+            }
+        }
+
+        textSPACEId = Entity.buildAndActivate {
+            ff_With(ETransform) {
+                ff_Position(100, 200)
+            }
+            ff_With(EText) {
+                ff_FontAsset(SYSTEM_FONT)
+                ff_Text.append(textSPACE)
+                this@KeyInputTest.textSPACE = ff_Text
             }
         }
 

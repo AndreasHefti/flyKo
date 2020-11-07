@@ -109,6 +109,11 @@
             <artifactId>gdx-backend-lwjgl3</artifactId>
             <version>1.9.10</version>
         </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.lwjgl</groupId>-->
+<!--            <artifactId>lwjgl</artifactId>-->
+<!--            <version>3.2.1</version>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>com.badlogicgames.gdx</groupId>
             <artifactId>gdx-platform</artifactId>
