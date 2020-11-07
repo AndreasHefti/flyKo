@@ -73,6 +73,9 @@ abstract class DesktopAppAdapter : ApplicationAdapter() {
     }
 
     protected fun fitBaseViewportToScreen(width: Int, height: Int, baseWidth: Int, baseHeight: Int, centerCamera: Boolean) {
+        if (width <= 0 || height <= 0)
+            return
+
         val bounds = ViewSystem.baseView.ff_Bounds
         val worldPosition = ViewSystem.baseView.ff_WorldPosition
         val targetRatio = height.toFloat() / width
