@@ -12,7 +12,7 @@ Introduction
 
 Fly-Ko is a top-level 2D game framework for Kotlin. Focusing on intuitive API and build within stringent architecture and design principles like Component-Entity-System, Builder/DSL and component indexing for fast access.
 
-The main idea of Firefly is to have a top-level 2D game API that comes with an in-build Component-Entity-System 
+The main goal of Firefly is to have a top-level 2D game API that comes with an in-build Component-Entity-System 
 architecture that helps to organize all the game-objects, data and assets in a well-defined form and helps a lot 
 on keeping the game code-base as flexible as possible for changes. Since almost everything in Fly-Ko is a component,
 to create them is following always the very same builder DSL while business-code stays in their System(s). 
@@ -28,15 +28,15 @@ Android or HTML5 should be possible but is not tested yet.
 Key Features 
 -----------------
 
-- Strong backing on Component and Component-Entity-System approach.
+- Strong backing on components and Component-Entity-System approach.
 
-- Lightweight but power-full and easy extendable event system for communication between Systems.  
+- Lightweight but powerfull and easy extendable event system for communication between Systems.  
 
-- Independent Lower Level interface definition.
+- Independent lower level interface definition.
 
-- Stringent Component builder API with DSL support. 
+- Stringent component builder API with DSL support. 
   
-- Indexing for Component types and instances for fast access
+- Indexing for component types and instances for fast access
 
 - Multiple Views by using render-to-texture with FBO - Framebuffer Object.
 
@@ -93,12 +93,12 @@ Code Example
           ff_Tint(1f, 1f, 1f, .5f)
       }
 
-      // add an animation component to the entity that defines a value based animation
-      // and is bound to the value of the alpha value of the sprites tint color property.
+      // add an animation component to the entity that defines an animation based on
+      // the alpha value of the color property of the sprite.
       //
-      // Animations normally can work for itself and live in the AnimationSystem. But if
+      // Animations normally can work for itself and lifes in the AnimationSystem. But if
       // a property of an Entity-Component like ESprite defines a property value adapter,
-      // an animation can be bound to this property to affecting the value of the property directly.
+      // an animation can be bound to this property directly to affecting the value of the property.
       ff_With(EAnimation) {
 
           // with an active easing animation on the sprite alpha blending value...
