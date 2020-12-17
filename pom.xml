@@ -102,12 +102,12 @@
         <dependency>
             <groupId>com.badlogicgames.gdx</groupId>
             <artifactId>gdx</artifactId>
-            <version>1.9.10</version>
+            <version>1.9.12</version>
         </dependency>
         <dependency>
             <groupId>com.badlogicgames.gdx</groupId>
             <artifactId>gdx-backend-lwjgl3</artifactId>
-            <version>1.9.10</version>
+            <version>1.9.12</version>
         </dependency>
 <!--        <dependency>-->
 <!--            <groupId>org.lwjgl</groupId>-->
@@ -117,7 +117,7 @@
         <dependency>
             <groupId>com.badlogicgames.gdx</groupId>
             <artifactId>gdx-platform</artifactId>
-            <version>1.9.10</version>
+            <version>1.9.12</version>
             <classifier>natives-desktop</classifier>
         </dependency>
 
