@@ -22,3 +22,5 @@ target/*
 /target/
 /bin/
 /.idea/
+
+FlyKo.iml
