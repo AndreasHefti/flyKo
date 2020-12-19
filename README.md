@@ -59,8 +59,8 @@ Code Example
   // with FFContext.dispose(TextureAsset, "logoTexture"). The asset definition is still
   // available and can be deleted with FFContext.delete(TextureAsset, "logoTexture")
   val texAssetId = TextureAsset.build {
-      ff_Name = "logoTexture"
-      ff_ResourceName = "firefly/logo.png"
+      name = "logoTexture"
+      resourceName = "firefly/logo.png"
   }
 
   // Create and activate/load a SpriteAsset with reference to the TextureAsset.
@@ -68,10 +68,10 @@ Code Example
   val spriteId = SpriteAsset.buildAndActivate {
       // It would also be possible to use the name of the texture asset here
       // instead of the identifier. But of corse, identifier (index) gives faster access
-      ff_Texture(texAssetId)
-      ff_TextureRegion(0,0,32,32)
-      ff_HorizontalFlip = false
-      ff_VerticalFlip = false
+      texture(texAssetId)
+      textureRegion(0,0,32,32)
+      horizontalFlip = false
+      verticalFlip = false
   }
 
   // Create an Entity positioned on the base View on x=50/y=150, and the formerly
@@ -81,16 +81,16 @@ Code Example
   val entityId = Entity.buildAndActivate {
 
       // add a transform component to the entity that defines the orientation of the Entity
-      ff_With(ETransform) {
-          ff_View(BASE_VIEW)
-          ff_Position(50, 150)
-          ff_Scale(4f, 4f)
+      component(ETransform) {
+          view(BASE_VIEW)
+          pPosition(50, 150)
+          scale(4f, 4f)
       }
 
       // add a sprite component to the entity
-      ff_With(ESprite) {
-          ff_Sprite(spriteId)
-          ff_Tint(1f, 1f, 1f, .5f)
+      component(ESprite) {
+          sprite(spriteId)
+          tint(1f, 1f, 1f, .5f)
       }
 
       // add an animation component to the entity that defines an animation based on
@@ -99,32 +99,32 @@ Code Example
       // Animations normally can work for itself and lifes in the AnimationSystem. But if
       // a property of an Entity-Component like ESprite defines a property value adapter,
       // an animation can be bound to this property directly to affecting the value of the property.
-      ff_With(EAnimation) {
+      component(EAnimation) {
 
           // with an active easing animation on the sprite alpha blending value...
-          ff_WithActiveAnimation(EasedProperty) {
-              ff_Easing = Easing.Type.LINEAR
-              ff_StartValue = 0f
-              ff_EndValue = 1f
-              ff_Duration = 3000
-              ff_Looping = true
-              ff_InverseOnLoop = true
+          activeAnimation(EasedProperty) {
+              easing = Easing.Type.LINEAR
+              startValue = 0f
+              endValue = 1f
+              duration = 3000
+              looping = true
+              inverseOnLoop = true
 
               // that is connected to the alpha value of the sprite of the entity
-              ff_PropertyRef = ESprite.Property.TINT_ALPHA
+              propertyRef = ESprite.Property.TINT_ALPHA
           }
 
           // and with an active easing animation on the sprites position on the x axis...
-          ff_WithActiveAnimation(EasedProperty) {
-              ff_Easing = Easing.Type.BACK_OUT
-              ff_StartValue = 50f
-              ff_EndValue = 400f
-              ff_Duration = 1000
-              ff_Looping = true
-              ff_InverseOnLoop = true
+          activeAnimation(EasedProperty) {
+              easing = Easing.Type.BACK_OUT
+              startValue = 50f
+              endValue = 400f
+              duration = 1000
+              looping = true
+              inverseOnLoop = true
 
               // that is connected to the position value on the x axis of the entities transform data
-              ff_PropertyRef = ETransform.Property.POSITION_X
+              propertyRef = ETransform.Property.POSITION_X
           }
       }
   }
@@ -158,7 +158,7 @@ If you want to use the newest development version use "-SNAPSHOT" as version.
 <dependency>
     <groupId>com.github.Inari-Soft</groupId>
     <artifactId>FlyKo</artifactId>
-    <version>1.0.0-rc</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 
@@ -171,7 +171,7 @@ repositories {
 }
 
 dependencies {
-    compile group: 'com.github.Inari-Soft', name: 'FlyKo', version:'1.0.0-rc'
+    compile group: 'com.github.Inari-Soft', name: 'FlyKo', version:'1.0.0'
 }
 ```
 
