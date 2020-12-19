@@ -11,11 +11,11 @@ import com.inari.util.collection.DynArray
 class EParticle private constructor() : EntityComponent(EParticle::class.java.name) {
 
     @JvmField internal var rendererRef = SpriteParticleRenderer.instance.index
-    internal val particle: DynArray<Particle> = DynArray.of()
+    internal val int_particle: DynArray<Particle> = DynArray.of()
 
-    var ff_Renderer = ComponentRefResolver(Renderer) { index-> rendererRef = index }
-    var ff_Particle = ArrayAccessor(particle)
-    fun <P : Particle> ff_WithParticle(builder: Particle.ParticleBuilder<P>, configure: (P.() -> Unit)) {
+    var renderer = ComponentRefResolver(Renderer) { index-> rendererRef = index }
+    var particle = ArrayAccessor(int_particle)
+    fun <P : Particle> particle(builder: Particle.ParticleBuilder<P>, configure: (P.() -> Unit)) {
         val particle = builder.createEmpty()
         particle.also(configure)
         this.particle.add(particle)
@@ -23,7 +23,7 @@ class EParticle private constructor() : EntityComponent(EParticle::class.java.na
 
     override fun reset() {
         rendererRef = -1
-        particle.clear()
+        int_particle.clear()
     }
 
     override fun componentType() = Companion

@@ -18,8 +18,6 @@ class StateChangeTrigger private constructor(): Trigger() {
     }
 
     private var workflowRef = -1
-    private var typeName = NO_NAME
-    private var triggerType = Type.STATE_CHANGE
     private var call: Call = NULL_CALL
     private val listener = object : WorkflowEvent.Listener {
 
@@ -27,7 +25,7 @@ class StateChangeTrigger private constructor(): Trigger() {
             if (workflowId.instanceId != workflowRef)
                 return
 
-            when (triggerType) {
+            when (this@StateChangeTrigger.type) {
                 Type.STATE_CHANGE ->
                     if (type === WorkflowEvent.Type.STATE_CHANGED && typeName == stateChangeName)
                         doTrigger(call)
@@ -45,13 +43,10 @@ class StateChangeTrigger private constructor(): Trigger() {
         }
     }
 
-    var ff_Type : Type
-        get() = triggerType
-        set(value) {triggerType = value}
-    val ff_Workflow = ComponentRefResolver(Workflow) { index -> workflowRef = index }
-    var ff_TypeName : String
-        get() = typeName
-        set(value) {typeName = value}
+    var type : Type = Type.STATE_CHANGE
+    val workflow = ComponentRefResolver(Workflow) { index -> workflowRef = index }
+    var typeName : String  = NO_NAME
+
 
     override fun register(call: Call) {
         this.call = call

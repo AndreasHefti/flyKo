@@ -6,16 +6,13 @@ import com.inari.firefly.system.component.SystemComponentSubType
 import com.inari.java.types.BitSet
 import com.inari.util.IntConsumer
 
-// NOTE using IntExpr here is because of performance reasons to avoid boxing
-// TODO is this the best way to do that?
+
 class PolyComponentController private constructor() : Controller() {
 
     @JvmField internal val ids: BitSet = BitSet()
-    @JvmField internal var controlExpr = NULL_INT_CONSUMER
 
-    var ff_ControlExpr: IntConsumer
-        get() = throw UnsupportedOperationException()
-        set(value) {controlExpr = setIfNotInitialized(value, "ff_ControlExpr")}
+    var controlExpr: IntConsumer = NULL_INT_CONSUMER
+        set(value) {field = setIfNotInitialized(value, "controlExpr")}
 
     override fun register(id: CompId)  =
         ids.set(id.instanceId)

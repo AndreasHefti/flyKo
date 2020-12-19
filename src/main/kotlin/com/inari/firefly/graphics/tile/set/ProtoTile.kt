@@ -13,44 +13,20 @@ import com.inari.util.graphics.RGBColor
 class ProtoTile internal constructor() {
 
     @JvmField internal var spriteData: ProtoSprite = ProtoSprite()
-    @JvmField internal var material: Aspect = ContactSystem.UNDEFINED_MATERIAL
-    @JvmField internal var contactType: Aspect = ContactSystem.UNDEFINED_CONTACT_TYPE
-    @JvmField internal var contactMask: BitMask? = null
-    @JvmField internal var tintColor: RGBColor? = null
-    @JvmField internal var blendMode: BlendMode? = null
-    @JvmField internal var animation: TileAnimation? = null
+    @JvmField internal var int_animation: TileAnimation? = null
 
-    var ff_Sprite: ProtoSprite
-        get() = spriteData
-        set(value) {spriteData = value}
-
-    var ff_Material: Aspect
-        get() = material
-        set(value) {material = value}
-
-    var ff_ContactType: Aspect
-        get() = contactType
-        set(value) {contactType = value}
-
-    var ff_ContactMask: BitMask
-        get() = contactMask!!
-        set(value) {contactMask = value}
-
-    var ff_TintColor: RGBColor
-        get() = tintColor!!
-        set(value) {tintColor = value}
-
-    var ff_BlendMode: BlendMode
-        get() = blendMode!!
-        set(value) {blendMode = value}
-
-    val ff_withAnimation: (TileAnimation.() -> Unit) -> Unit = { configure ->
+    var sprite: ProtoSprite  = ProtoSprite()
+    var material: Aspect = ContactSystem.UNDEFINED_MATERIAL
+    var contactType: Aspect = ContactSystem.UNDEFINED_CONTACT_TYPE
+    var contactMask: BitMask? = null
+    var tintColor: RGBColor? = null
+    var blendMode: BlendMode? = null
+    val animation: (TileAnimation.() -> Unit) -> Unit = { configure ->
         val animationData = TileAnimation()
         animationData.also(configure)
-        animation = animationData
+        int_animation = animationData
     }
-
-    val ff_withSprite: (ProtoSprite.() -> Unit) -> Unit = { configure ->
+    val protoSprite: (ProtoSprite.() -> Unit) -> Unit = { configure ->
         val sprite = ProtoSprite()
         sprite.also(configure)
         this.spriteData = sprite

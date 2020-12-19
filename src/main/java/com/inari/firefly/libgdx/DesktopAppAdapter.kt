@@ -52,19 +52,19 @@ abstract class DesktopAppAdapter : ApplicationAdapter() {
 
     private fun loadSystemFont() {
         TextureAsset.build {
-            ff_Name = SYSTEM_FONT_ASSET
-            ff_ResourceName = "firefly/fireflyMicroFont.png"
+            name = SYSTEM_FONT_ASSET
+            resourceName = "firefly/fireflyMicroFont.png"
         }
 
         FontAsset.buildAndActivate {
-            ff_Name = SYSTEM_FONT
-            ff_Texture(SYSTEM_FONT_ASSET)
-            ff_CharWidth = 8
-            ff_CharHeight = 16
-            ff_CharSpace = 0
-            ff_LineSpace = 0
-            ff_DefaultChar = 'a'
-            ff_CharMap = arrayOf(
+            name = SYSTEM_FONT
+            texture(SYSTEM_FONT_ASSET)
+            charWidth = 8
+            charHeight = 16
+            charSpace = 0
+            lineSpace = 0
+            defaultChar = 'a'
+            charMap = arrayOf(
                 charArrayOf('a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z',' '),
                 charArrayOf('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z',' '),
                 charArrayOf('1','2','3','4','5','6','7','8','9','0','!','@','£','$','%','?','&','*','(',')','-','+','=','"','.',',',':')
@@ -76,12 +76,12 @@ abstract class DesktopAppAdapter : ApplicationAdapter() {
         if (width <= 0 || height <= 0)
             return
 
-        val bounds = ViewSystem.baseView.ff_Bounds
-        val worldPosition = ViewSystem.baseView.ff_WorldPosition
+        val bounds = ViewSystem.baseView.bounds
+        val worldPosition = ViewSystem.baseView.worldPosition
         val targetRatio = height.toFloat() / width
         val sourceRatio = baseHeight.toFloat() / baseWidth
         val fitToWidth = targetRatio > sourceRatio
-        val zoom = ViewSystem.baseView.ff_Zoom
+        val zoom = ViewSystem.baseView.zoom
 
         if (fitToWidth) {
             bounds.width = baseWidth
@@ -103,7 +103,7 @@ abstract class DesktopAppAdapter : ApplicationAdapter() {
             dispose()
             DesktopApp.exit()
         }) {
-            ff_Condition = { Gdx.input.isKeyPressed( key ) }
+            condition = { Gdx.input.isKeyPressed( key ) }
         }
     }
 }

@@ -74,7 +74,7 @@ class SimpleContactMap : ContactMap() {
                 pool.add(this)
         }
 
-        internal fun reset(exclude: Int) {
+        fun reset(exclude: Int) {
             index = -1
             this.exclude = exclude
             findNext()

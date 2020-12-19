@@ -10,23 +10,22 @@ class EasedValue : Animation(), FloatAnimation {
 
     private var control = EasingControl(this)
 
-
-    var ff_Easing: Easing.EasingFunctions.EasingFunction
+    var easing: Easing.EasingFunctions.EasingFunction
         get() = control.easing
         set(value) { control.easing = value }
-    var ff_StartValue: Float
+    var startValue: Float
         get() = control.startValue
         set(value) { control.startValue = value }
-    var ff_EndValue: Float
+    var endValue: Float
         get() = control.endValue
         set(value) { control.endValue = value }
-    var ff_Duration: Long
+    var duration: Long
         get() = control.duration
         set(value) { control.duration = value }
-    var ff_InverseOnLoop: Boolean
+    var inverseOnLoop: Boolean
         get() = control.inverseOnLoop
         set(value) { control.inverseOnLoop = value }
-    var ff_PropertyAccessor: FloatPropertyAccessor
+    var propertyAccessor: FloatPropertyAccessor
         get() = control.propertyAccessor
         set(value) { control.propertyAccessor = value }
 

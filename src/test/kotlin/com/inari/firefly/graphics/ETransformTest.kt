@@ -19,12 +19,12 @@ class ETransformTest {
         EntitySystem
 
         val entityId = Entity.build {
-            ff_With(ETransform) {
-                ff_View(0)
-                ff_Layer(1)
-                ff_Position.x = 10f
-                ff_Position.y = 30f
-                ff_Scale.dx = 2f
+            component(ETransform) {
+                view(0)
+                layer(1)
+                position.x = 10f
+                position.y = 30f
+                scale.dx = 2f
             }
         }
 
@@ -39,7 +39,7 @@ class ETransformTest {
         assertTrue(10f == xposAccessor.get())
         xposAccessor.set(30f)
         assertTrue(30f == xposAccessor.get())
-        assertTrue(30f == transform.ff_Position.x)
+        assertTrue(30f == transform.position.x)
         assertTrue(30f == transform.data.position.x)
 
         measureTime("accessor preformance", 10000) {
@@ -54,12 +54,12 @@ class ETransformTest {
         ViewSystem
 
         View.build {
-            ff_Name = "Test"
+            name = "Test"
         }
 
         val entityId = Entity.build {
-            ff_With(ETransform) {
-                ff_View("Test")
+            component(ETransform) {
+                view("Test")
             }
         }
 

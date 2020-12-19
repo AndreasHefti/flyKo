@@ -12,37 +12,29 @@ import com.inari.util.aspect.IndexedAspectType
 class EMeta private constructor() : EntityComponent(EMeta::class.java.name), NamedComponent {
 
     @JvmField internal var controllerRef = -1
-    override var name: String = NO_NAME
-        private set
-    @JvmField internal val aspects = ENTITY_META_ASPECTS.createAspects()
-
-
-    var ff_Name: String
-        set(ff_Name) {
-            check(!(name !== NO_NAME)) {
-                "An illegal reassignment of name: $ff_Name to: $ff_Name"
-            }
-            name = ff_Name
+    @Suppress("SetterBackingFieldAssignment")
+    var aspects: Aspects = ENTITY_META_ASPECTS.createAspects()
+        set(value) {
+            field.clear()
+            field + value
         }
-        get() = name
-    val ff_Controller = ComponentRefResolver(Controller) { index-> controllerRef = index }
-    fun ff_WithController(configure: (SingleComponentController.() -> Unit)): CompId {
+    override var name: String  = NO_NAME
+        set(value) {
+            check(!(name !== NO_NAME)) { "An illegal reassignment of name: $value to: $name" }
+            field = name
+        }
+
+    val controller = ComponentRefResolver(Controller) { index-> controllerRef = index }
+    fun controller(configure: (SingleComponentController.() -> Unit)): CompId {
         val id = SingleComponentController.build(configure)
         controllerRef = id.index
         return id
     }
-    fun ff_WithActiveController(configure: (SingleComponentController.() -> Unit)): CompId {
+    fun activeController(configure: (SingleComponentController.() -> Unit)): CompId {
         val id = SingleComponentController.buildAndActivate(configure)
         controllerRef = id.index
         return id
     }
-
-    var ff_Aspects: Aspects
-        get() = aspects
-        set(value) {
-            aspects.clear()
-            aspects + value
-        }
 
     override fun reset() {
         name = NO_NAME

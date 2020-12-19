@@ -15,22 +15,13 @@ import kotlin.math.floor
 
 class SimpleCameraController private constructor() : Controller() {
 
-    private var pivot: CameraPivot = NO_CAMERA_PIVOT
-    private val snapToBounds = Rectangle()
-    private var velocity = 0.25f
-
     private val pos = PositionF()
     private var view: View? = null
 
-    var ff_Pivot: CameraPivot
-        get() = throw UnsupportedOperationException()
-        set(value) { pivot = value }
-    var ff_SnapToBounds: Rectangle
-        get() = snapToBounds
+    var pivot: CameraPivot = NO_CAMERA_PIVOT
+    var snapToBounds: Rectangle = Rectangle()
         set(value) {snapToBounds(value)}
-    var ff_Velocity: Float
-        get() = velocity
-        set(value) {velocity = value}
+    var velocity: Float = 0.25f
 
     override fun register(id: CompId) {
         view = ViewSystem.views[id]

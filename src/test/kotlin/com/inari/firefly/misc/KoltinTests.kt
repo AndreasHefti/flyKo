@@ -9,7 +9,7 @@ class TestClass {
 
     fun count() = ++count
 
-    // anonymous function as value
+    // anonymous function as value
     val f1: Int
         get() = count
 

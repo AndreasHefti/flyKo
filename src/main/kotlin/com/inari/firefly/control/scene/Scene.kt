@@ -10,30 +10,27 @@ import com.inari.util.Call
 
 abstract class Scene protected constructor() : TriggeredSystemComponent(Scene::class.java.name) {
 
-    @JvmField internal var removeAfterRun = false
     @JvmField internal var callback: Call = VOID_CALL
     @JvmField internal var paused = false
+
+    var removeAfterRun: Boolean = false
 
     private val triggerIds = BitSet()
     private val pauseCall = { SceneSystem.pauseScene(index) }
     private val resumeCall = { SceneSystem.resumeScene(index) }
     private val stopCall = { SceneSystem.stopScene(index) }
 
-    var ff_RemoveAfterRun: Boolean
-        get() = removeAfterRun
-        set(value) { removeAfterRun = value }
+    fun <A : Trigger> runTrigger(cBuilder: Trigger.Subtype<A>, callback: Call, configure: (A.() -> Unit)): A =
+        super.trigger(cBuilder, { SceneSystem.runScene(index, callback) }, configure)
 
-    fun <A : Trigger> ff_WithRunTrigger(cBuilder: Trigger.Subtype<A>, callback: Call, configure: (A.() -> Unit)): A =
-        super.ff_With(cBuilder, { SceneSystem.runScene(index, callback) }, configure)
+    fun <A : Trigger> stopTrigger(cBuilder: Trigger.Subtype<A>, configure: (A.() -> Unit)): A =
+        super.trigger(cBuilder, stopCall, configure)
 
-    fun <A : Trigger> ff_WithStopTrigger(cBuilder: Trigger.Subtype<A>, configure: (A.() -> Unit)): A =
-        super.ff_With(cBuilder, stopCall, configure)
+    fun <A : Trigger> pauseTrigger(cBuilder: Trigger.Subtype<A>, configure: (A.() -> Unit)): A =
+        super.trigger(cBuilder, pauseCall, configure)
 
-    fun <A : Trigger> ff_WithPauseTrigger(cBuilder: Trigger.Subtype<A>, configure: (A.() -> Unit)): A =
-        super.ff_With(cBuilder, pauseCall, configure)
-
-    fun <A : Trigger> ff_WithResumeTrigger(cBuilder: Trigger.Subtype<A>, configure: (A.() -> Unit)): A =
-        super.ff_With(cBuilder, resumeCall, configure)
+    fun <A : Trigger> resumeTrigger(cBuilder: Trigger.Subtype<A>, configure: (A.() -> Unit)): A =
+        super.trigger(cBuilder, resumeCall, configure)
 
     abstract fun sceneInit()
     abstract fun sceneReset()

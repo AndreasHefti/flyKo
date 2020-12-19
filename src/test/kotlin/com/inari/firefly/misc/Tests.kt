@@ -16,7 +16,6 @@ import com.inari.firefly.entity.EntitySystem
 import com.inari.firefly.graphics.ETransform
 import com.inari.firefly.entity.EMultiplier
 import com.inari.firefly.graphics.sprite.ESprite
-import com.inari.firefly.physics.animation.timeline.IntTimelineProperty
 import com.inari.util.IntConsumer
 
 
@@ -29,16 +28,16 @@ fun main(args: Array<String>) {
     ControllerSystem
 //
 //    val comp1 = TestComponent.build {
-//        ff_Name = "srgfgrg"
-//        ff_Param2 = 2
+//        Name = "srgfgrg"
+//        Param2 = 2
 //    }
 //
 //    val comp2 = Test2Component.build {
-//        ff_Name = "dvsvsv"
-//        ff_Param2 = 3
-//        ff_Param3 = Position(1, 2)
-//        ff_Param4.add(1)
-//        ff_Param4.add(5)
+//        Name = "dvsvsv"
+//        Param2 = 3
+//        Param3 = Position(1, 2)
+//        Param4.add(1)
+//        Param4.add(5)
 //    }
 //
 //    println(comp1)
@@ -52,7 +51,7 @@ fun main(args: Array<String>) {
 //
 //    var comp3: TestComponent = FFContext.get(comp1)
 //    try {
-//        comp3.ff_Name = "445547474574"
+//        comp3.Name = "445547474574"
 //        println("prevent name reassignment failed")
 //    } catch (e: Exception) {
 //        println("prevent name reassignment ok")
@@ -66,8 +65,8 @@ fun main(args: Array<String>) {
 //
 //    val entityId = Entity.build {
 //        with(EMeta) {
-//            ff_Name = "test"
-//            ff_Controller.add(1)
+//            Name = "test"
+//            Controller.add(1)
 //        }
 //    }
 //
@@ -85,9 +84,9 @@ fun main(args: Array<String>) {
 //
 //
 //    TestAsset.build {
-//        ff_Name = "testAsset"
-//        ff_Param1 = "testParam1"
-//        ff_Param2 = 3f
+//        Name = "testAsset"
+//        Param1 = "testParam1"
+//        Param2 = 3f
 //    }
 //    FFContext
 //        .activate(Asset, "testAsset")
@@ -117,34 +116,34 @@ fun main(args: Array<String>) {
 
 //
     PolyComponentController.build {
-        ff_Name = "test"
-        ff_UpdateResolution = 1f
-        ff_ControlExpr = testControl
+        name = "test"
+        updateResolution = 1f
+        controlExpr = testControl
     }
 
     Entity.build {
-        ff_With(ETransform) {
-            ff_Position.x = 1f
+        component(ETransform) {
+            position.x = 1f
         }
-        ff_With(EAnimation) {
-            ff_WithAnimation(EasedProperty) {
-                ff_Looping = true
-                ff_PropertyRef = ESprite.Property.TINT_ALPHA
+        component(EAnimation) {
+            animation(EasedProperty) {
+                looping = true
+                propertyRef = ESprite.Property.TINT_ALPHA
             }
         }
-        ff_With(EMultiplier) {
-            ff_Positions.addAll(1f, 3f)
+        component(EMultiplier) {
+            positions.addAll(1f, 3f)
         }
-        ff_With(EMeta) {
-            ff_Controller("sofbno")
+        component(EMeta) {
+            controller("sofbno")
         }
     }
 
     EntityTask.build {
-        ff_Name = ""
-        ff_WithTrigger(UpdateEventTrigger, NO_COMP_ID) {
-            ff_Condition = TRUE_SUPPLIER
-            ff_DisposeAfter = true
+        name = ""
+        trigger(UpdateEventTrigger, NO_COMP_ID) {
+            condition = TRUE_SUPPLIER
+            disposeAfter = true
         }
     }
 

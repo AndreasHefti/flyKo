@@ -16,34 +16,34 @@ class EShape private constructor(): EntityComponent(EShape::class.java.name) {
 
     @JvmField val data = ShapeData()
 
-    var ff_Type: ShapeType
+    var type: ShapeType
         get() = data.type
         set(value) { data.type = value }
-    var ff_Vertices: FloatArray
+    var vertices: FloatArray
         get() = data.vertices
         set(value) { data.vertices = value }
-    var ff_Color: RGBColor
+    var color: RGBColor
         get() = data.color1
         set(value) = data.color1(value)
-    var ff_GradientColor1: RGBColor
+    var gradientColor1: RGBColor
         get() = data.color2!!
         set(value) {data.color2 = value}
-    var ff_GradientColor2: RGBColor
+    var gradientColor2: RGBColor
         get() = data.color3!!
         set(value) {data.color3 = value}
-    var ff_GradientColor3: RGBColor
+    var gradientColor3: RGBColor
         get() = data.color4!!
         set(value) {data.color4 = value}
-    var ff_Segments: Int
+    var segments: Int
         get() = data.segments
         set(value) { data.segments = value }
-    var ff_Fill: Boolean
+    var fill: Boolean
         get() = data.fill
         set(value) { data.fill = value }
-    var ff_Blend: BlendMode
+    var blend: BlendMode
         get() = data.blend
         set(value) { data.blend = value }
-    val ff_Shader = AssetInstanceRefResolver(
+    val shader = AssetInstanceRefResolver(
         { index -> data.shaderRef = index },
         { data.shaderRef })
 
@@ -62,7 +62,7 @@ class EShape private constructor(): EntityComponent(EShape::class.java.name) {
             "fill=$data.fill, " +
             "blend=$data.blend, " +
             "shaderRef=$data.shaderRef, " +
-            "ff_ShaderAsset=$ff_Shader)"
+            "ShaderAsset=$shader)"
     }
 
     private val accessorColorRed: FloatPropertyAccessor = object : FloatPropertyAccessor {

@@ -4,12 +4,10 @@ import com.inari.firefly.FFContext
 import com.inari.firefly.entity.EChild
 import com.inari.firefly.entity.Entity
 import com.inari.firefly.entity.EntityComponent
-import com.inari.firefly.entity.EntitySystem
 import com.inari.firefly.graphics.ETransform
 import com.inari.firefly.graphics.sprite.ESprite
 import com.inari.firefly.system.component.SingletonComponent
 import com.inari.util.geom.Rectangle
-
 
 class SpriteGroupRenderer private constructor() : Renderer(
     sort = { entities -> entities.sort(COMPARATOR) }
@@ -31,7 +29,7 @@ class SpriteGroupRenderer private constructor() : Renderer(
             val group = entity[EChild]
 
             transformCollector(transform.data)
-            collectTransformData(group.parent, transformCollector)
+            collectTransformData(group.int_parent, transformCollector)
             graphics.renderSprite(sprite.spriteRenderable, transformCollector.data)
         }
     }
@@ -45,8 +43,8 @@ class SpriteGroupRenderer private constructor() : Renderer(
             if (e2 == null)
                 return@Comparator -1
 
-            val p1 = e1[EChild].zpos
-            val p2 = e2[EChild].zpos
+            val p1 = e1[EChild].zPos
+            val p2 = e2[EChild].zPos
             when {
                 p1 == p2 -> 0
                 p1 < p2 -> -1

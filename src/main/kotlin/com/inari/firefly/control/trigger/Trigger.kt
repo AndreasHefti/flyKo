@@ -13,15 +13,8 @@ import com.inari.util.aspect.AspectType
 @ComponentDSL
 abstract class Trigger protected constructor() : SystemComponent(Trigger::class.java.name) {
 
-    @JvmField protected var disposeAfter = false
-    @JvmField protected var condition: BooleanSupplier = TRUE_SUPPLIER
-
-    var ff_DisposeAfter: Boolean
-        get() = disposeAfter
-        set(value) { disposeAfter = value }
-    var ff_Condition: BooleanSupplier
-        get() = throw UnsupportedOperationException()
-        set(value) { condition = value }
+    var disposeAfter: Boolean = false
+    var condition: BooleanSupplier  = TRUE_SUPPLIER
 
     abstract fun register(call: Call)
 

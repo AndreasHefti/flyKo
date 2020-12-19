@@ -54,7 +54,7 @@ object TaskSystem : ComponentSystem {
                     entityId.checkType(Entity).instanceId)
 
     fun runEntityTask(taskIndex: Int, entityId: Int): OpResult =
-            entityTasks[taskIndex].entityTask(entityId)
+            entityTasks[taskIndex].task(entityId)
 
     override fun clearSystem() {
         systemTasks.clear()

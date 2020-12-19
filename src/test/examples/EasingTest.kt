@@ -17,27 +17,27 @@ class EasingTest : DesktopAppAdapter() {
 
     override fun init() {
         Entity.buildAndActivate {
-            ff_With(ETransform) {
-                ff_View(0)
-                ff_Position.x = 50f
-                ff_Position.y = 50f
+            component(ETransform) {
+                view(0)
+                position.x = 50f
+                position.y = 50f
             }
-            ff_With(EShape) {
-                ff_Type = ShapeType.CIRCLE
-                ff_Segments = 20
-                ff_Fill = true
-                ff_Color = RGBColor(1f, 1f, 1f, 1f)
-                ff_Vertices = floatArrayOf(0f,0f,10f)
+            component(EShape) {
+                type = ShapeType.CIRCLE
+                segments = 20
+                fill = true
+                color = RGBColor(1f, 1f, 1f, 1f)
+                vertices = floatArrayOf(0f,0f,10f)
             }
-            ff_With(EAnimation) {
-                ff_WithActiveAnimation(EasedProperty) {
-                    ff_Looping = true
-                    ff_InverseOnLoop = true
-                    ff_StartValue = 50f
-                    ff_EndValue = 100f
-                    ff_Duration = 5000
-                    ff_Easing = Easing.Type.LINEAR
-                    ff_PropertyRef = ETransform.Property.POSITION_X
+            component(EAnimation) {
+                activeAnimation(EasedProperty) {
+                    looping = true
+                    inverseOnLoop = true
+                    startValue = 50f
+                    endValue = 100f
+                    duration = 5000
+                    easing = Easing.Type.LINEAR
+                    propertyRef = ETransform.Property.POSITION_X
 
                 }
             }

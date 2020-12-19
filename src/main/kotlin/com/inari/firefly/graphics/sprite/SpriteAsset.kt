@@ -14,18 +14,18 @@ class SpriteAsset private constructor() : Asset() {
     @JvmField internal var spriteId: Int = -1
     @JvmField internal val spriteData = SpriteData()
 
-    var ff_Texture =
+    var texture =
         ComponentRefResolver(Asset) { index-> run {
-            dependingRef = setIfNotInitialized(index, "ff_TextureAsset")
+            dependingRef = setIfNotInitialized(index, "TextureAsset")
             textureAssetRef = index
         } }
-    var ff_TextureRegion: Rectangle
+    var textureRegion: Rectangle
         get() = spriteData.region
         set(value) { spriteData.region(value) }
-    var ff_HorizontalFlip: Boolean
+    var horizontalFlip: Boolean
         get() = spriteData.isHorizontalFlip
         set(value) { spriteData.isHorizontalFlip = value }
-    var ff_VerticalFlip: Boolean
+    var verticalFlip: Boolean
         get() = spriteData.isVerticalFlip
         set(value) { spriteData.isVerticalFlip = value }
 

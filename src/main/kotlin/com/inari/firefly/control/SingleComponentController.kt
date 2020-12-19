@@ -8,11 +8,9 @@ import com.inari.util.IntConsumer
 class SingleComponentController private constructor() : Controller() {
 
     @JvmField internal var id: CompId = NO_COMP_ID
-    @JvmField internal var controlExpr = NULL_INT_CONSUMER
 
-    var ff_ControlExpr: IntConsumer
-        get() = throw UnsupportedOperationException()
-        set(value) {controlExpr = setIfNotInitialized(value, "ff_ControlExpr")}
+    var controlExpr: IntConsumer = NULL_INT_CONSUMER
+        set(value) {field = setIfNotInitialized(value, "controlExpr")}
 
     override fun register(id: CompId) {
         this.id = id

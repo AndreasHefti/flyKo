@@ -22,27 +22,27 @@ class ShapeAndSprite : DesktopAppAdapter()  {
         FFContext.loadSystem(AnimationSystem)
 
         View.buildAndActivate {
-            ff_Name = "TestView"
-            ff_Bounds(10, 10, 800, 600)
-            ff_FboScale = 1.0f
+            name = "TestView"
+            bounds(10, 10, 800, 600)
+            fboScale = 1.0f
         }
 
         Entity.buildAndActivate {
-            ff_With(ETransform) {
-                ff_View("TestView")
-                ff_Position(0, 0)
+            component(ETransform) {
+                view("TestView")
+                position(0, 0)
             }
-            ff_With(EShape) {
-                ff_Type = ShapeType.POLYGON
-                ff_Fill = true
-                ff_Color = RGBColor.RED
-                ff_Vertices = floatArrayOf(0f, 0f, 20f,0f,20f,20f, 0f,0f)
+            component(EShape) {
+                type = ShapeType.POLYGON
+                fill = true
+                color = RGBColor.RED
+                vertices = floatArrayOf(0f, 0f, 20f,0f,20f,20f, 0f,0f)
             }
-//            ff_With(EShape) {
-//                ff_Type = ShapeType.TRIANGLE
-//                ff_Color = RGBColor.RED
-//                ff_Fill = true
-//                ff_Vertices = floatArrayOf(0f, 0f, 120f, 120f, 20f, 20f)
+//            With(EShape) {
+//                Type = ShapeType.TRIANGLE
+//                Color = RGBColor.RED
+//                Fill = true
+//                Vertices = floatArrayOf(0f, 0f, 120f, 120f, 20f, 20f)
 //            }
         }
     }

@@ -17,7 +17,7 @@ class Entity internal constructor(): SystemComponent(Entity::class.java.name), A
     override var name: String
         set(value) {
             if (EMeta in components)
-                components.get(EMeta, EMeta::class.java)?.ff_Name = value
+                components.get(EMeta, EMeta::class.java)?.name = value
         }
         get() =
             if (EMeta in components)
@@ -30,7 +30,7 @@ class Entity internal constructor(): SystemComponent(Entity::class.java.name), A
     operator fun <C : EntityComponent> get(type: EntityComponentType<C>): C =
         components.get(type, type.typeClass)!!
 
-    fun <C : EntityComponent> ff_With(cBuilder: EntityComponentBuilder<C>, configure: (C.() -> Unit)): CompId =
+    fun <C : EntityComponent> component(cBuilder: EntityComponentBuilder<C>, configure: (C.() -> Unit)): CompId =
             cBuilder.builder { comp ->
                 components.set(comp.componentType(), comp)
                 comp

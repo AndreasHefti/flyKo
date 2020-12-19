@@ -14,22 +14,22 @@ class SpriteTest : DesktopAppAdapter() {
     override fun init() {
 
         TextureAsset.build {
-            ff_Name = "TEST"
-            ff_ResourceName = "firefly/inari.png"
+            name = "TEST"
+            resourceName = "firefly/inari.png"
         }
 
         SpriteAsset.buildAndActivate {
-            ff_Name = "TestSprite"
-            ff_Texture("TEST")
-            ff_TextureRegion(0,0,100,100)
+            name = "TestSprite"
+            texture("TEST")
+            textureRegion(0,0,100,100)
         }
 
         Entity.buildAndActivate {
-            ff_With(ETransform) {
-                ff_Position(0,0)
+            component(ETransform) {
+                position(0,0)
             }
-            ff_With(ESprite) {
-                ff_Sprite("TestSprite")
+            component(ESprite) {
+                sprite("TestSprite")
             }
         }
 

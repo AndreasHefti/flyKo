@@ -9,11 +9,9 @@ import com.inari.util.Call
 class SimpleController private constructor() : Controller() {
 
     @JvmField internal var id: CompId = NO_COMP_ID
-    @JvmField internal var controlExpr = NULL_CALL
 
-    var ff_ControlExpr: Call
-        get() = throw UnsupportedOperationException()
-        set(value) {controlExpr = setIfNotInitialized(value, "ff_ControlExpr")}
+    var controlExpr: Call = NULL_CALL
+        set(value) {field = setIfNotInitialized(value, "controlExpr")}
 
     override fun register(id: CompId) {
         this.id = id

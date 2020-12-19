@@ -21,25 +21,20 @@ import com.inari.util.collection.DynArray
 
 class TileSet private constructor() : Composite() {
 
+    @JvmField internal var activeForLayer = BitSet()
     @JvmField internal var textureRef: Int = -1
     @JvmField internal val tiles: DynArray<ProtoTile> = DynArray.of()
-    @JvmField internal var activationResolver: (TileSet) -> TileSetActivation = { _ -> TileSetActivation() }
 
-    val ff_TextureAsset = ComponentRefResolver(Asset) { index->
-            textureRef = setIfNotInitialized(index, "ff_TextureAsset")
+    val textureAsset = ComponentRefResolver(Asset) { index->
+            textureRef = setIfNotInitialized(index, "TextureAsset")
         }
 
-    val ff_withTile: (ProtoTile.() -> Unit) -> Unit = { configure ->
+    val tile: (ProtoTile.() -> Unit) -> Unit = { configure ->
         val tile = ProtoTile()
         tile.also(configure)
         tiles.add(tile)
     }
-
-    var ff_ActivationResolver: (TileSet) -> TileSetActivation
-        set(value) { activationResolver = value }
-        get() = activationResolver
-
-    @JvmField internal var activeForLayer = BitSet()
+    var activationResolver: (TileSet) -> TileSetActivation  = { _ -> TileSetActivation() }
 
     operator fun contains(layer: Layer) = activeForLayer.get(layer.index)
 
@@ -48,13 +43,13 @@ class TileSet private constructor() : Composite() {
             return
 
         SpriteSetAsset.build {
-            ff_Name = this@TileSet.name
-            ff_Texture(this@TileSet.textureRef)
+            name = this@TileSet.name
+            texture(this@TileSet.textureRef)
 
             this@TileSet.tiles.forEach{
-                if (it.animation != null)
-                    ff_SpriteData.addAll(it.animation!!.sprites.values)
-                ff_SpriteData.add(it.spriteData)
+                if (it.int_animation != null)
+                    spriteData.addAll(it.int_animation!!.sprites.values)
+                spriteData.add(it.spriteData)
             }
         }
 
@@ -102,38 +97,36 @@ class TileSet private constructor() : Composite() {
                 return false
 
             tile.entityIds[layer.index] = Entity.buildAndActivate {
-                ff_With(ETransform) {
-                    ff_View(activation.viewRef)
-                    ff_Layer(layer)
+                component(ETransform) {
+                    view(activation.viewRef)
+                    layer(layer)
                 }
-                ff_With(ETile) {
-                    ff_Sprite.instanceId = spriteId
-                    ff_Tint = tile.tintColor ?: activation.tintColors[layer.index] ?: ff_Tint
-                    ff_Blend = tile.blendMode ?: activation.blendModes[layer.index] ?: ff_Blend
+                component(ETile) {
+                    sprite.instanceId = spriteId
+                    tint = tile.tintColor ?: activation.tintColors[layer.index] ?: tint
+                    blend = tile.blendMode ?: activation.blendModes[layer.index] ?: blend
                 }
 
                 if (tile.hasContactComp) {
-                    ff_With(EContact) {
+                    component(EContact) {
                         if (tile.contactType !== ContactSystem.UNDEFINED_CONTACT_TYPE) {
-                            ff_Bounds(
-                                    0,
-                                    0,
+                            bounds(0,0,
                                     tile.spriteData.textureBounds.width,
                                     tile.spriteData.textureBounds.height)
-                            ff_ContactType = tile.contactType
-                            ff_Material = tile.material
-                            ff_Mask = tile.contactMask ?: ff_Mask
+                            contactType = tile.contactType
+                            material = tile.material
+                            mask = tile.contactMask ?: mask
                         }
-                        ff_Material = tile.material
+                        material = tile.material
                     }
                 }
 
-                if (tile.animation != null) {
-                    ff_With(EAnimation) {
-                        ff_WithActiveAnimation(IntTimelineProperty) {
-                            ff_Looping = true
-                            ff_Timeline = tile.animation!!.frames.toArray()
-                            ff_PropertyRef = ETile.Property.SPRITE_REFERENCE
+                if (tile.int_animation != null) {
+                    component(EAnimation) {
+                        activeAnimation(IntTimelineProperty) {
+                            looping = true
+                            timeline = tile.int_animation!!.frames.toArray()
+                            propertyRef = ETile.Property.SPRITE_REFERENCE
                         }
                     }
                 }

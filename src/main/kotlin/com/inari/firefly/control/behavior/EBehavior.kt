@@ -10,25 +10,13 @@ import com.inari.util.aspect.Aspects
 class EBehavior private constructor() : EntityComponent(EBehavior::class.java.name){
 
     @JvmField internal var treeRef = -1
-    @JvmField internal var repeat = true
-    @JvmField internal var active = true
-    @JvmField internal var treeState = OpResult.SUCCESS
-
     @JvmField internal var actionsDone: Aspects = BEHAVIOR_STATE_ASPECT_GROUP.createAspects()
 
-    val ff_BehaviorTree = ComponentRefResolver(BxNode) { index-> treeRef = index }
-
-    var ff_Repeat: Boolean
-        get() = repeat
-        set(value) { repeat = value }
-
-    var ff_Active: Boolean
-        get() = active
-        set(value) { active = value }
-
-    val ff_TreeState: OpResult
-        get() = treeState
-
+    val behaviorTree = ComponentRefResolver(BxNode) { index-> treeRef = index }
+    var repeat: Boolean = true
+    var active: Boolean = true
+    var treeState: OpResult = OpResult.SUCCESS
+        internal set
 
     override fun reset() {
         treeRef = -1

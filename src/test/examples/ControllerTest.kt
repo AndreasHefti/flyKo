@@ -42,33 +42,33 @@ class ControllerTest : DesktopAppAdapter() {
 
     override fun init() {
         textId1 = Entity.buildAndActivate {
-            ff_With(ETransform) {
-                ff_Position(100, 100)
+            component(ETransform) {
+                position(100, 100)
             }
-            ff_With(EText) {
-                ff_FontAsset(SYSTEM_FONT)
-                ff_Text.append(text1)
-                this@ControllerTest.text1 = ff_Text
+            component(EText) {
+                fontAsset(SYSTEM_FONT)
+                text.append(text1)
+                this@ControllerTest.text1 = text
             }
         }
         textId2 = Entity.buildAndActivate {
-            ff_With(ETransform) {
-                ff_Position(100, 150)
+            component(ETransform) {
+                position(100, 150)
             }
-            ff_With(EText) {
-                ff_FontAsset(SYSTEM_FONT)
-                ff_Text.append(text2)
-                this@ControllerTest.text2 = ff_Text
+            component(EText) {
+                fontAsset(SYSTEM_FONT)
+                text.append(text2)
+                this@ControllerTest.text2 = text
             }
         }
         textId3 = Entity.buildAndActivate {
-            ff_With(ETransform) {
-                ff_Position(100, 200)
+            component(ETransform) {
+                position(100, 200)
             }
-            ff_With(EText) {
-                ff_FontAsset(SYSTEM_FONT)
-                ff_Text.append(text3)
-                this@ControllerTest.text3 = ff_Text
+            component(EText) {
+                fontAsset(SYSTEM_FONT)
+                text.append(text3)
+                this@ControllerTest.text3 = text
             }
         }
         FFContext.registerListener(FFApp.UpdateEvent, updateCall)

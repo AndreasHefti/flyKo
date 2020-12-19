@@ -9,28 +9,13 @@ import com.inari.util.geom.Rectangle
 @ComponentDSL
 class ProtoSprite internal constructor() : IndexedInstantiable {
 
-    @JvmField internal val textureBounds: Rectangle = Rectangle()
-    @JvmField internal var flipH: Boolean = false
-    @JvmField internal var flipV: Boolean = false
-    @JvmField internal var name: String = NO_NAME
-
     @JvmField internal var instId = -1
     override val instanceId: Int get() = instId
 
-    var ff_Name: String
-        get() = name
-        set(value) { name = value }
-
-    val ff_textureBounds: Rectangle
-        get() = textureBounds
-
-    var ff_HFlip: Boolean
-        get() = flipH
-        set(value) { flipH = value }
-
-    var ff_VFlip: Boolean
-        get() = flipV
-        set(value) { flipV = value }
+    var name: String = NO_NAME
+    val textureBounds: Rectangle = Rectangle()
+    var hFlip: Boolean = false
+    var vFlip: Boolean = false
 
     companion object {
 

@@ -7,11 +7,7 @@ import com.inari.firefly.system.component.SystemComponentSubType
 
 class BxCondition private constructor() : BxNode() {
 
-    @JvmField internal var condition: BxConditionOp = TRUE_CONDITION
-
-    var ff_Condition: BxConditionOp
-        get() = condition
-        set(value) { condition = value}
+    var condition: BxConditionOp = TRUE_CONDITION
 
     override fun tick(entity: Entity, behavior: EBehavior): OpResult =
             when (condition(entity, behavior) ) {

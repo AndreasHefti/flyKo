@@ -35,17 +35,17 @@ class RenderingSystemTest {
         GraphicsMock.clearLogs()
 
         val assetId = TestAsset.buildAndActivate {
-            ff_Name = "Test"
+            name = "Test"
         }
 
         Entity.buildAndActivate {
-            ff_With(ETransform) {
-                ff_View(0)
-                ff_Pivot.x = 1f
-                ff_Pivot.y = 2f
+            component(ETransform) {
+                view(0)
+                pivot.x = 1f
+                pivot.y = 2f
             }
-            ff_With(ESprite) {
-                ff_Sprite( assetId)
+            component(ESprite) {
+                sprite( assetId)
             }
         }
 

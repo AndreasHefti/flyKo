@@ -2,10 +2,8 @@ package com.inari.firefly.physics.animation.timeline
 
 import com.inari.firefly.FFContext
 import com.inari.firefly.NULL_CALL
-import com.inari.firefly.asset.Asset
 import com.inari.firefly.entity.Entity
 import com.inari.firefly.entity.property.IntPropertyAccessor
-import com.inari.firefly.graphics.sprite.SpriteAsset
 import com.inari.firefly.physics.animation.Animation
 import com.inari.firefly.physics.animation.IntAnimation
 import com.inari.firefly.physics.animation.entity.EntityPropertyAnimation
@@ -16,16 +14,16 @@ class IntTimelineProperty private constructor() : EntityPropertyAnimation(), Int
     @JvmField internal var propertyAccessor: IntPropertyAccessor? = null
     @JvmField internal val data = IntTimelineData()
 
-    var ff_Timeline: Array<out Frame.IntFrame>
+    var timeline: Array<out Frame.IntFrame>
         get() = data.timeline
         set(value) { data.timeline = value }
-    var ff_StartValue: Int
+    var startValue: Int
         get() = data.startValue
         set(value) { data.startValue = value }
-    var ff_EndValue: Int
+    var endValue: Int
         get() = data.endValue
         set(value) { data.endValue = value }
-    var ff_InverseOnLoop: Boolean
+    var inverseOnLoop: Boolean
         get() = data.inverseOnLoop
         set(value) { data.inverseOnLoop = value }
 

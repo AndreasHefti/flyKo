@@ -9,7 +9,7 @@ abstract class BxBranch internal constructor() : BxNode() {
 
     @JvmField internal val children: DynArray<BxNode> = DynArray.of(5, 5)
 
-    fun <C : BxNode> ff_WithNode(cBuilder: SystemComponentBuilder<C>, configure: (C.() -> Unit)): CompId {
+    fun <C : BxNode> node(cBuilder: SystemComponentBuilder<C>, configure: (C.() -> Unit)): CompId {
         val id = cBuilder.build(configure)
         children.add(BehaviorSystem.nodes[id.instanceId])
         return id

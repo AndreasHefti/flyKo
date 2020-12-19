@@ -20,21 +20,21 @@ class ShaderAsset private constructor() : Asset() {
             data.name = value
         }
 
-    var ff_VertShaderResource: String
+    var vertShaderResource: String
         get() = data.vertexShaderResourceName
-        set(value) {data.vertexShaderResourceName = setIfNotInitialized(value, "ff_VertShaderResource")}
-    var ff_VertShaderProgram: String
+        set(value) {data.vertexShaderResourceName = setIfNotInitialized(value, "VertShaderResource")}
+    var vertShaderProgram: String
         get() = data.vertexShaderProgram
-        set(value) {data.vertexShaderProgram = setIfNotInitialized(value, "ff_VertShaderProgram")}
-    var ff_FragShaderResource: String
+        set(value) {data.vertexShaderProgram = setIfNotInitialized(value, "VertShaderProgram")}
+    var fragShaderResource: String
         get() = data.fragmentShaderResourceName
-        set(value) {data.fragmentShaderResourceName = setIfNotInitialized(value, "ff_FragShaderResource")}
-    var ff_FragShaderProgram: String
+        set(value) {data.fragmentShaderResourceName = setIfNotInitialized(value, "FragShaderResource")}
+    var fragShaderProgram: String
         get() = data.fragmentShaderProgram
-        set(value) {data.fragmentShaderProgram = setIfNotInitialized(value, "ff_FragShaderProgram")}
-    var ff_ShaderInit: ShaderInit
+        set(value) {data.fragmentShaderProgram = setIfNotInitialized(value, "FragShaderProgram")}
+    var shaderInit: ShaderInit
         get() = data.shaderInit
-        set(value) {data.shaderInit = setIfNotInitialized(value, "ff_ShaderInit")}
+        set(value) {data.shaderInit = setIfNotInitialized(value, "ShaderInit")}
 
     override fun load() {
         if (shaderId < 0)

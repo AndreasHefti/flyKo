@@ -12,41 +12,37 @@ import com.inari.util.collection.DynArray
 
 class Workflow private constructor() : SystemComponent(Workflow::class.java.name) {
 
-    @JvmField internal var startState: String = NO_STATE
-    @JvmField internal val states: DynArray<String> = DynArray.of()
-    @JvmField internal val stateChanges: DynArray<StateChange> = DynArray.of()
-
+    @JvmField internal val int_states: DynArray<String> = DynArray.of()
+    @JvmField internal val int_stateChanges: DynArray<StateChange> = DynArray.of()
     @JvmField internal val currentStateChanges: DynArray<StateChange> = DynArray.of()
 
-    var ff_StartState
-        get() = startState
-        set(value) {startState = value}
-    val ff_States = ArrayAccessor(states)
-    val ff_StateChanges = ArrayAccessor(stateChanges)
+    var startState = NO_STATE
+    val states = ArrayAccessor(int_states)
+    val stateChanges = ArrayAccessor(int_stateChanges)
 
     var currentState: String = NO_STATE
         internal set(value) {
             field = value
             currentStateChanges.clear()
-            stateChanges.forEach { st ->
+            int_stateChanges.forEach { st ->
                 if (st.from == currentState)
                     currentStateChanges.add(st)
             }
         }
 
     fun findStateChangeForTargetState(targetStateName: String): StateChange? =
-        stateChanges.firstOrNull {
+        int_stateChanges.firstOrNull {
             it.from == currentState && targetStateName == it.to
         }
 
 
     fun findStateChangeForCurrentState(stateChangeName: String): StateChange? =
-        stateChanges.firstOrNull {
+        int_stateChanges.firstOrNull {
             stateChangeName == it.name && it.from == currentState
         }
 
     fun reset() {
-        currentState = ff_StartState
+        currentState = startState
     }
 
     override fun componentType(): ComponentType<Workflow> = Companion

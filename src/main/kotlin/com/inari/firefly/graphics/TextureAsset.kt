@@ -17,27 +17,27 @@ class TextureAsset private constructor() : Asset() {
 
     @JvmField internal val textureData = TextureData()
 
-    var ff_ResourceName: String
+    var resourceName: String
         get() = textureData.resourceName
-        set(value) {textureData.resourceName = setIfNotInitialized(value, "ff_ResourceName")}
-    var ff_MipMap
+        set(value) {textureData.resourceName = setIfNotInitialized(value, "ResourceName")}
+    var mipMap
         get() = textureData.isMipmap
-        set(value) {textureData.isMipmap = setIfNotInitialized(value, "ff_MipMap")}
-    var ff_WrapS
+        set(value) {textureData.isMipmap = setIfNotInitialized(value, "MipMap")}
+    var wrapS
         get() = textureData.wrapS
-        set(value) {textureData.wrapS = setIfNotInitialized(value, "ff_WrapS")}
-    var ff_WrapT
+        set(value) {textureData.wrapS = setIfNotInitialized(value, "WrapS")}
+    var wrapT
         get() = textureData.wrapT
-        set(value) {textureData.wrapT = setIfNotInitialized(value, "ff_WrapT")}
-    var ff_MinFilter
+        set(value) {textureData.wrapT = setIfNotInitialized(value, "WrapT")}
+    var minFilter
         get() = textureData.minFilter
-        set(value) {textureData.minFilter = setIfNotInitialized(value, "ff_MinFilter")}
-    var ff_MagFilter
+        set(value) {textureData.minFilter = setIfNotInitialized(value, "MinFilter")}
+    var magFilter
         get() = textureData.magFilter
-        set(value) {textureData.magFilter = setIfNotInitialized(value, "ff_MagFilter")}
-    var ff_ColorConverter
+        set(value) {textureData.magFilter = setIfNotInitialized(value, "MagFilter")}
+    var colorConverter
         get() = textureData.colorConverter
-        set(value) {textureData.colorConverter = setIfNotInitialized(value, "ff_ColorConverter")}
+        set(value) {textureData.colorConverter = setIfNotInitialized(value, "ColorConverter")}
 
     override fun load() {
         if (id < 0) {

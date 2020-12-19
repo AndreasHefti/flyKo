@@ -12,52 +12,31 @@ import com.inari.util.geom.Vector2f
 class EMovement private constructor() : EntityComponent(EMovement::class.java.name) {
 
     @JvmField internal var controllerRef = -1
-    @JvmField internal var active = true
-    @JvmField internal val velocity = Vector2f(0f, 0f)
-    @JvmField internal val acceleration = Vector2f(0f, 0f)
-    @JvmField internal var mass = 0f
-    @JvmField internal var massFactor = 1f
-    @JvmField internal var maxGravityVelocity = 200f
-    @JvmField internal var onGround = false
     @JvmField internal var scheduler: FFTimer.Scheduler = INFINITE_SCHEDULER
 
-    var ff_Active: Boolean
-        get() = active
-        set(value) { active = value }
-    var ff_Velocity: Vector2f
-        get() = velocity
-        set(value) { velocity(value) }
-    var ff_VelocityX: Float
+    var active: Boolean = true
+    var velocity: Vector2f  = Vector2f(0f, 0f)
+    var velocityX: Float
         get() = velocity.dx
         set(value) { velocity.dx = value }
-    var ff_VelocityY: Float
+    var velocityY: Float
         get() = velocity.dy
         set(value) { velocity.dy = value }
-    var ff_Acceleration: Vector2f
-        get() = acceleration
-        set(value) { acceleration(value) }
-    var ff_AccelerationX: Float
+    var acceleration: Vector2f = Vector2f(0f, 0f)
+    var accelerationX: Float
         get() = acceleration.dx
         set(value) { acceleration.dx = value }
-    var ff_AccelerationY: Float
+    var accelerationY: Float
         get() = acceleration.dy
         set(value) { acceleration.dy = value }
-    var ff_Mass: Float
-        get() = mass
-        set(value) { mass = value }
-    var ff_MassFactor: Float
-        get() = massFactor
-        set(value) { massFactor = value }
-    var ff_MaxGravityVelocity: Float
-        get() = maxGravityVelocity
-        set(value) { maxGravityVelocity = value }
-    var ff_OnGround: Boolean
-        get() = onGround
-        set(value) { onGround = value }
-    var ff_UpdateResolution: Float
+    var mass: Float = 0f
+    var massFactor: Float  = 1f
+    var maxGravityVelocity: Float = 1f
+    var onGround: Boolean  = false
+    var updateResolution: Float
         get() = throw UnsupportedOperationException()
         set(value) { scheduler = FFContext.timer.createUpdateScheduler(value) }
-    val ff_Controller = ComponentRefResolver(Controller) { index -> controllerRef = index }
+    val controller = ComponentRefResolver(Controller) { index -> controllerRef = index }
 
     override fun reset() {
         active = false

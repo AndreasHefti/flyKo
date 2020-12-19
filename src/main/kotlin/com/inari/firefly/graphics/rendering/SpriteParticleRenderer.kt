@@ -7,7 +7,6 @@ import com.inari.firefly.graphics.ETransform
 import com.inari.firefly.graphics.particle.EParticle
 import com.inari.firefly.graphics.particle.SpriteParticle
 import com.inari.firefly.system.component.SingletonComponent
-import com.inari.util.collection.DynArray
 import com.inari.util.geom.Rectangle
 
 class SpriteParticleRenderer private constructor() : Renderer() {
@@ -23,7 +22,7 @@ class SpriteParticleRenderer private constructor() : Renderer() {
         var i = 0
         while (i < toRender.capacity) {
             val entity = toRender[i++] ?: continue
-            val spriteParticle = entity[EParticle].particle
+            val spriteParticle = entity[EParticle].int_particle
             val transform = entity[ETransform]
 
             var ii = 0

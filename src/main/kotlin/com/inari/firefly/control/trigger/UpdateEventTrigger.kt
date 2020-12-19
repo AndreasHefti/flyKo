@@ -10,7 +10,6 @@ class UpdateEventTrigger private constructor() : Trigger() {
     private var call: Call = NULL_CALL
     private val updateEventListener = { doTrigger(call) }
 
-    
     override fun register(call: Call) {
         this.call = call
         FFContext.registerListener(FFApp.UpdateEvent, updateEventListener)
