@@ -42,40 +42,40 @@ class BehaviorTest : DesktopAppAdapter() {
         val goUpState: Aspect = BEHAVIOR_STATE_ASPECT_GROUP.createAspect("goUp")
 
         BxSequence.build {
-            ff_Name = "Root"
-            ff_WithNode(BxParallel) {
-                ff_Name = "parallel"
-                ff_SuccessThreshold = 2
-                ff_WithNode(BxSequence) {
-                    ff_Name = "X"
-                    ff_WithNode(BxSelection) {
-                        ff_Name = "right"
-                        ff_WithNode(BxCondition) {
-                            ff_Name = "GoRight done?"
-                            ff_Condition = ACTION_DONE_CONDITION(goRightState)
+            name = "Root"
+            node(BxParallel) {
+                name = "parallel"
+                successThreshold = 2
+                node(BxSequence) {
+                    name = "X"
+                    node(BxSelection) {
+                        name = "right"
+                        node(BxCondition) {
+                            name = "GoRight done?"
+                            condition = ACTION_DONE_CONDITION(goRightState)
                         }
-                        ff_WithNode(BxAction) {
-                            ff_Name="GoRight"
-                            ff_State = goRightState
-                            ff_TickOp = { entity, _ ->
+                        node(BxAction) {
+                            name="GoRight"
+                            state = goRightState
+                            tickOp = { entity, _ ->
                                 val mov = entity[EMovement]
-                                if (mov.ff_VelocityX <= 0f)
-                                    mov.ff_VelocityX = Random.nextInt(1, 5).toFloat()
-                                if (entity[ETransform].ff_Position.x < 800f)
+                                if (mov.velocityX <= 0f)
+                                    mov.velocityX = Random.nextInt(1, 5).toFloat()
+                                if (entity[ETransform].position.x < 800f)
                                     OpResult.RUNNING
                                 else
                                     OpResult.SUCCESS
                             }
                         }
                     }
-                    ff_WithNode(BxAction) {
-                        ff_Name="GoLeft"
-                        ff_State = goLeftState
-                        ff_TickOp = { entityId, bx ->
+                    node(BxAction) {
+                        name="GoLeft"
+                        state = goLeftState
+                        tickOp = { entityId, bx ->
                             val mov = entityId[EMovement]
-                            if (mov.ff_VelocityX >= 0f)
-                                mov.ff_VelocityX = Random.nextInt(-5, -1).toFloat()
-                            if (entityId[ETransform].ff_Position.x < 10f) {
+                            if (mov.velocityX >= 0f)
+                                mov.velocityX = Random.nextInt(-5, -1).toFloat()
+                            if (entityId[ETransform].position.x < 10f) {
                                 bx.actionsDone - goRightState
                                 OpResult.SUCCESS
                             }
@@ -84,36 +84,36 @@ class BehaviorTest : DesktopAppAdapter() {
                         }
                     }
                 }
-                ff_WithNode(BxSequence) {
-                    ff_Name = "Y"
-                    ff_WithNode(BxSelection) {
-                        ff_Name = "down"
-                        ff_WithNode(BxCondition) {
-                            ff_Name = "GoDown done?"
-                            ff_Condition = ACTION_DONE_CONDITION(goDownState)
+                node(BxSequence) {
+                    name = "Y"
+                    node(BxSelection) {
+                        name = "down"
+                        node(BxCondition) {
+                            name = "GoDown done?"
+                            condition = ACTION_DONE_CONDITION(goDownState)
                         }
-                        ff_WithNode(BxAction) {
-                            ff_Name="GoDown"
-                            ff_State = goDownState
-                            ff_TickOp = { entityId, _ ->
+                        node(BxAction) {
+                            name="GoDown"
+                            state = goDownState
+                            tickOp = { entityId, _ ->
                                 val mov = entityId[EMovement]
-                                if (mov.ff_VelocityY <= 0f)
-                                    mov.ff_VelocityY = Random.nextInt(1, 5).toFloat()
-                                if (entityId[ETransform].ff_Position.y < 600)
+                                if (mov.velocityY <= 0f)
+                                    mov.velocityY = Random.nextInt(1, 5).toFloat()
+                                if (entityId[ETransform].position.y < 600)
                                     OpResult.RUNNING
                                 else
                                     OpResult.SUCCESS
                             }
                         }
                     }
-                    ff_WithNode(BxAction) {
-                        ff_Name="GoUp"
-                        ff_State = goUpState
-                        ff_TickOp = { entityId, bx ->
+                    node(BxAction) {
+                        name="GoUp"
+                        state = goUpState
+                        tickOp = { entityId, bx ->
                             val mov = entityId[EMovement]
-                            if (mov.ff_VelocityY >= 0f)
-                                mov.ff_VelocityY = Random.nextInt(-5, -1).toFloat()
-                            if (entityId[ETransform].ff_Position.y < 10) {
+                            if (mov.velocityY >= 0f)
+                                mov.velocityY = Random.nextInt(-5, -1).toFloat()
+                            if (entityId[ETransform].position.y < 10) {
                                 bx.actionsDone - goDownState
                                 OpResult.SUCCESS
                             }
@@ -128,30 +128,24 @@ class BehaviorTest : DesktopAppAdapter() {
         val vert = floatArrayOf(0f, 0f, 3f, 3f)
         for (i in 1..10000) {
             Entity.buildAndActivate {
-                ff_With(ETransform) {
-                    ff_View(0)
-                    ff_Position(Random.nextInt(0,800), Random.nextInt(0,600))
+                component(ETransform) {
+                    view(0)
+                    position(Random.nextInt(0,800), Random.nextInt(0,600))
                 }
-                ff_With(EShape) {
-                    ff_Type = ShapeType.RECTANGLE
-                    ff_Fill = true
-                    ff_Segments = 10
-                    ff_Color(Random.nextFloat(), Random.nextFloat(), Random.nextFloat(), Random.nextFloat())
-                    ff_Vertices = vert
-                    ff_Blend = BlendMode.NORMAL_ALPHA
+                component(EShape) {
+                    shapeType = ShapeType.RECTANGLE
+                    fill = true
+                    segments = 10
+                    color(Random.nextFloat(), Random.nextFloat(), Random.nextFloat(), Random.nextFloat())
+                    vertices = vert
+                    blend = BlendMode.NORMAL_ALPHA
                 }
-                ff_With(EMovement) {
-                    ff_VelocityX = 0f
+                component(EMovement) {
+                    velocityX = 0f
                 }
-//                ff_With(EText) {
-//                    ff_FontAsset(SYSTEM_FONT)
-//                    ff_TextBuffer.append('*')
-//                    ff_Tint(Random.nextFloat(), Random.nextFloat(), Random.nextFloat(), Random.nextFloat())
-//                    ff_Blend = BlendMode.NORMAL_ALPHA
-//                }
-                ff_With(EBehavior) {
-                    ff_BehaviorTree("Root")
-                    ff_Repeat = true
+                component(EBehavior) {
+                    behaviorTree("Root")
+                    repeat = true
                 }
             }
         }

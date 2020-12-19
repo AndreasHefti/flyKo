@@ -28,277 +28,277 @@ class ShapeTransformTest : DesktopAppAdapter() {
         FFContext.loadSystem(AnimationSystem)
 
         Entity.buildAndActivate {
-            ff_With(ETransform) {
-                ff_Position(100f, 50f)
-                ff_Pivot(110f, 60f)
-                ff_Rotation = 0f
+            component(ETransform) {
+                position(100f, 50f)
+                pivot(110f, 60f)
+                rotation = 0f
             }
-            ff_With(EShape) {
-                ff_Type = ShapeType.RECTANGLE
-                ff_Fill = true
-                ff_Color(1f, 0f, 0f, 1f)
-                ff_Vertices = floatArrayOf(0f, 0f, 20f, 20f)
+            component(EShape) {
+                shapeType = ShapeType.RECTANGLE
+                fill = true
+                color(1f, 0f, 0f, 1f)
+                vertices = floatArrayOf(0f, 0f, 20f, 20f)
             }
-            ff_With(EAnimation) {
-                ff_WithActiveAnimation(EasedProperty) {
-                    ff_Looping = true
-                    ff_InverseOnLoop = true
-                    ff_StartValue = 0f
-                    ff_EndValue = 180f
-                    ff_Duration = 1000
-                    ff_Easing = Easing.Type.LINEAR
-                    ff_PropertyRef = ETransform.Property.ROTATION
+            component(EAnimation) {
+                activeAnimation(EasedProperty) {
+                    looping = true
+                    inverseOnLoop = true
+                    startValue = 0f
+                    endValue = 180f
+                    duration = 1000
+                    easing = Easing.Type.LINEAR
+                    propertyRef = ETransform.Property.ROTATION
                 }
-                ff_WithActiveAnimation(EasedProperty) {
-                    ff_Looping = true
-                    ff_InverseOnLoop = true
-                    ff_StartValue = 100f
-                    ff_EndValue = 600f
-                    ff_Duration = 3000
-                    ff_Easing = Easing.Type.SIN_IN_OUT
-                    ff_PropertyRef = ETransform.Property.POSITION_X
+                activeAnimation(EasedProperty) {
+                    looping = true
+                    inverseOnLoop = true
+                    startValue = 100f
+                    endValue = 600f
+                    duration = 3000
+                    easing = Easing.Type.SIN_IN_OUT
+                    propertyRef = ETransform.Property.POSITION_X
                 }
-                ff_WithActiveAnimation(EasedProperty) {
-                    ff_Looping = true
-                    ff_InverseOnLoop = true
-                    ff_StartValue = 110f
-                    ff_EndValue = 610f
-                    ff_Duration = 3000
-                    ff_Easing = Easing.Type.SIN_IN_OUT
-                    ff_PropertyRef = ETransform.Property.PIVOT_X
-                }
-            }
-        }
-
-        Entity.buildAndActivate {
-            ff_With(ETransform) {
-                ff_Position(100f, 80f)
-                ff_Pivot(110f, 90f)
-                ff_Rotation = 0f
-            }
-            ff_With(EShape) {
-                ff_Type = ShapeType.RECTANGLE
-                ff_Fill = false
-                ff_Color(1f, 0f, 0f, 1f)
-                ff_Vertices = floatArrayOf(0f, 0f, 20f, 20f)
-            }
-            ff_With(EAnimation) {
-                ff_WithActiveAnimation(EasedProperty) {
-                    ff_Looping = true
-                    ff_InverseOnLoop = true
-                    ff_StartValue = 0f
-                    ff_EndValue = 180f
-                    ff_Duration = 1000
-                    ff_Easing = Easing.Type.LINEAR
-                    ff_PropertyRef = ETransform.Property.ROTATION
-                }
-                ff_WithActiveAnimation(EasedProperty) {
-                    ff_Looping = true
-                    ff_InverseOnLoop = true
-                    ff_StartValue = 100f
-                    ff_EndValue = 600f
-                    ff_Duration = 3000
-                    ff_Easing = Easing.Type.SIN_IN_OUT
-                    ff_PropertyRef = ETransform.Property.POSITION_X
-                }
-                ff_WithActiveAnimation(EasedProperty) {
-                    ff_Looping = true
-                    ff_InverseOnLoop = true
-                    ff_StartValue = 110f
-                    ff_EndValue = 610f
-                    ff_Duration = 3000
-                    ff_Easing = Easing.Type.SIN_IN_OUT
-                    ff_PropertyRef = ETransform.Property.PIVOT_X
-                }
-            }
-        }
-
-
-        Entity.buildAndActivate {
-            ff_With(ETransform) {
-                ff_Position(100f, 150f)
-                ff_Pivot(110f, 160f)
-                ff_Scale(1f, 1f)
-            }
-            ff_With(EShape) {
-                ff_Type = ShapeType.TRIANGLE
-                ff_Fill = false
-                ff_Color(1f, 0f, 0f, 1f)
-                ff_Vertices = floatArrayOf(10f, 0f, 20f, 20f, 0f, 20f)
-            }
-            ff_With(EAnimation) {
-                ff_WithActiveAnimation(EasedProperty) {
-                    ff_Looping = true
-                    ff_InverseOnLoop = true
-                    ff_StartValue = .5f
-                    ff_EndValue = 2f
-                    ff_Duration = 1000
-                    ff_Easing = Easing.Type.LINEAR
-                    ff_PropertyRef = ETransform.Property.SCALE_X
-                }
-                ff_WithActiveAnimation(EasedProperty) {
-                    ff_Looping = true
-                    ff_InverseOnLoop = true
-                    ff_StartValue = .5f
-                    ff_EndValue = 2f
-                    ff_Duration = 1000
-                    ff_Easing = Easing.Type.LINEAR
-                    ff_PropertyRef = ETransform.Property.SCALE_Y
-                }
-                ff_WithActiveAnimation(EasedProperty) {
-                    ff_Looping = true
-                    ff_InverseOnLoop = true
-                    ff_StartValue = 100f
-                    ff_EndValue = 600f
-                    ff_Duration = 3000
-                    ff_Easing = Easing.Type.SIN_OUT
-                    ff_PropertyRef = ETransform.Property.POSITION_X
-                }
-                ff_WithActiveAnimation(EasedProperty) {
-                    ff_Looping = true
-                    ff_InverseOnLoop = true
-                    ff_StartValue = 110f
-                    ff_EndValue = 610f
-                    ff_Duration = 3000
-                    ff_Easing = Easing.Type.SIN_OUT
-                    ff_PropertyRef = ETransform.Property.PIVOT_X
+                activeAnimation(EasedProperty) {
+                    looping = true
+                    inverseOnLoop = true
+                    startValue = 110f
+                    endValue = 610f
+                    duration = 3000
+                    easing = Easing.Type.SIN_IN_OUT
+                    propertyRef = ETransform.Property.PIVOT_X
                 }
             }
         }
 
         Entity.buildAndActivate {
-            ff_With(ETransform) {
-                ff_Position(100f, 180f)
-                ff_Pivot(110f, 190f)
-                ff_Scale(1f, 1f)
+            component(ETransform) {
+                position(100f, 80f)
+                pivot(110f, 90f)
+                rotation = 0f
             }
-            ff_With(EShape) {
-                ff_Type = ShapeType.TRIANGLE
-                ff_Fill = true
-                ff_Color(1f, 0f, 0f, 1f)
-                ff_Vertices = floatArrayOf(10f, 0f, 20f, 20f, 0f, 20f)
+            component(EShape) {
+                shapeType = ShapeType.RECTANGLE
+                fill = false
+                color(1f, 0f, 0f, 1f)
+                vertices = floatArrayOf(0f, 0f, 20f, 20f)
             }
-            ff_With(EAnimation) {
-                ff_WithActiveAnimation(EasedProperty) {
-                    ff_Looping = true
-                    ff_InverseOnLoop = true
-                    ff_StartValue = .5f
-                    ff_EndValue = 2f
-                    ff_Duration = 1000
-                    ff_Easing = Easing.Type.LINEAR
-                    ff_PropertyRef = ETransform.Property.SCALE_X
+            component(EAnimation) {
+                activeAnimation(EasedProperty) {
+                    looping = true
+                    inverseOnLoop = true
+                    startValue = 0f
+                    endValue = 180f
+                    duration = 1000
+                    easing = Easing.Type.LINEAR
+                    propertyRef = ETransform.Property.ROTATION
                 }
-                ff_WithActiveAnimation(EasedProperty) {
-                    ff_Looping = true
-                    ff_InverseOnLoop = true
-                    ff_StartValue = .5f
-                    ff_EndValue = 2f
-                    ff_Duration = 1000
-                    ff_Easing = Easing.Type.LINEAR
-                    ff_PropertyRef = ETransform.Property.SCALE_Y
+                activeAnimation(EasedProperty) {
+                    looping = true
+                    inverseOnLoop = true
+                    startValue = 100f
+                    endValue = 600f
+                    duration = 3000
+                    easing = Easing.Type.SIN_IN_OUT
+                    propertyRef = ETransform.Property.POSITION_X
                 }
-                ff_WithActiveAnimation(EasedProperty) {
-                    ff_Looping = true
-                    ff_InverseOnLoop = true
-                    ff_StartValue = 100f
-                    ff_EndValue = 600f
-                    ff_Duration = 3000
-                    ff_Easing = Easing.Type.SIN_OUT
-                    ff_PropertyRef = ETransform.Property.POSITION_X
-                }
-                ff_WithActiveAnimation(EasedProperty) {
-                    ff_Looping = true
-                    ff_InverseOnLoop = true
-                    ff_StartValue = 110f
-                    ff_EndValue = 610f
-                    ff_Duration = 3000
-                    ff_Easing = Easing.Type.SIN_OUT
-                    ff_PropertyRef = ETransform.Property.PIVOT_X
+                activeAnimation(EasedProperty) {
+                    looping = true
+                    inverseOnLoop = true
+                    startValue = 110f
+                    endValue = 610f
+                    duration = 3000
+                    easing = Easing.Type.SIN_IN_OUT
+                    propertyRef = ETransform.Property.PIVOT_X
                 }
             }
         }
 
 
         Entity.buildAndActivate {
-            ff_With(ETransform) {
-                ff_Position(100f, 300f)
-                ff_Scale(1f, 1f)
+            component(ETransform) {
+                position(100f, 150f)
+                pivot(110f, 160f)
+                scale(1f, 1f)
             }
-            ff_With(EShape) {
-                ff_Type = ShapeType.CIRCLE
-                ff_Fill = false
-                ff_Segments = 20
-                ff_Color(1f, 0f, 0f, 1f)
-                ff_Vertices = floatArrayOf(10f, 0f, 0f)
+            component(EShape) {
+                shapeType = ShapeType.TRIANGLE
+                fill = false
+                color(1f, 0f, 0f, 1f)
+                vertices = floatArrayOf(10f, 0f, 20f, 20f, 0f, 20f)
             }
-            ff_With(EAnimation) {
-                ff_WithActiveAnimation(EasedProperty) {
-                    ff_Looping = true
-                    ff_InverseOnLoop = true
-                    ff_StartValue = 100f
-                    ff_EndValue = 600f
-                    ff_Duration = 3000
-                    ff_Easing = Easing.Type.SIN_IN
-                    ff_PropertyRef = ETransform.Property.POSITION_X
+            component(EAnimation) {
+                activeAnimation(EasedProperty) {
+                    looping = true
+                    inverseOnLoop = true
+                    startValue = .5f
+                    endValue = 2f
+                    duration = 1000
+                    easing = Easing.Type.LINEAR
+                    propertyRef = ETransform.Property.SCALE_X
                 }
-                ff_WithActiveAnimation(EasedProperty) {
-                    ff_Looping = true
-                    ff_InverseOnLoop = true
-                    ff_StartValue = 250f
-                    ff_EndValue = 350f
-                    ff_Duration = 1500
-                    ff_Easing = Easing.Type.SIN_IN_OUT
-                    ff_PropertyRef = ETransform.Property.POSITION_Y
+                activeAnimation(EasedProperty) {
+                    looping = true
+                    inverseOnLoop = true
+                    startValue = .5f
+                    endValue = 2f
+                    duration = 1000
+                    easing = Easing.Type.LINEAR
+                    propertyRef = ETransform.Property.SCALE_Y
                 }
-            }
-        }
-
-        Entity.buildAndActivate {
-            ff_With(ETransform) {
-                ff_Position(100f, 350f)
-                ff_Scale(1f, 1f)
-            }
-            ff_With(EShape) {
-                ff_Type = ShapeType.ARC
-                ff_Fill = false
-                ff_Segments = 20
-                ff_Color(1f, 0f, 0f, 1f)
-                ff_Vertices = floatArrayOf(0f, 0f, 10f, 0f, 90f)
-            }
-            ff_With(EAnimation) {
-                ff_WithActiveAnimation(EasedProperty) {
-                    ff_Looping = true
-                    ff_InverseOnLoop = true
-                    ff_StartValue = 100f
-                    ff_EndValue = 600f
-                    ff_Duration = 3000
-                    ff_Easing = Easing.Type.CIRC_IN
-                    ff_PropertyRef = ETransform.Property.POSITION_X
+                activeAnimation(EasedProperty) {
+                    looping = true
+                    inverseOnLoop = true
+                    startValue = 100f
+                    endValue = 600f
+                    duration = 3000
+                    easing = Easing.Type.SIN_OUT
+                    propertyRef = ETransform.Property.POSITION_X
+                }
+                activeAnimation(EasedProperty) {
+                    looping = true
+                    inverseOnLoop = true
+                    startValue = 110f
+                    endValue = 610f
+                    duration = 3000
+                    easing = Easing.Type.SIN_OUT
+                    propertyRef = ETransform.Property.PIVOT_X
                 }
             }
         }
 
         Entity.buildAndActivate {
-            ff_With(ETransform) {
-                ff_Position(100f, 400f)
-                ff_Scale(1f, 1f)
+            component(ETransform) {
+                position(100f, 180f)
+                pivot(110f, 190f)
+                scale(1f, 1f)
             }
-            ff_With(EShape) {
-                ff_Type = ShapeType.CURVE
-                ff_Fill = false
-                ff_Segments = 20
-                ff_Color(1f, 0f, 0f, 1f)
-                ff_Vertices = floatArrayOf(0f, 0f, 10f, 10f, 5f, 5f, 20f, 0f)
+            component(EShape) {
+                shapeType = ShapeType.TRIANGLE
+                fill = true
+                color(1f, 0f, 0f, 1f)
+                vertices = floatArrayOf(10f, 0f, 20f, 20f, 0f, 20f)
             }
-            ff_With(EAnimation) {
-                ff_WithActiveAnimation(EasedProperty) {
-                    ff_Looping = true
-                    ff_InverseOnLoop = true
-                    ff_StartValue = 100f
-                    ff_EndValue = 600f
-                    ff_Duration = 3000
-                    ff_Easing = Easing.Type.CIRC_OUT
-                    ff_PropertyRef = ETransform.Property.POSITION_X
+            component(EAnimation) {
+                activeAnimation(EasedProperty) {
+                    looping = true
+                    inverseOnLoop = true
+                    startValue = .5f
+                    endValue = 2f
+                    duration = 1000
+                    easing = Easing.Type.LINEAR
+                    propertyRef = ETransform.Property.SCALE_X
+                }
+                activeAnimation(EasedProperty) {
+                    looping = true
+                    inverseOnLoop = true
+                    startValue = .5f
+                    endValue = 2f
+                    duration = 1000
+                    easing = Easing.Type.LINEAR
+                    propertyRef = ETransform.Property.SCALE_Y
+                }
+                activeAnimation(EasedProperty) {
+                    looping = true
+                    inverseOnLoop = true
+                    startValue = 100f
+                    endValue = 600f
+                    duration = 3000
+                    easing = Easing.Type.SIN_OUT
+                    propertyRef = ETransform.Property.POSITION_X
+                }
+                activeAnimation(EasedProperty) {
+                    looping = true
+                    inverseOnLoop = true
+                    startValue = 110f
+                    endValue = 610f
+                    duration = 3000
+                    easing = Easing.Type.SIN_OUT
+                    propertyRef = ETransform.Property.PIVOT_X
+                }
+            }
+        }
+
+
+        Entity.buildAndActivate {
+            component(ETransform) {
+                position(100f, 300f)
+                scale(1f, 1f)
+            }
+            component(EShape) {
+                shapeType = ShapeType.CIRCLE
+                fill = false
+                segments = 20
+                color(1f, 0f, 0f, 1f)
+                vertices = floatArrayOf(10f, 0f, 0f)
+            }
+            component(EAnimation) {
+                activeAnimation(EasedProperty) {
+                    looping = true
+                    inverseOnLoop = true
+                    startValue = 100f
+                    endValue = 600f
+                    duration = 3000
+                    easing = Easing.Type.SIN_IN
+                    propertyRef = ETransform.Property.POSITION_X
+                }
+                activeAnimation(EasedProperty) {
+                    looping = true
+                    inverseOnLoop = true
+                    startValue = 250f
+                    endValue = 350f
+                    duration = 1500
+                    easing = Easing.Type.SIN_IN_OUT
+                    propertyRef = ETransform.Property.POSITION_Y
+                }
+            }
+        }
+
+        Entity.buildAndActivate {
+            component(ETransform) {
+                position(100f, 350f)
+                scale(1f, 1f)
+            }
+            component(EShape) {
+                shapeType = ShapeType.ARC
+                fill = false
+                segments = 20
+                color(1f, 0f, 0f, 1f)
+                vertices = floatArrayOf(0f, 0f, 10f, 0f, 90f)
+            }
+            component(EAnimation) {
+                activeAnimation(EasedProperty) {
+                    looping = true
+                    inverseOnLoop = true
+                    startValue = 100f
+                    endValue = 600f
+                    duration = 3000
+                    easing = Easing.Type.CIRC_IN
+                    propertyRef = ETransform.Property.POSITION_X
+                }
+            }
+        }
+
+        Entity.buildAndActivate {
+            component(ETransform) {
+                position(100f, 400f)
+                scale(1f, 1f)
+            }
+            component(EShape) {
+                shapeType = ShapeType.CURVE
+                fill = false
+                segments = 20
+                color(1f, 0f, 0f, 1f)
+                vertices = floatArrayOf(0f, 0f, 10f, 10f, 5f, 5f, 20f, 0f)
+            }
+            component(EAnimation) {
+                activeAnimation(EasedProperty) {
+                    looping = true
+                    inverseOnLoop = true
+                    startValue = 100f
+                    endValue = 600f
+                    duration = 3000
+                    easing = Easing.Type.CIRC_OUT
+                    propertyRef = ETransform.Property.POSITION_X
                 }
             }
         }

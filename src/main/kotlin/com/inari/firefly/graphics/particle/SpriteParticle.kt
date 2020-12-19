@@ -13,16 +13,16 @@ class SpriteParticle : Particle() {
     @JvmField internal val spriteRenderable = SpriteRenderable()
     @JvmField internal val spriteRef: Int = -1
 
-    val ff_Sprite = AssetInstanceRefResolver(
+    val sprite = AssetInstanceRefResolver(
             { index -> spriteRenderable.spriteId = index },
             { spriteRenderable.spriteId })
-    val ff_Shader = AssetInstanceRefResolver(
+    val shader = AssetInstanceRefResolver(
             { index -> spriteRenderable.shaderId = index },
             { spriteRenderable.shaderId })
-    var ff_Blend: BlendMode
+    var blend: BlendMode
         get() = spriteRenderable.blendMode
         set(value) { spriteRenderable.blendMode = value }
-    var ff_Tint: RGBColor
+    var tint: RGBColor
         get() = spriteRenderable.tintColor
         set(value) { spriteRenderable.tintColor(value) }
 

@@ -13,42 +13,20 @@ import com.inari.util.aspect.IndexedAspectType
 
 class EActor private constructor () : EntityComponent(EActor::class.java.name) {
 
-    @JvmField internal var category: Aspect = UNDEFINED_ACTOR_CATEGORY
-    @JvmField internal var type: Aspect = UNDEFINED_ACTOR_TYPE
-
-    @JvmField internal var maxHealth = -1
-    @JvmField internal var health = -1
-
-    @JvmField internal var hitPower = 0
-
     @JvmField internal var encounterContactConstraintRef = -1
     @JvmField internal var hitContactConstraintRef = -1
 
-    var ff_Category: Aspect
-        get() = category
-        set(value) { if (ACTOR_CATEGORY_ASPECT.typeCheck(value)) category = value else throw IllegalArgumentException() }
-
-    var ff_Type: Aspect
-        get() = type
-        set(value) { if (ACTOR_TYPE_ASPECT.typeCheck(value)) type = value else throw IllegalArgumentException() }
-
-    var ff_Health: Int
-        get() = health
-        set(value) { health = value }
-
-    var ff_MaxHealth: Int
-        get() = maxHealth
-        set(value) { maxHealth = value }
-
-    var ff_HitPower: Int
-        get() = hitPower
-        set(value) { hitPower = value }
-
-    val ff_EncounterConstraint = ComponentRefResolver(ContactConstraint) {
+    var category: Aspect = UNDEFINED_ACTOR_CATEGORY
+        set(value) { if (ACTOR_CATEGORY_ASPECT.typeCheck(value)) field = value else throw IllegalArgumentException() }
+    var type: Aspect = UNDEFINED_ACTOR_TYPE
+        set(value) { if (ACTOR_TYPE_ASPECT.typeCheck(value)) field = value else throw IllegalArgumentException() }
+    var health: Int = -1
+    var maxHealth: Int = -1
+    var hitPower: Int = 0
+    val encounterConstraint = ComponentRefResolver(ContactConstraint) {
             index -> encounterContactConstraintRef = index
         }
-
-    val ff_HitConstraint = ComponentRefResolver(ContactConstraint) {
+    val hitConstraint = ComponentRefResolver(ContactConstraint) {
             index -> hitContactConstraintRef = index
         }
 

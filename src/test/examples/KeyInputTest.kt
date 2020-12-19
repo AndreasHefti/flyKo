@@ -63,24 +63,24 @@ class KeyInputTest : DesktopAppAdapter() {
         FFContext.input.createOrAdapter("KeyInput", "KeyInput1", "KeyInput2")
 
         textId = Entity.buildAndActivate {
-            ff_With(ETransform) {
-                ff_Position(100, 100)
+            component(ETransform) {
+                position(100, 100)
             }
-            ff_With(EText) {
-                ff_FontAsset(SYSTEM_FONT)
-                ff_Text.append(text)
-                this@KeyInputTest.text = ff_Text
+            component(EText) {
+                fontAsset(SYSTEM_FONT)
+                text.append(text)
+                this@KeyInputTest.text = text
             }
         }
 
         textSPACEId = Entity.buildAndActivate {
-            ff_With(ETransform) {
-                ff_Position(100, 200)
+            component(ETransform) {
+                position(100, 200)
             }
-            ff_With(EText) {
-                ff_FontAsset(SYSTEM_FONT)
-                ff_Text.append(textSPACE)
-                this@KeyInputTest.textSPACE = ff_Text
+            component(EText) {
+                fontAsset(SYSTEM_FONT)
+                text.append(textSPACE)
+                this@KeyInputTest.textSPACE = text
             }
         }
 

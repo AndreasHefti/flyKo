@@ -16,20 +16,20 @@ class ViewShaderTest : DesktopAppAdapter() {
     override fun init() {
 
         TextureAsset.build {
-            ff_Name = "TEST"
-            ff_ResourceName = "firefly/inari.png"
+            name = "TEST"
+            resourceName = "firefly/inari.png"
         }
 
         SpriteAsset.buildAndActivate {
-            ff_Name = "TestSprite"
-            ff_Texture("TEST")
-            ff_TextureRegion(0,0,400,200)
+            name = "TestSprite"
+            texture("TEST")
+            textureRegion(0,0,400,200)
         }
 
         ShaderAsset.buildAndActivate {
-            ff_Name="Shader"
+            name="Shader"
 
-            ff_FragShaderProgram = "#ifdef GL_ES\n" +
+            fragShaderProgram = "#ifdef GL_ES\n" +
                     "    precision mediump float;\n" +
                     "#endif\n" +
                     "\n" +
@@ -60,7 +60,7 @@ class ViewShaderTest : DesktopAppAdapter() {
                     "        float clip = step(0.0, texCoord.s) * step(texCoord.s, 1.0) * step(0.0, texCoord.t) * step(texCoord.t, 1.0); \n" +
                     "        gl_FragColor  = vec4( vec3(texR, texG, texB) * stripFac * clip, 1.0 );\n" +
                     "    }"
-            ff_ShaderInit = { init ->
+            shaderInit = { init ->
                 init.setUniformFloat("u_distortion", 0.1f)
                 init.setUniformFloat("u_stripe", 0.1f)
                 init.setUniformFloat("u_rgbshift", 0.1f)
@@ -68,18 +68,18 @@ class ViewShaderTest : DesktopAppAdapter() {
         }
 
         View.buildAndActivate {
-            ff_Name="ShaderView"
-            ff_Bounds(0,0,400,400)
-            ff_Shader("Shader")
+            name="ShaderView"
+            bounds(0,0,400,400)
+            shader("Shader")
         }
 
         Entity.buildAndActivate {
-            ff_With(ETransform) {
-                ff_View("ShaderView")
-                ff_Position(0,0)
+            component(ETransform) {
+                view("ShaderView")
+                position(0,0)
             }
-            ff_With(ESprite) {
-                ff_Sprite("TestSprite")
+            component(ESprite) {
+                sprite("TestSprite")
             }
         }
     }

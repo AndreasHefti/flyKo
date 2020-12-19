@@ -20,30 +20,25 @@ class TileGrid private constructor() : SystemComponent(TileGrid::class.java.name
     @JvmField internal var rendererRef = -1
     @JvmField internal val gridDim = Vector2i(-1, -1)
     @JvmField internal val cellDim = Vector2i(-1, -1)
-    @JvmField internal val position = PositionF(0.0f, 0.0f)
-    @JvmField internal var spherical = false
 
-    val ff_View = ComponentRefResolver(View) { index-> viewRef = index }
-    val ff_Layer = ComponentRefResolver(Layer) { index-> layerRef = index }
-    var ff_Renderer = ComponentRefResolver(Renderer) { index-> rendererRef = index }
-    var ff_GridWidth: Int
+    val view = ComponentRefResolver(View) { index-> viewRef = index }
+    val layer = ComponentRefResolver(Layer) { index-> layerRef = index }
+    var renderer = ComponentRefResolver(Renderer) { index-> rendererRef = index }
+    var gridWidth: Int
         get() = gridDim.dx
-        set(value) {gridDim.dx = setIfNotInitialized(value, "ff_GridWidth")}
-    var ff_GridHeight: Int
+        set(value) {gridDim.dx = setIfNotInitialized(value, "gridWidth")}
+    var gridHeight: Int
         get() = gridDim.dy
-        set(value) {gridDim.dy = setIfNotInitialized(value, "ff_GridHeight")}
-    var ff_CellWidth: Int
+        set(value) {gridDim.dy = setIfNotInitialized(value, "gridHeight")}
+    var cellWidth: Int
         get() = cellDim.dx
-        set(value) {cellDim.dx = setIfNotInitialized(value, "ff_CellWidth")}
-    var ff_CellHeight: Int
+        set(value) {cellDim.dx = setIfNotInitialized(value, "cellWidth")}
+    var cellHeight: Int
         get() = cellDim.dy
-        set(value) {cellDim.dy = setIfNotInitialized(value, "ff_CellHeight")}
-    var ff_Position: PositionF
-        get() = position
-        set(value) = position(value)
-    var ff_Spherical: Boolean
-        get() = spherical
-        set(value) {spherical = setIfNotInitialized(value, "ff_Spherical")}
+        set(value) {cellDim.dy = setIfNotInitialized(value, "cellHeight")}
+    var position: PositionF = PositionF(0.0f, 0.0f)
+    var spherical: Boolean = false
+        set(value) {field = setIfNotInitialized(value, "spherical")}
 
     override val viewIndex: Int
         get() = viewRef
@@ -54,9 +49,9 @@ class TileGrid private constructor() : SystemComponent(TileGrid::class.java.name
     @JvmField internal val normalisedWorldBounds = Rectangle(0, 0, 0, 0)
 
     override fun init() {
-        grid = Array(ff_GridHeight) { IntArray(ff_GridWidth) { -1 } }
-        normalisedWorldBounds.width = ff_GridWidth
-        normalisedWorldBounds.height = ff_GridHeight
+        grid = Array(gridHeight) { IntArray(gridWidth) { -1 } }
+        normalisedWorldBounds.width = gridWidth
+        normalisedWorldBounds.height = gridHeight
 
         super.init()
     }
@@ -86,12 +81,12 @@ class TileGrid private constructor() : SystemComponent(TileGrid::class.java.name
         else -1
 
     fun getTileAt(worldPos: Position): Int =
-        get(floor((worldPos.x.toDouble() - ff_Position.x) / ff_CellWidth).toInt(),
-            floor((worldPos.y.toDouble() - ff_Position.y) / ff_CellHeight).toInt())
+        get(floor((worldPos.x.toDouble() - position.x) / cellWidth).toInt(),
+            floor((worldPos.y.toDouble() - position.y) / cellHeight).toInt())
 
     fun getTileAt(xpos: Float, ypos: Float): Int =
-        get(floor((xpos.toDouble() - ff_Position.x) / ff_CellWidth).toInt(),
-            floor((ypos.toDouble() - ff_Position.y) / ff_CellHeight).toInt())
+        get(floor((xpos.toDouble() - position.x) / cellWidth).toInt(),
+            floor((ypos.toDouble() - position.y) / cellHeight).toInt())
 
     operator fun set(position: Position, entityId: Int) =
         set(position.x, position.y, entityId)

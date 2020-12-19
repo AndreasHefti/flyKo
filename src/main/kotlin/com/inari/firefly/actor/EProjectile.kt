@@ -8,18 +8,11 @@ import com.inari.util.aspect.IndexedAspectType
 
 class EProjectile private constructor () : EntityComponent(EProjectile::class.java.name) {
 
-    @JvmField internal var type: Aspect = UNDEFINED_PROJECTILE_TYPE
-    @JvmField internal var hitPower = 0
-
-    var ff_Type: Aspect
-        get() = type
+    var type: Aspect = UNDEFINED_PROJECTILE_TYPE
         set(value) =
-            if (PROJECTILE_TYPE_ASPECT.typeCheck(value)) type = value
+            if (PROJECTILE_TYPE_ASPECT.typeCheck(value)) field = value
             else throw IllegalArgumentException()
-
-    var ff_HitPower: Int
-        get() = hitPower
-        set(value) { hitPower = value }
+    var hitPower: Int = 0
 
     override fun reset() {
         type = UNDEFINED_PROJECTILE_TYPE

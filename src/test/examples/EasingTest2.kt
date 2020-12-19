@@ -41,37 +41,37 @@ class EasingTest2 : DesktopAppAdapter() {
     private fun createEasingAnimation(type: Easing.Type, position: Int) {
         val ypos = position.toFloat() * (20f + 10f) + 50f
         Entity.buildAndActivate {
-            ff_With(ETransform) {
-                ff_View(0)
-                ff_Position(10f, ypos)
+            component(ETransform) {
+                view(0)
+                position(10f, ypos)
             }
-            ff_With(EText) {
-                ff_Renderer(SimpleTextRenderer)
-                ff_FontAsset(SYSTEM_FONT)
-                ff_Text.append(type.name.replace("_", "-"))
-                ff_Blend = BlendMode.NORMAL_ALPHA
-                ff_Tint(1f, 1f, 1f, 1f)
+            component(EText) {
+                renderer(SimpleTextRenderer)
+                fontAsset(SYSTEM_FONT)
+                text.append(type.name.replace("_", "-"))
+                blend = BlendMode.NORMAL_ALPHA
+                tint(1f, 1f, 1f, 1f)
             }
         }
         Entity.buildAndActivate {
-            ff_With(ETransform) {
-                ff_View(0)
+            component(ETransform) {
+                view(0)
             }
-            ff_With(EShape) {
-                ff_Type = ShapeType.RECTANGLE
-                ff_Fill = true
-                ff_Color(1f, 0f, 0f, 1f)
-                ff_Vertices = floatArrayOf(100f, ypos, 20f, 20f)
+            component(EShape) {
+                this.shapeType = ShapeType.RECTANGLE
+                fill = true
+                color(1f, 0f, 0f, 1f)
+                vertices = floatArrayOf(100f, ypos, 20f, 20f)
             }
-            ff_With(EAnimation) {
-                ff_WithActiveAnimation(EasedProperty) {
-                    ff_Looping = true
-                    ff_InverseOnLoop = true
-                    ff_StartValue = 100f
-                    ff_EndValue = 400f
-                    ff_Duration = 5000
-                    ff_Easing = type
-                    ff_PropertyRef = ETransform.Property.POSITION_X
+            component(EAnimation) {
+                activeAnimation(EasedProperty) {
+                    looping = true
+                    inverseOnLoop = true
+                    startValue = 100f
+                    endValue = 400f
+                    duration = 5000
+                    easing = type
+                    propertyRef = ETransform.Property.POSITION_X
                 }
             }
         }

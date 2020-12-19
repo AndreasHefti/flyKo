@@ -17,9 +17,8 @@ class TileSetActivation internal constructor() {
     @JvmField internal val tintColors: DynArray<RGBColor> = DynArray.of(5, 5)
     @JvmField internal val blendModes: DynArray<BlendMode> = DynArray.of(5, 5)
 
-    val ff_View = ComponentRefResolver(View) { index-> viewRef = index }
-
-    val ff_withLayer: (LayerDefaults.() -> Unit) -> Unit = { configure ->
+    val view = ComponentRefResolver(View) { index-> viewRef = index }
+    val layerDefaults: (LayerDefaults.() -> Unit) -> Unit = { configure ->
         val layerDefaults = LayerDefaults()
         layerDefaults.also(configure)
         layers[layerDefaults.layerRef] = true
@@ -44,17 +43,9 @@ class TileSetActivation internal constructor() {
     @ComponentDSL
     class LayerDefaults internal constructor() {
         @JvmField internal var layerRef = -1
-        val ff_Layer = ComponentRefResolver(Layer) { index-> layerRef = index }
-
-        @JvmField internal var tintColor: RGBColor? = null
-        var ff_TintColor: RGBColor
-            get() = tintColor!!
-            set(value) {tintColor = value}
-
-        @JvmField internal var blendMode: BlendMode? = null
-        var ff_BlendMode: BlendMode
-            get() = blendMode!!
-            set(value) {blendMode = value}
+        val layer = ComponentRefResolver(Layer) { index-> layerRef = index }
+        var tintColor: RGBColor? = null
+        var blendMode: BlendMode ? = null
     }
 
 }

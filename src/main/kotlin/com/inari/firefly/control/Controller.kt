@@ -12,9 +12,9 @@ abstract class Controller protected constructor() : SystemComponent(Controller::
 
     @JvmField internal var scheduler: FFTimer.Scheduler = INFINITE_SCHEDULER
 
-    var ff_UpdateResolution: Float
+    var updateResolution: Float
         get() = throw UnsupportedOperationException()
-        set(value) {scheduler = FFContext.timer.createUpdateScheduler(value) }
+        set(value) { scheduler = FFContext.timer.createUpdateScheduler(value) }
 
     val needsUpdate: Boolean get() =
         scheduler.needsUpdate()

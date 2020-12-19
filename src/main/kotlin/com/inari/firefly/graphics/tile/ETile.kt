@@ -1,7 +1,6 @@
 package com.inari.firefly.graphics.tile
 
 import com.inari.firefly.asset.AssetInstanceRefResolver
-import com.inari.firefly.component.ArrayAccessor
 import com.inari.firefly.entity.Entity
 import com.inari.firefly.entity.EntityComponent
 import com.inari.firefly.entity.EntityComponentType
@@ -10,29 +9,26 @@ import com.inari.firefly.entity.property.IntPropertyAccessor
 import com.inari.firefly.entity.property.VirtualPropertyRef
 import com.inari.firefly.external.SpriteRenderable
 import com.inari.firefly.graphics.BlendMode
-import com.inari.util.collection.DynArray
 import com.inari.util.geom.Position
 import com.inari.util.graphics.RGBColor
 
 class ETile private constructor () : EntityComponent(ETile::class.java.name) {
 
     @JvmField internal val spriteRenderable = SpriteRenderable()
-    @JvmField internal var position: Position = Position()
 
-    val ff_Sprite = AssetInstanceRefResolver(
+    val sprite = AssetInstanceRefResolver(
         { index -> spriteRenderable.spriteId = index },
         { spriteRenderable.spriteId })
-    val ff_Shader = AssetInstanceRefResolver(
+    val shader = AssetInstanceRefResolver(
         { index -> spriteRenderable.shaderId = index },
         { spriteRenderable.spriteId })
-    var ff_Blend: BlendMode
+    var blend: BlendMode
         get() = spriteRenderable.blendMode
         set(value) { spriteRenderable.blendMode = value }
-    var ff_Tint: RGBColor
+    var tint: RGBColor
         get() = spriteRenderable.tintColor
         set(value) { spriteRenderable.tintColor(value) }
-    val ff_Position: Position
-        get() = position
+    val position: Position = Position()
 
     override fun reset() {
         spriteRenderable.reset()

@@ -10,7 +10,7 @@ abstract class TriggeredSystemComponent protected constructor(
 
     private val trigger = BitSet()
 
-    protected fun <A : Trigger> ff_With(cBuilder: Trigger.Subtype<A>, call: Call, configure: (A.() -> Unit)): A {
+    protected fun <A : Trigger> trigger(cBuilder: Trigger.Subtype<A>, call: Call, configure: (A.() -> Unit)): A {
         val trigger = cBuilder.doBuild(configure)
         TriggerSystem.trigger.receiver()(trigger)
         trigger.register(call)

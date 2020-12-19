@@ -4,7 +4,6 @@ import com.inari.firefly.FFContext
 import com.inari.firefly.NULL_CALL
 import com.inari.firefly.entity.property.FloatPropertyAccessor
 import com.inari.firefly.physics.animation.Animation
-import com.inari.firefly.physics.animation.AnimationSystem
 import com.inari.util.geom.Easing
 import kotlin.math.abs
 

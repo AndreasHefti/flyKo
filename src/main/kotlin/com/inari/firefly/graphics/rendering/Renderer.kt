@@ -65,7 +65,7 @@ abstract class Renderer protected constructor(
         val parentTransform = parent[ETransform]
         transformCollector + parentTransform.data
         if (EChild in parent.aspects)
-            collectTransformData(parent[EChild].parent, transformCollector)
+            collectTransformData(parent[EChild].int_parent, transformCollector)
     }
 
     private fun forceGet(viewLayer: ViewLayerAware): DynArray<Entity>? =

@@ -5,7 +5,6 @@ import com.inari.firefly.asset.Asset
 import com.inari.firefly.component.CompId
 import com.inari.firefly.component.ComponentRefResolver
 import com.inari.firefly.external.SpriteData
-import com.inari.firefly.external.TextureData
 import com.inari.firefly.graphics.TextureAsset
 import com.inari.firefly.system.component.SystemComponentSubType
 import com.inari.util.collection.DynIntArray
@@ -13,51 +12,33 @@ import com.inari.util.collection.DynIntArray
 
 class FontAsset : Asset() {
 
-    //@JvmField internal val textureData = TextureData()
-
     @JvmField internal var textureAssetId = NO_COMP_ID
-    @JvmField internal var charMap: Array<CharArray> = emptyArray()
-    @JvmField internal var charWidth = 0
-    @JvmField internal var charHeight = 0
-    @JvmField internal var charSpace = 0
-    @JvmField internal var lineSpace = 0
-    @JvmField internal var defaultChar = -1
-    @JvmField internal var xOffset = 0
-    @JvmField internal var yOffset = 0
+    @JvmField internal var dChar = -1
 
     internal val charSpriteMap = DynIntArray(256, -1)
     private val tmpSpriteData = SpriteData()
 
-    var ff_Texture =
-            ComponentRefResolver(Asset) { index-> run {
-                dependingRef = setIfNotInitialized(index, "ff_TextureAsset")
-                textureAssetId = CompId(index, TextureAsset)
-            } }
-    var ff_CharMap
-        get() = charMap
-        set(value) {charMap = setIfNotInitialized(value, "ff_CharMap")}
-    var ff_CharWidth
-        get() = charWidth
-        set(value) {charWidth = setIfNotInitialized(value, "ff_CharWidth")}
-    var ff_CharHeight
-        get() = charHeight
-        set(value) {charHeight = setIfNotInitialized(value, "ff_CharHeight")}
-    var ff_CharSpace
-        get() = charSpace
-        set(value) {charSpace = setIfNotInitialized(value, "ff_CharSpace")}
-    var ff_LineSpace
-        get() = lineSpace
-        set(value) {lineSpace = setIfNotInitialized(value, "ff_LineSpace")}
-    var ff_DefaultChar : Char
-        get() = defaultChar.toChar()
-        set(value) {defaultChar = setIfNotInitialized(value.toInt(), "ff_DefaultChar")}
-    var ff_XOffset
-        get() = xOffset
-        set(value) {xOffset = setIfNotInitialized(value, "ff_XOffset")}
-    var ff_YOffset
-        get() = yOffset
-        set(value) {yOffset = setIfNotInitialized(value, "ff_YOffset")}
-
+    var texture = ComponentRefResolver(Asset) { index-> run {
+            dependingRef = setIfNotInitialized(index, "texture")
+            textureAssetId = CompId(index, TextureAsset)
+        } }
+    var charMap: Array<CharArray> = emptyArray()
+        set(value) {field = setIfNotInitialized(value, "charMap")}
+    var charWidth = 0
+        set(value) {field = setIfNotInitialized(value, "charWidth")}
+    var charHeight = 0
+        set(value) {field = setIfNotInitialized(value, "charHeight")}
+    var charSpace = 0
+        set(value) {field = setIfNotInitialized(value, "charSpace")}
+    var lineSpace = 0
+        set(value) {field = setIfNotInitialized(value, "lineSpace")}
+    var defaultChar : Char
+        get() = dChar.toChar()
+        set(value) {dChar = setIfNotInitialized(value.toInt(), "defaultChar")}
+    var xOffset = 0
+        set(value) {field = setIfNotInitialized(value, "xOffset")}
+    var yOffset = 0
+        set(value) {field = setIfNotInitialized(value, "yOffset")}
 
     override fun instanceId(index: Int): Int =
         throw UnsupportedOperationException()
@@ -84,7 +65,7 @@ class FontAsset : Asset() {
     operator fun get(char: Char): Int {
         val index = char.toInt()
         return if (charSpriteMap.isEmpty(index))
-            defaultChar
+            dChar
         else
             charSpriteMap[index]
     }

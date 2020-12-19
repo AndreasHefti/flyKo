@@ -15,54 +15,41 @@ import com.inari.util.indexed.Indexed
 class EContact private constructor() : EntityComponent(EContact::class.java.name) {
 
     @JvmField internal var resolverRef = -1
-    @JvmField internal val bounds = Rectangle()
-    @JvmField internal val mask = BitMask(width = 0, height = 0)
-    @JvmField internal var material = ContactSystem.UNDEFINED_MATERIAL
-    @JvmField internal var contactType = ContactSystem.UNDEFINED_CONTACT_TYPE
-
     @JvmField internal val contactScan = ContactScan()
 
-    val ff_CollisionResolver = ComponentRefResolver(CollisionResolver) { index -> resolverRef = index }
-
-    var ff_Bounds: Rectangle
-        get() = bounds
-        set(value) = bounds(value)
-
-    var ff_Mask: BitMask
-        get() = mask
+    val collisionResolver = ComponentRefResolver(CollisionResolver) { index -> resolverRef = index }
+    var bounds: Rectangle = Rectangle()
+    var mask: BitMask = BitMask(width = 0, height = 0)
         set(value) {
             mask.reset(value.region())
             mask.or(value)
         }
-
-    var ff_Material: Aspect
-        get() = material
+    var material: Aspect  = ContactSystem.UNDEFINED_MATERIAL
         set(value) =
-            if (MATERIAL_ASPECT_GROUP.typeCheck(value)) material = value
+            if (MATERIAL_ASPECT_GROUP.typeCheck(value)) field = value
             else throw IllegalArgumentException()
 
-    var ff_ContactType: Aspect
-        get() = contactType
+    var contactType: Aspect  = ContactSystem.UNDEFINED_CONTACT_TYPE
         set(value) =
-            if (CONTACT_TYPE_ASPECT_GROUP.typeCheck(value)) contactType = value
+            if (CONTACT_TYPE_ASPECT_GROUP.typeCheck(value)) field = value
             else throw IllegalArgumentException()
 
-    val ff_addConstraint =
+    val addConstraint =
         ComponentRefResolver(ContactConstraint) { id ->
             if (id !in contactScan.contacts) contactScan.contacts[id] = Contacts(id)
         }
 
-    val ff_removeConstraint =
+    val removeConstraint =
         ComponentRefResolver(ContactConstraint) { id: Int ->
             contactScan.contacts.remove(id)
         }
 
-    val ff_WithConstraint: (ContactConstraint.() -> Unit) -> Unit = { configure ->
+    val constraint: (ContactConstraint.() -> Unit) -> Unit = { configure ->
         val id = ContactConstraint.build(configure)
         contactScan.contacts[id.instanceId] = Contacts(id.instanceId)
     }
 
-    fun ff_clearConstraints() =
+    fun clearConstraints() =
         contactScan.clear()
 
     fun contacts(constraint: ContactConstraint): Contacts =

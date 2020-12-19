@@ -9,8 +9,8 @@ class Layer private constructor() : SystemComponent(Layer::class.java.name) {
 
     @JvmField internal var viewRef = -1
 
-    val ff_View =
-        ComponentRefResolver(View) { index-> viewRef = setIfNotInitialized(index, "ff_View") }
+    val view =
+        ComponentRefResolver(View) { index-> viewRef = setIfNotInitialized(index, "view") }
 
     override fun toString(): String {
         return "Layer(view=$viewRef)"

@@ -8,12 +8,9 @@ import com.inari.util.collection.DynArray
 class ETextMeta private constructor() : EntityComponent(ETextMeta::class.java.name) {
 
     @JvmField internal val metaData: DynArray<CharacterMetaData> = DynArray.of()
-    @JvmField internal var resolver: (Int) -> CharacterMetaData? = { index -> metaData[index] }
 
-    var ff_Data = ArrayAccessor(metaData)
-    var ff_Resolver: (Int) -> CharacterMetaData?
-        get() = resolver
-        set(value) { resolver = value }
+    var data = ArrayAccessor(metaData)
+    var resolver: (Int) -> CharacterMetaData? = { index -> metaData[index] }
 
     override fun reset() {
         metaData.clear()

@@ -8,11 +8,8 @@ import com.inari.firefly.physics.animation.Animation
 
 abstract class EntityPropertyAnimation protected constructor() : Animation() {
 
-    @JvmField protected var propertyRef: VirtualPropertyRef = NO_PROPERTY_REF
-
-    var ff_PropertyRef: VirtualPropertyRef
-        get() = propertyRef
-        set(value) { propertyRef = if (FFContext.isActive(componentId)) throw IllegalStateException() else value }
+    var propertyRef: VirtualPropertyRef = NO_PROPERTY_REF
+        set(value) { field = if (FFContext.isActive(componentId)) throw IllegalStateException() else value }
 
     internal abstract fun applyToEntity(entity: Entity)
     internal abstract fun detachFromEntity(entity: Entity)

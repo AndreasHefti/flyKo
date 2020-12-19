@@ -25,38 +25,38 @@ class View private constructor (
             get() = baseView
     }
 
-    var ff_Bounds: Rectangle
+    var bounds: Rectangle
         get() = data.bounds
         set(value) { data.bounds(value) }
-    var ff_WorldPosition: PositionF
+    var worldPosition: PositionF
         get() = data.worldPosition
         set(value) { data.worldPosition(value) }
-    var ff_ClearColor: RGBColor
+    var clearColor: RGBColor
         get() = data.clearColor
         set(value) { data.clearColor(value) }
-    var ff_TintColor: RGBColor
+    var tintColor: RGBColor
         get() = data.tintColor
         set(value) { data.tintColor(value) }
-    var ff_BlendMode: BlendMode
+    var blendMode: BlendMode
         get() = data.blendMode
         set(value) { data.blendMode = value }
-    val ff_Shader = AssetInstanceRefResolver(
+    val shader = AssetInstanceRefResolver(
         { index -> data.shaderId = index },
         { data.shaderId })
-    var ff_Zoom: Float
+    var zoom: Float
         get() = data.zoom
         set(value) { data.zoom = value }
-    var ff_FboScale: Float
+    var fboScale: Float
         get() = data.fboScale
         set(value) { data.fboScale = value }
-    var ff_Controller =
+    var controller =
         ComponentRefResolver(Controller) { index-> controllerRef = setIfNotInitialized(index, "controllerRef") }
-    fun <C : Controller> ff_WithController(builder: SystemComponentBuilder<C>, configure: (C.() -> Unit)): CompId {
+    fun <C : Controller> controller(builder: SystemComponentBuilder<C>, configure: (C.() -> Unit)): CompId {
         val id = builder. build(configure)
         controllerRef = id.index
         return id
     }
-    fun <C : Controller> ff_WithActiveController(builder: SystemComponentBuilder<C>, configure: (C.() -> Unit)): CompId {
+    fun <C : Controller> activeController(builder: SystemComponentBuilder<C>, configure: (C.() -> Unit)): CompId {
         val id = builder.buildAndActivate(configure)
         controllerRef = id.index
         return id

@@ -16,43 +16,43 @@ class LoopBlendAnimationTest : DesktopAppAdapter() {
 
     override fun init() {
         Entity.buildAndActivate {
-            ff_With(ETransform) {
-                ff_Position.x = 50f
-                ff_Position.y = 50f
+            component(ETransform) {
+                position.x = 50f
+                position.y = 50f
             }
-            ff_With(EShape) {
-                ff_Type = ShapeType.RECTANGLE
-                ff_Fill = true
-                ff_Color(1f, 1f, 1f, 1f)
-                ff_Vertices = floatArrayOf(0f,0f,100f,100f)
+            component(EShape) {
+                shapeType = ShapeType.RECTANGLE
+                fill = true
+                color(1f, 1f, 1f, 1f)
+                vertices = floatArrayOf(0f,0f,100f,100f)
             }
-            ff_With(EAnimation) {
-                ff_WithActiveAnimation(EasedProperty) {
-                    ff_Looping = true
-                    ff_InverseOnLoop = true
-                    ff_StartValue = 1f
-                    ff_EndValue = 0f
-                    ff_Duration = 1000
-                    ff_Easing = Easing.Type.LINEAR
-                    ff_PropertyRef = EShape.Property.COLOR_RED
+            component(EAnimation) {
+                activeAnimation(EasedProperty) {
+                    looping = true
+                    inverseOnLoop = true
+                    startValue = 1f
+                    endValue = 0f
+                    duration = 1000
+                    easing = Easing.Type.LINEAR
+                    propertyRef = EShape.Property.COLOR_RED
                 }
-                ff_WithActiveAnimation(EasedProperty) {
-                    ff_Looping = true
-                    ff_InverseOnLoop = true
-                    ff_StartValue = 1f
-                    ff_EndValue = 0f
-                    ff_Duration = 3000
-                    ff_Easing = Easing.Type.LINEAR
-                    ff_PropertyRef = EShape.Property.COLOR_GREEN
+                activeAnimation(EasedProperty) {
+                    looping = true
+                    inverseOnLoop = true
+                    startValue = 1f
+                    endValue = 0f
+                    duration = 3000
+                    easing = Easing.Type.LINEAR
+                    propertyRef = EShape.Property.COLOR_GREEN
                 }
-                ff_WithActiveAnimation(EasedProperty) {
-                    ff_Looping = true
-                    ff_InverseOnLoop = true
-                    ff_StartValue = 1f
-                    ff_EndValue = 0f
-                    ff_Duration = 5000
-                    ff_Easing= Easing.Type.LINEAR
-                    ff_PropertyRef = EShape.Property.COLOR_BLUE
+                activeAnimation(EasedProperty) {
+                    looping = true
+                    inverseOnLoop = true
+                    startValue = 1f
+                    endValue = 0f
+                    duration = 5000
+                    easing= Easing.Type.LINEAR
+                    propertyRef = EShape.Property.COLOR_BLUE
                 }
             }
         }

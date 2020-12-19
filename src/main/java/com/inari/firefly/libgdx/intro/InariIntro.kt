@@ -10,7 +10,7 @@ import com.inari.firefly.libgdx.DesktopInput
 import com.inari.firefly.physics.animation.easing.EasedProperty
 import com.inari.firefly.physics.animation.entity.EAnimation
 import com.inari.util.Call
-import com.inari.util.geom.Easing
+import com.inari.util.geom.Easing.Type
 import com.inari.util.geom.PositionF
 import com.inari.util.geom.Rectangle
 import com.inari.util.graphics.RGBColor
@@ -28,37 +28,37 @@ object InariIntro {
         this.callback = callback
 
         val texture: TextureAsset = TextureAsset.buildActivateAndGet {
-            ff_ResourceName = "firefly/inari.png"
+            resourceName = "firefly/inari.png"
         }
         textureAssetId = texture.componentId
 
         spriteAssetId = SpriteAsset.buildAndActivate {
-            ff_Texture(textureAssetId)
-            ff_TextureRegion = Rectangle( 0, 0, texture.width, texture.height )
+            texture(textureAssetId)
+            textureRegion = Rectangle( 0, 0, texture.width, texture.height )
         }
 
         entityId = Entity.buildAndActivate {
-            ff_With(ETransform) {
-                ff_View(0)
-                ff_Position(PositionF(
+            component(ETransform) {
+                view(BASE_VIEW)
+                position(PositionF(
                     FFContext.screenWidth / 2 - texture.width / 2,
                     FFContext.screenHeight / 2 - texture.height / 2
                 ))
             }
 
-            ff_With(ESprite) {
-                ff_Sprite(spriteAssetId)
-                ff_Tint(RGBColor(1f, 1f, 1f, 0f))
+            component(ESprite) {
+                sprite(spriteAssetId)
+                tint(RGBColor(1f, 1f, 1f, 0f))
             }
 
-            ff_With(EAnimation) {
-                animationId = ff_WithActiveAnimation(EasedProperty) {
-                    ff_Easing = Easing.Type.LINEAR
-                    ff_StartValue = 0f
-                    ff_EndValue = 1f
-                    ff_Duration = 1000
-                    ff_PropertyRef = ESprite.Property.TINT_ALPHA
-                    ff_ResetOnFinish = false
+            component(EAnimation) {
+                animationId = activeAnimation(EasedProperty) {
+                    easing = Type.LINEAR
+                    startValue = 0f
+                    endValue = 1f
+                    duration = 1000
+                    propertyRef = ESprite.Property.TINT_ALPHA
+                    resetOnFinish = false
                 }
             }
         }

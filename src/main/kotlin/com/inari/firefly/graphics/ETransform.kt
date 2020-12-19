@@ -19,18 +19,18 @@ class ETransform private constructor() : EntityComponent(ETransform::class.java.
     @JvmField internal var layerRef = 0
     @JvmField internal val data = TransformData()
 
-    val ff_View = ComponentRefResolver(View) { index-> viewRef = index }
-    val ff_Layer = ComponentRefResolver(Layer) { index-> layerRef = index }
-    var ff_Position: PositionF
+    val view = ComponentRefResolver(View) { index-> viewRef = index }
+    val layer = ComponentRefResolver(Layer) { index-> layerRef = index }
+    var position: PositionF
         get() = data.position
         set(value) = data.position(value)
-    var ff_Pivot: PositionF
+    var pivot: PositionF
         get() = data.pivot
         set(value) = data.pivot(value)
-    var ff_Scale: Vector2f
+    var scale: Vector2f
         get() = data.scale
         set(value) { data.scale(value) }
-    var ff_Rotation: Float
+    var rotation: Float
         get() = data.rotation
         set(value) { data.rotation = value }
 

@@ -46,8 +46,8 @@ object ViewSystem : ComponentSystem {
 
     init {
         baseView = View.buildAndGet {
-            ff_Name = BASE_VIEW
-            ff_Bounds(w=FFContext.screenWidth, h=FFContext.screenHeight)
+            name = BASE_VIEW
+            bounds(w=FFContext.screenWidth, h=FFContext.screenHeight)
             baseView = true
         }
 

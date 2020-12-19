@@ -6,10 +6,10 @@ import com.inari.firefly.system.component.SystemComponentSingleType
 import com.inari.util.collection.DynIntArray
 
 data class Test2Component constructor (
-    var ff_Param1: String,
-    var ff_Param2: Int,
-    var ff_Param3: Position,
-    var ff_Param4: DynIntArray
+    var Param1: String,
+    var Param2: Int,
+    var Param3: Position,
+    var Param4: DynIntArray
 ) : SystemComponent(Test2Component::class.java.name) {
 
     private constructor() : this("Param1", 0, Position(), DynIntArray(5, -1, 5))

@@ -12,7 +12,7 @@ class TileAnimation internal constructor() {
     @JvmField internal val frames:  DynArray<Frame.SpriteFrame> = DynArray.of(5, 5)
     @JvmField internal val sprites: MutableMap<String, ProtoSprite> = mutableMapOf()
 
-    val ff_withFrame: (Frame.SpriteFrame.() -> Unit) -> Unit = { configure ->
+    val frame: (Frame.SpriteFrame.() -> Unit) -> Unit = { configure ->
         val frame = Frame.SpriteFrame()
         frame.also(configure)
 
@@ -22,21 +22,6 @@ class TileAnimation internal constructor() {
         frames.add(frame)
         sprites[frame.sprite.name] = frame.sprite
     }
-
-//    fun ff_addFrame(timeInterval: Long, sprite: ProtoSprite): AnimationData {
-//        if (sprite.name == NO_NAME)
-//            throw IllegalArgumentException("Missing name")
-//
-//        frames.add(Frame.SpriteFrame(sprite,  timeInterval))
-//        sprites[sprite.name] = sprite
-//        return this
-//    }
-//
-//    fun ff_addFrame(timeInterval: Long, name: String): AnimationData {
-//        val sprite = sprites[name]!!
-//        frames.add(Frame.SpriteFrame(sprite,  timeInterval))
-//        return this
-//    }
 
     companion object {
 

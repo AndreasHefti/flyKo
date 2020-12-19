@@ -10,45 +10,29 @@ import com.inari.util.geom.Rectangle
 class ContactConstraint private constructor() : SystemComponent(ContactConstraint::class.java.name) {
 
     @JvmField internal var layerRef = -1
-    @JvmField internal val bounds = Rectangle()
-    @JvmField internal val typeFilter = ContactSystem.CONTACT_TYPE_ASPECT_GROUP.createAspects()
-    @JvmField internal val materialFilter = ContactSystem.MATERIAL_ASPECT_GROUP.createAspects()
 
-    val ff_Layer =
+    val layer =
         ComponentRefResolver(Layer) { index->
-            layerRef = setIfNotInitialized(index, "ff_Layer")
+            layerRef = setIfNotInitialized(index, "Layer")
         }
-
-    var ff_Bounds: Rectangle
-        get() = bounds
-        set(value) { bounds(value) }
-
-    val ff_MaterialFilter: Aspects
-        get() = materialFilter
-
-    val ff_TypeFilter: Aspects
-        get() = typeFilter
+    var bounds: Rectangle  = Rectangle()
+    val materialFilter: Aspects = ContactSystem.MATERIAL_ASPECT_GROUP.createAspects()
+    val typeFilter: Aspects = ContactSystem.CONTACT_TYPE_ASPECT_GROUP.createAspects()
 
     val width: Int
         get() = bounds.width
-
     val height: Int
         get() = bounds.height
-
     val pivotX: Int
         get() = bounds.x
-
     val pivotY: Int
         get() = bounds.y
-
     val isFiltering: Boolean
         get() = !materialFilter.isEmpty
 
     fun match(contact: EContact): Boolean =
             (typeFilter.isEmpty || contact.contactType in typeFilter) &&
                     (materialFilter.isEmpty || contact.material in materialFilter)
-
-
 
     override fun componentType() = Companion
     companion object : SystemComponentSingleType<ContactConstraint>(ContactConstraint::class.java) {

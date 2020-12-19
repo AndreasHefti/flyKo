@@ -7,7 +7,6 @@ import com.inari.firefly.graphics.TextureAsset
 import com.inari.firefly.graphics.sprite.ESprite
 import com.inari.firefly.graphics.sprite.SpriteAsset
 import com.inari.firefly.libgdx.DesktopAppAdapter
-import com.inari.util.graphics.RGBColor
 
 class SimpleShaderTest : DesktopAppAdapter() {
 
@@ -18,24 +17,24 @@ class SimpleShaderTest : DesktopAppAdapter() {
 
 
         TextureAsset.build {
-            ff_Name = "BASE_TEXTURE"
-            ff_ResourceName = "firefly/inari.png"
+            name = "BASE_TEXTURE"
+            resourceName = "firefly/inari.png"
         }
 
         TextureAsset.buildAndActivate {
-            ff_Name = "ALPHA_MASK"
-            ff_ResourceName = "firefly/alphaMaskCircle.png"
+            name = "ALPHA_MASK"
+            resourceName = "firefly/alphaMaskCircle.png"
         }
 
         SpriteAsset.buildAndActivate {
-            ff_Name = "TestSprite"
-            ff_Texture("BASE_TEXTURE")
-            ff_TextureRegion(100,0,100,100)
+            name = "TestSprite"
+            texture("BASE_TEXTURE")
+            textureRegion(100,0,100,100)
         }
 
         ShaderAsset.buildAndActivate {
-            ff_Name="Shader"
-            ff_FragShaderProgram = "#ifdef GL_ES\n" +
+            name="Shader"
+            fragShaderProgram = "#ifdef GL_ES\n" +
                     "    precision mediump float;\n" +
                     "#endif\n" +
                     "\n" +
@@ -48,28 +47,28 @@ class SimpleShaderTest : DesktopAppAdapter() {
                     "    vec4 color = normalize(texture2D(u_texture, v_texCoords));\n" +
                     "    gl_FragColor = texture2D(u_textureMask , v_texCoords);\n" +
                     "}"
-            ff_ShaderInit = { shaderInit ->
+            shaderInit = { shaderInit ->
                 shaderInit.setTexture("u_textureMask", "ALPHA_MASK")
             }
         }
 
         Entity.buildAndActivate {
-            ff_With(ETransform) {
-                ff_Position(10,0)
+            component(ETransform) {
+                position(10,0)
             }
-            ff_With(ESprite) {
-                ff_Sprite("TestSprite")
-                ff_Shader("Shader")
+            component(ESprite) {
+                sprite("TestSprite")
+                shader("Shader")
                         
             }
         }
 
         Entity.buildAndActivate {
-            ff_With(ETransform) {
-                ff_Position(200,200)
+            component(ETransform) {
+                position(200,200)
             }
-            ff_With(ESprite) {
-                ff_Sprite("TestSprite")
+            component(ESprite) {
+                sprite("TestSprite")
             }
         }
 

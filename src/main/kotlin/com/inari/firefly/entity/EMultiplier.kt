@@ -4,11 +4,7 @@ import com.inari.util.collection.DynFloatArray
 
 class EMultiplier private constructor () : EntityComponent(EMultiplier::class.java.name) {
 
-    @JvmField internal var positions: DynFloatArray = DynFloatArray()
-
-    var ff_Positions: DynFloatArray
-            get() = positions
-            set(value) { positions = value }
+    var positions: DynFloatArray = DynFloatArray()
 
     override fun reset() {
         positions.clear()

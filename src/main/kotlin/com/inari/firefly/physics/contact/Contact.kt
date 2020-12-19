@@ -17,19 +17,14 @@ class Contact internal constructor() {
 
     val entityId: Int
         get() = entity
-
     val worldBounds: Rectangle
         get() = bounds
-
     val intersectionBounds: Rectangle
         get() = intersection
-
     val intersectionMask: BitMask
         get() = mask
-
     val contactType: Aspect
         get() = contact
-
     val materialType: Aspect
         get() = material
 

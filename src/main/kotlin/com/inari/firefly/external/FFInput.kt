@@ -3,14 +3,12 @@ package com.inari.firefly.external
 import com.inari.firefly.libgdx.DesktopInput
 import com.inari.java.types.BitSet
 
-typealias KeyCallback = (Int, Int, Int) -> Unit // key, scancode, action
+typealias KeyCallback = (Int, Int, Int) -> Unit // key, scancode, action
 typealias MouseCallback = (Int, Int) -> Unit    // button, action
 typealias JoystickConnectionCallback = (Int, Int) -> Unit // joystickId, action
 typealias ButtonCallback = (FFInput.ButtonType, Int) -> Unit
 
 interface FFInput {
-
-
 
     enum class DeviceType {
         KEYBOARD,

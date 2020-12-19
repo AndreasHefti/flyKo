@@ -36,7 +36,7 @@ class AssetSystemTest {
         val emptyAsset = FFContext.get<Asset>(emptyAssetId)
         assertNotNull(emptyAsset)
         assertEquals(
-            "TestAsset(name='[[NO_NAME]]', ff_Param1='', ff_Param2=0.0, instanceId=-1) dependsOn=-1",
+            "TestAsset(name='[[NO_NAME]]', Param1='', Param2=0.0, instanceId=-1) dependsOn=-1",
             emptyAsset.toString()
         )
 
@@ -48,9 +48,9 @@ class AssetSystemTest {
         }
 
         val assetId = TestAsset.build {
-            ff_Name = "testName"
-            ff_Param1 = "param1"
-            ff_Param2 = 1.45f
+            name = "testName"
+            Param1 = "param1"
+            Param2 = 1.45f
         }
 
         assertNotNull(assetId)
@@ -73,9 +73,9 @@ class AssetSystemTest {
         assertEquals("", testEvents.toString())
 
         val assetId = TestAsset.build {
-            ff_Name = "testName"
-            ff_Param1 = "param1"
-            ff_Param2 = 1.45f
+            name = "testName"
+            Param1 = "param1"
+            Param2 = 1.45f
         }
 
         assertEquals(
@@ -123,9 +123,9 @@ class AssetSystemTest {
         assertEquals("", testEvents.toString())
 
         val asset1 = TestAsset.build {
-            ff_Name = "parentAsset"
-            ff_Param1 = "parent"
-            ff_Param2 = 1.45f
+            name = "parentAsset"
+            Param1 = "parent"
+            Param2 = 1.45f
         }
         assertEquals(
             "|id=0:ASSET_CREATED",
@@ -133,10 +133,10 @@ class AssetSystemTest {
         )
 
         val asset2 = TestAsset.build {
-            ff_DependsOn("parentAsset")
-            ff_Name = "childAsset"
-            ff_Param1 = "child"
-            ff_Param2 = 1.45f
+            DependsOn("parentAsset")
+            name = "childAsset"
+            Param1 = "child"
+            Param2 = 1.45f
         }
         assertEquals(
             "|id=0:ASSET_CREATED" +
@@ -144,7 +144,7 @@ class AssetSystemTest {
             testEvents.toString()
         )
         assertEquals(
-            "TestAsset(name='childAsset', ff_Param1='child', ff_Param2=1.45, instanceId=-1) dependsOn=0",
+            "TestAsset(name='childAsset', Param1='child', Param2=1.45, instanceId=-1) dependsOn=0",
             FFContext.get<Asset>(asset2).toString()
         )
 

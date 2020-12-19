@@ -22,8 +22,8 @@ class BehaviorTreeTest {
     fun testCreation() {
 
         EntityTask.build {
-            ff_Name = "Task_Name"
-            ff_Task = object : IntOperation {
+            name = "Task_Name"
+            task = object : IntOperation {
                 override fun invoke(index: Int): OpResult {
                     return OpResult.SUCCESS
                 }
@@ -31,23 +31,23 @@ class BehaviorTreeTest {
         }
 
         BxSelection.build {
-            ff_Name = "First Selection"
-            ff_WithNode(BxSelection) {
-                ff_Name = "Second Selection"
-                ff_WithNode(BxCondition) {
-                    ff_Name ="Condition 1"
-                    ff_Condition = FALSE_CONDITION
+            name = "First Selection"
+            node(BxSelection) {
+                name = "Second Selection"
+                node(BxCondition) {
+                    name ="Condition 1"
+                    condition = FALSE_CONDITION
                 }
-                ff_WithNode(BxAction) {
-                    ff_Name = "First Task"
-                    ff_TickOp = { entity, _ -> TaskSystem.runEntityTask("Task_Name", entity.index) }
+                node(BxAction) {
+                    name = "First Task"
+                    tickOp = { entity, _ -> TaskSystem.runEntityTask("Task_Name", entity.index) }
                 }
-                ff_WithNode(BxSequence) {
-                    ff_Name = ""
+                node(BxSequence) {
+                    name = ""
                 }
 
             }
-            ff_WithNode(BxSequence) {
+            node(BxSequence) {
 
             }
         }

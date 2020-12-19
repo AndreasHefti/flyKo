@@ -16,24 +16,16 @@ class EText private constructor() : EntityComponent(EText::class.java.name) {
     @JvmField internal var rendererRef = SimpleTextRenderer.instance.index
     @JvmField internal var fontAssetRef = -1
     @JvmField internal var shaderRef = -1
-    @JvmField internal val text = StringBuilder()
-    @JvmField internal val tint = RGBColor(1f, 1f, 1f, 1f)
-    @JvmField internal var blend = BlendMode.NONE
 
-    var ff_Renderer = ComponentRefResolver(Renderer) { index-> rendererRef = index }
-    var ff_FontAsset = ComponentRefResolver(Asset) { index -> fontAssetRef = index }
-    val ff_Shader = AssetInstanceRefResolver(
+    var renderer = ComponentRefResolver(Renderer) { index-> rendererRef = index }
+    var fontAsset = ComponentRefResolver(Asset) { index -> fontAssetRef = index }
+    val shader = AssetInstanceRefResolver(
         { index -> shaderRef = index },
         { shaderRef })
 
-    val ff_Text: StringBuilder
-        get() = text
-    var ff_Tint: RGBColor
-        get() = tint
-        set(value) { tint(value) }
-    var ff_Blend: BlendMode
-        get() = blend
-        set(value) {blend = value}
+    val text: StringBuilder = StringBuilder()
+    var tint: RGBColor = RGBColor(1f, 1f, 1f, 1f)
+    var blend: BlendMode = BlendMode.NONE
 
     override fun reset() {
         rendererRef = -1

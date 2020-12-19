@@ -21,10 +21,10 @@ class TileGridSystemTest {
         TileGridSystem
 
         val grid = TileGrid.buildAndGet {
-            ff_View(BASE_VIEW)
-            ff_Spherical = true
-            ff_GridWidth = 3
-            ff_GridHeight = 3
+            view(BASE_VIEW)
+            spherical = true
+            gridWidth = 3
+            gridHeight = 3
         }
         grid[0,0] = 11
         grid[0,1] = 12

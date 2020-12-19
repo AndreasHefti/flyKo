@@ -38,7 +38,7 @@ class SimpleTextRenderer private constructor() : Renderer() {
             textRenderable.blendMode = text.blend
             transformCollector(transform.data)
             if (EChild in entity.aspects)
-                collectTransformData(entity[EChild].parent, transformCollector)
+                collectTransformData(entity[EChild].int_parent, transformCollector)
 
             val horizontalStep = (font.charWidth + font.charSpace) * transform.data.scale.dx
             val verticalStep = (font.charHeight + font.lineSpace) * transform.data.scale.dy
@@ -74,9 +74,9 @@ class SimpleTextRenderer private constructor() : Renderer() {
                 graphics.renderSprite(textRenderable, transformCollector.data)
                 charData?.also {
                     transformCollector - it.transformData.position
-                    transformCollector.data.pivot(transform.ff_Pivot)
-                    transformCollector.data.rotation = transform.ff_Rotation
-                    transformCollector.data.scale(transform.ff_Scale)
+                    transformCollector.data.pivot(transform.pivot)
+                    transformCollector.data.rotation = transform.rotation
+                    transformCollector.data.scale(transform.scale)
                     textRenderable.blendMode = text.blend
                     textRenderable.tintColor = text.tint
                 }

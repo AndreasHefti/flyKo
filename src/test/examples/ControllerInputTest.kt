@@ -70,13 +70,13 @@ class ControllerInputTest : DesktopAppAdapter() {
         }
 
         textId = Entity.buildAndActivate {
-            ff_With(ETransform) {
-                ff_Position(100, 100)
+            component(ETransform) {
+                position(100, 100)
             }
-            ff_With(EText) {
-                ff_FontAsset(SYSTEM_FONT)
-                ff_Text.append(text)
-                this@ControllerInputTest.text = ff_Text
+            component(EText) {
+                fontAsset(SYSTEM_FONT)
+                text.append(text)
+                this@ControllerInputTest.text = text
             }
         }
 

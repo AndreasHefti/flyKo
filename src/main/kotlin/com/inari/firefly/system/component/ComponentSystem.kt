@@ -25,7 +25,7 @@ interface ComponentSystem : FFSystem {
             mapToContext: Boolean = true
         ): ComponentMap<C> {
             val mapper: ComponentMapImpl<C> = ComponentMapImpl(type, activationMapping, nameMapping, listener) {
-                 DynArray.of<C>(size, exp)
+                 DynArray.of(size, exp)
             }
             if (mapToContext)
                 FFContext.componentMaps[mapper.typeIndex] = mapper
@@ -38,7 +38,7 @@ interface ComponentSystem : FFSystem {
         override val activationMapping: Boolean,
         override  val nameMapping: Boolean,
         private val listener: (C, ComponentMap.MapAction) -> Unit,
-        val dynArrayFunction: () -> DynArray<C>
+        dynArrayFunction: () -> DynArray<C>
     ) : ComponentMap<C> {
 
         override val typeIndex: Int = componentType.aspectIndex

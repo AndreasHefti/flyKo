@@ -14,16 +14,14 @@ abstract class SystemComponent protected constructor(
     objectIndexerName: String
 ) : AbstractIndexed(objectIndexerName), NamedComponent {
 
+
     override var name: String = NO_NAME
-        protected set
-    var ff_Name: String
         set(value) {
             if (name !== NO_NAME) {
-                throw IllegalStateException("An illegal reassignment of name: $ff_Name to: $ff_Name" )
+                throw IllegalStateException("An illegal reassignment of name: $value to: $name" )
             }
-            name = value
+            field = value
         }
-        get() = name
 
     final override val componentId: CompId
         by lazy { CompId(index, componentType()) }

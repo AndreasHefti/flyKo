@@ -11,36 +11,21 @@ class Sound private constructor() : TriggeredSystemComponent(Sound::class.java.n
 
     @JvmField internal var soundAssetId: Int = -1
     @JvmField internal var controllerId: Int = -1
-    @JvmField internal var looping: Boolean = false
-    @JvmField internal var volume: Float = 1.0f
-    @JvmField internal var pitch: Float = 1.0f
-    @JvmField internal var pan: Float = 0.0f
-    @JvmField internal var channel: Int = 0
     @JvmField internal var playId: Long = -1
 
-    val ff_SoundAsset = ComponentRefResolver(SoundAsset) { index -> soundAssetId = index }
-    val ff_Controller = ComponentRefResolver(Controller) { index -> controllerId = index }
-    var ff_Looping: Boolean
-        get() = looping
-        set(value) { looping = value }
-    var ff_Volume: Float
-        get() = volume
-        set(value) { volume = value }
-    var ff_Pitch: Float
-        get() = pitch
-        set(value) { pitch = value }
-    var ff_Pan: Float
-        get() = pan
-        set(value) { pan = value }
-    var ff_Channel: Int
-        get() = channel
-        set(value) { channel = value }
+    val soundAsset = ComponentRefResolver(SoundAsset) { index -> soundAssetId = index }
+    val controller = ComponentRefResolver(Controller) { index -> controllerId = index }
+    var looping: Boolean = false
+    var volume: Float = 1.0f
+    var pitch: Float = 1.0f
+    var pan: Float = 0.0f
+    var channel: Int = 0
 
-    fun <A : Trigger> withPlayTrigger(cBuilder: Trigger.Subtype<A>, configure: (A.() -> Unit)): A =
-        super.ff_With(cBuilder, { FFContext.activate(this) }, configure)
+    fun <A : Trigger> playTrigger(cBuilder: Trigger.Subtype<A>, configure: (A.() -> Unit)): A =
+        super.trigger(cBuilder, { FFContext.activate(this) }, configure)
 
-    fun <A : Trigger> withStopTrigger(cBuilder: Trigger.Subtype<A>, configure: (A.() -> Unit)): A =
-        super.ff_With(cBuilder, { FFContext.deactivate(this) }, configure)
+    fun <A : Trigger> stopTrigger(cBuilder: Trigger.Subtype<A>, configure: (A.() -> Unit)): A =
+        super.trigger(cBuilder, { FFContext.deactivate(this) }, configure)
 
     override fun componentType() = Companion
     companion object : SystemComponentSingleType<Sound>(Sound::class.java) {

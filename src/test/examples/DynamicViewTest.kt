@@ -13,14 +13,14 @@ class DynamicViewTest : DesktopAppAdapter() {
     override fun init() {
 
         Entity.buildAndActivate {
-            ff_With(ETransform) {
-                ff_Position(0,0)
+            component(ETransform) {
+                position(0,0)
             }
-            ff_With(EShape) {
-                ff_Type = ShapeType.RECTANGLE
-                ff_Vertices = floatArrayOf(0f, 0f, 400f, 200f, -10f, -10f, 420f, 220f)
-                ff_Color(1f,0f,0f,1f)
-                ff_Fill = false
+            component(EShape) {
+                shapeType = ShapeType.RECTANGLE
+                vertices = floatArrayOf(0f, 0f, 400f, 200f, -10f, -10f, 420f, 220f)
+                color(1f,0f,0f,1f)
+                fill = false
             }
         }
     }

@@ -50,9 +50,6 @@ object TileSetSystem {
         fun remove(tilesetId: Int, prevNode: MappingNode? = null): MappingNode? {
             val remove = this.tilesetId == tilesetId
             if (remove) {
-                // nextNode && prevNode (remove, connect and update offset)
-                // !nextNode && prevNode -> last element (just remove)
-                // nextNode && !prevNode -> first elements (remove update offset
                 if (nextNode != null) {
                     if (prevNode != null)
                         prevNode.nextNode = nextNode
@@ -78,11 +75,10 @@ object TileSetSystem {
         }
 
         fun getTileEntityId(mappingId: Int, layerId: Int) : Int =
-            if (mappingId < offset + size)
-                TileSetSystem[tilesetId][mappingId - offset, layerId]
-            else if (nextNode != null)
-                nextNode!!.getTileEntityId(mappingId, layerId)
-            else
-                -1
+            when {
+                mappingId < offset + size -> TileSetSystem[tilesetId][mappingId - offset, layerId]
+                nextNode != null -> nextNode!!.getTileEntityId(mappingId, layerId)
+                else -> -1
+            }
     }
 }

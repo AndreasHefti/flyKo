@@ -9,17 +9,10 @@ import com.inari.util.aspect.Aspect
 
 class BxAction private constructor() : BxNode() {
 
-    @JvmField internal var tickOp: BxOp = SUCCESS_ACTION
-    @JvmField internal var state: Aspect = UNDEFINED_BEHAVIOR_STATE
-
-    var ff_TickOp: BxOp
-        get() = throw UnsupportedOperationException()
-        set(value) { tickOp = value }
-
-    var ff_State: Aspect
-        get() = state
+    var tickOp: BxOp = SUCCESS_ACTION
+    var state: Aspect = UNDEFINED_BEHAVIOR_STATE
         set(value) =
-            if (BehaviorSystem.BEHAVIOR_STATE_ASPECT_GROUP.typeCheck(value)) state = value
+            if (BehaviorSystem.BEHAVIOR_STATE_ASPECT_GROUP.typeCheck(value)) field = value
             else throw IllegalArgumentException()
 
     override fun tick(entity: Entity, behavior: EBehavior): OpResult {
