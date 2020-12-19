@@ -21,7 +21,7 @@ class LoopBlendAnimationTest : DesktopAppAdapter() {
                 position.y = 50f
             }
             component(EShape) {
-                type = ShapeType.RECTANGLE
+                shapeType = ShapeType.RECTANGLE
                 fill = true
                 color(1f, 1f, 1f, 1f)
                 vertices = floatArrayOf(0f,0f,100f,100f)

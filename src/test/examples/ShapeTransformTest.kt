@@ -34,7 +34,7 @@ class ShapeTransformTest : DesktopAppAdapter() {
                 rotation = 0f
             }
             component(EShape) {
-                type = ShapeType.RECTANGLE
+                shapeType = ShapeType.RECTANGLE
                 fill = true
                 color(1f, 0f, 0f, 1f)
                 vertices = floatArrayOf(0f, 0f, 20f, 20f)
@@ -77,7 +77,7 @@ class ShapeTransformTest : DesktopAppAdapter() {
                 rotation = 0f
             }
             component(EShape) {
-                type = ShapeType.RECTANGLE
+                shapeType = ShapeType.RECTANGLE
                 fill = false
                 color(1f, 0f, 0f, 1f)
                 vertices = floatArrayOf(0f, 0f, 20f, 20f)
@@ -121,7 +121,7 @@ class ShapeTransformTest : DesktopAppAdapter() {
                 scale(1f, 1f)
             }
             component(EShape) {
-                type = ShapeType.TRIANGLE
+                shapeType = ShapeType.TRIANGLE
                 fill = false
                 color(1f, 0f, 0f, 1f)
                 vertices = floatArrayOf(10f, 0f, 20f, 20f, 0f, 20f)
@@ -173,7 +173,7 @@ class ShapeTransformTest : DesktopAppAdapter() {
                 scale(1f, 1f)
             }
             component(EShape) {
-                type = ShapeType.TRIANGLE
+                shapeType = ShapeType.TRIANGLE
                 fill = true
                 color(1f, 0f, 0f, 1f)
                 vertices = floatArrayOf(10f, 0f, 20f, 20f, 0f, 20f)
@@ -225,7 +225,7 @@ class ShapeTransformTest : DesktopAppAdapter() {
                 scale(1f, 1f)
             }
             component(EShape) {
-                type = ShapeType.CIRCLE
+                shapeType = ShapeType.CIRCLE
                 fill = false
                 segments = 20
                 color(1f, 0f, 0f, 1f)
@@ -259,7 +259,7 @@ class ShapeTransformTest : DesktopAppAdapter() {
                 scale(1f, 1f)
             }
             component(EShape) {
-                type = ShapeType.ARC
+                shapeType = ShapeType.ARC
                 fill = false
                 segments = 20
                 color(1f, 0f, 0f, 1f)
@@ -284,7 +284,7 @@ class ShapeTransformTest : DesktopAppAdapter() {
                 scale(1f, 1f)
             }
             component(EShape) {
-                type = ShapeType.CURVE
+                shapeType = ShapeType.CURVE
                 fill = false
                 segments = 20
                 color(1f, 0f, 0f, 1f)

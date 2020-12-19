@@ -133,7 +133,7 @@ class BehaviorTest : DesktopAppAdapter() {
                     position(Random.nextInt(0,800), Random.nextInt(0,600))
                 }
                 component(EShape) {
-                    type = ShapeType.RECTANGLE
+                    shapeType = ShapeType.RECTANGLE
                     fill = true
                     segments = 10
                     color(Random.nextFloat(), Random.nextFloat(), Random.nextFloat(), Random.nextFloat())

@@ -23,7 +23,7 @@ class EasingTest : DesktopAppAdapter() {
                 position.y = 50f
             }
             component(EShape) {
-                type = ShapeType.CIRCLE
+                shapeType = ShapeType.CIRCLE
                 segments = 20
                 fill = true
                 color = RGBColor(1f, 1f, 1f, 1f)

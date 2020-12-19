@@ -33,7 +33,7 @@ class ShapeAndSprite : DesktopAppAdapter()  {
                 position(0, 0)
             }
             component(EShape) {
-                type = ShapeType.POLYGON
+                shapeType = ShapeType.POLYGON
                 fill = true
                 color = RGBColor.RED
                 vertices = floatArrayOf(0f, 0f, 20f,0f,20f,20f, 0f,0f)

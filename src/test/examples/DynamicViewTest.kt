@@ -17,7 +17,7 @@ class DynamicViewTest : DesktopAppAdapter() {
                 position(0,0)
             }
             component(EShape) {
-                type = ShapeType.RECTANGLE
+                shapeType = ShapeType.RECTANGLE
                 vertices = floatArrayOf(0f, 0f, 400f, 200f, -10f, -10f, 420f, 220f)
                 color(1f,0f,0f,1f)
                 fill = false

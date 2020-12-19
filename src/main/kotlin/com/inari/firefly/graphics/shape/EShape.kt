@@ -16,7 +16,7 @@ class EShape private constructor(): EntityComponent(EShape::class.java.name) {
 
     @JvmField val data = ShapeData()
 
-    var type: ShapeType
+    var shapeType: ShapeType
         get() = data.type
         set(value) { data.type = value }
     var vertices: FloatArray

@@ -58,7 +58,7 @@ class EasingTest2 : DesktopAppAdapter() {
                 view(0)
             }
             component(EShape) {
-                this.type = ShapeType.RECTANGLE
+                this.shapeType = ShapeType.RECTANGLE
                 fill = true
                 color(1f, 0f, 0f, 1f)
                 vertices = floatArrayOf(100f, ypos, 20f, 20f)
