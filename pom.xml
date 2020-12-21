@@ -6,7 +6,7 @@
 
     <groupId>com.github.inarisoft</groupId>
     <artifactId>FlyKo</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 
     <properties>
         <kotlin.version>1.3.72</kotlin.version>
