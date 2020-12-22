@@ -56,6 +56,8 @@ class DynIntArray(
         array[index] = value
     }
 
+    operator fun plus(value: Int) = add(value)
+
     fun add(value: Int): Int {
         if (value == nullValue)
             return -1
@@ -73,6 +75,8 @@ class DynIntArray(
         return oldLength
     }
 
+    operator fun plus(toAdd: DynIntArrayRO) = addAll(toAdd)
+
     fun addAll(toAdd: DynIntArrayRO) {
         for (i in 0 until toAdd.length) {
             if (toAdd.isEmpty(i))
@@ -85,6 +89,8 @@ class DynIntArray(
         for (value in values)
             add(value)
     }
+
+    operator fun plus(intIterator: IntIterator?) = addAll(intIterator)
 
     fun addAll(intIterator: IntIterator?) {
         if (intIterator == null)
@@ -105,6 +111,8 @@ class DynIntArray(
         }
         return false
     }
+
+    operator fun minus(value: Int) = remove(value)
 
     fun remove(value: Int): Boolean {
         val indexOf = indexOf(value)
@@ -201,7 +209,7 @@ class DynIntArray(
         System.arraycopy(temp, 0, array, 0, temp.size)
     }
 
-    private inner class DynIntArrayIterator internal constructor() : IntIterator() {
+    private inner class DynIntArrayIterator : IntIterator() {
 
         private var currentIndex = 0
 
