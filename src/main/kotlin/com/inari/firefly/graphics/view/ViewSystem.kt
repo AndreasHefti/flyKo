@@ -103,7 +103,7 @@ object ViewSystem : ComponentSystem {
         }
 
         orderedView.remove(index)
-        orderedView.trim()
+        orderedView.trim_all()
 
         ViewEvent.send(view.componentId, view.data, ViewEvent.Type.VIEW_DELETED)
     }

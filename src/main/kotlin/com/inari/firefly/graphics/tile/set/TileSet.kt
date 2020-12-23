@@ -1,118 +1,110 @@
 package com.inari.firefly.graphics.tile.set
 
 import com.inari.firefly.FFContext
-import com.inari.firefly.asset.Asset
+import com.inari.firefly.NO_COMP_ID
 import com.inari.firefly.asset.AssetSystem
 import com.inari.firefly.component.ComponentRefResolver
 import com.inari.firefly.composite.Composite
 import com.inari.firefly.entity.Entity
+import com.inari.firefly.graphics.BlendMode
 import com.inari.firefly.graphics.ETransform
 import com.inari.firefly.graphics.sprite.SpriteSetAsset
+import com.inari.firefly.graphics.text.FontAsset
 import com.inari.firefly.graphics.tile.ETile
 import com.inari.firefly.graphics.view.Layer
-import com.inari.firefly.graphics.view.ViewSystem
+import com.inari.firefly.graphics.view.View
 import com.inari.firefly.physics.animation.entity.EAnimation
 import com.inari.firefly.physics.animation.timeline.IntTimelineProperty
 import com.inari.firefly.physics.contact.ContactSystem
 import com.inari.firefly.physics.contact.EContact
 import com.inari.firefly.system.component.SystemComponentSubType
-import com.inari.java.types.BitSet
 import com.inari.util.collection.DynArray
+import com.inari.util.graphics.RGBColor
 
-class TileSet private constructor() : Composite() {
+class TileSet : Composite() {
 
-    @JvmField internal var activeForLayer = BitSet()
-    @JvmField internal var textureRef: Int = -1
-    @JvmField internal val tiles: DynArray<ProtoTile> = DynArray.of()
+    @JvmField internal var textureAssetRef: Int = -1
+    private var spriteSetAssetId = NO_COMP_ID
+    private var viewRef = -1
+    private var layerRef = -1
+    private val tiles = DynArray.of<ProtoTile>()
+    private var active = false
 
-    val textureAsset = ComponentRefResolver(Asset) { index->
-            textureRef = setIfNotInitialized(index, "TextureAsset")
-        }
+    val texture = ComponentRefResolver(FontAsset) { index -> textureAssetRef = index }
+    var view = ComponentRefResolver(View) { index -> viewRef = index }
+    var layer = ComponentRefResolver(Layer) { index -> layerRef = index }
+    var blend: BlendMode? = null
+    var tint: RGBColor? = null
 
-    val tile: (ProtoTile.() -> Unit) -> Unit = { configure ->
+    val tile: (ProtoTile.() -> Unit) -> ProtoTile = { configure ->
         val tile = ProtoTile()
         tile.also(configure)
         tiles.add(tile)
+        tile
     }
-    var activationResolver: (TileSet) -> TileSetActivation  = { _ -> TileSetActivation() }
-
-    operator fun contains(layer: Layer) = activeForLayer.get(layer.index)
 
     override fun load() {
         if (loaded)
             return
 
-        SpriteSetAsset.build {
-            name = this@TileSet.name
-            texture(this@TileSet.textureRef)
-
-            this@TileSet.tiles.forEach{
+        spriteSetAssetId = SpriteSetAsset.build {
+            name = super.name
+            texture(this@TileSet.textureAssetRef)
+            this@TileSet.tiles.forEach {
                 if (it.int_animation != null)
                     spriteData.addAll(it.int_animation!!.sprites.values)
                 spriteData.add(it.spriteData)
             }
         }
-
     }
 
     override fun activate() {
+        if (active)
+            return
+
         if (!loaded)
             load()
 
-        if (name !in AssetSystem.assets)
+        if (spriteSetAssetId == NO_COMP_ID)
             throw IllegalStateException()
 
-        AssetSystem.assets.activate(name)
-        val activation = activationResolver.invoke(this)
-
-        ViewSystem.layers.forEach { layer ->
-            if (layer in activation && layer !in this && activate(layer, activation))
-                activeForLayer.set(layer.index)
-        }
-
-        TileSetSystem.activated(this)
+        FFContext.activate(spriteSetAssetId)
+        if (activateInternal())
+            active = true
     }
 
-    operator fun get(tileIndex: Int, layer: Layer): Int =
-            get(tileIndex, layer.index)
-
-    operator fun get(tileIndex: Int, layerId: Int): Int =
-            if (tileIndex !in tiles) -1
-            else tiles[tileIndex]?.entityIds?.get(layerId) ?: -1
-
-
-    private fun activate(layer: Layer, activation: TileSetActivation): Boolean {
-        if (layer in this)
+    private fun activateInternal(): Boolean {
+        if (layerRef == -1)
             return false
 
         var it = 0
         while (it < tiles.capacity) {
             val tile = tiles[it++] ?: continue
 
-            if (tile === ProtoTile.EMPTY_TILE)
+            if (tile === TileSetContext.EMPTY_PROTO_TILE)
                 continue
 
             val spriteId = tile.spriteData.instanceId
             if (spriteId < 0)
                 return false
 
-            tile.entityIds[layer.index] = Entity.buildAndActivate {
+            val entityId = Entity.buildAndActivate {
                 component(ETransform) {
-                    view(activation.viewRef)
-                    layer(layer)
+                    view(this@TileSet.viewRef)
+                    layer(this@TileSet.layerRef)
                 }
                 component(ETile) {
                     sprite.instanceId = spriteId
-                    tint = tile.tintColor ?: activation.tintColors[layer.index] ?: tint
-                    blend = tile.blendMode ?: activation.blendModes[layer.index] ?: blend
+                    tint = tile.tintColor ?: this@TileSet.tint ?: tint
+                    blend = tile.blendMode ?: this@TileSet.blend ?: blend
                 }
 
                 if (tile.hasContactComp) {
                     component(EContact) {
                         if (tile.contactType !== ContactSystem.UNDEFINED_CONTACT_TYPE) {
                             bounds(0,0,
-                                    tile.spriteData.textureBounds.width,
-                                    tile.spriteData.textureBounds.height)
+                                tile.spriteData.textureBounds.width,
+                                tile.spriteData.textureBounds.height)
                             contactType = tile.contactType
                             material = tile.material
                             mask = tile.contactMask ?: mask
@@ -130,50 +122,44 @@ class TileSet private constructor() : Composite() {
                         }
                     }
                 }
-            }.instanceId
+            }
+
+            tile.entityRef = entityId.instanceId
+            TileSetContext.addActiveTileEntityId(entityId.instanceId, layerRef)
         }
         return true
     }
 
     override fun deactivate() {
-        if (activeForLayer.isEmpty)
+        if (!active)
             return
 
-        var ii = activeForLayer.nextSetBit(0)
-        while(ii >= 0) {
-            deactivate(this, ii)
-            ii = activeForLayer.nextSetBit(ii + 1)
+        var i = 0
+        while (i < tiles.capacity) {
+            val tile = tiles[i++] ?: continue
+
+            if (tile === TileSetContext.EMPTY_PROTO_TILE)
+                continue
+
+            if (tile.entityRef < 0)
+                continue
+
+            deactivateTile(tile)
         }
 
-        FFContext.deactivate(Asset, name)
-        TileSetSystem.deactivated(this)
+        TileSetContext.updateActiveTileEntityRefs(layerRef)
+        FFContext.deactivate(spriteSetAssetId)
+        this.active = false
     }
 
-    private fun deactivate(tileSet: TileSet, layerId: Int) {
-        var i = 0
-        while (i < tileSet.tiles.capacity) {
-            val tile = tileSet.tiles[i++] ?: continue
-
-            if (tile === ProtoTile.EMPTY_TILE)
-                continue
-
-            val entityId = tile.entityIds[layerId]
-            if (entityId < 0)
-                continue
-
-            FFContext.delete(Entity, entityId)
-            tile.entityIds[layerId] = -1
-        }
-
-        tileSet.activeForLayer[layerId] = false
+    private fun deactivateTile(protoTile: ProtoTile) {
+        TileSetContext.removeActiveTileEntityId(protoTile.entityRef, layerRef)
+        FFContext.delete(Entity, protoTile.entityRef)
     }
 
     override fun unload() {
-        if (!loaded)
-            return
-
-        FFContext.deactivate(TileSet, name)
-        FFContext.delete(Asset, name)
+        FFContext.delete(spriteSetAssetId)
+        spriteSetAssetId = NO_COMP_ID
     }
 
     companion object : SystemComponentSubType<Composite, TileSet>(Composite, TileSet::class.java) {

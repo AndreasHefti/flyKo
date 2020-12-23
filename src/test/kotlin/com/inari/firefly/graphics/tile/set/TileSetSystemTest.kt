@@ -35,7 +35,7 @@ class TileSetSystemTest {
     @Test
     fun testOneTileSet() {
 
-        Layer.buildAndActivate {
+        val layerId = Layer.buildAndActivate {
             name = "testLayer"
             view(BASE_VIEW)
         }
@@ -47,9 +47,13 @@ class TileSetSystemTest {
 
         TileSet.build {
             name = "TestTileSet1"
-            textureAsset("TestTextureAsset")
+            texture("TestTextureAsset")
+            view(ViewSystem.baseView)
+            layer("testLayer")
+            blend = BlendMode.ADDITIVE_ALPHA
+            tint = RGBColor.WHITE
             tile {
-                protoSprite {
+                sprite {
                     textureBounds(0,0, 8, 8)
                     hFlip = true
                 }
@@ -68,7 +72,7 @@ class TileSetSystemTest {
                 }
             }
             tile {
-                protoSprite {
+                sprite {
                     textureBounds(0,0, 8, 8)
                 }
                 blendMode = BlendMode.ADDITIVE_ALPHA
@@ -78,18 +82,10 @@ class TileSetSystemTest {
                 tintColor = RGBColor.WHITE
             }
             tile {
-                protoSprite {
+                sprite {
                     textureBounds(0,0, 8, 8)
                 }
             }
-            activationResolver = { _ -> TileSetActivation.of {
-                view(ViewSystem.baseView)
-                layerDefaults {
-                    layer("testLayer")
-                    blendMode = BlendMode.ADDITIVE_ALPHA
-                    tintColor = RGBColor.WHITE
-                }
-            } }
         }
 
 
@@ -106,37 +102,33 @@ class TileSetSystemTest {
         assertTrue(FFContext.isActive(SpriteSetAsset, "TestTileSet1"))
         assertTrue(FFContext.isActive(TextureAsset, "TestTextureAsset"))
 
-        assertNotNull(TileSetSystem["TestTileSet1"])
-        assertEquals(0, TileSetSystem.getEntityId(0, 0))
-        assertEquals(1, TileSetSystem.getEntityId(1, 0))
-        assertEquals(2, TileSetSystem.getEntityId(2, 0))
-        assertEquals(-1, TileSetSystem.getEntityId(3, 0))
+        assertNotNull(TileSetContext["TestTileSet1"])
+        assertEquals(0, TileSetContext.getTileEntityRef(0, layerId))
+        assertEquals(1, TileSetContext.getTileEntityRef(1, layerId))
+        assertEquals(2, TileSetContext.getTileEntityRef(2, layerId))
+        assertEquals(-1, TileSetContext.getTileEntityRef(3, layerId))
 
         // creating and activate a second tileset
         TileSet.build {
             name = "TestTileSet2"
-            textureAsset("TestTextureAsset")
+            texture("TestTextureAsset")
+            view(ViewSystem.baseView)
+            layer("testLayer")
             tile {
-                protoSprite {
+                sprite {
                     textureBounds(0,0, 8, 8)
                 }
             }
             tile {
-                protoSprite {
+                sprite {
                     textureBounds(8,0, 8, 8)
                 }
             }
             tile {
-                protoSprite {
+                sprite {
                     textureBounds(16,0, 8, 8)
                 }
             }
-            activationResolver = { _ -> TileSetActivation.of {
-                view(ViewSystem.baseView)
-                layerDefaults {
-                    layer("testLayer")
-                }
-            } }
         }
 
         FFContext.activate(TileSet, "TestTileSet2")
@@ -144,14 +136,14 @@ class TileSetSystemTest {
         assertTrue(FFContext.isActive(SpriteSetAsset, "TestTileSet2"))
         assertTrue(FFContext.isActive(TextureAsset, "TestTextureAsset"))
 
-        assertNotNull(TileSetSystem["TestTileSet2"])
-        assertEquals(0, TileSetSystem.getEntityId(0, 0))
-        assertEquals(1, TileSetSystem.getEntityId(1, 0))
-        assertEquals(2, TileSetSystem.getEntityId(2, 0))
-        assertEquals(3, TileSetSystem.getEntityId(3, 0))
-        assertEquals(4, TileSetSystem.getEntityId(4, 0))
-        assertEquals(5, TileSetSystem.getEntityId(5, 0))
-        assertEquals(-1, TileSetSystem.getEntityId(6, 0))
+        assertNotNull(TileSetContext["TestTileSet2"])
+        assertEquals(0, TileSetContext.getTileEntityRef(0, layerId))
+        assertEquals(1, TileSetContext.getTileEntityRef(1, layerId))
+        assertEquals(2, TileSetContext.getTileEntityRef(2, layerId))
+        assertEquals(3, TileSetContext.getTileEntityRef(3, layerId))
+        assertEquals(4, TileSetContext.getTileEntityRef(4, layerId))
+        assertEquals(5, TileSetContext.getTileEntityRef(5, layerId))
+        assertEquals(-1, TileSetContext.getTileEntityRef(6, layerId))
 
         // now deactivating the first tileset should result in a mapping shift
         FFContext.deactivate(TileSet, "TestTileSet1")
@@ -159,8 +151,8 @@ class TileSetSystemTest {
         assertTrue(FFContext.isActive(TileSet, "TestTileSet2"))
         assertTrue(FFContext.isActive(TextureAsset, "TestTextureAsset"))
 
-        assertEquals(3, TileSetSystem.getEntityId(0, 0))
-        assertEquals(4, TileSetSystem.getEntityId(1, 0))
-        assertEquals(5, TileSetSystem.getEntityId(2, 0))
+        assertEquals(3, TileSetContext.getTileEntityRef(0, 0))
+        assertEquals(4, TileSetContext.getTileEntityRef(1, 0))
+        assertEquals(5, TileSetContext.getTileEntityRef(2, 0))
     }
 }

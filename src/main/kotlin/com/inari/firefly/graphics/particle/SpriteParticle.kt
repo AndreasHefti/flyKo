@@ -3,9 +3,6 @@ package com.inari.firefly.graphics.particle
 import com.inari.firefly.asset.AssetInstanceRefResolver
 import com.inari.firefly.external.SpriteRenderable
 import com.inari.firefly.graphics.BlendMode
-import com.inari.firefly.graphics.tile.set.ProtoTile
-import com.inari.util.geom.PositionF
-import com.inari.util.geom.Vector2f
 import com.inari.util.graphics.RGBColor
 
 class SpriteParticle : Particle() {

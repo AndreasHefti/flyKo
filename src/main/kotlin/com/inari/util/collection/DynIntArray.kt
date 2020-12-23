@@ -1,6 +1,7 @@
 package com.inari.util.collection
 
 import com.inari.java.types.BitSet
+import java.lang.IllegalStateException
 
 interface DynIntArrayRO {
     val nullValue: Int
@@ -157,7 +158,25 @@ class DynIntArray(
         return -1
     }
 
-    fun trim() {
+    fun trim_head_tail() {
+        var startIndex = 0
+        var endIndex = array.size -1
+        while (array[startIndex] == nullValue || startIndex >= array.size) {
+            startIndex++
+        }
+        while (array[endIndex] == nullValue || endIndex == 0) {
+            endIndex--
+        }
+        val newSize = endIndex + 1 - startIndex
+        if (newSize <= 0)
+            throw IllegalStateException()
+
+        val temp = array
+        initArray(newSize)
+        System.arraycopy(temp, startIndex, array, 0, newSize)
+    }
+
+    fun trim_all() {
         var i = 0
         while (i < array.size) {
             if (array[i] == nullValue) {
