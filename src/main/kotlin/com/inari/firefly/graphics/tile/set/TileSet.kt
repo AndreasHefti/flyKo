@@ -3,6 +3,7 @@ package com.inari.firefly.graphics.tile.set
 import com.inari.firefly.FFContext
 import com.inari.firefly.NO_COMP_ID
 import com.inari.firefly.asset.AssetSystem
+import com.inari.firefly.component.ComponentDSL
 import com.inari.firefly.component.ComponentRefResolver
 import com.inari.firefly.composite.Composite
 import com.inari.firefly.entity.Entity
@@ -21,6 +22,7 @@ import com.inari.firefly.system.component.SystemComponentSubType
 import com.inari.util.collection.DynArray
 import com.inari.util.graphics.RGBColor
 
+@ComponentDSL
 class TileSet : Composite() {
 
     @JvmField internal var textureAssetRef: Int = -1

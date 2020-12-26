@@ -11,7 +11,7 @@ import com.inari.util.indexed.Indexed
 
 object TileSetContext {
 
-    private val TILE_ASPECTS = IndexedAspectType("TILE_ASPECTS")
+    val TILE_ASPECTS = IndexedAspectType("TILE_ASPECTS")
 
     val EMPTY_TILE_ASPECTS = ofTileAspects()
     val EMPTY_PROTO_SPRITE = ProtoSprite.of {}
