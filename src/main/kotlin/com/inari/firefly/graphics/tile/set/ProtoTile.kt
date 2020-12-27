@@ -7,6 +7,7 @@ import com.inari.firefly.graphics.sprite.ProtoSprite
 import com.inari.firefly.physics.contact.ContactSystem
 import com.inari.util.aspect.Aspect
 import com.inari.util.aspect.Aspects
+import com.inari.util.aspect.IndexedAspectType
 import com.inari.util.geom.BitMask
 import com.inari.util.graphics.RGBColor
 
@@ -18,7 +19,7 @@ class ProtoTile internal constructor() {
     @JvmField internal var entityRef = -1
 
     @Suppress("SetterBackingFieldAssignment")
-    var aspects: Aspects = EMeta.ENTITY_META_ASPECTS.createAspects()
+    var aspects: Aspects = TILE_ASPECTS.createAspects()
         set(value) {
             field.clear()
             field + value
@@ -44,6 +45,9 @@ class ProtoTile internal constructor() {
                 material !== ContactSystem.UNDEFINED_MATERIAL
 
     companion object {
+
+        @JvmField val TILE_ASPECTS = IndexedAspectType("TILE_ASPECTS")
+
         val of: (ProtoTile.() -> Unit) -> ProtoTile = { configure ->
             val comp = ProtoTile()
             comp.also(configure)
