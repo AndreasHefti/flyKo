@@ -2,7 +2,7 @@ package com.inari.firefly.graphics.tile.set
 
 import com.inari.firefly.FFContext
 import com.inari.firefly.NO_COMP_ID
-import com.inari.firefly.asset.AssetSystem
+import com.inari.firefly.component.ArrayAccessor
 import com.inari.firefly.component.ComponentDSL
 import com.inari.firefly.component.ComponentRefResolver
 import com.inari.firefly.composite.Composite
@@ -29,7 +29,7 @@ class TileSet : Composite() {
     private var spriteSetAssetId = NO_COMP_ID
     private var viewRef = -1
     private var layerRef = -1
-    private val tiles = DynArray.of<ProtoTile>()
+    private val int_tiles = DynArray.of<ProtoTile>()
     private var active = false
 
     val texture = ComponentRefResolver(FontAsset) { index -> textureAssetRef = index }
@@ -37,13 +37,13 @@ class TileSet : Composite() {
     var layer = ComponentRefResolver(Layer) { index -> layerRef = index }
     var blend: BlendMode? = null
     var tint: RGBColor? = null
-
     val tile: (ProtoTile.() -> Unit) -> ProtoTile = { configure ->
         val tile = ProtoTile()
         tile.also(configure)
-        tiles.add(tile)
+        int_tiles.add(tile)
         tile
     }
+    val tiles = ArrayAccessor(int_tiles)
 
     override fun load() {
         if (loaded)
@@ -52,7 +52,7 @@ class TileSet : Composite() {
         spriteSetAssetId = SpriteSetAsset.build {
             name = super.name
             texture(this@TileSet.textureAssetRef)
-            this@TileSet.tiles.forEach {
+            this@TileSet.int_tiles.forEach {
                 if (it.int_animation != null)
                     spriteData.addAll(it.int_animation!!.sprites.values)
                 spriteData.add(it.spriteData)
@@ -80,8 +80,8 @@ class TileSet : Composite() {
             return false
 
         var it = 0
-        while (it < tiles.capacity) {
-            val tile = tiles[it++] ?: continue
+        while (it < int_tiles.capacity) {
+            val tile = int_tiles[it++] ?: continue
 
             if (tile === TileSetContext.EMPTY_PROTO_TILE)
                 continue
@@ -137,8 +137,8 @@ class TileSet : Composite() {
             return
 
         var i = 0
-        while (i < tiles.capacity) {
-            val tile = tiles[i++] ?: continue
+        while (i < int_tiles.capacity) {
+            val tile = int_tiles[i++] ?: continue
 
             if (tile === TileSetContext.EMPTY_PROTO_TILE)
                 continue
