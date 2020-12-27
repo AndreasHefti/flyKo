@@ -2,7 +2,6 @@ package com.inari.firefly.graphics.tile.set
 
 import com.inari.firefly.FFContext
 import com.inari.firefly.component.CompId
-import com.inari.firefly.graphics.sprite.ProtoSprite
 import com.inari.util.aspect.Aspect
 import com.inari.util.aspect.IndexedAspectType
 import com.inari.util.collection.DynArray
@@ -12,10 +11,6 @@ import com.inari.util.indexed.Indexed
 object TileSetContext {
 
     val TILE_ASPECTS = IndexedAspectType("TILE_ASPECTS")
-
-    val EMPTY_TILE_ASPECTS = ofTileAspects()
-    val EMPTY_PROTO_SPRITE = ProtoSprite.of {}
-    val EMPTY_PROTO_TILE = ProtoTile.of {}
 
     private val activeTileEntityRefs: DynArray<DynIntArray> = DynArray.of()
 

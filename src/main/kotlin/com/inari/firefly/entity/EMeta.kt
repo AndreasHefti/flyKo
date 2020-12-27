@@ -38,6 +38,7 @@ class EMeta private constructor() : EntityComponent(EMeta::class.java.name), Nam
 
     override fun reset() {
         name = NO_NAME
+        aspects.clear()
         controllerRef = -1
     }
 

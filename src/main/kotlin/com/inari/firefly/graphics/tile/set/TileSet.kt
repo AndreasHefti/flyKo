@@ -53,9 +53,10 @@ class TileSet : Composite() {
             name = super.name
             texture(this@TileSet.textureAssetRef)
             this@TileSet.int_tiles.forEach {
-                if (it.int_animation != null)
-                    spriteData.addAll(it.int_animation!!.sprites.values)
-                spriteData.add(it.spriteData)
+                if (it.animationData != null)
+                    spriteData.addAll(it.animationData!!.sprites.values)
+                if (it.spriteData != null)
+                    spriteData.add(it.spriteData!!)
             }
         }
     }
@@ -83,10 +84,10 @@ class TileSet : Composite() {
         while (it < int_tiles.capacity) {
             val tile = int_tiles[it++] ?: continue
 
-            if (tile === TileSetContext.EMPTY_PROTO_TILE)
+            if (tile.spriteData == null)
                 continue
 
-            val spriteId = tile.spriteData.instanceId
+            val spriteId = tile.spriteData!!.instanceId
             if (spriteId < 0)
                 return false
 
@@ -105,8 +106,8 @@ class TileSet : Composite() {
                     component(EContact) {
                         if (tile.contactType !== ContactSystem.UNDEFINED_CONTACT_TYPE) {
                             bounds(0,0,
-                                tile.spriteData.textureBounds.width,
-                                tile.spriteData.textureBounds.height)
+                                tile.spriteData!!.textureBounds.width,
+                                tile.spriteData!!.textureBounds.height)
                             contactType = tile.contactType
                             material = tile.material
                             mask = tile.contactMask ?: mask
@@ -115,11 +116,11 @@ class TileSet : Composite() {
                     }
                 }
 
-                if (tile.int_animation != null) {
+                if (tile.animationData != null) {
                     component(EAnimation) {
                         activeAnimation(IntTimelineProperty) {
                             looping = true
-                            timeline = tile.int_animation!!.frames.toArray()
+                            timeline = tile.animationData!!.frames.toArray()
                             propertyRef = ETile.Property.SPRITE_REFERENCE
                         }
                     }
@@ -139,9 +140,6 @@ class TileSet : Composite() {
         var i = 0
         while (i < int_tiles.capacity) {
             val tile = int_tiles[i++] ?: continue
-
-            if (tile === TileSetContext.EMPTY_PROTO_TILE)
-                continue
 
             if (tile.entityRef < 0)
                 continue
