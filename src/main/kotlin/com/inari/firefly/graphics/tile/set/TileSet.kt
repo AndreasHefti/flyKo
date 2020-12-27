@@ -6,6 +6,7 @@ import com.inari.firefly.component.ArrayAccessor
 import com.inari.firefly.component.ComponentDSL
 import com.inari.firefly.component.ComponentRefResolver
 import com.inari.firefly.composite.Composite
+import com.inari.firefly.entity.EMultiplier
 import com.inari.firefly.entity.Entity
 import com.inari.firefly.graphics.BlendMode
 import com.inari.firefly.graphics.ETransform
@@ -37,6 +38,7 @@ class TileSet : Composite() {
     var layer = ComponentRefResolver(Layer) { index -> layerRef = index }
     var blend: BlendMode? = null
     var tint: RGBColor? = null
+
     val tile: (ProtoTile.() -> Unit) -> ProtoTile = { configure ->
         val tile = ProtoTile()
         tile.also(configure)
@@ -100,6 +102,9 @@ class TileSet : Composite() {
                     sprite.instanceId = spriteId
                     tint = tile.tintColor ?: this@TileSet.tint ?: tint
                     blend = tile.blendMode ?: this@TileSet.blend ?: blend
+                }
+                component(EMultiplier) {
+
                 }
 
                 if (tile.hasContactComp) {

@@ -9,6 +9,8 @@ import com.inari.firefly.entity.property.IntPropertyAccessor
 import com.inari.firefly.entity.property.VirtualPropertyRef
 import com.inari.firefly.external.SpriteRenderable
 import com.inari.firefly.graphics.BlendMode
+import com.inari.util.aspect.Aspects
+import com.inari.util.aspect.IndexedAspectType
 import com.inari.util.geom.Position
 import com.inari.util.graphics.RGBColor
 
@@ -16,6 +18,12 @@ class ETile private constructor () : EntityComponent(ETile::class.java.name) {
 
     @JvmField internal val spriteRenderable = SpriteRenderable()
 
+    @Suppress("SetterBackingFieldAssignment")
+    var aspects: Aspects = TILE_ASPECTS.createAspects()
+        set(value) {
+            field.clear()
+            field + value
+        }
     val sprite = AssetInstanceRefResolver(
         { index -> spriteRenderable.spriteId = index },
         { spriteRenderable.spriteId })
@@ -90,6 +98,7 @@ class ETile private constructor () : EntityComponent(ETile::class.java.name) {
 
     override fun componentType() = Companion
     companion object : EntityComponentType<ETile>(ETile::class.java) {
+        @JvmField val TILE_ASPECTS = IndexedAspectType("TILE_ASPECTS")
         override fun createEmpty() = ETile()
     }
 }

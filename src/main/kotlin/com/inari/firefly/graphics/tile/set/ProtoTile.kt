@@ -1,13 +1,12 @@
 package com.inari.firefly.graphics.tile.set
 
 import com.inari.firefly.component.ComponentDSL
-import com.inari.firefly.entity.EMeta
 import com.inari.firefly.graphics.BlendMode
 import com.inari.firefly.graphics.sprite.ProtoSprite
+import com.inari.firefly.graphics.tile.ETile.Companion.TILE_ASPECTS
 import com.inari.firefly.physics.contact.ContactSystem
 import com.inari.util.aspect.Aspect
 import com.inari.util.aspect.Aspects
-import com.inari.util.aspect.IndexedAspectType
 import com.inari.util.geom.BitMask
 import com.inari.util.graphics.RGBColor
 
@@ -45,9 +44,6 @@ class ProtoTile internal constructor() {
                 material !== ContactSystem.UNDEFINED_MATERIAL
 
     companion object {
-
-        @JvmField val TILE_ASPECTS = IndexedAspectType("TILE_ASPECTS")
-
         val of: (ProtoTile.() -> Unit) -> ProtoTile = { configure ->
             val comp = ProtoTile()
             comp.also(configure)
