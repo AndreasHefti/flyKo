@@ -2,6 +2,7 @@ package com.inari.firefly.libgdx.intro
 
 import com.inari.firefly.*
 import com.inari.firefly.entity.Entity
+import com.inari.firefly.external.FFInput
 import com.inari.firefly.graphics.ETransform
 import com.inari.firefly.graphics.TextureAsset
 import com.inari.firefly.graphics.sprite.ESprite
@@ -14,6 +15,7 @@ import com.inari.util.geom.Easing.Type
 import com.inari.util.geom.PositionF
 import com.inari.util.geom.Rectangle
 import com.inari.util.graphics.RGBColor
+import org.lwjgl.glfw.GLFW
 
 object InariIntro {
 
@@ -68,12 +70,12 @@ object InariIntro {
         val controllerInput = FFContext.input.createDevice<DesktopInput.GLFWControllerInput>(
                 "ControllerInput",
                 DesktopInput.GLFWControllerInput)
-        if (controllerInput.controllerDefinitions.isNotEmpty()) {
-            controllerInput.controller = controllerInput.controllerDefinitions[0]
-            FFContext.input.setButtonCallback("ControllerInput") { _, _ -> dispose() }
-        } else {
-            FFContext.input.clearDevice("ControllerInput")
-        }
+        controllerInput.mapButtonInput(FFInput.ButtonType.BUTTON_A, GLFW.GLFW_GAMEPAD_BUTTON_A)
+        controllerInput.mapButtonInput(FFInput.ButtonType.BUTTON_B, GLFW.GLFW_GAMEPAD_BUTTON_B)
+        controllerInput.mapButtonInput(FFInput.ButtonType.BUTTON_X, GLFW.GLFW_GAMEPAD_BUTTON_X)
+        controllerInput.mapButtonInput(FFInput.ButtonType.BUTTON_Y, GLFW.GLFW_GAMEPAD_BUTTON_Y)
+        controllerInput.slot = 0
+        FFContext.input.setButtonCallback("ControllerInput") { _, _ -> dispose() }
     }
 
     private fun dispose() {

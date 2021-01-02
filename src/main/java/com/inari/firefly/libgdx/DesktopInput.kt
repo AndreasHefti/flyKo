@@ -14,6 +14,8 @@ import com.inari.util.Call
 import com.inari.util.collection.DynIntArray
 import org.lwjgl.glfw.GLFW
 import java.lang.IllegalArgumentException
+import java.nio.ByteBuffer
+import java.nio.FloatBuffer
 import kotlin.experimental.and
 
 
@@ -78,10 +80,6 @@ object DesktopInput : FFInput {
         GLFW.glfwSetMouseButtonCallback(w) { _, key, action, _ -> callback.invoke(key, action) }
     }
 
-    override fun setJoystickConnectionCallback(callback: JoystickConnectionCallback) {
-        GLFW.glfwSetJoystickCallback { joystick, action -> callback.invoke(joystick, action) }
-    }
-
     private var buttonCallbackUpdate: Call = {}
     override fun setButtonCallback(deviceName: String, callback: ButtonCallback) {
         if (deviceName in devices) {
@@ -103,7 +101,6 @@ object DesktopInput : FFInput {
         val w = (Gdx.graphics as Lwjgl3Graphics).window.windowHandle
         GLFW.glfwSetKeyCallback(w, null)
         GLFW.glfwSetMouseButtonCallback(w, null)
-        GLFW.glfwSetJoystickCallback(null)
         FFContext.disposeListener(FFApp.UpdateEvent, buttonCallbackUpdate)
         buttonCallbackUpdate = {}
     }
@@ -137,8 +134,11 @@ object DesktopInput : FFInput {
         override fun mapKeyInput(buttonType: ButtonType, keyCode: Int) {
             buttonCodeMapping[buttonType.ordinal] = keyCode
         }
+
+
         companion object : InputImpl {
             override val type = DeviceType.KEYBOARD
+            @Suppress("UNCHECKED_CAST")
             override fun <T : InputDevice> create(window: Long): T = GLFWDesktopKeyboardInput(window) as T
         }
     }
@@ -147,45 +147,77 @@ object DesktopInput : FFInput {
 
         override val name: String = "Basic Controller Input"
         override val type: InputImpl = Companion
-        override val controllerDefinitions: List<ControllerDef> get() = scanController()
-        override var controller: ControllerDef
-            get() = currentController
-            set(value) { currentController = value }
-        private var currentController = ControllerDef(-1, "NULL")
-        private val buttonCodeMapping = DynIntArray(ButtonType.values().size, -1)
-        private val hatCodeMapping = DynIntArray(ButtonType.values().size, -1)
-        private val pressedCodeMapping = BitSet(255)
+        override var slot: Int = -1
+            set(value) {
+                if (field != value) {
+                    if (GLFW.glfwJoystickPresent(value)) {
+                        currentController = ControllerDef(value, GLFW.glfwGetJoystickName(value)!!)
+                        buttons = GLFW.glfwGetJoystickButtons(currentController.id)!!
+                        axis = GLFW.glfwGetJoystickAxes(currentController.id)!!
+                        hats = GLFW.glfwGetJoystickHats(currentController.id)!!
+                    }
+                }
 
-        init {
-            mapHatInput(ButtonType.UP, GLFW.GLFW_HAT_UP)
-            mapHatInput(ButtonType.RIGHT, GLFW.GLFW_HAT_RIGHT)
-            mapHatInput(ButtonType.DOWN, GLFW.GLFW_HAT_DOWN)
-            mapHatInput(ButtonType.LEFT, GLFW.GLFW_HAT_LEFT)
-            mapButtonInput(ButtonType.BUTTON_A, GLFW.GLFW_GAMEPAD_BUTTON_A)
-            mapButtonInput(ButtonType.BUTTON_B, GLFW.GLFW_GAMEPAD_BUTTON_B)
-            mapButtonInput(ButtonType.BUTTON_X, GLFW.GLFW_GAMEPAD_BUTTON_X)
-            mapButtonInput(ButtonType.BUTTON_Y, GLFW.GLFW_GAMEPAD_BUTTON_Y)
-            mapButtonInput(ButtonType.QUIT, GLFW.GLFW_GAMEPAD_BUTTON_BACK)
-            mapButtonInput(ButtonType.ENTER, GLFW.GLFW_GAMEPAD_BUTTON_START)
-            mapButtonInput(ButtonType.FIRE_1, GLFW.GLFW_GAMEPAD_BUTTON_X)
-            mapButtonInput(ButtonType.FIRE_2, GLFW.GLFW_GAMEPAD_BUTTON_Y)
-            mapButtonInput(ButtonType.FIRE_1, GLFW.GLFW_GAMEPAD_BUTTON_A)
-            mapButtonInput(ButtonType.FIRE_2, GLFW.GLFW_GAMEPAD_BUTTON_B)
-        }
-
-        override fun buttonPressed(button: ButtonType): Boolean {
-            val buttonCode = button.ordinal
-
-            if (!hatCodeMapping.isEmpty(buttonCode)) {
-                val keyCode = hatCodeMapping[buttonCode]
-                val hats = GLFW.glfwGetJoystickHats(currentController.id)!!
-                return (hats[0] and keyCode.toByte() > 0)
-
+                field = value
             }
 
-            val buttons = GLFW.glfwGetJoystickButtons(currentController.id)!!
+        private var currentController = NO_CONTROLLER
+        private val buttonCodeMapping = DynIntArray(ButtonType.values().size, -1)
+        private val hatCodeMapping = DynIntArray(ButtonType.values().size, -1)
+        private val axisButtonMapping = DynIntArray(4, -1)
+        private val pressedCodeMapping = BitSet(255)
+
+        private var buttons: ByteBuffer? = null
+        private var axis: FloatBuffer? = null
+        private var hats: ByteBuffer? = null
+
+        init {
+            GLFW.glfwSetJoystickCallback(this::joystickCallback)
+        }
+
+        private fun joystickCallback(slot: Int, event: Int) {
+            if (slot != this.slot)
+                return
+
+            if (event == GLFW.GLFW_CONNECTED && GLFW.glfwJoystickPresent(slot)) {
+                currentController = ControllerDef(slot, GLFW.glfwGetJoystickName(slot)!!)
+                buttons = GLFW.glfwGetJoystickButtons(currentController.id)!!
+                axis = GLFW.glfwGetJoystickAxes(currentController.id)!!
+                hats = GLFW.glfwGetJoystickHats(currentController.id)!!
+            } else {
+                currentController = NO_CONTROLLER
+                buttons = null
+                axis = null
+                hats = null
+            }
+        }
+
+
+        override fun buttonPressed(button: ButtonType): Boolean {
+            if (currentController == NO_CONTROLLER ||!GLFW.glfwJoystickPresent(currentController.id))
+                    return false
+
+            val buttonCode = button.ordinal
+            if (!hatCodeMapping.isEmpty(buttonCode) && hats!!.capacity() > 0) {
+                val keyCode = hatCodeMapping[buttonCode]
+                if ((hats!![0] and keyCode.toByte() > 0))
+                    return true
+            }
+
+            if (!axisButtonMapping.isEmpty) {
+                val axisCode = axisButtonMapping.indexOf(buttonCode)
+                if (axisCode == 0 && axis!![1] < -.5f)
+                    return true
+                if (axisCode == 1 && axis!![0] > .5f)
+                    return true
+                if (axisCode == 2 && axis!![1] > .5f)
+                    return true
+                if (axisCode == 3 && axis!![0] < -.5f)
+                    return true
+            }
+
             val keyCode = buttonCodeMapping[buttonCode]
-            if (keyCode >= 0 && buttons[keyCode] == ONE)
+            if (keyCode >= 0 && buttons!![keyCode] == ONE)
                 return true
 
             return false
@@ -209,22 +241,23 @@ object DesktopInput : FFInput {
             hatCodeMapping[buttonType.ordinal] = padHat
         }
 
+        override fun mapAxisButtonInput(buttonType: ButtonType, axisButton: Int) {
+            when (axisButton) {
+                GLFW.GLFW_GAMEPAD_BUTTON_DPAD_UP -> axisButtonMapping[0] = buttonType.ordinal
+                GLFW.GLFW_GAMEPAD_BUTTON_DPAD_RIGHT -> axisButtonMapping[1] = buttonType.ordinal
+                GLFW.GLFW_GAMEPAD_BUTTON_DPAD_DOWN -> axisButtonMapping[2] = buttonType.ordinal
+                GLFW.GLFW_GAMEPAD_BUTTON_DPAD_LEFT -> axisButtonMapping[3] = buttonType.ordinal
+            }
+        }
+
         override fun axis(axisType: Int): Float =
                 GLFW.glfwGetJoystickAxes(currentController.id)!![axisType]
 
-        private fun scanController(): List<ControllerDef> {
-            val list: MutableList<ControllerDef> = ArrayList()
-            for (i in 0 .. 4) {
-                if (GLFW.glfwJoystickPresent(i)) {
-                    list.add(ControllerDef(i, GLFW.glfwGetJoystickName(i)!!))
-                }
-            }
-            return list
-        }
-
         companion object : InputImpl {
+            private val NO_CONTROLLER = ControllerDef(-1, "NULL")
             private const val ONE = 1.toByte()
             override val type = DeviceType.JOYSTICK_PAD
+            @Suppress("UNCHECKED_CAST")
             override fun <T : InputDevice> create(window: Long): T = GLFWControllerInput(window) as T
         }
     }

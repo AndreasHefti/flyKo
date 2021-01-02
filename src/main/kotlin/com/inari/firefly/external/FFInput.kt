@@ -73,7 +73,6 @@ interface FFInput {
 
     fun setKeyCallback(callback: KeyCallback)
     fun setMouseButtonCallback(callback: MouseCallback)
-    fun setJoystickConnectionCallback(callback: JoystickConnectionCallback)
     fun setButtonCallback(deviceName: String, callback: ButtonCallback)
     fun resetInputCallbacks()
 
@@ -100,11 +99,11 @@ interface FFInput {
     }
 
     interface ControllerInput : InputDevice {
-        val controllerDefinitions: List<ControllerDef>
-        var controller: ControllerDef
+        var slot: Int
         fun axis(axisType: Int): Float
         fun mapButtonInput(buttonType: ButtonType, padButton: Int)
         fun mapHatInput(buttonType: ButtonType, padHat: Int)
+        fun mapAxisButtonInput(buttonType: ButtonType, axisButton: Int)
         data class ControllerDef(
                 val id: Int,
                 val name: String

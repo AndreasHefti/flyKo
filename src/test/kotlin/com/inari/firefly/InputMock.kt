@@ -44,10 +44,6 @@ object InputMock : FFInput {
         TODO("Not yet implemented")
     }
 
-    override fun setJoystickConnectionCallback(callback: JoystickConnectionCallback) {
-        TODO("Not yet implemented")
-    }
-
     override fun setButtonCallback(device: String, callback: ButtonCallback) {
         TODO("Not yet implemented")
     }

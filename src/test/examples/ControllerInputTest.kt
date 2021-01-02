@@ -29,6 +29,11 @@ class ControllerInputTest : DesktopAppAdapter() {
             keyInput.buttonPressed(FFInput.ButtonType.LEFT) -> textEntity.text.clear().append("LEFT")
             keyInput.buttonPressed(FFInput.ButtonType.FIRE_1) -> textEntity.text.clear().append("FIRE_1")
             keyInput.buttonPressed(FFInput.ButtonType.FIRE_2) -> textEntity.text.clear().append("FIRE_2")
+            keyInput.buttonPressed(FFInput.ButtonType.BUTTON_A) -> textEntity.text.clear().append("BUTTON_A")
+            keyInput.buttonPressed(FFInput.ButtonType.BUTTON_B) -> textEntity.text.clear().append("BUTTON_B")
+            keyInput.buttonPressed(FFInput.ButtonType.BUTTON_X) -> textEntity.text.clear().append("BUTTON_X")
+            keyInput.buttonPressed(FFInput.ButtonType.BUTTON_Y) -> textEntity.text.clear().append("BUTTON_Y")
+            keyInput.buttonPressed(FFInput.ButtonType.FIRE_2) -> textEntity.text.clear().append("FIRE_2")
             keyInput.buttonPressed(FFInput.ButtonType.QUIT) -> textEntity.text.clear().append("QUIT")
             else -> textEntity.text.clear().append("--")
         }
@@ -60,14 +65,35 @@ class ControllerInputTest : DesktopAppAdapter() {
         keyInput2.mapKeyInput(FFInput.ButtonType.DOWN, GLFW.GLFW_KEY_DOWN)
         keyInput2.mapKeyInput(FFInput.ButtonType.LEFT, GLFW.GLFW_KEY_LEFT)
 
-        val controller = keyInput3.controllerDefinitions
-        if (controller.isNotEmpty()) {
-            keyInput3.controller = controller[0]
-            FFContext.input.createOrAdapter("KeyInputOr", "KeyInput1", "KeyInput2")
-            FFContext.input.createOrAdapter("KeyInput", "KeyInputOr", "KeyInput3")
-        } else {
-            FFContext.input.createOrAdapter("KeyInput", "KeyInput1", "KeyInput2")
-        }
+        keyInput3.slot = 0
+        keyInput3.mapHatInput(FFInput.ButtonType.UP, GLFW.GLFW_HAT_UP)
+        keyInput3.mapHatInput(FFInput.ButtonType.RIGHT, GLFW.GLFW_HAT_RIGHT)
+        keyInput3.mapHatInput(FFInput.ButtonType.DOWN, GLFW.GLFW_HAT_DOWN)
+        keyInput3.mapHatInput(FFInput.ButtonType.LEFT, GLFW.GLFW_HAT_LEFT)
+
+        keyInput3.mapAxisButtonInput(FFInput.ButtonType.UP, GLFW.GLFW_GAMEPAD_BUTTON_DPAD_UP)
+        keyInput3.mapAxisButtonInput(FFInput.ButtonType.RIGHT, GLFW.GLFW_GAMEPAD_BUTTON_DPAD_RIGHT)
+        keyInput3.mapAxisButtonInput(FFInput.ButtonType.DOWN, GLFW.GLFW_GAMEPAD_BUTTON_DPAD_DOWN)
+        keyInput3.mapAxisButtonInput(FFInput.ButtonType.LEFT, GLFW.GLFW_GAMEPAD_BUTTON_DPAD_LEFT)
+
+        keyInput3.mapButtonInput(FFInput.ButtonType.BUTTON_A, GLFW.GLFW_GAMEPAD_BUTTON_A)
+        keyInput3.mapButtonInput(FFInput.ButtonType.BUTTON_B, GLFW.GLFW_GAMEPAD_BUTTON_B)
+        keyInput3.mapButtonInput(FFInput.ButtonType.BUTTON_X, GLFW.GLFW_GAMEPAD_BUTTON_X)
+        keyInput3.mapButtonInput(FFInput.ButtonType.BUTTON_Y, GLFW.GLFW_GAMEPAD_BUTTON_Y)
+        keyInput3.mapButtonInput(FFInput.ButtonType.QUIT, GLFW.GLFW_GAMEPAD_BUTTON_LEFT_BUMPER)
+        keyInput3.mapButtonInput(FFInput.ButtonType.ENTER, GLFW.GLFW_GAMEPAD_BUTTON_START)
+
+        FFContext.input.createOrAdapter("KeyInputOr", "KeyInput1", "KeyInput2")
+        FFContext.input.createOrAdapter("KeyInput", "KeyInputOr", "KeyInput3")
+
+//        //val controller = keyInput3.controllerDefinitions
+//        if (controller.isNotEmpty()) {
+//            keyInput3.slot = 0
+//            FFContext.input.createOrAdapter("KeyInputOr", "KeyInput1", "KeyInput2")
+//            FFContext.input.createOrAdapter("KeyInput", "KeyInputOr", "KeyInput3")
+//        } else {
+//            FFContext.input.createOrAdapter("KeyInput", "KeyInput1", "KeyInput2")
+//        }
 
         textId = Entity.buildAndActivate {
             component(ETransform) {
