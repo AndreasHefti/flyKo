@@ -11,6 +11,7 @@ import com.inari.firefly.external.FFInput
 import com.inari.firefly.external.FFTimer
 import com.inari.firefly.system.component.*
 import com.inari.java.types.BitSet
+import com.inari.util.Named
 import com.inari.util.aspect.Aspect
 import com.inari.util.collection.DynArray
 import com.inari.util.event.AspectedEvent

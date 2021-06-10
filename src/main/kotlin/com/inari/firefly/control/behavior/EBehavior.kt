@@ -1,10 +1,10 @@
 package com.inari.firefly.control.behavior
 
-import com.inari.firefly.OpResult
 import com.inari.firefly.component.ComponentRefResolver
 import com.inari.firefly.control.behavior.BehaviorSystem.BEHAVIOR_STATE_ASPECT_GROUP
 import com.inari.firefly.entity.EntityComponent
 import com.inari.firefly.entity.EntityComponentType
+import com.inari.util.OpResult
 import com.inari.util.aspect.Aspects
 
 class EBehavior private constructor() : EntityComponent(EBehavior::class.java.name){

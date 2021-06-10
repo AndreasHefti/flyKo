@@ -8,6 +8,7 @@ import com.inari.firefly.system.component.ComponentSystem
 import com.inari.firefly.control.state.Workflow.StateChange
 import com.inari.firefly.system.component.SystemComponent
 import com.inari.util.Call
+import com.inari.util.Named
 import com.inari.util.aspect.Aspects
 import com.inari.util.indexed.Indexed
 

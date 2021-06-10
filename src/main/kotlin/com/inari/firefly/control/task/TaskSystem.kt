@@ -1,12 +1,12 @@
 package com.inari.firefly.control.task
 
 import com.inari.firefly.FFContext
-import com.inari.firefly.OpResult
 import com.inari.firefly.component.CompId
 import com.inari.firefly.entity.Entity
 import com.inari.firefly.entity.EntitySystem
 import com.inari.firefly.system.component.ComponentSystem
 import com.inari.firefly.system.component.SystemComponent
+import com.inari.util.OpResult
 import com.inari.util.aspect.Aspects
 
 object TaskSystem : ComponentSystem {

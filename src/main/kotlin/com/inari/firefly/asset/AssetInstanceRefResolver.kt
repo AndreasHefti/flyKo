@@ -1,8 +1,8 @@
 package com.inari.firefly.asset
 
-import com.inari.firefly.Named
 import com.inari.firefly.component.CompId
 import com.inari.util.Consumer
+import com.inari.util.Named
 import com.inari.util.Supplier
 import com.inari.util.indexed.Indexed
 

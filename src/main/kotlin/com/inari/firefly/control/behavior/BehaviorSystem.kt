@@ -2,13 +2,13 @@ package com.inari.firefly.control.behavior
 
 import com.inari.firefly.FFApp
 import com.inari.firefly.FFContext
-import com.inari.firefly.OpResult
 import com.inari.firefly.entity.Entity
 import com.inari.firefly.entity.EntityActivationEvent
 import com.inari.firefly.entity.EntitySystem
 import com.inari.firefly.system.component.ComponentSystem
 import com.inari.firefly.system.component.SystemComponent
 import com.inari.java.types.BitSet
+import com.inari.util.OpResult
 import com.inari.util.aspect.Aspect
 import com.inari.util.aspect.Aspects
 import com.inari.util.aspect.IndexedAspectType

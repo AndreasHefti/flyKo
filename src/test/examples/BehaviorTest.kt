@@ -1,7 +1,6 @@
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration
 import com.inari.firefly.FFContext
-import com.inari.firefly.OpResult
 import com.inari.firefly.control.behavior.*
 import com.inari.firefly.control.behavior.BehaviorSystem.ACTION_DONE_CONDITION
 import com.inari.firefly.control.behavior.BehaviorSystem.BEHAVIOR_STATE_ASPECT_GROUP
@@ -18,6 +17,7 @@ import com.inari.firefly.physics.movement.EMovement
 import com.inari.firefly.physics.movement.MovementSystem
 import com.inari.firefly.system.FFInfoSystem
 import com.inari.firefly.system.FrameRateInfo
+import com.inari.util.OpResult
 import com.inari.util.aspect.Aspect
 import kotlin.random.Random
 

@@ -1,8 +1,8 @@
 package com.inari.firefly.control.behavior
 
-import com.inari.firefly.OpResult
 import com.inari.firefly.entity.Entity
 import com.inari.firefly.system.component.SystemComponentSubType
+import com.inari.util.OpResult
 
 class BxSelection private constructor() : BxBranch() {
 

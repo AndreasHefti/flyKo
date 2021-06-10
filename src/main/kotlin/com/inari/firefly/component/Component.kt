@@ -1,6 +1,6 @@
 package com.inari.firefly.component
 
-import com.inari.firefly.Named
+import com.inari.util.Named
 import com.inari.util.aspect.Aspect
 import com.inari.util.indexed.Indexed
 

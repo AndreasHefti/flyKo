@@ -1,11 +1,11 @@
 package com.inari.firefly.control.behavior
 
-import com.inari.firefly.OpResult
 import com.inari.firefly.TestApp
 import com.inari.firefly.control.behavior.BehaviorSystem.FALSE_CONDITION
 import com.inari.firefly.control.task.EntityTask
 import com.inari.firefly.control.task.TaskSystem
 import com.inari.util.IntOperation
+import com.inari.util.OpResult
 import org.junit.Before
 import org.junit.Test
 

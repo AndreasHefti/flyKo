@@ -3,6 +3,8 @@ package com.inari.util.geom
 import org.junit.Assert.assertEquals
 
 import org.junit.Test
+import java.util.*
+import kotlin.collections.ArrayList
 
 class EasingTest {
 
@@ -57,7 +59,7 @@ class EasingTest {
         for (easing in Easing.Type.values()) {
             for (time in 0..9) {
                 val t: Float = time.toFloat() / duration.toFloat()
-                values.add("%.5f".format(changeInValue * easing(t)))
+                values.add("%.5f".format(Locale.ENGLISH,changeInValue * easing(t)))
             }
         }
 
@@ -110,7 +112,7 @@ class EasingTest {
     @Test
     fun testPoly3In() {
         val easingFunction = Easing.EasingFunctions.polyIn()
-        val output = input.map { "%.3f".format(easingFunction(it)) }
+        val output = input.map { "%.3f".format(Locale.ENGLISH, easingFunction(it)) }
         kotlin.test.assertEquals(
             "[0.000, 0.001, 0.008, 0.027, 0.064, 0.125, 0.216, 0.343, 0.512, 0.729, 1.000]",
             output.toString()
@@ -120,7 +122,7 @@ class EasingTest {
     @Test
     fun testPoly25In() {
         val easingFunction = Easing.EasingFunctions.polyIn(2.5)
-        val output = input.map { "%.6f".format(easingFunction(it)) }
+        val output = input.map { "%.6f".format(Locale.ENGLISH, easingFunction(it)) }
         kotlin.test.assertEquals(
             "[0.000000, 0.003162, 0.017889, 0.049295, 0.101193, 0.176777, 0.278855, 0.409963, 0.572433, 0.768433, 1.000000]",
             output.toString()
@@ -131,13 +133,13 @@ class EasingTest {
     fun testPoly3Out() {
         val outF = Easing.EasingFunctions.polyOut()
         val inF = Easing.EasingFunctions.polyIn()
-        val output = input.map { "%.3f".format(outF(it)) }
+        val output = input.map { "%.3f".format(Locale.ENGLISH,outF(it)) }
         kotlin.test.assertEquals(
             "[0.000, 0.271, 0.488, 0.657, 0.784, 0.875, 0.936, 0.973, 0.992, 0.999, 1.000]",
             output.toString()
         )
 
-        val divOut = input.map { "%.3f".format(outF(it) + inF(1 - it)) }
+        val divOut = input.map { "%.3f".format(Locale.ENGLISH,outF(it) + inF(1 - it)) }
         kotlin.test.assertEquals(
             "[1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000, 1.000]",
             divOut.toString()
@@ -147,7 +149,7 @@ class EasingTest {
     @Test
     fun testPoly3InOut() {
         val easingFunction = Easing.EasingFunctions.polyInOut()
-        val output = input.map { "%.3f".format(easingFunction(it)) }
+        val output = input.map { "%.3f".format(Locale.ENGLISH,easingFunction(it)) }
         kotlin.test.assertEquals(
             "[0.000, 0.004, 0.032, 0.108, 0.256, 0.500, 0.744, 0.892, 0.968, 0.996, 1.000]",
             output.toString()

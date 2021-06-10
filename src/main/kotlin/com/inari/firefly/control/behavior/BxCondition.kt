@@ -1,9 +1,9 @@
 package com.inari.firefly.control.behavior
 
-import com.inari.firefly.OpResult
 import com.inari.firefly.control.behavior.BehaviorSystem.TRUE_CONDITION
 import com.inari.firefly.entity.Entity
 import com.inari.firefly.system.component.SystemComponentSubType
+import com.inari.util.OpResult
 
 class BxCondition private constructor() : BxNode() {
 

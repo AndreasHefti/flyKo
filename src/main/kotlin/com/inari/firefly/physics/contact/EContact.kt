@@ -1,12 +1,12 @@
 package com.inari.firefly.physics.contact
 
-import com.inari.firefly.Named
 import com.inari.firefly.component.CompId
 import com.inari.firefly.component.ComponentRefResolver
 import com.inari.firefly.entity.EntityComponent
 import com.inari.firefly.entity.EntityComponentType
 import com.inari.firefly.physics.contact.ContactSystem.CONTACT_TYPE_ASPECT_GROUP
 import com.inari.firefly.physics.contact.ContactSystem.MATERIAL_ASPECT_GROUP
+import com.inari.util.Named
 import com.inari.util.aspect.Aspect
 import com.inari.util.geom.BitMask
 import com.inari.util.geom.Rectangle

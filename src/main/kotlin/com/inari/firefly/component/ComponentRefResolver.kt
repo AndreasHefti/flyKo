@@ -1,10 +1,10 @@
 package com.inari.firefly.component
 
 import com.inari.firefly.FFContext
-import com.inari.firefly.Named
 import com.inari.firefly.system.component.SingletonComponent
 import com.inari.firefly.system.component.SystemComponent
 import com.inari.util.Consumer
+import com.inari.util.Named
 import com.inari.util.indexed.Indexed
 
 class ComponentRefResolver<T : Component>(

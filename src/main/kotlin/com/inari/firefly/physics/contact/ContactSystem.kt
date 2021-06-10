@@ -1,7 +1,6 @@
 package com.inari.firefly.physics.contact
 
 import com.inari.firefly.FFContext
-import com.inari.firefly.Named
 import com.inari.firefly.component.CompId
 import com.inari.firefly.component.ComponentMap.MapAction.CREATED
 import com.inari.firefly.component.ComponentMap.MapAction.DELETED
@@ -20,6 +19,7 @@ import com.inari.firefly.system.component.ComponentSystem
 import com.inari.firefly.system.component.SystemComponent
 import com.inari.java.types.ArrayDeque
 import com.inari.java.types.BitSet
+import com.inari.util.Named
 import com.inari.util.aspect.Aspect
 import com.inari.util.aspect.Aspects
 import com.inari.util.aspect.IndexedAspectType
