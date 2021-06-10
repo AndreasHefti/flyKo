@@ -56,7 +56,7 @@ abstract class EntityComponent protected constructor(
     private fun <T> alreadyInit(name: String): T =
         throw IllegalStateException("No set on already initialized property allowed for: $name")
 
-    protected abstract fun reset()
+    abstract fun reset()
 
     abstract fun componentType(): ComponentType<out EntityComponent>
 

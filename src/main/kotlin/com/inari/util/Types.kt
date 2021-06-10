@@ -1,6 +1,14 @@
 package com.inari.util
 
-import com.inari.firefly.OpResult
+interface Named {
+    val name: String
+}
+
+enum class OpResult {
+    SUCCESS,
+    RUNNING,
+    FAILED
+}
 
 typealias Consumer<C> = (C) -> Unit
 typealias Operation<C> = (C) -> OpResult
