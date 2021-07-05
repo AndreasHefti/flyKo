@@ -26,7 +26,7 @@ class SimpleShapeRenderer private constructor() : Renderer() {
         }
     }
 
-    companion object : SingletonComponent<Renderer, SimpleShapeRenderer>(Renderer, SimpleShapeRenderer::class.java) {
+    companion object : SingletonComponent<Renderer, SimpleShapeRenderer>(Renderer, SimpleShapeRenderer::class) {
         override fun create() = SimpleShapeRenderer()
     }
 }

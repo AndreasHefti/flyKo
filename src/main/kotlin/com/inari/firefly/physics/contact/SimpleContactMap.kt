@@ -46,7 +46,7 @@ class SimpleContactMap : ContactMap() {
 
 
 
-    companion object : SystemComponentSubType<ContactMap, SimpleContactMap>(ContactMap, SimpleContactMap::class.java) {
+    companion object : SystemComponentSubType<ContactMap, SimpleContactMap>(ContactMap, SimpleContactMap::class) {
         override fun createEmpty() = SimpleContactMap()
     }
 

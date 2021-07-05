@@ -13,7 +13,7 @@ import kotlin.math.ceil
 import kotlin.math.floor
 
 
-class TileGrid private constructor() : SystemComponent(TileGrid::class.java.name), ViewLayerAware {
+class TileGrid private constructor() : SystemComponent(TileGrid::class.simpleName!!), ViewLayerAware {
 
     @JvmField internal var viewRef = -1
     @JvmField internal var layerRef = 0
@@ -155,7 +155,7 @@ class TileGrid private constructor() : SystemComponent(TileGrid::class.java.name
 
     override fun componentType() = Companion
 
-    companion object : SystemComponentSingleType<TileGrid>(TileGrid::class.java) {
+    companion object : SystemComponentSingleType<TileGrid>(TileGrid::class) {
         override fun createEmpty() = TileGrid()
     }
 

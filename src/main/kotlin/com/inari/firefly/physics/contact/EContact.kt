@@ -12,7 +12,7 @@ import com.inari.util.geom.BitMask
 import com.inari.util.geom.Rectangle
 import com.inari.util.indexed.Indexed
 
-class EContact private constructor() : EntityComponent(EContact::class.java.name) {
+class EContact private constructor() : EntityComponent(EContact::class.simpleName!!) {
 
     @JvmField internal var resolverRef = -1
     @JvmField internal val contactScan = ContactScan()
@@ -81,7 +81,7 @@ class EContact private constructor() : EntityComponent(EContact::class.java.name
     }
 
     override fun componentType() = Companion
-    companion object : EntityComponentType<EContact>(EContact::class.java) {
+    companion object : EntityComponentType<EContact>(EContact::class) {
         override fun createEmpty() = EContact()
     }
 }

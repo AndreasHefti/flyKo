@@ -11,7 +11,7 @@ import com.inari.util.IntPredicate
 import com.inari.util.aspect.Aspect
 import com.inari.util.aspect.IndexedAspectType
 
-class EActor private constructor () : EntityComponent(EActor::class.java.name) {
+class EActor private constructor () : EntityComponent(EActor::class.simpleName!!) {
 
     @JvmField internal var encounterContactConstraintRef = -1
     @JvmField internal var hitContactConstraintRef = -1
@@ -41,7 +41,7 @@ class EActor private constructor () : EntityComponent(EActor::class.java.name) {
 
     override fun componentType() = Companion
 
-    companion object : EntityComponentType<EActor>(EActor::class.java) {
+    companion object : EntityComponentType<EActor>(EActor::class) {
 
         @JvmField val ACTOR_CATEGORY_ASPECT = IndexedAspectType("ACTOR_CATEGORY_ASPECT")
         @JvmField val UNDEFINED_ACTOR_CATEGORY = ACTOR_CATEGORY_ASPECT.createAspect("UNDEFINED_ACTOR_CATEGORY")

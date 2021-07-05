@@ -11,7 +11,7 @@ import com.inari.firefly.graphics.rendering.Renderer
 import com.inari.firefly.graphics.rendering.SimpleTextRenderer
 import com.inari.util.graphics.RGBColor
 
-class EText private constructor() : EntityComponent(EText::class.java.name) {
+class EText private constructor() : EntityComponent(EText::class.simpleName!!) {
 
     @JvmField internal var rendererRef = SimpleTextRenderer.instance.index
     @JvmField internal var fontAssetRef = -1
@@ -37,7 +37,7 @@ class EText private constructor() : EntityComponent(EText::class.java.name) {
     }
 
     override fun componentType(): ComponentType<EText> = Companion
-    companion object : EntityComponentType<EText>(EText::class.java) {
+    companion object : EntityComponentType<EText>(EText::class) {
         override fun createEmpty() = EText()
     }
 }

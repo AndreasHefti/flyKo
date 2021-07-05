@@ -9,9 +9,10 @@ import com.inari.firefly.system.component.SystemComponentType
 import com.inari.util.BooleanSupplier
 import com.inari.util.Call
 import com.inari.util.aspect.AspectType
+import kotlin.reflect.KClass
 
 @ComponentDSL
-abstract class Trigger protected constructor() : SystemComponent(Trigger::class.java.name) {
+abstract class Trigger protected constructor() : SystemComponent(Trigger::class.simpleName!!) {
 
     var disposeAfter: Boolean = false
     var condition: BooleanSupplier  = TRUE_SUPPLIER
@@ -27,7 +28,7 @@ abstract class Trigger protected constructor() : SystemComponent(Trigger::class.
     }
 
     override fun componentType(): ComponentType<Trigger> = Companion
-    companion object : SystemComponentType<Trigger>(Trigger::class.java)
+    companion object : SystemComponentType<Trigger>(Trigger::class)
 
     abstract class Subtype<A : Trigger> : ComponentType<A> {
         internal fun doBuild(configure: A.() -> Unit): A {
@@ -41,7 +42,7 @@ abstract class Trigger protected constructor() : SystemComponent(Trigger::class.
             result.register(call)
             return result.index
         }
-        override val typeClass: Class<out Component> = Trigger.typeClass
+        override val typeClass: KClass<out Component> = Trigger.typeClass
         final override val aspectIndex: Int = Trigger.aspectIndex
         final override val aspectName: String = Trigger.aspectName
         final override val aspectType: AspectType = Trigger.aspectType

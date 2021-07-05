@@ -8,7 +8,7 @@ import com.inari.firefly.system.component.SystemComponentType
 import com.inari.java.types.BitSet
 import com.inari.util.Call
 
-abstract class Scene protected constructor() : TriggeredSystemComponent(Scene::class.java.name) {
+abstract class Scene protected constructor() : TriggeredSystemComponent(Scene::class.simpleName!!) {
 
     @JvmField internal var callback: Call = VOID_CALL
     @JvmField internal var paused = false
@@ -39,5 +39,5 @@ abstract class Scene protected constructor() : TriggeredSystemComponent(Scene::c
     protected abstract fun update()
 
     override fun componentType(): ComponentType<Scene> = Companion
-    companion object : SystemComponentType<Scene>(Scene::class.java)
+    companion object : SystemComponentType<Scene>(Scene::class)
 }

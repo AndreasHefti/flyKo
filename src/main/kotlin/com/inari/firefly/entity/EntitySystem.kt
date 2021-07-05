@@ -3,7 +3,6 @@ package com.inari.firefly.entity
 import com.inari.firefly.FFContext
 import com.inari.firefly.component.CompId
 import com.inari.firefly.component.ComponentMap
-import com.inari.firefly.control.ControllerSystem
 import com.inari.firefly.entity.EntityActivationEvent.Type.ACTIVATED
 import com.inari.firefly.entity.EntityActivationEvent.Type.DEACTIVATED
 import com.inari.firefly.entity.EntityActivationEvent.send
@@ -39,12 +38,6 @@ object EntitySystem : ComponentSystem {
     operator fun contains(index: Int) = index in entities
 
     private fun activated(entity: Entity) {
-        if (EMeta in entity.components.aspects ) {
-            val controllerRef = entity[EMeta].controllerRef
-            if (controllerRef >= 0)
-                ControllerSystem.register(controllerRef, entity.componentId)
-        }
-
         send(
             entity = entity,
             type = ACTIVATED
@@ -52,12 +45,6 @@ object EntitySystem : ComponentSystem {
     }
 
     private fun deactivated(entity: Entity) {
-        if (EMeta in entity.components.aspects ) {
-            val controllerRef = entity[EMeta].controllerRef
-            if (controllerRef >= 0)
-                ControllerSystem.unregister(controllerRef, entity.componentId)
-        }
-
         send(
             entity = entity,
             type = DEACTIVATED

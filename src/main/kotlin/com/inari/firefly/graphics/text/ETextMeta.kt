@@ -5,7 +5,7 @@ import com.inari.firefly.entity.EntityComponent
 import com.inari.firefly.entity.EntityComponentType
 import com.inari.util.collection.DynArray
 
-class ETextMeta private constructor() : EntityComponent(ETextMeta::class.java.name) {
+class ETextMeta private constructor() : EntityComponent(ETextMeta::class.simpleName!!) {
 
     @JvmField internal val metaData: DynArray<CharacterMetaData> = DynArray.of()
 
@@ -17,7 +17,7 @@ class ETextMeta private constructor() : EntityComponent(ETextMeta::class.java.na
     }
 
     override fun componentType() = Companion
-    companion object : EntityComponentType<ETextMeta>(ETextMeta::class.java) {
+    companion object : EntityComponentType<ETextMeta>(ETextMeta::class) {
         override fun createEmpty() = ETextMeta()
     }
 }

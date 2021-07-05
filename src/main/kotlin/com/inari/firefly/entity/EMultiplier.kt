@@ -2,7 +2,7 @@ package com.inari.firefly.entity
 
 import com.inari.util.collection.DynFloatArray
 
-class EMultiplier private constructor () : EntityComponent(EMultiplier::class.java.name) {
+class EMultiplier private constructor () : EntityComponent(EMultiplier::class.simpleName!!) {
 
     var positions: DynFloatArray = DynFloatArray()
 
@@ -11,7 +11,7 @@ class EMultiplier private constructor () : EntityComponent(EMultiplier::class.ja
     }
 
     override fun componentType() = Companion
-    companion object : EntityComponentType<EMultiplier>(EMultiplier::class.java) {
+    companion object : EntityComponentType<EMultiplier>(EMultiplier::class) {
         override fun createEmpty() = EMultiplier()
     }
 }

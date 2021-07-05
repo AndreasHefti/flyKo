@@ -7,22 +7,18 @@ import com.inari.firefly.system.component.SystemComponent
 import com.inari.firefly.system.component.SystemComponentSingleType
 import com.inari.util.aspect.*
 
-class Entity internal constructor(): SystemComponent(Entity::class.java.name), AspectAware {
+class Entity internal constructor(): SystemComponent(Entity::class.simpleName!!), AspectAware {
 
     @JvmField internal val components: AspectSet<EntityComponent> = AspectSet.of(ENTITY_COMPONENT_ASPECTS)
 
     override val aspects: Aspects
         get() = components.aspects
 
-    override var name: String
+    override var name: String  = NO_NAME
         set(value) {
-            if (EMeta in components)
-                components.get(EMeta, EMeta::class.java)?.name = value
+            check(!(name !== NO_NAME)) { "An illegal reassignment of name: $value to: $name" }
+            field = name
         }
-        get() =
-            if (EMeta in components)
-                components.get(EMeta, EMeta::class.java)?.name ?: NO_NAME
-            else NO_NAME
 
     fun has(aspect: Aspect): Boolean =
         aspects.contains(aspect)
@@ -58,7 +54,7 @@ class Entity internal constructor(): SystemComponent(Entity::class.java.name), A
             "components=$components)"
 
     override fun componentType() = Companion
-    companion object : SystemComponentSingleType<Entity>(Entity::class.java) {
+    companion object : SystemComponentSingleType<Entity>(Entity::class) {
         public override fun createEmpty() = EntityProvider.get()
     }
 }

@@ -1,23 +1,18 @@
 package com.inari.firefly.graphics.view
 
 import com.inari.firefly.asset.AssetInstanceRefResolver
-import com.inari.firefly.component.CompId
+import com.inari.firefly.control.ControlledSystemComponent
 import com.inari.util.geom.PositionF
-import com.inari.firefly.component.ComponentRefResolver
-import com.inari.firefly.control.Controller
 import com.inari.firefly.graphics.BlendMode
-import com.inari.firefly.system.component.SystemComponent
 import com.inari.firefly.external.ViewData
-import com.inari.firefly.system.component.SystemComponentBuilder
-import com.inari.firefly.system.component.SystemComponentSingleType
+import com.inari.firefly.system.component.*
 import com.inari.util.geom.Rectangle
 import com.inari.util.graphics.RGBColor
 
 class View private constructor (
     @JvmField internal var baseView: Boolean = false
-) : SystemComponent(View::class.java.name) {
+) : ControlledSystemComponent(View::class.simpleName!!) {
 
-    @JvmField internal var controllerRef = -1
     @JvmField internal val data = object : ViewData() {
         override val index: Int
             get() = super@View.index
@@ -49,22 +44,9 @@ class View private constructor (
     var fboScale: Float
         get() = data.fboScale
         set(value) { data.fboScale = value }
-    var controller =
-        ComponentRefResolver(Controller) { index-> controllerRef = setIfNotInitialized(index, "controllerRef") }
-    fun <C : Controller> controller(builder: SystemComponentBuilder<C>, configure: (C.() -> Unit)): CompId {
-        val id = builder. build(configure)
-        controllerRef = id.index
-        return id
-    }
-    fun <C : Controller> activeController(builder: SystemComponentBuilder<C>, configure: (C.() -> Unit)): CompId {
-        val id = builder.buildAndActivate(configure)
-        controllerRef = id.index
-        return id
-    }
 
     override fun toString(): String {
         return "View(baseView=$baseView, " +
-            "controllerRef=$controllerRef, " +
             "bounds=${data.bounds}, " +
             "worldPosition=${data.worldPosition}, " +
             "clearColor=${data.clearColor}, " +
@@ -76,7 +58,7 @@ class View private constructor (
     }
 
     override fun componentType() = Companion
-    companion object : SystemComponentSingleType<View>(View::class.java) {
+    companion object : SystemComponentSingleType<View>(View::class) {
         override fun createEmpty() = View()
     }
 }

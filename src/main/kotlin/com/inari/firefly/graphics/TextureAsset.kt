@@ -57,7 +57,7 @@ class TextureAsset private constructor() : Asset() {
         }
     }
 
-    companion object : SystemComponentSubType<Asset, TextureAsset>(Asset, TextureAsset::class.java) {
+    companion object : SystemComponentSubType<Asset, TextureAsset>(Asset, TextureAsset::class) {
         override fun createEmpty() = TextureAsset()
     }
 }

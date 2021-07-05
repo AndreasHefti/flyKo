@@ -37,7 +37,8 @@ data class Vector1f constructor(
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
-        if (javaClass != other?.javaClass) return false
+        if (other == null) return false
+        if (this::class != other::class) return false
         other as Vector1f
         if (d != other.d) return false
         return true
@@ -81,7 +82,8 @@ data class Vector1i constructor(
     override fun toString(): String = "[d=$d]"
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
-        if (javaClass != other?.javaClass) return false
+        if (other == null) return false
+        if (this::class != other::class) return false
         other as Vector1i
         if (d != other.d) return false
         return true
@@ -139,7 +141,8 @@ data class Vector2f constructor(
     override fun toString(): String = "[dx=$dx,dy=$dy]"
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
-        if (javaClass != other?.javaClass) return false
+        if (other == null) return false
+        if (this::class != other::class) return false
         other as Vector2f
         if (dx != other.dx && dy != other.dy) return false
         return true
@@ -203,7 +206,8 @@ data class Vector2i constructor(
     override fun toString(): String = "[dx=$dx,dy=$dy]"
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
-        if (javaClass != other?.javaClass) return false
+        if (other == null) return false
+        if (this::class != other::class) return false
         other as Vector2i
         if (dx != other.dx && dy != other.dy) return false
         return true

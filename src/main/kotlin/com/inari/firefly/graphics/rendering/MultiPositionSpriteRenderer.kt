@@ -37,7 +37,7 @@ class MultiPositionSpriteRenderer private constructor() : Renderer() {
         }
     }
 
-    companion object : SingletonComponent<Renderer, MultiPositionSpriteRenderer>(Renderer, MultiPositionSpriteRenderer::class.java) {
+    companion object : SingletonComponent<Renderer, MultiPositionSpriteRenderer>(Renderer, MultiPositionSpriteRenderer::class) {
         override fun create() = MultiPositionSpriteRenderer()
         private val MATCHING_ASPECTS = EntityComponent.ENTITY_COMPONENT_ASPECTS.createAspects(
             ETransform, ESprite, EMultiplier

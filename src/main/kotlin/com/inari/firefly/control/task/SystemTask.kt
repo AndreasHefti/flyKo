@@ -7,7 +7,7 @@ import com.inari.firefly.control.trigger.TriggeredSystemComponent
 import com.inari.firefly.system.component.SystemComponentSingleType
 import com.inari.util.Call
 
-class SystemTask private constructor() : TriggeredSystemComponent(SystemTask::class.java.name) {
+class SystemTask private constructor() : TriggeredSystemComponent(SystemTask::class.simpleName!!) {
 
     private val triggerCall = { task() }
 
@@ -18,7 +18,7 @@ class SystemTask private constructor() : TriggeredSystemComponent(SystemTask::cl
         super.trigger(cBuilder, triggerCall, configure)
 
     override fun componentType(): ComponentType<SystemTask> = Companion
-    companion object : SystemComponentSingleType<SystemTask>(SystemTask::class.java) {
+    companion object : SystemComponentSingleType<SystemTask>(SystemTask::class) {
         override fun createEmpty() = SystemTask()
     }
 }

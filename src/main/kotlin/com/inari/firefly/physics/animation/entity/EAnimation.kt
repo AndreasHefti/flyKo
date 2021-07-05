@@ -9,7 +9,7 @@ import com.inari.firefly.physics.animation.Animation
 import com.inari.firefly.system.component.SystemComponentSubType
 import com.inari.java.types.BitSet
 
-class EAnimation : EntityComponent(EAnimation::class.java.name) {
+class EAnimation : EntityComponent(EAnimation::class.simpleName!!) {
 
     @JvmField internal val animations: BitSet = BitSet()
 
@@ -40,7 +40,7 @@ class EAnimation : EntityComponent(EAnimation::class.java.name) {
     }
 
     override fun componentType() = Companion
-    companion object : EntityComponentType<EAnimation>(EAnimation::class.java) {
+    companion object : EntityComponentType<EAnimation>(EAnimation::class) {
         override fun createEmpty() = EAnimation()
     }
 }

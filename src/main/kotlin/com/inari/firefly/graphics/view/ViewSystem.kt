@@ -2,6 +2,7 @@ package com.inari.firefly.graphics.view
 
 import com.inari.firefly.BASE_VIEW
 import com.inari.firefly.FFContext
+import com.inari.firefly.NO_COMP_ID
 import com.inari.firefly.component.ComponentMap
 import com.inari.firefly.component.ComponentMap.MapAction.*
 import com.inari.firefly.control.ControllerSystem
@@ -70,11 +71,6 @@ object ViewSystem : ComponentSystem {
             return
 
         updateViewMapping()
-
-        if (view.controllerRef >= 0 && view.controllerRef in ControllerSystem.controller)
-            ControllerSystem.controller[view.controllerRef]
-                .register(view.componentId)
-
         ViewEvent.send(view.componentId, view.data, ViewEvent.Type.VIEW_ACTIVATED)
     }
 
@@ -83,10 +79,6 @@ object ViewSystem : ComponentSystem {
             throw IllegalStateException("Base View cannot be deactivated")
 
         updateViewMapping()
-        if (view.controllerRef >= 0 && view.controllerRef in ControllerSystem.controller)
-            ControllerSystem.controller[view.controllerRef]
-                .unregister(view.componentId)
-
         ViewEvent.send(view.componentId, view.data, ViewEvent.Type.VIEW_DISPOSED)
     }
 

@@ -2,7 +2,7 @@ package com.inari.firefly.audio
 
 import com.inari.firefly.FFContext
 import com.inari.firefly.component.ComponentMap
-import com.inari.firefly.control.Controller
+import com.inari.firefly.control.SystemComponentController
 import com.inari.firefly.system.component.ComponentSystem
 import com.inari.firefly.system.component.SystemComponent
 import com.inari.util.aspect.Aspects
@@ -49,7 +49,7 @@ object AudioSystem : ComponentSystem {
                 )
 
         if (sound.controllerId >= 0)
-            FFContext.activate(Controller, sound.controllerId)
+            FFContext.activate(SystemComponentController, sound.controllerId)
     }
 
     private fun deactivated(sound: Sound) {

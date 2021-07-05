@@ -59,7 +59,6 @@ class SimpleShaderTest : DesktopAppAdapter() {
             component(ESprite) {
                 sprite("TestSprite")
                 shader("Shader")
-                        
             }
         }
 

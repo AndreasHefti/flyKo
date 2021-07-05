@@ -9,6 +9,7 @@ import com.inari.util.aspect.Aspect
 import com.inari.util.aspect.AspectType
 import com.inari.util.aspect.IndexedAspectType
 import com.inari.util.indexed.AbstractIndexed
+import kotlin.reflect.KClass
 
 abstract class EntityComponent protected constructor(
     objectIndexerName: String
@@ -80,9 +81,9 @@ abstract class EntityComponentBuilder<C : EntityComponent> : ComponentType<C> {
 }
 
 abstract class EntityComponentType<C : EntityComponent>(
-    final override val typeClass: Class<out C>
+    final override val typeClass: KClass<out C>
 ) : EntityComponentBuilder<C>(), ComponentType<C> {
-    val compAspect: Aspect = ENTITY_COMPONENT_ASPECTS.createAspect(typeClass.simpleName)
+    val compAspect: Aspect = ENTITY_COMPONENT_ASPECTS.createAspect(typeClass.simpleName!!)
     final override val aspectIndex: Int = compAspect.aspectIndex
     final override val aspectName: String = compAspect.aspectName
     final override val aspectType: AspectType = compAspect.aspectType

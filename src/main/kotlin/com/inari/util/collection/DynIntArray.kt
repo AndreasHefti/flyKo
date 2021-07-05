@@ -1,7 +1,6 @@
 package com.inari.util.collection
 
 import com.inari.java.types.BitSet
-import java.lang.IllegalStateException
 
 interface DynIntArrayRO {
     val nullValue: Int

@@ -8,7 +8,7 @@ import com.inari.firefly.graphics.rendering.Renderer
 import com.inari.firefly.graphics.rendering.SpriteParticleRenderer
 import com.inari.util.collection.DynArray
 
-class EParticle private constructor() : EntityComponent(EParticle::class.java.name) {
+class EParticle private constructor() : EntityComponent(EParticle::class.simpleName!!) {
 
     @JvmField internal var rendererRef = SpriteParticleRenderer.instance.index
     internal val int_particle: DynArray<Particle> = DynArray.of()
@@ -27,7 +27,7 @@ class EParticle private constructor() : EntityComponent(EParticle::class.java.na
     }
 
     override fun componentType() = Companion
-    companion object : EntityComponentType<EParticle>(EParticle::class.java) {
+    companion object : EntityComponentType<EParticle>(EParticle::class) {
         override fun createEmpty() = EParticle()
     }
 }

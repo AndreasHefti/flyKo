@@ -6,7 +6,7 @@ import com.inari.firefly.physics.contact.ContactSystem
 import com.inari.util.aspect.Aspect
 import com.inari.util.aspect.IndexedAspectType
 
-class EProjectile private constructor () : EntityComponent(EProjectile::class.java.name) {
+class EProjectile private constructor () : EntityComponent(EProjectile::class.simpleName!!) {
 
     var type: Aspect = UNDEFINED_PROJECTILE_TYPE
         set(value) =
@@ -21,7 +21,7 @@ class EProjectile private constructor () : EntityComponent(EProjectile::class.ja
 
     override fun componentType() = Companion
 
-    companion object : EntityComponentType<EProjectile>(EProjectile::class.java) {
+    companion object : EntityComponentType<EProjectile>(EProjectile::class) {
 
         @JvmField val PROJECTILE_TYPE_ASPECT = IndexedAspectType("PROJECTILE_TYPE_ASPECT")
         @JvmField val UNDEFINED_PROJECTILE_TYPE = PROJECTILE_TYPE_ASPECT.createAspect("UNDEFINED_PROJECTILE_TYPE")

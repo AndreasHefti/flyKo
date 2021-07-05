@@ -3,6 +3,7 @@ package com.inari.firefly.component
 import com.inari.util.Named
 import com.inari.util.aspect.Aspect
 import com.inari.util.indexed.Indexed
+import kotlin.reflect.KClass
 
 @DslMarker
 annotation class ComponentDSL
@@ -16,7 +17,7 @@ interface Component : Indexed {
 interface NamedComponent : Component, Named
 
 interface ComponentType<C : Component> : Aspect {
-    val typeClass: Class<out Component>
+    val typeClass: KClass<out Component>
 }
 
 class CompId (

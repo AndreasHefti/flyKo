@@ -30,7 +30,7 @@ class TestAsset private constructor(
             " dependsOn=$dependingRef"
     }
 
-    companion object : SystemComponentSubType<Asset, TestAsset>(Asset, TestAsset::class.java) {
+    companion object : SystemComponentSubType<Asset, TestAsset>(Asset, TestAsset::class) {
         override fun createEmpty(): TestAsset = TestAsset()
     }
 }

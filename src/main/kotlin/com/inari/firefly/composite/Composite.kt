@@ -3,7 +3,7 @@ package com.inari.firefly.composite
 import com.inari.firefly.system.component.SystemComponent
 import com.inari.firefly.system.component.SystemComponentType
 
-abstract class Composite protected constructor() : SystemComponent(Composite::class.java.name) {
+abstract class Composite protected constructor() : SystemComponent(Composite::class.simpleName!!) {
 
     var loaded: Boolean = false
         private set
@@ -29,6 +29,6 @@ abstract class Composite protected constructor() : SystemComponent(Composite::cl
     protected abstract fun unload()
 
     override fun componentType() = Companion
-    companion object : SystemComponentType<Composite>(Composite::class.java)
+    companion object : SystemComponentType<Composite>(Composite::class)
 
 }

@@ -67,7 +67,7 @@ class IntTimelineProperties private constructor() : EntityPropertyAnimation(), I
         }
     }
 
-    companion object : SystemComponentSubType<Animation, IntTimelineProperties>(Animation, IntTimelineProperties::class.java) {
+    companion object : SystemComponentSubType<Animation, IntTimelineProperties>(Animation, IntTimelineProperties::class) {
         override fun createEmpty() = IntTimelineProperties()
     }
 

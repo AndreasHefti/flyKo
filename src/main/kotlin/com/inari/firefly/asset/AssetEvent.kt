@@ -4,7 +4,7 @@ import com.inari.firefly.component.CompId
 import com.inari.firefly.FFContext
 import com.inari.util.event.Event
 
-object AssetEvent : Event<AssetEvent.Listener>(EVENT_ASPECTS.createAspect(AssetEvent::class.java.simpleName)) {
+object AssetEvent : Event<AssetEvent.Listener>(EVENT_ASPECTS.createAspect(AssetEvent::class.simpleName!!)) {
 
     enum class Type {
         ASSET_CREATED,

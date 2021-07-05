@@ -1,9 +1,10 @@
 package com.inari.firefly.graphics.view.camera
 
+import com.inari.firefly.FFContext
 import com.inari.util.geom.PositionF
 import com.inari.firefly.NO_CAMERA_PIVOT
 import com.inari.firefly.component.CompId
-import com.inari.firefly.control.Controller
+import com.inari.firefly.control.SystemComponentController
 import com.inari.firefly.graphics.view.View
 import com.inari.firefly.graphics.view.ViewChangeEvent
 import com.inari.firefly.graphics.view.ViewSystem
@@ -13,7 +14,7 @@ import kotlin.math.ceil
 import kotlin.math.floor
 
 
-class SimpleCameraController private constructor() : Controller() {
+class SimpleCameraController private constructor() : SystemComponentController() {
 
     private val pos = PositionF()
     private var view: View? = null
@@ -22,15 +23,6 @@ class SimpleCameraController private constructor() : Controller() {
     var snapToBounds: Rectangle = Rectangle()
         set(value) {snapToBounds(value)}
     var velocity: Float = 0.25f
-
-    override fun register(id: CompId) {
-        view = ViewSystem.views[id]
-        adjust()
-    }
-
-    override fun unregister(id: CompId) {
-        view = null
-    }
 
     fun adjust() {
         val view = this.view ?: return
@@ -82,7 +74,7 @@ class SimpleCameraController private constructor() : Controller() {
         return pos.x != 0f || pos.y != 0f
     }
 
-    companion object : SystemComponentSubType<Controller, SimpleCameraController>(Controller, SimpleCameraController::class.java) {
+    companion object : SystemComponentSubType<SystemComponentController, SimpleCameraController>(SystemComponentController, SimpleCameraController::class) {
         override fun createEmpty() = SimpleCameraController()
     }
 }

@@ -9,11 +9,11 @@ import com.inari.util.aspect.Aspect
 import com.inari.util.aspect.AspectType
 import com.inari.util.aspect.IndexedAspectType
 import com.inari.util.indexed.AbstractIndexed
+import kotlin.reflect.KClass
 
 abstract class SystemComponent protected constructor(
     objectIndexerName: String
 ) : AbstractIndexed(objectIndexerName), NamedComponent {
-
 
     override var name: String = NO_NAME
         set(value) {
@@ -70,9 +70,9 @@ abstract class SystemComponent protected constructor(
 }
 
 abstract class SystemComponentType<C : SystemComponent>(
-    final override val typeClass: Class<C>
+    final override val typeClass: KClass<C>
 ) : ComponentType<C> {
-    val compAspect: Aspect = SYSTEM_COMPONENT_ASPECTS.createAspect(typeClass.simpleName)
+    val compAspect: Aspect = SYSTEM_COMPONENT_ASPECTS.createAspect(typeClass.simpleName!!)
     final override val aspectIndex: Int = compAspect.aspectIndex
     final override val aspectName: String = compAspect.aspectName
     final override val aspectType: AspectType = compAspect.aspectType
@@ -80,9 +80,9 @@ abstract class SystemComponentType<C : SystemComponent>(
 }
 
 abstract class SystemComponentSingleType<C : SystemComponent>(
-    final override val typeClass: Class<C>
+    final override val typeClass: KClass<C>
 ) : SystemComponentBuilder<C>(), ComponentType<C> {
-    final override val compAspect: Aspect = SYSTEM_COMPONENT_ASPECTS.createAspect(typeClass.simpleName)
+    final override val compAspect: Aspect = SYSTEM_COMPONENT_ASPECTS.createAspect(typeClass.simpleName!!)
     final override val aspectIndex: Int = compAspect.aspectIndex
     final override val aspectName: String = compAspect.aspectName
     final override val aspectType: AspectType = compAspect.aspectType
@@ -90,9 +90,9 @@ abstract class SystemComponentSingleType<C : SystemComponent>(
 
 abstract class SystemComponentSubType<C : SystemComponent, CC : C>(
     baseType: SystemComponentType<C>,
-    val subTypeClass: Class<CC>
+    val subTypeClass: KClass<CC>
 ) : SystemComponentBuilder<CC>(), ComponentType<C> {
-    override val typeClass: Class<C> = baseType.typeClass
+    override val typeClass: KClass<C> = baseType.typeClass
     final override val compAspect: Aspect = baseType.compAspect
     final override val aspectIndex: Int = baseType.aspectIndex
     final override val aspectName: String = baseType.aspectName

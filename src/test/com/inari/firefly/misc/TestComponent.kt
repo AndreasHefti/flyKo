@@ -6,14 +6,13 @@ import com.inari.firefly.system.component.SystemComponentSingleType
 class TestComponent private constructor (
     var Param1: String,
     override var Param2: Int
-) : SystemComponent(TestComponent::class.java.name), ITestComponent {
+) : SystemComponent(TestComponent::class.simpleName!!), ITestComponent {
 
     private constructor() : this("Param1", 0)
 
-    override fun componentType() =
-        TestComponent.Companion
+    override fun componentType() = Companion
 
-    companion object : SystemComponentSingleType<TestComponent>(TestComponent::class.java) {
+    companion object : SystemComponentSingleType<TestComponent>(TestComponent::class) {
         override fun createEmpty(): TestComponent = TestComponent()
     }
 

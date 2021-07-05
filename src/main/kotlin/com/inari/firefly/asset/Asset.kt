@@ -4,7 +4,7 @@ import com.inari.firefly.FFContext
 import com.inari.firefly.system.component.SystemComponent
 import com.inari.firefly.system.component.SystemComponentType
 
-abstract class Asset protected constructor() : SystemComponent(Asset::class.java.name), IndexedInstantiableList {
+abstract class Asset protected constructor() : SystemComponent(Asset::class.simpleName!!), IndexedInstantiableList {
 
     @JvmField protected var dependingRef: Int = -1
     fun dependingIndex(): Int = dependingRef
@@ -22,5 +22,5 @@ abstract class Asset protected constructor() : SystemComponent(Asset::class.java
         FFContext.isActive(componentId)
 
     override fun componentType() = Companion
-    companion object : SystemComponentType<Asset>(Asset::class.java)
+    companion object : SystemComponentType<Asset>(Asset::class)
 }

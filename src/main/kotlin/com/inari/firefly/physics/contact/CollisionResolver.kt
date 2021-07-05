@@ -4,7 +4,7 @@ import com.inari.firefly.entity.Entity
 import com.inari.firefly.system.component.SystemComponent
 import com.inari.firefly.system.component.SystemComponentType
 
-abstract class CollisionResolver protected constructor() : SystemComponent(CollisionResolver::class.java.name) {
+abstract class CollisionResolver protected constructor() : SystemComponent(CollisionResolver::class.simpleName!!) {
 
     @JvmField internal var separateDirections = true
     @JvmField internal var yDirectionFirst = true
@@ -12,5 +12,5 @@ abstract class CollisionResolver protected constructor() : SystemComponent(Colli
     abstract fun resolve(entity: Entity)
 
     override fun componentType() = Companion
-    companion object : SystemComponentType<CollisionResolver>(CollisionResolver::class.java)
+    companion object : SystemComponentType<CollisionResolver>(CollisionResolver::class)
 }

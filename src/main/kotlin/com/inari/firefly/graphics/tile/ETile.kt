@@ -13,8 +13,9 @@ import com.inari.util.aspect.Aspects
 import com.inari.util.aspect.IndexedAspectType
 import com.inari.util.geom.Position
 import com.inari.util.graphics.RGBColor
+import kotlin.reflect.KClass
 
-class ETile private constructor () : EntityComponent(ETile::class.java.name) {
+class ETile private constructor () : EntityComponent(ETile::class.simpleName!!) {
 
     @JvmField internal val spriteRenderable = SpriteRenderable()
 
@@ -67,29 +68,29 @@ class ETile private constructor () : EntityComponent(ETile::class.java.name) {
 
     enum class Property(
         override val propertyName: String,
-        override val type: Class<*>
+        override val type: KClass<*>
     ) : VirtualPropertyRef {
-        SPRITE_REFERENCE("spriteRef", Int::class.java) {
+        SPRITE_REFERENCE("spriteRef", Int::class) {
             override fun accessor(entity: Entity): IntPropertyAccessor {
                 return entity[ETile].accessorSpriteRef
             }
         },
-        TINT_RED("tintRed", Float::class.java) {
+        TINT_RED("tintRed", Float::class) {
             override fun accessor(entity: Entity): FloatPropertyAccessor {
                 return entity[ETile].accessorTintRed
             }
         },
-        TINT_GREEN("tintGreen", Float::class.java) {
+        TINT_GREEN("tintGreen", Float::class) {
             override fun accessor(entity: Entity): FloatPropertyAccessor {
                 return entity[ETile].accessorTintGreen
             }
         },
-        TINT_BLUE("tintBlue", Float::class.java) {
+        TINT_BLUE("tintBlue", Float::class) {
             override fun accessor(entity: Entity): FloatPropertyAccessor {
                 return entity[ETile].accessorTintBlue
             }
         },
-        TINT_ALPHA("tintAlpha", Float::class.java) {
+        TINT_ALPHA("tintAlpha", Float::class) {
             override fun accessor(entity: Entity): FloatPropertyAccessor {
                 return entity[ETile].accessorTintAlpha
             }
@@ -97,7 +98,7 @@ class ETile private constructor () : EntityComponent(ETile::class.java.name) {
     }
 
     override fun componentType() = Companion
-    companion object : EntityComponentType<ETile>(ETile::class.java) {
+    companion object : EntityComponentType<ETile>(ETile::class) {
         @JvmField val TILE_ASPECTS = IndexedAspectType("TILE_ASPECTS")
         override fun createEmpty() = ETile()
     }

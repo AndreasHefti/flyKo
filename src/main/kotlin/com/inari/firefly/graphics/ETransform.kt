@@ -12,8 +12,9 @@ import com.inari.firefly.graphics.view.Layer
 import com.inari.firefly.graphics.view.View
 import com.inari.firefly.graphics.view.ViewLayerAware
 import com.inari.util.geom.Vector2f
+import kotlin.reflect.KClass
 
-class ETransform private constructor() : EntityComponent(ETransform::class.java.name), ViewLayerAware {
+class ETransform private constructor() : EntityComponent(ETransform::class.simpleName!!), ViewLayerAware {
 
     @JvmField internal var viewRef = 0
     @JvmField internal var layerRef = 0
@@ -90,39 +91,39 @@ class ETransform private constructor() : EntityComponent(ETransform::class.java.
 
     enum class Property(
         override val propertyName: String,
-        override val type: Class<*>
+        override val type: KClass<*>
     ) : VirtualPropertyRef {
-        POSITION_X("position.x", Float::class.java) {
+        POSITION_X("position.x", Float::class) {
             override fun accessor(entity: Entity): FloatPropertyAccessor {
                 return entity[ETransform].accessorPosX
             }
         },
-        POSITION_Y("position.y", Float::class.java) {
+        POSITION_Y("position.y", Float::class) {
             override fun accessor(entity: Entity): FloatPropertyAccessor {
                 return entity[ETransform].accessorPosY
             }
         },
-        PIVOT_X("pivot.x", Float::class.java) {
+        PIVOT_X("pivot.x", Float::class) {
             override fun accessor(entity: Entity): FloatPropertyAccessor {
                 return entity[ETransform].accessorPivotX
             }
         },
-        PIVOT_Y("pivot.y", Float::class.java) {
+        PIVOT_Y("pivot.y", Float::class) {
             override fun accessor(entity: Entity): FloatPropertyAccessor {
                 return entity[ETransform].accessorPivotY
             }
         },
-        SCALE_X("scale.x", Float::class.java) {
+        SCALE_X("scale.x", Float::class) {
             override fun accessor(entity: Entity): FloatPropertyAccessor {
                 return entity[ETransform].accessorScaleX
             }
         },
-        SCALE_Y("scale.y", Float::class.java) {
+        SCALE_Y("scale.y", Float::class) {
             override fun accessor(entity: Entity): FloatPropertyAccessor {
                 return entity[ETransform].accessorScaleY
             }
         },
-        ROTATION("rotation", Float::class.java) {
+        ROTATION("rotation", Float::class) {
             override fun accessor(entity: Entity): FloatPropertyAccessor {
                 return entity[ETransform].accessorRotation
             }
@@ -130,7 +131,7 @@ class ETransform private constructor() : EntityComponent(ETransform::class.java.
     }
 
     override fun componentType() = Companion
-    companion object : EntityComponentType<ETransform>(ETransform::class.java) {
+    companion object : EntityComponentType<ETransform>(ETransform::class) {
         override fun createEmpty() = ETransform()
     }
 }

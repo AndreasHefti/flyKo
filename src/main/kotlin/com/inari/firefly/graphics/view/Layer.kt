@@ -5,7 +5,7 @@ import com.inari.firefly.component.ComponentType
 import com.inari.firefly.system.component.SystemComponent
 import com.inari.firefly.system.component.SystemComponentSingleType
 
-class Layer private constructor() : SystemComponent(Layer::class.java.name) {
+class Layer private constructor() : SystemComponent(Layer::class.simpleName!!) {
 
     @JvmField internal var viewRef = -1
 
@@ -17,7 +17,7 @@ class Layer private constructor() : SystemComponent(Layer::class.java.name) {
     }
 
     override fun componentType(): ComponentType<Layer> = Companion
-    companion object : SystemComponentSingleType<Layer>(Layer::class.java) {
+    companion object : SystemComponentSingleType<Layer>(Layer::class) {
         override fun createEmpty() = Layer()
     }
 }

@@ -10,9 +10,10 @@ import com.inari.firefly.entity.property.VirtualPropertyRef
 import com.inari.firefly.external.SpriteRenderable
 import com.inari.firefly.graphics.BlendMode
 import com.inari.util.graphics.RGBColor
+import kotlin.reflect.KClass
 
 
-class ESprite private constructor() : EntityComponent(ESprite::class.java.name) {
+class ESprite private constructor() : EntityComponent(ESprite::class.simpleName!!) {
 
     @JvmField internal val spriteRenderable = SpriteRenderable()
 
@@ -63,29 +64,29 @@ class ESprite private constructor() : EntityComponent(ESprite::class.java.name) 
 
     enum class Property(
         override val propertyName: String,
-        override val type: Class<*>
+        override val type: KClass<*>
     ) : VirtualPropertyRef {
-        SPRITE_REFERENCE("spriteRef", Int::class.java) {
+        SPRITE_REFERENCE("spriteRef", Int::class) {
             override fun accessor(entity: Entity): IntPropertyAccessor {
                 return entity[ESprite].accessorSpriteRef
             }
         },
-        TINT_RED("tintRed", Float::class.java) {
+        TINT_RED("tintRed", Float::class) {
             override fun accessor(entity: Entity): FloatPropertyAccessor {
                 return entity[ESprite].accessorTintRed
             }
         },
-        TINT_GREEN("tintGreen", Float::class.java) {
+        TINT_GREEN("tintGreen", Float::class) {
             override fun accessor(entity: Entity): FloatPropertyAccessor {
                 return entity[ESprite].accessorTintGreen
             }
         },
-        TINT_BLUE("tintBlue", Float::class.java) {
+        TINT_BLUE("tintBlue", Float::class) {
             override fun accessor(entity: Entity): FloatPropertyAccessor {
                 return entity[ESprite].accessorTintBlue
             }
         },
-        TINT_ALPHA("tintAlpha", Float::class.java) {
+        TINT_ALPHA("tintAlpha", Float::class) {
             override fun accessor(entity: Entity): FloatPropertyAccessor {
                 return entity[ESprite].accessorTintAlpha
             }
@@ -93,7 +94,7 @@ class ESprite private constructor() : EntityComponent(ESprite::class.java.name) 
     }
 
     override fun componentType() = Companion
-    companion object : EntityComponentType<ESprite>(ESprite::class.java) {
+    companion object : EntityComponentType<ESprite>(ESprite::class) {
         override fun createEmpty() = ESprite()
     }
 }

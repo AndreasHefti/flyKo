@@ -5,7 +5,7 @@ import com.inari.firefly.system.component.SystemComponent
 import com.inari.firefly.system.component.SystemComponentType
 import com.inari.util.Call
 
-abstract class Animation protected constructor() : SystemComponent(Animation::class.java.name) {
+abstract class Animation protected constructor() : SystemComponent(Animation::class.simpleName!!) {
 
     var looping: Boolean = false
     var resetOnFinish: Boolean = true
@@ -15,7 +15,7 @@ abstract class Animation protected constructor() : SystemComponent(Animation::cl
     abstract fun reset()
 
     override fun componentType() = Companion
-    companion object : SystemComponentType<Animation>(Animation::class.java)
+    companion object : SystemComponentType<Animation>(Animation::class)
 }
 
 interface FloatAnimation {

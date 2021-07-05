@@ -59,7 +59,7 @@ class SpriteSetAsset private constructor() : Asset() {
         }
     }
 
-    companion object : SystemComponentSubType<Asset, SpriteSetAsset>(Asset, SpriteSetAsset::class.java) {
+    companion object : SystemComponentSubType<Asset, SpriteSetAsset>(Asset, SpriteSetAsset::class) {
         override fun createEmpty() = SpriteSetAsset()
     }
 }

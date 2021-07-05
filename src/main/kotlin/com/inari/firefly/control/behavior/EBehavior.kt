@@ -7,7 +7,7 @@ import com.inari.firefly.entity.EntityComponentType
 import com.inari.util.OpResult
 import com.inari.util.aspect.Aspects
 
-class EBehavior private constructor() : EntityComponent(EBehavior::class.java.name){
+class EBehavior private constructor() : EntityComponent(EBehavior::class.simpleName!!){
 
     @JvmField internal var treeRef = -1
     @JvmField internal var actionsDone: Aspects = BEHAVIOR_STATE_ASPECT_GROUP.createAspects()
@@ -26,7 +26,7 @@ class EBehavior private constructor() : EntityComponent(EBehavior::class.java.na
     }
 
     override fun componentType() = Companion
-    companion object : EntityComponentType<EBehavior>(EBehavior::class.java) {
+    companion object : EntityComponentType<EBehavior>(EBehavior::class) {
         override fun createEmpty() = EBehavior()
     }
 }

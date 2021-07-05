@@ -5,10 +5,10 @@ import com.inari.firefly.system.component.SystemComponent
 import com.inari.firefly.system.component.SystemComponentType
 import com.inari.util.OpResult
 
-abstract class BxNode protected constructor() : SystemComponent(BxNode::class.java.name) {
+abstract class BxNode protected constructor() : SystemComponent(BxNode::class.simpleName!!) {
 
     abstract fun tick(entity: Entity, behavior: EBehavior): OpResult
 
     override fun componentType() = Companion
-    companion object : SystemComponentType<BxNode>(BxNode::class.java)
+    companion object : SystemComponentType<BxNode>(BxNode::class)
 }

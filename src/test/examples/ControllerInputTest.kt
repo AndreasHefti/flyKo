@@ -15,7 +15,7 @@ import org.lwjgl.glfw.GLFW
 
 class ControllerInputTest : DesktopAppAdapter() {
 
-    override val title: String = this.javaClass.simpleName
+    override val title: String = this::class.simpleName!!
 
     private var text = StringBuilder("")
     private var textId = NO_COMP_ID

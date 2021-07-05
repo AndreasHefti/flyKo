@@ -26,8 +26,6 @@ object MovementSystem : FFSystem {
             while (i >= 0) {
                 val entity = EntitySystem[i]
                 i = entities.nextSetBit(i + 1)
-                if (!entity.has(EMovement))
-                    continue
 
                 val movement = entity[EMovement]
                 if (!movement.active || !movement.scheduler.needsUpdate())
@@ -50,17 +48,9 @@ object MovementSystem : FFSystem {
         FFContext.registerListener(EntityActivationEvent, object : EntityActivationEvent.Listener {
             override fun entityActivated(entity: Entity) {
                 entities.set(entity.index)
-                val movement = entity[EMovement]
-                if (movement.controllerRef >= 0) {
-                    ControllerSystem.register(movement.controllerRef, entity.componentId)
-                }
             }
             override fun entityDeactivated(entity: Entity) {
                 entities.set(entity.index, false)
-                val movement = entity[EMovement]
-                if (movement.controllerRef >= 0) {
-                    ControllerSystem.unregister(movement.controllerRef, entity.componentId)
-                }
             }
             override fun match(aspects: Aspects): Boolean =
                 aspects.contains(EMovement)

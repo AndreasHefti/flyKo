@@ -27,7 +27,7 @@ class SoundAsset private constructor() : Asset() {
         id = -1
     }
 
-    companion object : SystemComponentSubType<Asset, SoundAsset>(Asset, SoundAsset::class.java) {
+    companion object : SystemComponentSubType<Asset, SoundAsset>(Asset, SoundAsset::class) {
         override fun createEmpty() = SoundAsset()
     }
 }

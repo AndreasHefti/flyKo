@@ -32,7 +32,7 @@ class BxParallel private constructor() : BxBranch() {
         }
     }
 
-    companion object : SystemComponentSubType<BxNode, BxParallel>(BxNode, BxParallel::class.java) {
+    companion object : SystemComponentSubType<BxNode, BxParallel>(BxNode, BxParallel::class) {
         override fun createEmpty() = BxParallel()
     }
 

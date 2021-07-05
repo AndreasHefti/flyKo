@@ -3,13 +3,13 @@ package com.inari.firefly.physics.movement
 import com.inari.firefly.FFContext
 import com.inari.firefly.INFINITE_SCHEDULER
 import com.inari.firefly.component.ComponentRefResolver
-import com.inari.firefly.control.Controller
+import com.inari.firefly.control.SystemComponentController
 import com.inari.firefly.entity.EntityComponent
 import com.inari.firefly.entity.EntityComponentType
 import com.inari.firefly.external.FFTimer
 import com.inari.util.geom.Vector2f
 
-class EMovement private constructor() : EntityComponent(EMovement::class.java.name) {
+class EMovement private constructor() : EntityComponent(EMovement::class.simpleName!!) {
 
     @JvmField internal var controllerRef = -1
     @JvmField internal var scheduler: FFTimer.Scheduler = INFINITE_SCHEDULER
@@ -36,7 +36,6 @@ class EMovement private constructor() : EntityComponent(EMovement::class.java.na
     var updateResolution: Float
         get() = throw UnsupportedOperationException()
         set(value) { scheduler = FFContext.timer.createUpdateScheduler(value) }
-    val controller = ComponentRefResolver(Controller) { index -> controllerRef = index }
 
     override fun reset() {
         active = false
@@ -52,7 +51,7 @@ class EMovement private constructor() : EntityComponent(EMovement::class.java.na
     }
 
     override fun componentType() = Companion
-    companion object : EntityComponentType<EMovement>(EMovement::class.java) {
+    companion object : EntityComponentType<EMovement>(EMovement::class) {
         override fun createEmpty() = EMovement()
     }
 }

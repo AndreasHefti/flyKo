@@ -3,10 +3,11 @@ package com.inari.firefly.system.component
 import com.inari.firefly.FFContext
 import com.inari.firefly.NO_COMP_ID
 import com.inari.firefly.component.CompId
+import kotlin.reflect.KClass
 
 abstract class SingletonComponent<C : SystemComponent, CC : C>(
     baseType: SystemComponentType<C>,
-    subTypeClass: Class<CC>
+    subTypeClass: KClass<CC>
 ): SystemComponentSubType<C, CC>(baseType, subTypeClass) {
 
     override fun createEmpty(): CC = throw UnsupportedOperationException()
@@ -14,25 +15,25 @@ abstract class SingletonComponent<C : SystemComponent, CC : C>(
 
     val id: CompId
         get() {
-            return if (FFContext.mapper<CC>(this).contains(subTypeClass.simpleName))
-                 FFContext[this, subTypeClass.simpleName].componentId
+            return if (FFContext.mapper<CC>(this).contains(subTypeClass.simpleName!!))
+                 FFContext[this, subTypeClass.simpleName!!].componentId
             else NO_COMP_ID
         }
 
     val instance: CC
         get() {
-            if (!FFContext.mapper<CC>(this).contains(subTypeClass.simpleName)) {
+            if (!FFContext.mapper<CC>(this).contains(subTypeClass.simpleName!!)) {
                 val comp = create()
-                comp.name = subTypeClass.simpleName
+                comp.name = subTypeClass.simpleName!!
                 FFContext.mapper<CC>(this).receiver()(comp)
             }
 
             @Suppress("UNCHECKED_CAST")
-            return FFContext[this, subTypeClass.simpleName]
+            return FFContext[this, subTypeClass.simpleName!!]
         }
 
     fun dispose() {
-        if (FFContext.mapper<CC>(this).contains(subTypeClass.simpleName))
-            FFContext.delete(this, subTypeClass.simpleName)
+        if (FFContext.mapper<CC>(this).contains(subTypeClass.simpleName!!))
+            FFContext.delete(this, subTypeClass.simpleName!!)
     }
 }

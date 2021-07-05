@@ -11,6 +11,7 @@ import com.inari.firefly.graphics.view.camera.CameraPivot
 import com.inari.util.*
 import com.inari.util.aspect.AspectType
 import com.inari.util.indexed.Indexed
+import kotlin.reflect.KClass
 
 const val SYSTEM_FONT_ASSET = "SYSTEM_FONT_ASSET"
 const val SYSTEM_FONT = "SYSTEM_FONT"
@@ -45,7 +46,7 @@ const val BASE_VIEW: String = "[[BASE_VIEW]]"
     override val aspectIndex: Int get() = throw IllegalAccessException()
     override val aspectName: String get() = throw IllegalAccessException()
     override val aspectType: AspectType get() = throw IllegalAccessException()
-    override val typeClass: Class<out Component> get() = throw IllegalAccessException()
+    override val typeClass: KClass<out Component> get() = throw IllegalAccessException()
 })
 @JvmField val NO_INDEXED = object : Indexed {
     override val index: Int = -1
@@ -53,7 +54,7 @@ const val BASE_VIEW: String = "[[BASE_VIEW]]"
 }
 @JvmField val NO_PROPERTY_REF: VirtualPropertyRef = object : VirtualPropertyRef {
     override val propertyName: String = NO_NAME
-    override val type: Class<*> get() = throw IllegalAccessException()
+    override val type: KClass<*> get() = throw IllegalAccessException()
     override fun accessor(entity: Entity): VirtualPropertyRef.PropertyAccessor = throw IllegalAccessException()
 }
 @JvmField val NO_CAMERA_PIVOT = object : CameraPivot {
@@ -74,8 +75,9 @@ const val BASE_VIEW: String = "[[BASE_VIEW]]"
 @JvmField val TRUE_SUPPLIER: BooleanSupplier = { true }
 @JvmField val FALSE_PREDICATE: Predicate<Any> = { false }
 @JvmField val TRUE_PREDICATE: Predicate<Any> = { true }
+@JvmField val VOID_COMP_ID_CONSUMER: CompIdConsumer = { _ -> }
 
-        @JvmField val INFINITE_SCHEDULER: FFTimer.Scheduler = object : FFTimer.Scheduler {
+@JvmField val INFINITE_SCHEDULER: FFTimer.Scheduler = object : FFTimer.Scheduler {
     override fun needsUpdate(): Boolean = true
 }
 @JvmField val EMPTY_INT_OPERATION: IntOperation = object : IntOperation {

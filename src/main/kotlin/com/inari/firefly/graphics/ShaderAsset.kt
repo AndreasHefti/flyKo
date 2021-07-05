@@ -48,7 +48,7 @@ class ShaderAsset private constructor() : Asset() {
        }
     }
 
-    companion object : SystemComponentSubType<Asset, ShaderAsset>(Asset, ShaderAsset::class.java) {
+    companion object : SystemComponentSubType<Asset, ShaderAsset>(Asset, ShaderAsset::class) {
         override fun createEmpty() = ShaderAsset()
     }
 }

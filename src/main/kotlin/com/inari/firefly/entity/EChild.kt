@@ -2,7 +2,7 @@ package com.inari.firefly.entity
 
 import com.inari.firefly.component.ComponentRefResolver
 
-class EChild private constructor () : EntityComponent(EChild::class.java.name) {
+class EChild private constructor () : EntityComponent(EChild::class.simpleName!!) {
 
     @JvmField internal var int_parent: Int = -1
 
@@ -15,7 +15,7 @@ class EChild private constructor () : EntityComponent(EChild::class.java.name) {
     }
 
     override fun componentType() =  Companion
-    companion object : EntityComponentType<EChild>(EChild::class.java) {
+    companion object : EntityComponentType<EChild>(EChild::class) {
         override fun createEmpty() = EChild()
     }
 }

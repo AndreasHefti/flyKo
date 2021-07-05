@@ -11,8 +11,9 @@ import com.inari.firefly.external.ShapeData
 import com.inari.firefly.external.ShapeType
 import com.inari.firefly.graphics.BlendMode
 import com.inari.util.graphics.RGBColor
+import kotlin.reflect.KClass
 
-class EShape private constructor(): EntityComponent(EShape::class.java.name) {
+class EShape private constructor(): EntityComponent(EShape::class.simpleName!!) {
 
     @JvmField val data = ShapeData()
 
@@ -84,24 +85,24 @@ class EShape private constructor(): EntityComponent(EShape::class.java.name) {
 
     enum class Property(
         override val propertyName: String,
-        override val type: Class<*>
+        override val type: KClass<*>
     ) : VirtualPropertyRef {
-        COLOR_RED("colorRed", Float::class.java) {
+        COLOR_RED("colorRed", Float::class) {
             override fun accessor(entity: Entity): FloatPropertyAccessor {
                 return entity[EShape].accessorColorRed
             }
         },
-        COLOR_GREEN("colorGreen", Float::class.java) {
+        COLOR_GREEN("colorGreen", Float::class) {
             override fun accessor(entity: Entity): FloatPropertyAccessor {
                 return entity[EShape].accessorColorGreen
             }
         },
-        COLOR_BLUE("colorBlue", Float::class.java) {
+        COLOR_BLUE("colorBlue", Float::class) {
             override fun accessor(entity: Entity): FloatPropertyAccessor {
                 return entity[EShape].accessorColorBlue
             }
         },
-        COLOR_ALPHA("colorAlpha", Float::class.java) {
+        COLOR_ALPHA("colorAlpha", Float::class) {
             override fun accessor(entity: Entity): FloatPropertyAccessor {
                 return entity[EShape].accessorColorAlpha
             }
@@ -109,7 +110,7 @@ class EShape private constructor(): EntityComponent(EShape::class.java.name) {
     }
 
     override fun componentType(): ComponentType<EShape> = Companion
-    companion object : EntityComponentType<EShape>(EShape::class.java) {
+    companion object : EntityComponentType<EShape>(EShape::class) {
         override fun createEmpty() = EShape()
     }
 }

@@ -1,8 +1,10 @@
 package com.inari.util.aspect
 
 import com.inari.util.collection.DynArray
+import kotlin.reflect.KClass
+import kotlin.reflect.safeCast
 
-class AspectSet<T> constructor(
+class AspectSet<T : Any> constructor(
     val aspectType: AspectType,
     val dynArrayFunction: (Int, Int) -> DynArray<T>
 ) : AspectAware, Iterable<Aspect> {
@@ -38,8 +40,8 @@ class AspectSet<T> constructor(
     }
 
 
-    fun <TT : T> get(aspect: Aspect, subType: Class<TT>): TT? =
-        get(aspect)?.run { subType.cast(this) }
+    fun <TT : T> get(aspect: Aspect, subType: KClass<TT>): TT? =
+        get(aspect)?.run { subType.safeCast(this) }
 
     operator fun plus(other: AspectSet<T>) {
         if (other.aspectType == this.aspectType) {
@@ -60,8 +62,8 @@ class AspectSet<T> constructor(
     fun getIterable(): Iterable<Aspect> = aspects
 
     companion object {
-        inline fun <reified T> of(aspectType: AspectType): AspectSet<T> {
-            return AspectSet(aspectType) { size, exp -> DynArray.of<T>(size, exp) }
+        inline fun <reified T : Any> of(aspectType: AspectType): AspectSet<T> {
+            return AspectSet(aspectType) { size, exp -> DynArray.of(size, exp) }
         }
     }
 

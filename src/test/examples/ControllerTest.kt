@@ -15,7 +15,7 @@ import java.nio.FloatBuffer
 
 class ControllerTest : DesktopAppAdapter() {
 
-    override val title: String = this.javaClass.simpleName
+    override val title: String = this::class.simpleName!!
     private var text1 = StringBuilder("")
     private var text2 = StringBuilder("")
     private var text3 = StringBuilder("")

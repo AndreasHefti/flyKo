@@ -1,8 +1,6 @@
 package com.inari.firefly.entity
 
-import com.inari.java.types.ArrayDeque
 import com.inari.util.collection.DynArray
-
 
 object EntityProvider {
 
@@ -26,14 +24,14 @@ object EntityProvider {
         return if (cache.isEmpty())
             builder.create()
         else
-            cache.pop() as C
+            cache.removeFirst() as C
     }
 
     fun get(): Entity {
         return if (disposedEntities.isEmpty())
             Entity()
         else
-            disposedEntities.pop().restore()
+            disposedEntities.removeFirst().restore()
     }
 
     fun dispose(entity: Entity) {

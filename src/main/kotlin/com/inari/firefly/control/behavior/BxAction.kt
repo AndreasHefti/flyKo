@@ -22,7 +22,7 @@ class BxAction private constructor() : BxNode() {
         return result
     }
 
-    companion object : SystemComponentSubType<BxNode, BxAction>(BxNode, BxAction::class.java) {
+    companion object : SystemComponentSubType<BxNode, BxAction>(BxNode, BxAction::class) {
         override fun createEmpty() = BxAction()
     }
 

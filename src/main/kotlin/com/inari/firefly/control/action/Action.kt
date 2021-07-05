@@ -3,7 +3,7 @@ package com.inari.firefly.control.action
 import com.inari.firefly.system.component.SystemComponent
 import com.inari.firefly.system.component.SystemComponentSingleType
 
-class Action private constructor() : SystemComponent(Action::class.java.name) {
+class Action private constructor() : SystemComponent(Action::class.simpleName!!) {
 
     var call: ActionCall = { _, _, _, _ -> }
 
@@ -17,7 +17,7 @@ class Action private constructor() : SystemComponent(Action::class.java.name) {
     }
 
     override fun componentType() = Companion
-    companion object : SystemComponentSingleType<Action>(Action::class.java) {
+    companion object : SystemComponentSingleType<Action>(Action::class) {
         override fun createEmpty() = Action()
     }
 }

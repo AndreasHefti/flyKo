@@ -31,7 +31,7 @@ class FullTileGridRenderer private constructor() : Renderer() {
         }
     }
 
-    companion object : SingletonComponent<Renderer, FullTileGridRenderer>(Renderer, FullTileGridRenderer::class.java) {
+    companion object : SingletonComponent<Renderer, FullTileGridRenderer>(Renderer, FullTileGridRenderer::class) {
         override fun create() = FullTileGridRenderer()
         private val MATCHING_ASPECTS = EntityComponent.ENTITY_COMPONENT_ASPECTS.createAspects(
             ETransform, ETile

@@ -7,7 +7,7 @@ import com.inari.firefly.system.component.SystemComponentSingleType
 import com.inari.util.aspect.Aspects
 import com.inari.util.geom.Rectangle
 
-class ContactConstraint private constructor() : SystemComponent(ContactConstraint::class.java.name) {
+class ContactConstraint private constructor() : SystemComponent(ContactConstraint::class.simpleName!!) {
 
     @JvmField internal var layerRef = -1
 
@@ -35,7 +35,7 @@ class ContactConstraint private constructor() : SystemComponent(ContactConstrain
                     (materialFilter.isEmpty || contact.material in materialFilter)
 
     override fun componentType() = Companion
-    companion object : SystemComponentSingleType<ContactConstraint>(ContactConstraint::class.java) {
+    companion object : SystemComponentSingleType<ContactConstraint>(ContactConstraint::class) {
         override fun createEmpty() = ContactConstraint()
     }
 }

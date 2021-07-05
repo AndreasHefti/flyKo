@@ -20,7 +20,7 @@ import kotlin.math.floor
 abstract class Renderer protected constructor(
     private val acceptance: Predicate<Entity> = TRUE_PREDICATE,
     private val sort: Consumer<DynArray<Entity>>? = null
-) : SystemComponent(Renderer::class.java.name) {
+) : SystemComponent(Renderer::class.simpleName!!) {
 
     @JvmField protected val transformCollector = ExactTransformDataCollector()
 
@@ -86,7 +86,7 @@ abstract class Renderer protected constructor(
 
     override fun componentType(): ComponentType<Renderer> = Companion
 
-    companion object : SystemComponentType<Renderer>(Renderer::class.java)
+    companion object : SystemComponentType<Renderer>(Renderer::class)
 
     protected interface TransformDataCollector {
         val data : TransformData

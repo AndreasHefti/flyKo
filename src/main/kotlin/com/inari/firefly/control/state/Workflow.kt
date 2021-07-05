@@ -10,7 +10,7 @@ import com.inari.util.BooleanSupplier
 import com.inari.util.collection.DynArray
 
 
-class Workflow private constructor() : SystemComponent(Workflow::class.java.name) {
+class Workflow private constructor() : SystemComponent(Workflow::class.simpleName!!) {
 
     @JvmField internal val int_states: DynArray<String> = DynArray.of()
     @JvmField internal val int_stateChanges: DynArray<StateChange> = DynArray.of()
@@ -46,7 +46,7 @@ class Workflow private constructor() : SystemComponent(Workflow::class.java.name
     }
 
     override fun componentType(): ComponentType<Workflow> = Companion
-    companion object : SystemComponentSingleType<Workflow>(Workflow::class.java) {
+    companion object : SystemComponentSingleType<Workflow>(Workflow::class) {
         override fun createEmpty() = Workflow()
     }
 

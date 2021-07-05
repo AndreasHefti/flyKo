@@ -18,7 +18,7 @@ class BxSequence private constructor() : BxBranch() {
         return OpResult.SUCCESS
     }
 
-    companion object : SystemComponentSubType<BxNode, BxSequence>(BxNode, BxSequence::class.java) {
+    companion object : SystemComponentSubType<BxNode, BxSequence>(BxNode, BxSequence::class) {
         override fun createEmpty() = BxSequence()
     }
 }

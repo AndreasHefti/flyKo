@@ -1,5 +1,7 @@
 package com.inari.util
 
+import com.inari.firefly.component.CompId
+
 interface Named {
     val name: String
 }
@@ -33,6 +35,8 @@ typealias BooleanFunction = (Boolean) -> Boolean
 typealias BooleanOperation = (Boolean) -> OpResult
 typealias BooleanSupplier = () -> Boolean
 typealias BooleanConsumer = (Boolean) -> Unit
+
+typealias CompIdConsumer = (CompId) -> Unit
 
 /** Use this on types that can be disposed  */
 interface Disposable {

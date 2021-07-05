@@ -83,7 +83,7 @@ class FontAsset : Asset() {
         tmpSpriteData.textureId = -1
     }
 
-    companion object : SystemComponentSubType<Asset, FontAsset>(Asset, FontAsset::class.java) {
+    companion object : SystemComponentSubType<Asset, FontAsset>(Asset, FontAsset::class) {
         override fun createEmpty() = FontAsset()
     }
 

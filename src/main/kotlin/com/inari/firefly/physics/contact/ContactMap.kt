@@ -14,7 +14,7 @@ import com.inari.firefly.system.component.SystemComponentType
 import com.inari.java.types.BitSet
 import com.inari.util.geom.Rectangle
 
-abstract class ContactMap protected constructor() : SystemComponent(ContactMap::class.java.name), ViewLayerAware {
+abstract class ContactMap protected constructor() : SystemComponent(ContactMap::class.simpleName!!), ViewLayerAware {
 
     @JvmField internal var viewRef = -1
     @JvmField internal var layerRef = -1
@@ -102,7 +102,7 @@ abstract class ContactMap protected constructor() : SystemComponent(ContactMap::
     abstract fun clear()
 
     override fun componentType() = Companion
-    companion object : SystemComponentType<ContactMap>(ContactMap::class.java) {
+    companion object : SystemComponentType<ContactMap>(ContactMap::class) {
 
         @JvmField internal val MATCHER =
             EntityComponent.ENTITY_COMPONENT_ASPECTS.createAspects(ETransform, EContact)

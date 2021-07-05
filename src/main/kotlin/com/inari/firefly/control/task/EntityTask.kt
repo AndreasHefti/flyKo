@@ -7,7 +7,7 @@ import com.inari.firefly.control.trigger.TriggeredSystemComponent
 import com.inari.firefly.system.component.SystemComponentSingleType
 import com.inari.util.IntOperation
 
-class EntityTask private constructor() : TriggeredSystemComponent(EntityTask::class.java.name) {
+class EntityTask private constructor() : TriggeredSystemComponent(EntityTask::class.simpleName!!) {
 
     /** The task to run as IntOperation
      *  <p>
@@ -22,7 +22,7 @@ class EntityTask private constructor() : TriggeredSystemComponent(EntityTask::cl
             super.trigger(cBuilder, { task(entityId.instanceId) }, configure)
 
     override fun componentType() = Companion
-    companion object : SystemComponentSingleType<EntityTask>(EntityTask::class.java) {
+    companion object : SystemComponentSingleType<EntityTask>(EntityTask::class) {
         override fun createEmpty() = EntityTask()
     }
 }

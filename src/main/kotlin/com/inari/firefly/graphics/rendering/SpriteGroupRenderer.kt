@@ -34,7 +34,7 @@ class SpriteGroupRenderer private constructor() : Renderer(
         }
     }
 
-    companion object : SingletonComponent<Renderer, SpriteGroupRenderer>(Renderer, SpriteGroupRenderer::class.java) {
+    companion object : SingletonComponent<Renderer, SpriteGroupRenderer>(Renderer, SpriteGroupRenderer::class) {
         private val COMPARATOR = Comparator<Entity?> { e1, e2 ->
             if (e1 == null && e2 == null)
                 return@Comparator 0

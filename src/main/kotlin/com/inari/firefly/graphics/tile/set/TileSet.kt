@@ -167,7 +167,7 @@ class TileSet : Composite() {
         spriteSetAssetId = NO_COMP_ID
     }
 
-    companion object : SystemComponentSubType<Composite, TileSet>(Composite, TileSet::class.java) {
+    companion object : SystemComponentSubType<Composite, TileSet>(Composite, TileSet::class) {
         override fun createEmpty() = TileSet()
     }
 }

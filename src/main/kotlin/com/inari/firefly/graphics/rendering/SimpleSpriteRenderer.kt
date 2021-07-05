@@ -32,7 +32,7 @@ class SimpleSpriteRenderer private constructor() : Renderer() {
         }
     }
 
-    companion object : SingletonComponent<Renderer, SimpleSpriteRenderer>(Renderer, SimpleSpriteRenderer::class.java) {
+    companion object : SingletonComponent<Renderer, SimpleSpriteRenderer>(Renderer, SimpleSpriteRenderer::class) {
         override fun create() = SimpleSpriteRenderer()
         private val MATCHING_ASPECTS = EntityComponent.ENTITY_COMPONENT_ASPECTS.createAspects(
             ETransform, ESprite
