@@ -23,6 +23,20 @@ class ComponentRefResolver<T : Component>(
 
 }
 
+class ComponentIdResolver<T : Component>(
+    private val type: ComponentType<T>,
+    private val receiver: Consumer<CompId>
+) {
+
+    operator fun invoke(id: CompId) = receiver(id)
+    operator fun invoke(name: String) = receiver(FFContext[type, name].componentId)
+    operator fun invoke(named: Named) = receiver(FFContext[type, named.name].componentId)
+    operator fun invoke(component: Component) = receiver(component.componentId)
+    operator fun invoke(component: SystemComponent) = receiver(component.componentId)
+    operator fun invoke(singleton: SingletonComponent<*, *>) = receiver(singleton.instance.componentId)
+
+}
+
 class ComponentRefFunction<T : Component, X>(
         private val type: ComponentType<T>,
         private val receiver: (Int) -> X

@@ -2,8 +2,6 @@ package com.inari.firefly.physics.movement
 
 import com.inari.firefly.FFContext
 import com.inari.firefly.INFINITE_SCHEDULER
-import com.inari.firefly.component.ComponentRefResolver
-import com.inari.firefly.control.SystemComponentController
 import com.inari.firefly.entity.EntityComponent
 import com.inari.firefly.entity.EntityComponentType
 import com.inari.firefly.external.FFTimer

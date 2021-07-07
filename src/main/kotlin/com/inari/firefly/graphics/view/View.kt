@@ -11,7 +11,7 @@ import com.inari.util.graphics.RGBColor
 
 class View private constructor (
     @JvmField internal var baseView: Boolean = false
-) : ControlledSystemComponent(View::class.simpleName!!) {
+) : SystemComponent(View::class.simpleName!!), ControlledSystemComponent {
 
     @JvmField internal val data = object : ViewData() {
         override val index: Int
