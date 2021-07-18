@@ -156,7 +156,8 @@ class DynFloatArray(
         if (array.size != size) {
             val temp = array
             initArray(size)
-            System.arraycopy(temp, 0, array, 0, size)
+            temp.copyInto(array, 0, 0, size)
+            //System.arraycopy(temp, 0, array, 0, size)
         }
     }
 
@@ -185,9 +186,10 @@ class DynFloatArray(
     }
 
     private fun expand(expandSize: Int) {
-        val temp = array
-        initArray(temp.size + expandSize + expand)
-        System.arraycopy(temp, 0, array, 0, temp.size)
+        array = array.copyOf(array.size + expandSize + expand)
+        //val temp = array
+        //initArray(temp.size + expandSize + expand)
+        //System.arraycopy(temp, 0, array, 0, temp.size)
     }
 
     private inner class DynFloatArrayIterator internal constructor() : FloatIterator() {

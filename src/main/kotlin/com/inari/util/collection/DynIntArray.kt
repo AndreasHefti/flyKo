@@ -1,6 +1,6 @@
 package com.inari.util.collection
 
-import com.inari.java.types.BitSet
+import com.inari.util.BitSet
 
 interface DynIntArrayRO {
     val nullValue: Int
@@ -172,7 +172,8 @@ class DynIntArray(
 
         val temp = array
         initArray(newSize)
-        System.arraycopy(temp, startIndex, array, 0, newSize)
+        temp.copyInto(array, 0, startIndex, startIndex + newSize)
+        //System.arraycopy(temp, startIndex, array, 0, newSize)
     }
 
     fun trim_all() {
@@ -193,7 +194,8 @@ class DynIntArray(
         if (array.size != size) {
             val temp = array
             initArray(size)
-            System.arraycopy(temp, 0, array, 0, size)
+            temp.copyInto(array, 0, 0, size)
+            //System.arraycopy(temp, 0, array, 0, size)
         }
     }
 
@@ -222,9 +224,10 @@ class DynIntArray(
     }
 
     private fun expand(expandSize: Int) {
-        val temp = array
-        initArray(temp.size + expandSize + expand)
-        System.arraycopy(temp, 0, array, 0, temp.size)
+        array = array.copyOf(array.size + expandSize + expand)
+        //val temp = array
+        //initArray(temp.size + expandSize + expand)
+        //System.arraycopy(temp, 0, array, 0, temp.size)
     }
 
     private inner class DynIntArrayIterator : IntIterator() {

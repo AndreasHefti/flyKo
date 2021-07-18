@@ -1,7 +1,7 @@
 package com.inari.util.geom
 
 
-import com.inari.java.types.BitSet
+import com.inari.util.BitSet
 import com.inari.util.geom.Direction.*
 import kotlin.math.cos
 import kotlin.math.pow

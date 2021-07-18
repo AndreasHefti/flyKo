@@ -347,9 +347,10 @@ class DynArray<T> constructor(
         while (index >= newSize)
             newSize += grow
 
-        val oldArray = array
-        array = arrayAllocation(newSize)
-        System.arraycopy(oldArray, 0, array, 0, oldArray.size)
+        array = array.copyOf(newSize)
+        //val oldArray = array
+        //array = arrayAllocation(newSize)
+        //System.arraycopy(oldArray, 0, array, 0, oldArray.size)
     }
 
     private fun createList(initialCapacity: Int) {

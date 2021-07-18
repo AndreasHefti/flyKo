@@ -3,7 +3,7 @@ package com.inari.firefly.system.component
 import com.inari.firefly.*
 import com.inari.firefly.component.*
 import com.inari.firefly.system.FFSystem
-import com.inari.java.types.BitSet
+import com.inari.util.BitSet
 import com.inari.util.*
 import com.inari.util.aspect.Aspects
 import com.inari.util.collection.DynArray
@@ -156,11 +156,10 @@ interface ComponentSystem : FFSystem {
             else
                 nextIndex(predicate, currentIndex + 1)
 
-        override fun indexIterator(predicate: Predicate<C?>): IntFunction = object : IntFunction {
-            override fun invoke(i: Int): Int {
-                return nextIndex(predicate, i)
+        override fun indexIterator(predicate: Predicate<C?>): IntFunction = { from ->
+                nextIndex(predicate, from)
             }
-        }
+
 
         override fun receiver(): Receiver<C> = { c -> add(c) }
 

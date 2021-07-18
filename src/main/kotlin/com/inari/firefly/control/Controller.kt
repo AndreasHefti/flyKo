@@ -5,7 +5,7 @@ import com.inari.firefly.INFINITE_SCHEDULER
 import com.inari.firefly.external.FFTimer
 import com.inari.firefly.system.component.SystemComponent
 import com.inari.firefly.system.component.SystemComponentType
-import com.inari.java.types.BitSet
+import com.inari.util.BitSet
 
 abstract class Controller protected constructor() : SystemComponent("Controller") {
 

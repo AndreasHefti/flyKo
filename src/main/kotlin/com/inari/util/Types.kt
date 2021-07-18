@@ -38,6 +38,9 @@ typealias BooleanConsumer = (Boolean) -> Unit
 
 typealias CompIdConsumer = (CompId) -> Unit
 
+typealias BitSet = com.inari.util.collection.BitSet
+operator fun BitSet.contains(index: Int): Boolean = this[index]
+
 /** Use this on types that can be disposed  */
 interface Disposable {
 

@@ -5,7 +5,7 @@ import com.inari.firefly.component.ComponentType
 import com.inari.firefly.control.trigger.Trigger
 import com.inari.firefly.control.trigger.TriggeredSystemComponent
 import com.inari.firefly.system.component.SystemComponentType
-import com.inari.java.types.BitSet
+import com.inari.util.BitSet
 import com.inari.util.Call
 
 abstract class Scene protected constructor() : TriggeredSystemComponent(Scene::class.simpleName!!) {

@@ -1,6 +1,6 @@
 package com.inari.firefly.misc
 
-import com.inari.java.types.BitSet
+import com.inari.util.BitSet
 import com.inari.util.collection.DynArray
 import org.junit.Test
 

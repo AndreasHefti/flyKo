@@ -4,7 +4,7 @@ import com.inari.firefly.entity.Entity
 import com.inari.firefly.graphics.ETransform
 import com.inari.firefly.system.component.SystemComponentSubType
 import com.inari.java.types.ArrayDeque
-import com.inari.java.types.BitSet
+import com.inari.util.BitSet
 import com.inari.util.geom.Rectangle
 
 class SimpleContactMap : ContactMap() {

@@ -2,10 +2,8 @@ package com.inari.firefly.libgdx
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.*
-import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.Texture.TextureFilter
 import com.badlogic.gdx.graphics.Texture.TextureWrap
-import com.badlogic.gdx.graphics.VertexAttribute
 import com.badlogic.gdx.graphics.g2d.PolygonSpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.graphics.g3d.utils.MeshBuilder
@@ -37,6 +35,7 @@ import com.inari.util.geom.Rectangle
 import com.inari.util.graphics.RGBColor
 import org.lwjgl.opengl.GL11
 import org.lwjgl.opengl.GL12
+import org.lwjgl.opengl.GL20
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 

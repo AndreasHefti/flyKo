@@ -11,7 +11,7 @@ import com.inari.firefly.graphics.view.View
 import com.inari.firefly.graphics.view.ViewLayerAware
 import com.inari.firefly.system.component.SystemComponent
 import com.inari.firefly.system.component.SystemComponentType
-import com.inari.java.types.BitSet
+import com.inari.util.BitSet
 import com.inari.util.geom.Rectangle
 
 abstract class ContactMap protected constructor() : SystemComponent(ContactMap::class.simpleName!!), ViewLayerAware {

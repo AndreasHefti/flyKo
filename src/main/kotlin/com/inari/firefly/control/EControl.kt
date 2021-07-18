@@ -9,12 +9,7 @@ import com.inari.util.aspect.IndexedAspectType
 
 class EControl private constructor() : EntityComponent(EControl::class.simpleName!!) {
 
-    @Suppress("SetterBackingFieldAssignment")
-    var aspects: Aspects = ENTITY_CONTROL_ASPECTS.createAspects()
-        set(value) {
-            field.clear()
-            field + value
-        }
+    @JvmField val aspects: Aspects = ENTITY_CONTROL_ASPECTS.createAspects()
 
     fun <C : Controller> withController(cBuilder: SystemComponentBuilder<C>, configure: (C.() -> Unit)): CompId {
         val comp = cBuilder.buildAndGet(configure)

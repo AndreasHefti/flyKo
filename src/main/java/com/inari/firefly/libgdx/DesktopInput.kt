@@ -9,7 +9,7 @@ import com.inari.firefly.external.FFInput.*
 import com.inari.firefly.external.FFInput.Companion.ACTION_PRESS
 import com.inari.firefly.external.FFInput.Companion.ACTION_TYPED
 import com.inari.firefly.external.FFInput.ControllerInput.*
-import com.inari.java.types.BitSet
+import com.inari.util.BitSet
 import com.inari.util.Call
 import com.inari.util.collection.DynIntArray
 import org.lwjgl.glfw.GLFW

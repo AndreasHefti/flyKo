@@ -1,6 +1,6 @@
 package com.inari.firefly.physics.movement
 
-import com.inari.java.types.BitSet
+import com.inari.util.BitSet
 import com.inari.util.event.Event
 
 object MoveEvent : Event<MoveEvent.Listener>(EVENT_ASPECTS.createAspect("MoveEvent")) {

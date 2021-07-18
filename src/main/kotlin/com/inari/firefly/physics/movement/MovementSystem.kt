@@ -8,7 +8,7 @@ import com.inari.firefly.entity.EntityActivationEvent
 import com.inari.firefly.entity.EntitySystem
 import com.inari.firefly.graphics.ETransform
 import com.inari.firefly.system.FFSystem
-import com.inari.java.types.BitSet
+import com.inari.util.BitSet
 import com.inari.util.aspect.Aspects
 
 object MovementSystem : FFSystem {

@@ -4,9 +4,13 @@ import com.inari.firefly.FFContext
 import com.inari.firefly.entity.Entity
 import com.inari.firefly.entity.EntitySystem
 import com.inari.firefly.external.ShapeType
+import com.inari.firefly.graphics.BlendMode
 import com.inari.firefly.graphics.ETransform
+import com.inari.firefly.graphics.TextureAsset
 import com.inari.firefly.graphics.rendering.RenderingSystem
 import com.inari.firefly.graphics.shape.EShape
+import com.inari.firefly.graphics.sprite.ESprite
+import com.inari.firefly.graphics.sprite.SpriteAsset
 import com.inari.firefly.graphics.view.View
 import com.inari.firefly.libgdx.DesktopAppAdapter
 import com.inari.firefly.physics.animation.AnimationSystem
@@ -21,29 +25,44 @@ class ShapeAndSprite : DesktopAppAdapter()  {
         FFContext.loadSystem(EntitySystem)
         FFContext.loadSystem(AnimationSystem)
 
-        View.buildAndActivate {
+        val id = View.buildAndActivate {
             name = "TestView"
-            bounds(10, 10, 800, 600)
-            fboScale = 1.0f
+            bounds(0, 0, 800, 600)
+            blendMode = BlendMode.NORMAL_ALPHA
+        }
+
+        TextureAsset.build {
+            name = "TEST"
+            resourceName = "firefly/inari.png"
+        }
+
+        SpriteAsset.buildAndActivate {
+            name = "TestSprite"
+            texture("TEST")
+            textureRegion(0,0,100,100)
         }
 
         Entity.buildAndActivate {
             component(ETransform) {
-                view("TestView")
+                view(id)
                 position(0, 0)
             }
             component(EShape) {
-                shapeType = ShapeType.POLYGON
-                fill = true
+                shapeType = ShapeType.TRIANGLE
                 color = RGBColor.RED
-                vertices = floatArrayOf(0f, 0f, 20f,0f,20f,20f, 0f,0f)
+                fill = true
+                vertices = floatArrayOf(5f, 5f, 120f, 5f, 50f, 50f)
             }
-//            With(EShape) {
-//                Type = ShapeType.TRIANGLE
-//                Color = RGBColor.RED
-//                Fill = true
-//                Vertices = floatArrayOf(0f, 0f, 120f, 120f, 20f, 20f)
-//            }
+        }
+
+        Entity.buildAndActivate {
+            component(ETransform) {
+                view(id)
+                position(0, 0)
+            }
+            component(ESprite) {
+                sprite("TestSprite")
+            }
         }
     }
 

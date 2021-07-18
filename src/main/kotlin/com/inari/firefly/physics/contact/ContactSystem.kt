@@ -18,7 +18,7 @@ import com.inari.firefly.physics.movement.MoveEvent
 import com.inari.firefly.system.component.ComponentSystem
 import com.inari.firefly.system.component.SystemComponent
 import com.inari.java.types.ArrayDeque
-import com.inari.java.types.BitSet
+import com.inari.util.BitSet
 import com.inari.util.Named
 import com.inari.util.aspect.Aspect
 import com.inari.util.aspect.Aspects

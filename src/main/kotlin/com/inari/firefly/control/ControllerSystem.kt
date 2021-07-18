@@ -7,7 +7,7 @@ import com.inari.firefly.entity.Entity
 import com.inari.firefly.entity.EntityActivationEvent
 import com.inari.firefly.system.component.ComponentSystem
 import com.inari.firefly.system.component.SystemComponent
-import com.inari.java.types.BitSet
+import com.inari.util.BitSet
 import com.inari.util.aspect.Aspects
 import com.inari.util.collection.DynArray
 import java.awt.ComponentOrientation

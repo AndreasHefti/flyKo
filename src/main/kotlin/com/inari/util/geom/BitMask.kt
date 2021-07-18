@@ -1,6 +1,6 @@
 package com.inari.util.geom
 
-import com.inari.java.types.BitSet
+import com.inari.util.BitSet
 import com.inari.util.StringUtils
 
 class BitMask constructor(

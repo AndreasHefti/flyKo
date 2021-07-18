@@ -1,7 +1,7 @@
 package com.inari.firefly.external
 
 import com.inari.firefly.libgdx.DesktopInput
-import com.inari.java.types.BitSet
+import com.inari.util.BitSet
 
 typealias KeyCallback = (Int, Int, Int) -> Unit // key, scancode, action
 typealias MouseCallback = (Int, Int) -> Unit    // button, action

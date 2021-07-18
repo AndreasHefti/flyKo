@@ -1,6 +1,6 @@
 package com.inari.util.collection
 
-import com.inari.java.types.BitSet
+import com.inari.util.BitSet
 import com.inari.util.IntIterator
 
 class BitSetIterator(val bitset: BitSet) : IntIterator {

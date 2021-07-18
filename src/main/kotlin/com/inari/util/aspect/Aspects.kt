@@ -1,6 +1,6 @@
 package com.inari.util.aspect
 
-import com.inari.java.types.BitSet
+import com.inari.util.BitSet
 import com.inari.util.collection.DynIntArray
 import com.inari.util.indexed.Indexed
 

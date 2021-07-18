@@ -7,7 +7,7 @@ import com.inari.firefly.entity.EntityComponentType
 import com.inari.firefly.physics.animation.Animation
 
 import com.inari.firefly.system.component.SystemComponentSubType
-import com.inari.java.types.BitSet
+import com.inari.util.BitSet
 
 class EAnimation : EntityComponent(EAnimation::class.simpleName!!) {
 

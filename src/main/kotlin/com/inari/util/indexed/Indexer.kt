@@ -1,6 +1,6 @@
 package com.inari.util.indexed
 
-import com.inari.java.types.BitSet
+import com.inari.util.BitSet
 import com.inari.util.StringUtils.EMPTY_STRING
 import com.inari.util.collection.DynArray
 

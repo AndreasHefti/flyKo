@@ -1,6 +1,6 @@
 package com.inari.util
 
-import com.inari.java.types.BitSet
+import com.inari.util.BitSet
 import com.inari.java.types.StringTokenizer
 
 

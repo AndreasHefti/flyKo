@@ -1,7 +1,7 @@
 package com.inari.firefly.control.trigger
 
 import com.inari.firefly.system.component.SystemComponent
-import com.inari.java.types.BitSet
+import com.inari.util.BitSet
 import com.inari.util.Call
 
 abstract class TriggeredSystemComponent protected constructor(
