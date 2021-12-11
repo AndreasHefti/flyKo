@@ -27,8 +27,8 @@ class ControllerTest : DesktopAppAdapter() {
 
     private val updateCall: Call = {
         val bytes: ByteBuffer = GLFW.glfwGetJoystickButtons(GLFW.GLFW_JOYSTICK_1)!!
-        val axes: FloatBuffer=GLFW.glfwGetJoystickAxes(GLFW.GLFW_JOYSTICK_1)!!
-        val hats: ByteBuffer=GLFW.glfwGetJoystickHats(GLFW.GLFW_JOYSTICK_1)!!
+        val axes: FloatBuffer = GLFW.glfwGetJoystickAxes(GLFW.GLFW_JOYSTICK_1)!!
+        val hats: ByteBuffer = GLFW.glfwGetJoystickHats(GLFW.GLFW_JOYSTICK_1)!!
         val bytesArray = ByteArray(bytes.remaining())
         val floatArray = FloatArray(axes.remaining())
         val hatsArray = ByteArray(hats.remaining())
@@ -37,7 +37,9 @@ class ControllerTest : DesktopAppAdapter() {
         hats.get(hatsArray, 0, hatsArray.size)
         text1.clear().append(bytesArray.contentToString())
         text2.clear().append(floatArray.contentToString())
-        text3.clear().append(hats[0])
+        if (hats.hasRemaining())
+            text3.clear().append(hats[0])
+
     }
 
     override fun init() {

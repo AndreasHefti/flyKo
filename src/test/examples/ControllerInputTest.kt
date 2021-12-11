@@ -21,7 +21,7 @@ class ControllerInputTest : DesktopAppAdapter() {
     private var textId = NO_COMP_ID
     private val updateCall: Call = {
         val textEntity = FFContext[textId, EText]
-        val keyInput = FFContext.input.getDevice("KeyInput")
+        val keyInput = FFContext.input.getDevice("AllInput")
         when {
             keyInput.buttonPressed(FFInput.ButtonType.UP) -> textEntity.text.clear().append("UP")
             keyInput.buttonPressed(FFInput.ButtonType.RIGHT) -> textEntity.text.clear().append("RIGHT")
@@ -49,7 +49,7 @@ class ControllerInputTest : DesktopAppAdapter() {
                 "KeyInput2",
                 DesktopInput.GLFWDesktopKeyboardInput)
         val keyInput3 = FFContext.input.createDevice<DesktopInput.GLFWControllerInput>(
-                "KeyInput3",
+                "ControllerInput",
                 DesktopInput.GLFWControllerInput)
 
         keyInput1.mapKeyInput(FFInput.ButtonType.UP, GLFW.GLFW_KEY_W)
@@ -83,8 +83,8 @@ class ControllerInputTest : DesktopAppAdapter() {
         keyInput3.mapButtonInput(FFInput.ButtonType.QUIT, GLFW.GLFW_GAMEPAD_BUTTON_LEFT_BUMPER)
         keyInput3.mapButtonInput(FFInput.ButtonType.ENTER, GLFW.GLFW_GAMEPAD_BUTTON_START)
 
-        FFContext.input.createOrAdapter("KeyInputOr", "KeyInput1", "KeyInput2")
-        FFContext.input.createOrAdapter("KeyInput", "KeyInputOr", "KeyInput3")
+        FFContext.input.createOrAdapter("KeyInput", "KeyInput1", "KeyInput2")
+        FFContext.input.createOrAdapter("AllInput", "KeyInput", "ControllerInput")
 
 //        //val controller = keyInput3.controllerDefinitions
 //        if (controller.isNotEmpty()) {

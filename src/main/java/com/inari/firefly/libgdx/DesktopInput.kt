@@ -167,6 +167,8 @@ object DesktopInput : FFInput {
         private val axisButtonMapping = DynIntArray(4, -1)
         private val pressedCodeMapping = BitSet(255)
 
+        private val updateScheduler = FFContext.timer.createUpdateScheduler(30f)
+
         private var buttons: ByteBuffer? = null
         private var axis: FloatBuffer? = null
         private var hats: ByteBuffer? = null
@@ -179,11 +181,8 @@ object DesktopInput : FFInput {
             if (slot != this.slot)
                 return
 
-            if (event == GLFW.GLFW_CONNECTED && GLFW.glfwJoystickPresent(slot)) {
+            if (event == GLFW.GLFW_CONNECTED || GLFW.glfwJoystickPresent(slot)) {
                 currentController = ControllerDef(slot, GLFW.glfwGetJoystickName(slot)!!)
-                buttons = GLFW.glfwGetJoystickButtons(currentController.id)!!
-                axis = GLFW.glfwGetJoystickAxes(currentController.id)!!
-                hats = GLFW.glfwGetJoystickHats(currentController.id)!!
             } else {
                 currentController = NO_CONTROLLER
                 buttons = null
@@ -192,10 +191,23 @@ object DesktopInput : FFInput {
             }
         }
 
+        fun update(): Boolean {
+            if (currentController == NO_CONTROLLER)
+                return false
+
+            buttons = GLFW.glfwGetJoystickButtons(currentController.id)!!
+            axis = GLFW.glfwGetJoystickAxes(currentController.id)!!
+            hats = GLFW.glfwGetJoystickHats(currentController.id)!!
+
+            return true
+        }
 
         override fun buttonPressed(button: ButtonType): Boolean {
-            if (currentController == NO_CONTROLLER ||!GLFW.glfwJoystickPresent(currentController.id))
+            if (currentController == NO_CONTROLLER || !GLFW.glfwJoystickPresent(currentController.id))
                     return false
+
+            if (updateScheduler.needsUpdate())
+                update()
 
             val buttonCode = button.ordinal
             if (!hatCodeMapping.isEmpty(buttonCode) && hats!!.capacity() > 0) {
@@ -229,7 +241,7 @@ object DesktopInput : FFInput {
             if (pressed && pressedCodeMapping[buttonCode])
                 return false
 
-            pressedCodeMapping.set(buttonCode, pressed)
+            pressedCodeMapping[buttonCode] = pressed
             return pressed
         }
 

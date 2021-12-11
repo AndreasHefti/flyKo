@@ -75,6 +75,10 @@ interface FFInput {
     fun setMouseButtonCallback(callback: MouseCallback)
     fun setButtonCallback(deviceName: String, callback: ButtonCallback)
     fun resetInputCallbacks()
+    fun dispose() {
+        resetInputCallbacks()
+        devices.keys.toList().forEach { this.clearDevice(it) }
+    }
 
     interface InputDevice {
 

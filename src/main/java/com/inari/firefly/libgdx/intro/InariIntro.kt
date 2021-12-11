@@ -17,7 +17,7 @@ import com.inari.util.geom.Rectangle
 import com.inari.util.graphics.RGBColor
 import org.lwjgl.glfw.GLFW
 
-object InariIntro {
+object  InariIntro {
 
     private var textureAssetId = NO_COMP_ID
     private var spriteAssetId = NO_COMP_ID
@@ -70,6 +70,7 @@ object InariIntro {
         val controllerInput = FFContext.input.createDevice<DesktopInput.GLFWControllerInput>(
                 "ControllerInput",
                 DesktopInput.GLFWControllerInput)
+
         controllerInput.mapButtonInput(FFInput.ButtonType.BUTTON_A, GLFW.GLFW_GAMEPAD_BUTTON_A)
         controllerInput.mapButtonInput(FFInput.ButtonType.BUTTON_B, GLFW.GLFW_GAMEPAD_BUTTON_B)
         controllerInput.mapButtonInput(FFInput.ButtonType.BUTTON_X, GLFW.GLFW_GAMEPAD_BUTTON_X)
@@ -85,7 +86,7 @@ object InariIntro {
             FFContext.deleteQuietly(spriteAssetId)
             FFContext.deleteQuietly(textureAssetId)
             FFContext.deleteQuietly(animationId)
-            FFContext.input.resetInputCallbacks()
+            FFContext.input.dispose()
             callback()
         }
     }
